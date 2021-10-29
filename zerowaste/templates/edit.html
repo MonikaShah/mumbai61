@@ -1,0 +1,123 @@
+{% extends 'base.html' %} {% load static%} {% block content %}
+{% load i18n %}
+
+<div class="container mb-5 text-center">
+    <!-- {{ form.errors }} -->
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+    
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{message}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+        </div>
+    
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <form method="POST" class="post-form" action="/update/{{data.id}}" style="margin-top: 80px;">
+        {% csrf_token %}
+
+
+        <div>
+            <label class="col-sm-1 col-form-label"></label>
+            <div>
+                <h3>{% trans "Update Details" %}</h3>
+            </div>
+        </div>
+        <div>
+            <label> {% trans "ID" %}:</label>
+            <div>
+                <input type="text" name="id" id="id_id" required value="{{ data.id }}" disabled =True />
+            </div>
+        </div>
+        <div>
+            <label> {% trans "Region Name:" %}</label>
+            <div>
+                <input type="text" name="region_name" id="id_region_name" value="{{ data.region_name }}" />
+            </div>
+        </div>
+       
+        <div>
+            <label> {% trans "Collection Date:" %}</label>
+            <div>
+                <input type="text" name="coll_date" id="id_coll_date" value="{{ data.coll_date|date:'Y-m-d' }}" />
+            </div>
+        </div>
+        <div>
+            <label> {% trans "Wet Waste Before Seg.:" %}</label>
+            <div>
+                <input type="text" name="wet_waste_bf" id="id_wet_waste_bf" value="{{ data.wet_waste_bf }}" />
+            </div>
+        </div>
+        <div>
+            <label>{% trans "Dry Waste Before Seg.:" %}</label>
+            <div>
+                <input type="text" name="dry_waste_bf" id="id_dry_waste_bf" value="{{ data.dry_waste_bf }}" />
+            </div>
+        </div>
+        <div>
+            <label>{% trans "Recyclable Waste:" %}</label>
+            <div>
+                <input type="text" name="recyclable_waste" id="id_recyclable_waste" value="{{ data.recyclable_waste }}" />
+            </div>
+        </div>
+        <div>
+            <label>{% trans "Compostable Waste:" %}</label>
+            <div>
+                <input type="text" name="compostable_waste" id="id_compostable_waste" value="{{ data.compostable_waste }}" />
+            </div>
+        </div>
+        <div>
+            <label>{% trans "Harzardous Waste:" %}</label>
+            <div>
+                <input type="text" name="hazardous_waste" id="id_hazardous_waste" value="{{ data.hazardous_waste }}" />
+            </div>
+        </div>
+        <div>
+            <label>{% trans "Building Name:" %}</label>
+            <div>
+                <input type="text" name="building_name" id="id_building_name" value="{{ data.building_name }}" />
+            </div>
+        </div>
+        
+        <!-- <div>
+            <label>{% trans "Date:" %}</label>
+            <div>
+                <input type="text" name="date" id="id_date" required value="{{ data.date|date:'Y-m-d' }}" />
+            </div>
+        </div>
+        <div>
+            <label>{% trans "Supervisor Name:" %}</label>
+            <div>
+                <input type="text" name="supervisor_name" id="id_supervisor_name" required value="{{ data.supervisor_name }}" />
+            </div>
+        </div> -->
+        <div>
+            <label>{% trans "Rejected:" %}</label>
+            <div>
+                <input type="text" name="rejected_waste" id="id_rejected_waste" required value="{{ data.rejected_waste }}" />
+            </div>
+        </div>
+        <!-- <div style="display:none;">
+            <label>{% trans "Zone ID:" %}</label>
+            <div>
+                <input type="text" name="zone_id_id" id="id_zone_id_id" required value="{{ data.zone_id_id }}" />
+            </div>
+        </div> -->
+        <div class="form-group row">
+            <label class="col-sm-1 col-form-label"></label>
+            <div class="col-sm-4">
+                <button type="submit" class="btn btn-success">{% trans "Update" %}</button>
+            </div>
+            
+        </div>
+    </form>
+</div>
+<script>
+    // console.log("{{ data.zone_id_id }}")
+</script>
+{% endblock %}
