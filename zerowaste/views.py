@@ -407,7 +407,7 @@ def Buildshow(request):
 
 # def Ward61OsmBuildings(request):
 #     obj = Ward61OsmBuildings.object.all()
-#     ser_test = serialize('geojson',obj)
-#     console.log(obj)
-#     context = {'osm_build':ser_test}
+#     geojson = serialize('geojson',obj)
+#     # console.log(obj)
+#     context = {'geojson':geojson}
 #     return render(request, "map/map.html", context)

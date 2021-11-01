@@ -484,7 +484,8 @@ function getBoundaryru(obj) {
         // else if (boundary == "{zones}")    
         //     putWMSru("Ward157:ward_157_zones"); 
         else if (boundary == "{buildings}")    
-            putWMSru("ward61:osm_buildings_29oct21"); 
+            // putWMSru("ward61:osm_buildings_29oct21"); 
+            displaypolygon();
         else if (boundary == "{roads}")    
             putWMSru("ward61:ward61osmroad25OCT");  
         
@@ -530,6 +531,7 @@ function putWMSru(layer) {
     var maximumzoom = 20;
     var opac = 0.5;
     var zoom = 16;
+    
     }
     else if (layer == "ward61:ward61osmroad25OCT") {
     currentPos = [19.1467,72.8283];
@@ -603,7 +605,7 @@ function putLayer(opt){
 
 }
 
-mymap.addEventListener('click', Identify);
+// mymap.addEventListener('click', Identify);
 // function for displaying spots
 
     
@@ -686,6 +688,43 @@ function Identify(e) {
 //     LayerList.push(geojson);
 //     mymap.addLayer(geojson);
 // }
+function displaypolygon(){
+    let osm_buildings = JSON.parse('{{ geojson|safe }}')
+    console.log(osm_buildings)
+    // alert(osm_buildings);
+    mymap.setView([19.1467,72.8283],16);
+    L.geoJSON(osm_buildings, 
+    {style:function(feature){
+        switch(feature.properties.building){
+            case 'residence':return {color:"#c83daa",fillcolor:"#c83daa"};
+            case 'residential':return {color:"#c83daa"};
+            case 'apartments':return {color:"#c83daa"};
+            case 'commercial':return {color:"#55e232"};
+            case 'office':return {color:"#232323"};
+            case 'yes':return {color:"#1d80e3"};
+            case 'school':return {color:"#efe115"};
+            }
+        },    
+        
+        onEachFeature: onEachFeatureForPointBB,
+    }).addTo(mymap);
+    layer ="ward61:osm_buildings_29oct21";
+    addWMSLegend(layer);
+}
+function onEachFeatureForPointBB(feature, layer) {
+    layer.bindPopup(`<div class = 'text-center'>Building Info <br>
+    Building Name: ${feature.properties.name}<br>
+    Description :${feature.properties.building}<br>
+    Region:${feature.properties.region}<br>
+    Number of Flats/shops :${feature.properties.num_flats}<br>
+    Number of Wings :${feature.properties.wings}<br>
+    Address : ${feature.properties.addrstreet}<br>
+    Modify : <a href = '/buildedit/${feature.properties.fid}' style ='color:#FF0000;'>${feature.properties.fid}</a><br>
 
+</div>`)
+
+
+}
+mymap.addEventListener('click', Identify);
 </script>
 {% endblock extra_map_javascript %}

@@ -3,6 +3,6 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-    path('',views.Map, name = 'iitb_map'),
+    path('',views.Map, name = 'map'),
 ]
 
