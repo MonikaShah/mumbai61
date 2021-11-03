@@ -1,7 +1,7 @@
 from django.shortcuts import render
 # from zerowaste.models import OsmBuildings29Oct21
 from django.core.serializers import serialize
-from .models import Ward61OsmBuildings
+from .models import Ward61OsmBuildings,Ward61BuildingsOsm2Nov2021
 
 # Create your views here.
 # from swk.HelloAnalytics import *
@@ -18,8 +18,9 @@ from .models import Ward61OsmBuildings
    #return render(request,"map/map.html")
 
 def Map(req):
-    obj = Ward61OsmBuildings.objects.all()
-   #  obj=Buildings2Nov.objects.all()
+   #  obj = Ward61OsmBuildings.objects.all()
+    obj=Ward61BuildingsOsm2Nov2021.objects.all()
+    
     geojson=serialize('geojson',obj)
     context = {'geojson':geojson}
     return render(req,"map/map.html",context)

@@ -1,6 +1,6 @@
 from django import forms
-from .models import Report,Grievance,OsmBuildings29Oct21
-import os
+from .models import Report,Grievance#,OsmBuildings29Oct21
+from map.models import Ward61BuildingsOsm2Nov2021
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column, ButtonHolder
 import datetime
@@ -51,18 +51,25 @@ class GrievanceForm(forms.ModelForm):
         # exclude = ['latitude','longitude','id','audio_src','img_src']
         # widgets = {'selectzones': forms.HiddenInput(),'selectlanes':forms.HiddenInput()}
 
-class OsmBuildings29Oct21Form(forms.ModelForm): 
+class Ward61BuildingsOsm2Nov2021Form(forms.ModelForm): 
     # geom = forms.CharField(label = _(u'Geometry'))  # This field type is a guess.
     # fid = forms.IntegerField(label = _(u'FId'))
-    # osm_id = forms.FloatField(label = _(u'OSM ID'))
+    # osm_id = forms.DecimalField(label = _(u'OSM ID'))
     addrstreet = forms.CharField(label = _(u'Address'))
     building = forms.CharField(label = _(u'Building Type'))
     name = forms.CharField(label = _(u'Name'))
-    num_flats = forms.IntegerField(label = _(u'Number of Flats'))
-    wings = forms.IntegerField(label = _(u'Wing'))
+    num_flat = forms.IntegerField(label = _(u'Number of Flats'))
+    wing = forms.IntegerField(label = _(u'Wing'))
     region = forms.CharField(label = _(u'Region'))
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        num_flat = cleaned_data.get('num_flat')
+        wing = cleaned_data.get('wing')
+        if not any([num_flat, wing]):
+            raise forms.ValidationError(u'Please enter a value')
+            # raise forms.ValidationError('Future Dates are not allowed.!!')
+        
     class Meta:
-
-        model = OsmBuildings29Oct21
+        model = Ward61BuildingsOsm2Nov2021
         fields = '__all__'
-        exclude = ['geom','osm_id','fid']
+        exclude = ['geom','roofmateri','osm_id']

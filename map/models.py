@@ -16,6 +16,23 @@ class Ward61OsmBuildings(models.Model):
         managed = False
         db_table = 'osm_buildings_29oct21'
 
+class Ward61BuildingsOsm2Nov2021(models.Model):
+    geom = models.MultiPolygonField(blank=True, null=True)
+    osm_id = models.IntegerField()
+    name = models.CharField(max_length=97, blank=True, null=True)
+    addrstreet = models.CharField(max_length=91, blank=True, null=True)
+    building = models.CharField(max_length=80, blank=True, null=True)
+    roofmateri = models.CharField(max_length=80, blank=True, null=True)
+    osmward = models.CharField(max_length=100, blank=True, null=True)
+    num_flat = models.IntegerField(blank=True, null=True)
+    num_shops = models.IntegerField(blank=True, null=True)
+    wing = models.CharField(max_length=100, blank=True, null=True)
+    region = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'ward61_buildings_osm_2nov2021'
+
 # class Ward61OsmBuildings1Nov21(models.Model):
 #     geom = models.MultiPolygonField(blank=True, null=True)
 #     ward = models.CharField(max_length=254, blank=True, null=True)

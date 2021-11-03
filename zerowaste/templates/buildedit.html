@@ -17,7 +17,7 @@
     </ul>
     {% endif %}
 
-    <form method="POST" class="post-form" action="/buildupdate/{{data.id}}" style="margin-top: 80px;">
+    <form method="POST" class="post-form" action="/buildupdate/{{data.osm_id}}" style="margin-top: 80px;">
         {% csrf_token %}
 
 
@@ -27,12 +27,12 @@
                 <h3>{% trans "Update Details of Buildings" %}</h3>
             </div>
         </div>
-        <div>
-            <label> {% trans "ID" %}:</label>
+        <!-- <div>
+            <label> {% trans "OSM ID" %}:</label>
             <div>
-                <input type="text" name="fid" id="id_fid" required value="{{ data.fid }}" disabled =True />
+                <input type="text" name="osm_id" id="id_osm_id" required value="{{ data.osm_id }}" disabled =True />
             </div>
-        </div>
+        </div> -->
         <!-- <div>
             <label> {% trans "Location:" %}</label>
             <div>
@@ -61,13 +61,13 @@
         <div>
             <label>{% trans "Wing:" %}</label>
             <div>
-                <input type="text" name="wings" id="id_wings" value="{{ data.wings }}" />
+                <input type="text" name="wing" id="id_wing" value="{{ data.wing }}" />
             </div>
         </div>
         <div>
             <label>{% trans "Number of Flats:" %}</label>
             <div>
-                <input type="text" name="num_flats" id="id_num_flats"  value="{{ data.num_flats }}" />
+                <input type="text" name="num_flat" id="id_num_flat"  value="{{ data.num_flat }}" />
             </div>
         </div>
         <div>

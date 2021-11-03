@@ -1,7 +1,8 @@
 # Create your views here.
 from django.shortcuts import render,redirect,HttpResponse,HttpResponseRedirect
-from .forms import GarbageSegForm,GrievanceForm,OsmBuildings29Oct21Form
-from .models import Report,Rating,OsmBuildings29Oct21
+from .forms import GarbageSegForm,GrievanceForm,Ward61BuildingsOsm2Nov2021Form#,OsmBuildings29Oct21Form
+from .models import Report,Rating #,OsmBuildings29Oct21
+from map.models import Ward61BuildingsOsm2Nov2021#,Ward61OsmBuildings,
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.core.files.storage import FileSystemStorage
 from django.contrib import messages
@@ -346,7 +347,7 @@ def FeedbackView(request):
 
         return render(request, "feedback_form.html")
 def Buildedit(request, id):  
-    data = OsmBuildings29Oct21.objects.get(id=id)
+    data = Ward61BuildingsOsm2Nov2021.objects.get(osm_id=id)
     # docdata  = doctor.objects.get(id=id)  
     # print(data.coll_date)
     context = {
@@ -358,9 +359,9 @@ def Buildedit(request, id):
 
 def Buildupdate(request, id):
     # print(id)
-    data = OsmBuildings29Oct21.objects.get(fid=id) 
+    data = Ward61BuildingsOsm2Nov2021.objects.get(osm_id=id) 
     print(data) 
-    form = OsmBuildings29Oct21Form(request.POST, instance=data)  
+    form = Ward61BuildingsOsm2Nov2021Form(request.POST, instance=data)  
     print(form)
     # if form.is_valid(): 
     #     print("success") 
@@ -384,13 +385,13 @@ def Buildupdate(request, id):
         'data':data,
         #'Visitor_count': recd_response
         } 
-    print(OsmBuildings29Oct21Form.errors)
+    print(Ward61BuildingsOsm2Nov2021Form.errors)
     
     return render(request,'buildedit.html',context) 
     
 
 def Buildshow(request):
-    datas= OsmBuildings29Oct21.objects.all().order_by('-name')
+    datas= Ward61OsmBuildings1Nov21.objects.all().order_by('-name')
     # datas1= Tracksheet.objects.all().order_by('-lane_name')
     # wardetail= DutyEntry.objects.all()
     # data= User.objects.all()

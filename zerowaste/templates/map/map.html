@@ -331,8 +331,24 @@ table, th, td
                               <label><input type="checkbox" value="{osmbuild}" id ="build_osm" onchange="getBoundaryru(this)"><span> {% trans "Building Polygons" %}</span></label>
                           </div>  -->
                           <div class="checkbox">
-                            <label><input type="checkbox" value="{buildings}" id ="buildings" onchange="getBoundaryru(this)"><span> {% trans "Buildings Polygons" %}</span></label>
+                            <label><input type="checkbox" value="{region}" disabled id ="buildings" onchange="getBoundaryru(this)"><span> {% trans "Regions" %}</span></label>
+                          </div>
+                          <div class="checkbox">
+                            <label><input type="checkbox" value="{buildings}" id ="buildings" onchange="getBoundaryru(this)"><span> {% trans "Buildings Clusters" %}</span></label>
                           </div> 
+                          <div class="checkbox">
+                            <label><input type="checkbox" value="{buildings_only}" disabled id ="buildings_only" onchange="getBoundaryru(this)"><span> {% trans "Buildings" %}</span></label>
+                          </div> 
+                          <div class="checkbox">
+                            <label><input type="checkbox" value="{sra}" id ="sra" disabled onchange="getBoundaryru(this)"><span> {% trans "SRA" %}</span></label>
+                          </div> 
+                          <div class="checkbox">
+                            <label><input type="checkbox" value="{chs}" id ="chs" disabled onchange="getBoundaryru(this)"><span> {% trans "CHS" %}</span></label>
+                          </div>
+                          <div class="checkbox">
+                            <label><input type="checkbox" value="{smpa}" id ="smpa" disabled onchange="getBoundaryru(this)"><span> {% trans "SMPA" %}</span></label>
+                          </div>  
+                         
                           <div class="checkbox">
                             <label><input type="checkbox" value="{roads}" id ="buildings" onchange="getBoundaryru(this)"><span> {% trans "Roads" %}</span></label>
                           </div>   
@@ -574,8 +590,9 @@ function removeWMS(unchecked_layer) {
         // mymap.removeControl(legend);
         if (wms_legend) {
         // alert(wms_legend)
-        mymap.removeControl(wms_legend);
-      }
+            mymap.removeControl(wms_legend);
+        }
+        addWMSLegend(layer);
         // mymap.removeControl(legend1);
     }
     });
@@ -718,8 +735,9 @@ function onEachFeatureForPointBB(feature, layer) {
     Building Name: ${feature.properties.name}<br>
     Description :${feature.properties.building}<br>
     Region:${feature.properties.region}<br>
-    Number of Flats/shops :${feature.properties.num_flats}<br>
-    Number of Wings :${feature.properties.wings}<br>
+    Number of Flats :${feature.properties.num_flat}<br>
+    Number of shops :${feature.properties.num_shops}<br>
+    Number of Wings :${feature.properties.wing}<br>
     Address : ${feature.properties.addrstreet}<br>
     Modify : <a href = '/buildedit/${feature.properties.osm_id}' style ='color:#FF0000;'>${feature.properties.osm_id}</a><br>
 
