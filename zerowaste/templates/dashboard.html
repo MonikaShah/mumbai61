@@ -1,0 +1,13 @@
+{% extends 'base.html' %} 
+{% load i18n %}
+{% block content %}
+    {% load plotly_dash %}
+<h1>Home Page</h1>
+
+    <div class="{% plotly_class name='SimpleExample' %} card" style="height: 100%; width: 100%">
+    {% plotly_app name='Mumbai61Dashboard' ratio=0.45 %}
+    </div>
+<br>
+    {{ plot | safe }}
+
+

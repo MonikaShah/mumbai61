@@ -25,7 +25,7 @@ SECRET_KEY = ')os$@dpb-xv6c@$3#at+nyf3-90-hhrg1jsh93!d%unqhg+$h2'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['mumbai61.nowastes.in']
+ALLOWED_HOSTS = ['mumbai61.nowastes.in','localhost','127.0.0.1']
 
 
 # Application definition
@@ -40,7 +40,18 @@ INSTALLED_APPS = [
     'zerowaste',
     'crispy_forms',
     'django.contrib.gis',
+    'map',
+    # 'plotly_dash',
+    # 'django_plotly_dash.apps.DjangoPlotlyDashConfig',
 ]
+# PLOTLY_COMPONENTS = [
+
+#     'dash_core_components',
+#     'dash_html_components',
+#     'dash_renderer',
+
+#     'dpd_components'
+# ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -84,7 +95,8 @@ WSGI_APPLICATION = 'mumbai61.wsgi.application'
 # }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'ward61',
         'USER': 'ward61user',
         'PASSWORD': 'ward61pass',

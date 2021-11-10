@@ -19,6 +19,7 @@ urlpatterns = [
     path('buildedit/<int:id>',views.Buildedit, name ='buildedit'),
     path('buildupdate/<int:id>',views.Buildupdate, name ='buildupdate'),
     path('buildshow/',views.Buildshow, name='buildshow'),  
+    # path('dashboard/',views.Dashboard, name ='dashboard'),
 ]
 
 

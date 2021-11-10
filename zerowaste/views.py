@@ -20,8 +20,21 @@ from plotly.offline import plot
 
 import plotly.graph_objects as og
 import numpy
+###From Akshita's Dashboard##############
+# import pandas as pd
+# import json
+# import plotly.express as px  # (version 4.7.0 or higher)
+# import plotly.graph_objects as go
+# # import plotly.express as px
+# # import dash, dcc, html, Input, Output
 
+# import dash_bootstrap_components as dbc
+# import dash
+# import dash_core_components as dcc
+# import dash_html_components as html
+# from dash.dependencies import Input, Output, State
 
+#######################################################
 def HomePage(request):
         # print(main)
         # analytics = initialize_analyticsreporting()
