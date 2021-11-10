@@ -2,6 +2,7 @@
 # Create your models here.
 from django.contrib.gis.db import models
 
+
 class Ward61OsmBuildings(models.Model):
     geom = models.MultiPolygonField(blank=True, null=True)
     fid = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
