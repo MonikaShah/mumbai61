@@ -337,7 +337,7 @@ table, th, td
                             <label><input type="checkbox" value="{buildings}" id ="buildings" onchange="getBoundaryru(this)"><span> {% trans "Buildings Clusters" %}</span></label>
                           </div> 
                           <div class="checkbox">
-                            <label><input type="checkbox" value="{buildings_only}" disabled id ="buildings_only" onchange="getBoundaryru(this)"><span> {% trans "Buildings" %}</span></label>
+                            <label><input type="checkbox" value="{buildings_only}" id ="buildings_only" onchange="getBoundaryru(this)"><span> {% trans "Buildings" %}</span></label>
                           </div> 
                           <div class="checkbox">
                             <label><input type="checkbox" value="{sra}" id ="sra" disabled onchange="getBoundaryru(this)"><span> {% trans "SRA" %}</span></label>
@@ -442,7 +442,7 @@ const domain = ['https://geoserver2.communitygis.net/', 'http://localhost/'];
     var myWorliLayerList = [];
     var popup_layer, content;           
     let  imageloca= [];
-    // var polylayer;
+    var polylayer =[];
     
 
                 
@@ -503,6 +503,9 @@ function getBoundaryru(obj) {
         else if (boundary == "{buildings}")    
             // putWMSru("ward61:osm_buildings_29oct21"); 
             displaypolygon();
+        else if (boundary == "{buildings_only}")    
+            putWMSru("ward61:osm_buildings_29oct21"); 
+            // displaypolygon();
         else if (boundary == "{roads}")    
             putWMSru("ward61:ward61osmroad25OCT");  
         
@@ -522,16 +525,22 @@ function getBoundaryru(obj) {
         //     // console.log(polylayer);
         //     // mymap.removeLayer(polylayer);
         //     mymap.clearLayers();
-        // }   
-            removeWMS(polylayer); 
+        // }  
+            console.log("remove building cluster");
+            removepolylayer(); 
         }
         else if (boundary == "{roads}")    
-            removeWMS("ward61:ward61osmroad25OCT");    
-        
-        
+            removeWMS("ward61:ward61osmroad25OCT");         
     };
 
 
+}
+function removepolylayer(){
+    console.log("polylayer is to be removed");
+    mymap.removeLayer(polylayer);
+    mymap.removeControl(wms_legend);
+    // mymap.clearLayers();
+    // console.log("polylayer is :"+polylayer);
 }
 function putWMSru(layer) {
     // console.log(layer)
@@ -544,7 +553,7 @@ function putWMSru(layer) {
 
     } 
     else if (layer == "ward61:ward61_regions_9nov") {
-    currentPos = [19.1488,72.8226];
+    currentPos = [19.1467,72.8283];
     var maximumzoom = 20;
     var opac = 0.5;
     var zoom = 16;
@@ -557,8 +566,9 @@ function putWMSru(layer) {
     }
     else if (layer == "ward61:osm_buildings_29oct21") {
     currentPos = [19.1467,72.8283];
+    layer = "";
     var maximumzoom = 20;
-    var opac = 0.5;
+    var opac = 0.1;
     var zoom = 16;
     
     }
@@ -597,16 +607,15 @@ function removeWMS(unchecked_layer) {
     newLayerList.forEach((layer, index) => {
     if (layer.options.layers === unchecked_layer) {
         // alert(layer,unchecked_layer);
-        // alert("legend is"+wms_legend.value);
+        //  alert("legend is"+wms_legend.value);
         mymap.removeLayer(layer);
+        // mymap.removeControl(wms_legend);
         newLayerList.splice(index, 1);
-        // mymap.removeControl(legend);
         if (wms_legend) {
-        // alert(wms_legend)
             mymap.removeControl(wms_legend);
         }
         addWMSLegend(layer);
-        // mymap.removeControl(legend1);
+        
     }
     });
 }
@@ -725,7 +734,7 @@ function displaypolygon(){
     // mymap.removeLayer(polylayer);
     mymap.setView([19.1467,72.8283],16);
     // mymap.clearLayers();
-    var polylayer = L.geoJSON(osm_buildings, 
+    polylayer = L.geoJSON(osm_buildings, 
     {style:function(feature){
         switch(feature.properties.building){
             case 'residence':return {color:"#c83daa"};
