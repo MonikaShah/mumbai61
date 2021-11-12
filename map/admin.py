@@ -1,3 +1,4 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Ward61BuildingsOsm2Nov2021
+admin.site.register(Ward61BuildingsOsm2Nov2021)
