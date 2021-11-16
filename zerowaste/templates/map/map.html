@@ -350,8 +350,15 @@ table, th, td
                           </div>  
                          
                           <div class="checkbox">
-                            <label><input type="checkbox" value="{roads}" id ="buildings" onchange="getBoundaryru(this)"><span> {% trans "Roads" %}</span></label>
-                          </div>   
+                            <label><input type="checkbox" value="{roads}" id ="roads" onchange="getBoundaryru(this)"><span> {% trans "Roads" %}</span></label>
+                          </div> 
+                          <!--Restricted access  -->
+                          <div class="checkbox">
+                            <label><input type="checkbox" value="{buildings_noname}" id ="buildings_noname" onchange="getBoundaryru(this)"><span> {% trans "Buildings No Name" %}</span></label>
+                          </div> 
+                          <div class="checkbox">
+                            <label><input type="checkbox" value="{regions_noname}" id ="regions_noname" onchange="getBoundaryru(this)"><span> {% trans "Regions with no name" %}</span></label>
+                          </div>
                           <!-- <div class="checkbox">
                             <label><input type="checkbox" value="{roads}" id ="buildingsosm" onchange="displayPoint()"><span> {% trans "OSM BUILDINGS" %}</span></label>
                           </div>                       -->
@@ -443,7 +450,8 @@ const domain = ['https://geoserver2.communitygis.net/', 'http://localhost/'];
     var popup_layer, content;           
     let  imageloca= [];
     var polylayer =[];
-    
+    var polylayer1 =[];
+    var polylayer2 =[];
 
                 
 
@@ -507,7 +515,12 @@ function getBoundaryru(obj) {
             putWMSru("ward61:osm_buildings_29oct21"); 
             // displaypolygon();
         else if (boundary == "{roads}")    
-            putWMSru("ward61:ward61osmroad25OCT");  
+            putWMSru("ward61:ward61osmroad25OCT"); 
+        else if (boundary == "{buildings_noname}")    
+            displaypolygon_buildings_noname();
+        else if (boundary == "{regions_noname}")    
+            displaypolygon_regions_noname();
+
         
 
     } else {
@@ -521,11 +534,6 @@ function getBoundaryru(obj) {
         else if (boundary == "{61bound}")                        
             removeWMS("ward61:ward61_boundary_1nov21");
         else if (boundary == "{buildings}") {
-        //     // let osm_buildings = JSON.parse('{{ geojson|safe }}')
-        //     // console.log(polylayer);
-        //     // mymap.removeLayer(polylayer);
-        //     mymap.clearLayers();
-        // }  
             console.log("remove building cluster");
             removepolylayer(); 
         }
@@ -702,31 +710,66 @@ function Identify(e) {
 }
 
     
-
-
-    //Legends for bin path, spots, bubbles and zone
-
-// function displayPoint() {
-//     alert(conte)
-//     var geojsonMarkerOptions = {
-//         radius: 8,
-//         fillColor: "#ff7800",
-//         color: "#000",
-//         weight: 1,
-//         opacity: 1,
-//         fillOpacity: 0.8,
-//     };
-//     let image_loc = JSON.parse('{{ osm_build|safe }}');
-//     mymap.setView([19.1467,72.8283], 16);
-//     geojson = L.geoJson(image_loc.features, {
-//     pointToLayer: function (feature, latlng) {
-//         return L.circleMarker(latlng, geojsonMarkerOptions);
-//     },
-//     onEachFeature: onEachFeaturePoint,
-//     });
-//     LayerList.push(geojson);
-//     mymap.addLayer(geojson);
-// }
+function displaypolygon_buildings_noname(){
+    let osm_buildings = JSON.parse('{{ geojson|safe }}')
+    // console.log(osm_buildings)
+    // alert(osm_buildings);
+    // mymap.removeLayer(polylayer);
+    mymap.setView([19.1467,72.8283],16);
+    // mymap.clearLayers();
+    polylayer1 = L.geoJSON(osm_buildings, 
+    {style:function(feature){
+        switch(feature.properties.building){
+            case 'residence':return {color:"#FF0000"};
+            case 'residential':return {color:"#FF0000"};
+            case 'apartments':return {color:"#FF0000"};
+            // case 'yes':return {color:"#c83daa"};
+            case 'commercial':return {color:"#FF0000"};
+            case 'Commercial':return {color:"#FF0000"};
+            case 'office':return {color:"#FF0000"};
+            case 'yes':return {color:"#FF0000"};
+            case 'school':return {color:"#FF0000"};
+            }
+        },    
+        
+        onEachFeature: onEachFeatureForPointBB,
+        filter: NonameBuildingFilter,
+    // }).addTo(mymap);
+    });
+    console.log("polylayer1 is "+polylayer1);
+    polylayer1.addTo(mymap);
+    
+}
+function displaypolygon_regions_noname(){
+    let osm_buildings = JSON.parse('{{ geojson|safe }}')
+    // console.log(osm_buildings)
+    // alert(osm_buildings);
+    // mymap.removeLayer(polylayer);
+    mymap.setView([19.1467,72.8283],16);
+    // mymap.clearLayers();
+    polylayer2 = L.geoJSON(osm_buildings, 
+    {style:function(feature){
+        switch(feature.properties.building){
+            case 'residence':return {color:"#FF0000"};
+            case 'residential':return {color:"#FF0000"};
+            case 'apartments':return {color:"#FF0000"};
+            // case 'yes':return {color:"#c83daa"};
+            case 'commercial':return {color:"#FF0000"};
+            case 'Commercial':return {color:"#FF0000"};
+            case 'office':return {color:"#FF0000"};
+            case 'yes':return {color:"#FF0000"};
+            case 'school':return {color:"#FF0000"};
+            }
+        },    
+        
+        onEachFeature: onEachFeatureForPointBB,
+        filter: NonameRegionFilter,
+    // }).addTo(mymap);
+    });
+    console.log("polylayer2 is "+polylayer2);
+    polylayer2.addTo(mymap);
+    
+}
 function displaypolygon(){
     let osm_buildings = JSON.parse('{{ geojson|safe }}')
     // console.log(osm_buildings)
@@ -760,6 +803,7 @@ function displaypolygon(){
 function onEachFeatureForPointBB(feature, layer) {
     // alert(layer.properties.name+"="+feature);
     // layer.on({click:onClick })
+    // if(${feature.properties.name} !== null){
     layer.bindPopup(`<div class = 'text-center'>Building Info <br>
     Building Name: ${feature.properties.name}<br>
     Description :${feature.properties.building}<br>
@@ -771,8 +815,25 @@ function onEachFeatureForPointBB(feature, layer) {
     Modify : <a href = '/buildedit/${feature.properties.osm_id}' style ='color:#FF0000;'>${feature.properties.osm_id}</a><br>
 
 </div>`)
+    // }
     
 
+}
+function NonameBuildingFilter(feature) {
+    // alert(layer.properties.name+"="+feature);
+    // layer.on({click:onClick })
+    console.log("Name is ");
+    if(feature.properties.name !== null) 
+        return false    
+    else
+        return true
+}
+function NonameRegionFilter(feature){
+    console.log("Region is ")
+    if(feature.properties.region !== null)
+        return false
+    else    
+        return true
 }
 function onClick(e) {console.log("Onclick")
 
