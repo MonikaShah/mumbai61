@@ -33,6 +33,8 @@ class Ward61BuildingsOsm2Nov2021(models.Model):
     class Meta:
         managed = False
         db_table = 'ward61_buildings_osm_2nov2021'
+    def __str__(self):        
+        return self.name
 
 # class Ward61OsmBuildings1Nov21(models.Model):
 #     geom = models.MultiPolygonField(blank=True, null=True)
