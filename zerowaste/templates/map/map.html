@@ -452,14 +452,14 @@ const domain = ['https://geoserver2.communitygis.net/', 'http://localhost/'];
     var polylayer =[];
     var polylayer1 =[];
     var polylayer2 =[];
-
-                
+    var areaLayerList=[];
+    
 
 // <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
 var expanded = false;
-
+putWMSarea("ward61:ward61_boundary_1nov21");
 function showCheckboxes2() { //geographical heirarchy
     var checkboxes = document.getElementById("checkboxes2");
     if (!expanded) {
@@ -535,17 +535,37 @@ function getBoundaryru(obj) {
             removeWMS("ward61:ward61_boundary_1nov21");
         else if (boundary == "{buildings}") {
             console.log("remove building cluster");
-            removepolylayer(); 
+            removepolylayer(polylayer); 
         }
         else if (boundary == "{roads}")    
-            removeWMS("ward61:ward61osmroad25OCT");         
+            removeWMS("ward61:ward61osmroad25OCT"); 
+        else if (boundary == "{buildings_noname}")    
+            removepolylayer(polylayer1); 
+        else if (boundary == "{regions_noname}")    
+            removepolylayer(polylayer2); 
     };
 
 
 }
-function removepolylayer(){
+function putWMSarea(layer) {
+    var wms_layer = L.tileLayer.wms('https://geoserver2.communitygis.net/geoserver/wms', {
+                    layers: layer,
+                    format: 'image/png',
+                    transparent: 'true',
+                    // cql_filter: "district='Raigad'",
+                });
+    mymap.setView([19.1423,72.8137],13);
+    myselectedarea="Ward61";
+    console.log(myselectedarea);
+    // alert(wms_layer);
+    console.log(wms_layer)
+    wms_layer.addTo(mymap);
+    areaLayerList.push(wms_layer);
+
+}
+function removepolylayer(layer){
     console.log("polylayer is to be removed");
-    mymap.removeLayer(polylayer);
+    mymap.removeLayer(layer);
     mymap.removeControl(wms_legend);
     // mymap.clearLayers();
     // console.log("polylayer is :"+polylayer);
@@ -687,7 +707,14 @@ function Identify(e) {
                 var popup = new L.Popup({
                     maxWidth: 300
                 });
-                
+                if (feature.properties.region) {
+                    // alert("in region");
+                    content = "<table class = 'popupclass' ><tr><td><b>Region Info</b></td><td></td></tr>" +
+                        "<tr><td><b>Region Name: </b></td><td>" + feature.properties.region + "</td></tr>"+"</table>";
+                    popup.setContent(content);
+                    popup.setLatLng(e.latlng);
+                    mymap.openPopup(popup);
+                    }
                 if (feature.properties.building) {
                     
                     // console.log("I reached at");
