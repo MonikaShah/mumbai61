@@ -7,8 +7,9 @@ from django.conf.urls.static import static
 # from visits.models import Visits
 urlpatterns = [
     path('',views.HomePage, name = 'homepage'),
-    path('garbage_seg/', views.GarbageSeg,name='garbage_seg'),
-    path('show/',views.show, name='show'),  
+    # path('garbage_seg/', views.GarbageSeg,name='garbage_seg'),
+    path('garbage_seg/', views.WasteSegregationDetailsView,name='garbage_seg'),
+    # path('show/',views.show, name='show'),  
     # path('graphs/',views.Graphs, name='graphs'),  
     path('grievance/',views.Grievance, name = 'grievance'),
     path('edit/<int:id>', views.edit),  
@@ -20,6 +21,8 @@ urlpatterns = [
     path('buildupdate/<int:id>',views.Buildupdate, name ='buildupdate'),
     path('buildshow/',views.Buildshow, name='buildshow'),  
     # path('dashboard/',views.Dashboard, name ='dashboard'),
+    path('show_wsd/',views.showwastesegregationdetails, name='show_wsd'),
+    path('ajax/load_buildings/', views.load_buildings, name='ajax_load_buildings'),
 ]
 
 

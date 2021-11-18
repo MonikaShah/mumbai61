@@ -1,7 +1,7 @@
 # Create your views here.
 from django.shortcuts import render,redirect,HttpResponse,HttpResponseRedirect
-from .forms import GarbageSegForm,GrievanceForm,Ward61BuildingsOsm2Nov2021Form#,OsmBuildings29Oct21Form
-from .models import Report,Rating #,OsmBuildings29Oct21
+from .forms import GarbageSegForm,GrievanceForm,Ward61BuildingsOsm2Nov2021Form,WasteSegregationDetailsForm#,OsmBuildings29Oct21Form
+from .models import Report,Rating,WasteSegregationDetails #,OsmBuildings29Oct21
 from map.models import Ward61BuildingsOsm2Nov2021#,Ward61OsmBuildings,
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.core.files.storage import FileSystemStorage
@@ -373,7 +373,7 @@ def Buildedit(request, id):
 def Buildupdate(request, id):
     # print(id)
     data = Ward61BuildingsOsm2Nov2021.objects.get(osm_id=id) 
-    print(data) 
+    # print(data) 
     form = Ward61BuildingsOsm2Nov2021Form(request.POST, instance=data)  
     print(form)
     # if form.is_valid(): 
@@ -425,3 +425,55 @@ def Buildshow(request):
 #     # console.log(obj)
 #     context = {'geojson':geojson}
 #     return render(request, "map/map.html", context)
+
+def showwastesegregationdetails(request):
+    datas= WasteSegregationDetails.objects.all().order_by('-coll_date')
+    context = {
+        'datas':datas,
+        # 'Visitor_count': recd_response
+    }
+    return render(request,'show_wsd.html',context)
+
+def WasteSegregationDetailsView(request):
+        form = WasteSegregationDetailsForm()
+        building = request.POST.get('building_cluster')
+        # form.fields['building_cluster'].choices = [building.building]
+        # print(request.method)
+        if request.method == 'POST':
+            form = WasteSegregationDetailsForm(request.POST)
+            # region = form.cleaned_data['region']
+            # print(region)
+            # regionName = form.cleaned_data['region']
+            # print(form['region'].value())
+            # print(form['building_cluster'].value())
+            if form.is_valid():
+                regionName = form.cleaned_data['region']
+                print(regionName)
+                collDate = form.cleaned_data['coll_date']
+                if regionName =="none":
+                    messages.warning(request, _(u'Please select Region'))
+                if  WasteSegregationDetails.objects.filter(coll_date=collDate, region=regionName).exists():
+                    messages.warning(request, _(u'Data already exists for this Zone and Date.'))
+                else:  
+                    instance = form.save(commit=False)
+                    instance.save()
+                    messages.success(request, _(u'Your data is saved for {} dated {}').format(regionName,collDate))
+                    # print(form)
+                #   messages.success(request,'Form is valid')
+                return HttpResponseRedirect(request.path_info)
+            else:
+                # print(form['region'].value())
+                # print(form['building_cluster'].value())
+                form.errors.as_json()
+                messages.warning(request, _(u'Please check your form'))
+                messages.warning(request,form.errors.as_json)
+        else:
+                form = WasteSegregationDetailsForm()
+                # print(form)
+                form.errors.as_json()
+        return render(request, 'GarbageSeg.html', {'form': form})
+        # return render(request,"GarbageSeg.html")
+def load_buildings(request):
+    region = request.GET.get('region')
+    building_name = WasteSegregationDetails.objects.filter(region=region)
+    return render(request, 'building_dropdown_list_options.html', {'building_name': building_name})

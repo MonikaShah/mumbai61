@@ -1,5 +1,6 @@
 {% extends 'base.html' %} {% load crispy_forms_tags %} {% block content %} {% block extra_css %}
 {% load l10n %}
+{% load i18n %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style>
     /* .myform>* {
@@ -31,16 +32,37 @@
 
 {% endif %} 
 <div class="container mb-7 text-center" style="margin-top: 100px;">
-    <h1 class='text-center mt-5'>Garbage Segregation Details</h1>
+    <h1 class='text-center mt-5'>{% trans "Waste Collection / Segregation Details" %}</h1>
     <hr>
-    <form method="post" style="margin-left: 350px;">
-        {% csrf_token %}
+    <div id = "formdiv">
+        <form method="POST" id = "regionForm" data-url="{% url 'ajax_load_buildings' %}"  class="form-group" style="text-align:left;">
+            {% csrf_token %}
+            <table style="margin-right: 10px";>{{ form.as_table }} </table> 
+            <br>
+        <centre><button type="submit" style="align-items: center;" class="btn btn-primary">{% trans "Submit" %}</button></centre>
+        
+    </form>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script>
+    $("#id_region").change(function () {
+      var url = $("#regionForm").attr("data-url");  // get the url of the `load_cities` view
+      var regionId = $(this).val();  // get the selected country ID from the HTML input
 
-        <table>
-            {% localize on %} {{ form.as_table }} {% endlocalize %}</table>
-             <br><br><button type="submit" class="btn btn-primary">Submit</button>
-    </form><br><br><br><br><br><br>
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'region': regionId       // add the country id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+          $("#id_building_cluster").html(data);  // replace the contents of the city input with the data that came from the server
+        }
+      });
 
+    });
+  </script>
+
+
+    </div>
 </div>
 
 {% endblock %}
