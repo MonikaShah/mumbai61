@@ -507,7 +507,7 @@ function getBoundaryru(obj) {
         else if (boundary == "{61bound}")    
             putWMSru("ward61:ward61_boundary_1nov21");
         else if (boundary == "{regions}")    
-            putWMSru("ward61:ward61_regions_incom_18nov21"); 
+            putWMSru("ward61:regions_ward61_30nov21"); 
         else if (boundary == "{buildings}")    
             // putWMSru("ward61:osm_buildings_29oct21"); 
             displaypolygon();
@@ -530,7 +530,7 @@ function getBoundaryru(obj) {
         else if (boundary == "{suburban}")
             removeWMS("Mumbai Suburban");
         else if (boundary == "{regions}")                        
-            removeWMS("ward61:ward61_regions_incom_18nov21");
+            removeWMS("ward61:regions_ward61_30nov21");
         else if (boundary == "{61bound}")                        
             removeWMS("ward61:ward61_boundary_1nov21");
         else if (boundary == "{buildings}") {
@@ -580,7 +580,7 @@ function putWMSru(layer) {
     var zoom = 13;
 
     } 
-    else if (layer == "ward61:ward61_regions_incom_18nov21") {
+    else if (layer == "ward61:regions_ward61_30nov21") {
     currentPos = [19.1467,72.8283];
     var maximumzoom = 20;
     var opac = 0.5;
