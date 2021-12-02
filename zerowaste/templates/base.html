@@ -109,7 +109,15 @@ gtag('config', 'UA-197940159-2');
                 <li class="nav-item active">
                     <a href="{% url 'faq' %}" class="nav-link text-white" >{% trans "FAQ " %}</a>
                 </li>
-               
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a href="{% url 'logout' %}" class="nav-link text-white">{% trans "Logout" %}</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a href="{% url 'login' %}" class="nav-link text-white">{% trans "Login" %}</a>
+                </li>
+                {% endif %}
                 
               
             

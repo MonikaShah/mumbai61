@@ -23,6 +23,8 @@ urlpatterns = [
     # path('dashboard/',views.Dashboard, name ='dashboard'),
     path('show_wsd/',views.showwastesegregationdetails, name='show_wsd'),
     path('ajax/load_buildings/', views.load_buildings, name='ajax_load_buildings'),
+    path('login/', views.user_login, name='login'),
+    path("logout", views.logout_request, name="logout"),
 ]
 
 

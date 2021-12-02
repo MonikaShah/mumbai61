@@ -8,7 +8,10 @@ from django.core.files.storage import FileSystemStorage
 from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 from django.core.serializers import serialize
-from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User,auth
+from django.contrib.auth.decorators import login_required
+# from django.contrib import messages
 
 import pandas as pd
 import psycopg2
@@ -48,6 +51,45 @@ def HomePage(request):
         # }
 
         return render(request,"HomePage.html")
+
+def user_login(request):
+    # context = RequestContext(request)
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        
+        if user is not None:
+            if user.is_active: 
+                login(request, user)
+                messages.info(request,_(u"Logged in sucessfully."))
+                # analytics = initialize_analyticsreporting()
+                # response = get_report(analytics)
+                # recd_response = print_response(response)
+                # context = {
+                #     'Visitor_count': recd_response
+                # }
+
+                # return render(request, "rating.html", context)
+                return render(request,"HomePage.html")
+            else:
+                # Return a 'disabled account' error message
+                messages.info(request,_(u"Your account is disabled"))
+                return HttpResponseRedirect_(u"Your account is disabled.")
+        else:
+            # Return an 'invalid login' error message.
+            print (_(u"invalid login details for " + username))
+            # messages.info(request,"Invalid login details"+ username )
+            messages.error(request, _(u"Invalid username or password."))
+            return render(request,'adminlogin.html')
+    else:
+        return render(request,'adminlogin.html')
+
+def logout_request(request):
+    logout(request)
+    messages.info(request, _(u"Logged out successfully!"))
+    return render(request,"HomePage.html")
+
 
 def GarbageSeg(request):
         form = GarbageSegForm()
