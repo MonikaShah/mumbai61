@@ -39,18 +39,7 @@ import numpy
 
 #######################################################
 def HomePage(request):
-        # print(main)
-        # analytics = initialize_analyticsreporting()
-        # response = get_report(analytics)
-        # print(response)
-        # recd_response = print_response(response)
-        # print(recd_response)
-        
-        # context ={
-        #     'Visitor_count':recd_response
-        # }
-
-        return render(request,"HomePage.html")
+    return render(request,"HomePage.html")
 
 def user_login(request):
     # context = RequestContext(request)
