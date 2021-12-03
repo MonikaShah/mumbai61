@@ -1,6 +1,6 @@
 # Create your views here.
 from django.shortcuts import render,redirect,HttpResponse,HttpResponseRedirect
-from .forms import GarbageSegForm,GrievanceForm,Ward61BuildingsOsm2Nov2021Form,WasteSegregationDetailsForm#,OsmBuildings29Oct21Form
+from .forms import GarbageSegForm,GrievanceForm,Ward61BuildingsOsm2Nov2021Form,WasteSegregationDetailsForm,NewUserForm#,OsmBuildings29Oct21Form
 from .models import Report,Rating,WasteSegregationDetails #,OsmBuildings29Oct21
 from map.models import Ward61BuildingsOsm2Nov2021#,Ward61OsmBuildings,
 from django.contrib.staticfiles.storage import staticfiles_storage
@@ -10,6 +10,8 @@ from django.utils.translation import gettext_lazy as _
 from django.core.serializers import serialize
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User,auth
+from django.contrib.auth.models import Group
+
 from django.contrib.auth.decorators import login_required
 # from django.contrib import messages
 
@@ -508,3 +510,28 @@ def load_buildings(request):
     region = request.GET.get('region')
     building_name = WasteSegregationDetails.objects.filter(region=region)
     return render(request, 'building_dropdown_list_options.html', {'building_name': building_name})
+
+def register_request(request):
+	if request.method == "POST":
+		form = NewUserForm(request.POST)
+		if form.is_valid():
+			user = form.save()
+			login(request, user)
+			messages.success(request, "Registration successful." )
+			return HttpResponseRedirect('../login/')
+		messages.error(request, "Unsuccessful registration. Invalid information.")
+        
+        
+	form = NewUserForm()
+	return render (request=request, template_name="register.html", context={"register_form":form})
+
+def group(self, user):
+    groups = []
+    # user = request.POST.get('username')
+    for group in user.groups.all():
+        groups.append(group.name)
+    return ' '.join(groups)
+group.short_description = 'Groups'
+
+list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'group')
+# The last argument will display a column with the result of the "group" method defined above

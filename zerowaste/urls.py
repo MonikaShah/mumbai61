@@ -25,6 +25,8 @@ urlpatterns = [
     path('ajax/load_buildings/', views.load_buildings, name='ajax_load_buildings'),
     path('login/', views.user_login, name='login'),
     path("logout", views.logout_request, name="logout"),
+    path("register/", views.register_request, name="register"),
+    # path("showgroup/",views.group,name="showgroup"),
 ]
 
 
