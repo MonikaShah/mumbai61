@@ -57,7 +57,7 @@ Regions = [
 ]
 EmployeePost = [
     ('Driver','Driver'),
-    ('Waste Picker','WastePicker'),
+    ('Sweeper','Sweeper'),
     
 ]
 
@@ -191,7 +191,7 @@ class EmployeeDetailsForm(forms.ModelForm):
     #adminward =forms.CharField(label = _(u'Admin Ward'),max_length=50)
     councillorward = forms.CharField(label=_(u'Councillor Ward (Prabhag) '),max_length=100,widget=forms.Select(choices=councillorWard))
     region = forms.CharField(label = _(u'Region Name'),widget=forms.Select(choices=Regions))
-    emp_category =forms.CharField(label = _(u'Employee Post'),widget=forms.Select(choices=EmployeePost))
+    emp_category =forms.CharField(label = _(u'Scavenger'),widget=forms.Select(choices=EmployeePost))
     emp_name =forms.CharField(label = _(u'Employee Name'),max_length = 100)
     emp_mobile =forms.IntegerField(label = _(u'Employee Mobile No.'))
     
