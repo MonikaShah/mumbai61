@@ -84,15 +84,26 @@ gtag('config', 'UA-197940159-2');
                 <li class="nav-item active">
                     <a href="{% url 'map' %}" class="nav-link text-white" >{% trans "Maps" %}</a>
                 </li>
-                <li class="nav-item active">
-                    <a href="{% url 'grievance' %}" class="nav-link text-white" >{% trans "Grievance" %}</a>
-                </li>
-                <li class="nav-item active">
-                    <a href="{% url 'garbage_seg' %}" class="nav-link text-white" >{% trans "Garbage Collection " %}</a>
-                </li>
                 
+                               
+                {% if request.user|has_group:"Ward61Manager"  %}
+                
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-white" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                      {% trans "Forms" %}
+                    </a>
+                  
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                      <li><a class="dropdown-item" href="{% url 'garbage_seg' %}">{% trans "Enter Garbage Collection Details" %}</a></li>
+                      <li><a class="dropdown-item" href="{% url 'emp_detail' %}"class="nav-link text-white">{% trans "Enter Employee Details" %}</a></li>
+                    </ul>
+                </li>
+                {% endif %}
                 <li class="nav-item active">
                     <a href="{% url 'show_wsd' %}" class="nav-link text-white" >{% trans "Segregation Report" %}</a>
+                </li>
+                <li class="nav-item active">
+                    <a href="{% url 'grievance' %}" class="nav-link text-white" >{% trans "Grievance" %}</a>
                 </li>
                 <li class="nav-item active">
                     <a href="https://nowaste-dashboard.herokuapp.com/" class="nav-link text-white" >{% trans "Dashboard" %}</a>
@@ -147,7 +158,7 @@ gtag('config', 'UA-197940159-2');
     
    <!-- <footer class="text-center text-white " style="background-color: #21081a;bottom: 0px;"> -->
        <!-- <footer class="text-center text-white fixed-bottom" style="background-color: #21081a;bottom: 0px;"> -->
-        <footer class="text-center text-white" style="background-color:#853d28;bottom: 0px;">
+        <footer class="text-center fixed-bottom text-white" style="background-color:#853d28;bottom: 0px;">
        
   <!-- Copyright -->
     <!-- <div class="text-justify p-3" style="background-color: rgba(0, 0, 0, 0.2);"raj> -->

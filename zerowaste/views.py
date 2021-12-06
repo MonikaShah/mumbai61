@@ -1,6 +1,6 @@
 # Create your views here.
 from django.shortcuts import render,redirect,HttpResponse,HttpResponseRedirect
-from .forms import GarbageSegForm,GrievanceForm,Ward61BuildingsOsm2Nov2021Form,WasteSegregationDetailsForm,NewUserForm#,OsmBuildings29Oct21Form
+from .forms import GarbageSegForm,GrievanceForm,Ward61BuildingsOsm2Nov2021Form,WasteSegregationDetailsForm,NewUserForm,EmployeeDetailsForm#,OsmBuildings29Oct21Form
 from .models import Report,Rating,WasteSegregationDetails #,OsmBuildings29Oct21
 from map.models import Ward61BuildingsOsm2Nov2021#,Ward61OsmBuildings,
 from django.contrib.staticfiles.storage import staticfiles_storage
@@ -535,3 +535,31 @@ group.short_description = 'Groups'
 
 list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'group')
 # The last argument will display a column with the result of the "group" method defined above
+
+
+def emp_detail(request):
+    if request.method == "POST":
+        form = EmployeeDetailsForm(request.POST or None)
+               
+        if form.is_valid():
+            EmpName = form.cleaned_data['emp_name']
+            EmpMobile =form.cleaned_data['emp_mobile']
+            EmpPost =form.cleaned_data['emp_category']
+            if EmpName =="none":
+                messages.warning(request, _(u'Please Add Employee Name'))
+            if EmpMobile =="none":
+                EmpMobile = 11111111
+                messages.warning(request, _(u'Please Add Employee Number, ELse default no 1111111111 wil be entered.'))
+            else:
+                instance = form.save(commit=False)
+                instance.save()
+                print(form)
+                messages.success(request, _(u'Your data is saved for {} as {}').format(EmpName,EmpPost))
+                return HttpResponseRedirect(request.path_info)
+        else:
+            messages.warning(request, _(u'Please check your form'))
+    else:
+        form = EmployeeDetailsForm(request.POST or None)
+        context= {
+        'form': form}
+        return render(request, 'EmployeeDetails.html',context)

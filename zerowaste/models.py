@@ -219,3 +219,19 @@ class WasteSegregationDetails(models.Model):
     class Meta:
         managed = False
         db_table = 'waste_segregation_details'
+
+class EmployeeDetails(models.Model):
+    # emp_id = models.AutoField(primary_key=True)
+    adminward =models.CharField(max_length=50,default = 'Ward-KWest')
+    councillorward = models.CharField(max_length=100)
+    region = models.CharField(max_length=100)
+    emp_category =models.CharField(max_length = 100)
+    emp_name =models.CharField(max_length = 100)
+    emp_mobile =models.IntegerField()
+
+    class Meta:
+        managed = True
+        db_table = 'employee_details'
+
+    def __str__(self):
+        return self.emp_name

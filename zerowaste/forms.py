@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-from .models import Report,Grievance,WasteSegregationDetails#,OsmBuildings29Oct21
+from .models import Report,Grievance,WasteSegregationDetails,EmployeeDetails#,OsmBuildings29Oct21
 from map.models import Ward61BuildingsOsm2Nov2021
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column, ButtonHolder
@@ -16,6 +16,50 @@ from datetime import timedelta
 # import numpy as np
 import xlrd
 import csv
+
+councillorWard = [
+    ('Ward 61','Ward 61'),
+    ('Ward 59','Ward 59'),
+    ('Ward 60','Ward 60'),
+    ('Ward 62','Ward 62'),
+    ('Ward 63','Ward 63'),
+    ('Ward 64','Ward 64'),
+    ('Ward 65','Ward 65'),
+    ('Ward 66','Ward 66'),
+    ('Ward 67','Ward 67'),
+    ('Ward 68','Ward 68'),
+    ('Ward 69','Ward 69'),
+    ('Ward 70','Ward 70'),
+    ('Ward 71','Ward 71'),
+]
+Regions = [
+    ('Anandnagar','Anandnagar'),
+    ('Behram baug Kadam Nagar','Behram baug Kadam Nagar'),
+    ('Behram Baugh Parasi Colony','Behram Baugh Parasi Colony'),
+    ('BMC colony','BMC colony'),
+    ('BMC Plot','BMC Plot'),
+    ('Fakeer Waadi','Fakeer Waadi'),
+    ('Ganesh Nagar','Ganesh Nagar'),
+    ('Gujarat Bhavan','Gujarat Bhavan'),
+    ('Gyansagar','Gyansagar'),
+    ('Heera Panna','Heera Panna'),
+    ('Maheshwari Chowk','Maheshwari Chowk'),
+    ('Mhada','Mhada'),
+    ('Qureshi Compound','Qureshi Compound'),
+    ('Roshan Nagar','Roshan Nagar'),
+    ('Santosh Nagar','Santosh Nagar'),
+    ('Serenity','Serenity'),
+    ('Shakti Nagar','Shakti Nagar'),
+    ('Tarapore Garden','Tarapore Garden'),
+    ('Tarapore Towers','Tarapore Towers'),
+    ('Walawalkar','Walawalkar')
+
+]
+EmployeePost = [
+    ('Driver','Driver'),
+    ('Waste Picker','WastePicker'),
+    
+]
 
 class GarbageSegForm(forms.ModelForm):
     
@@ -142,3 +186,21 @@ class NewUserForm(UserCreationForm):
 		if commit:
 			user.save()
 		return user
+
+class EmployeeDetailsForm(forms.ModelForm): 
+    #adminward =forms.CharField(label = _(u'Admin Ward'),max_length=50)
+    councillorward = forms.CharField(label=_(u'Councillor Ward (Prabhag) '),max_length=100,widget=forms.Select(choices=councillorWard))
+    region = forms.CharField(label = _(u'Region Name'),widget=forms.Select(choices=Regions))
+    emp_category =forms.CharField(label = _(u'Employee Post'),widget=forms.Select(choices=EmployeePost))
+    emp_name =forms.CharField(label = _(u'Employee Name'),max_length = 100)
+    emp_mobile =forms.IntegerField(label = _(u'Employee Mobile No.'))
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+    class Meta:
+        model = EmployeeDetails
+        fields = '__all__'
+        # exclude =['emp_id']
+        
+        
