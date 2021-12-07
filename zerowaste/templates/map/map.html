@@ -860,6 +860,7 @@ function displaypolygon(){
         console.log("Name is "+feature.properties.name)
         switch(feature.properties.name){
             case null:return{color:'#ff0000'};
+            case 'None':return{color:'#ff0000'};
             // case 'Heera Panna':return{color:'#ff0000'};
           }
         switch(feature.properties.building){
