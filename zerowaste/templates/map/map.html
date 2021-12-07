@@ -335,18 +335,19 @@ table, th, td
                           <div class="checkbox">
                             <label><input type="checkbox" value="{regions}"  id ="regions" onchange="getBoundaryru(this)"><span> {% trans "Regions" %}</span></label>
                           </div>
+                          <div class="checkbox">
+                            <label><b><input type="checkbox" value="{buildings}" disabled id ="buildings" onchange="getBoundaryruUpdation(this)"><span> {% trans "Buildings Clusters" %}</span></b></label>
+                        </div> 
                           {% if request.user|has_group:"Editor" %}
                             <div class="checkbox">
-                                <label><b><input type="checkbox" value="{buildings}" id ="buildings" onchange="getBoundaryruUpdation(this)"><span> {% trans "Buildings Clusters" %}</span></b></label>
+                                <label><b><input type="checkbox" value="{buildings}" id ="buildings" onchange="getBoundaryruUpdation(this)"><span> {% trans "Buildings" %}</span></b></label>
                             </div> 
                             {%else %}
                                 <div class="checkbox">
-                                    <label><input type="checkbox" value="{buildings}" id ="buildings" onchange="getBoundaryru(this)"><span> {% trans "Buildings Clusters" %}</span></label>
+                                    <label><input type="checkbox" value="{buildings}" id ="buildings" onchange="getBoundaryru(this)"><span> {% trans "Buildings" %}</span></label>
                                 </div> 
                           {% endif %}
-                          <div class="checkbox">
-                            <label><input type="checkbox" value="{buildings_only}" id ="buildings_only" onchange="getBoundaryru(this)"><span> {% trans "Buildings" %}</span></label>
-                          </div> 
+                          
                           <div class="checkbox">
                             <label><input type="checkbox" value="{sra}" id ="sra" disabled onchange="getBoundaryru(this)"><span> {% trans "SRA" %}</span></label>
                           </div> 
@@ -361,12 +362,12 @@ table, th, td
                             <label><input type="checkbox" value="{roads}" id ="roads" onchange="getBoundaryru(this)"><span> {% trans "Roads" %}</span></label>
                           </div> 
                           <!--Restricted access  -->
-                          <div class="checkbox">
+                          <!-- <div class="checkbox">
                             <label><input type="checkbox" value="{buildings_noname}" id ="buildings_noname" onchange="getBoundaryru(this)"><span> {% trans "Buildings No Name" %}</span></label>
                           </div> 
                           <div class="checkbox">
                             <label><input type="checkbox" value="{regions_noname}" id ="regions_noname" onchange="getBoundaryru(this)"><span> {% trans "Regions with no name" %}</span></label>
-                          </div>
+                          </div> -->
                           <!-- <div class="checkbox">
                             <label><input type="checkbox" value="{roads}" id ="buildingsosm" onchange="displayPoint()"><span> {% trans "OSM BUILDINGS" %}</span></label>
                           </div>                       -->
@@ -529,7 +530,7 @@ function displaypolygonUpdation(){
             case 'commercial':return {color:"#55e232"};
             case 'Commercial':return {color:"#55e232"};
             case 'office':return {color:"#7d3fe9"};
-            case 'yes':return {color:"#1d80e3"};
+            case 'yes':return {color:"#c83daa"};
             case 'school':return {color:"#efe115"};
             }
         },    
@@ -856,6 +857,11 @@ function displaypolygon(){
     // mymap.clearLayers();
     polylayer = L.geoJSON(osm_buildings, 
     {style:function(feature){
+        console.log("Name is "+feature.properties.name)
+        switch(feature.properties.name){
+            case null:return{color:'#ff0000'};
+            // case 'Heera Panna':return{color:'#ff0000'};
+          }
         switch(feature.properties.building){
             case 'residence':return {color:"#c83daa"};
             case 'residential':return {color:"#c83daa"};
@@ -867,6 +873,7 @@ function displaypolygon(){
             case 'yes':return {color:"#1d80e3"};
             case 'school':return {color:"#efe115"};
             }
+       
         },    
         
         onEachFeature: onEachFeatureForPointBB,
