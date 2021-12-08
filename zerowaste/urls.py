@@ -27,6 +27,7 @@ urlpatterns = [
     path("logout", views.logout_request, name="logout"),
     path("register/", views.register_request, name="register"),
     path("emp_detail/",views.emp_detail, name="emp_detail"),
+    path("resources/",views.resources, name="resources"),
     # path("showgroup/",views.group,name="showgroup"),
 ]
 

@@ -563,3 +563,6 @@ def emp_detail(request):
         context= {
         'form': form}
         return render(request, 'EmployeeDetails.html',context)
+
+def resources(request):
+    return render(request,'Resources.html')

@@ -59,7 +59,18 @@ gtag('config', 'UA-197940159-2');
    
      
     {% endblock %}
-
+    <style>
+        footer{
+      position: fixed;
+      bottom: 0;
+      font-size: 18px;
+      text-align: center;
+      width: 100%;
+      height: 13%;
+      opacity: 1.0;
+      z-index: 1000;
+    }
+    </style>
 
 </head>
 
@@ -114,6 +125,9 @@ gtag('config', 'UA-197940159-2');
                 <li class="nav-item active">
                     <a href="{% url 'faq' %}" class="nav-link text-white" >{% trans "FAQ " %}</a>
                 </li>
+                <li class="nav-item active">
+                    <a href="{% url 'resources' %}" class="nav-link text-white" >{% trans "Resources " %}</a>
+                </li>
                 
                 {% if user.is_authenticated %}
                 <li class="nav-item">
@@ -158,7 +172,7 @@ gtag('config', 'UA-197940159-2');
     
    <!-- <footer class="text-center text-white " style="background-color: #21081a;bottom: 0px;"> -->
        <!-- <footer class="text-center text-white fixed-bottom" style="background-color: #21081a;bottom: 0px;"> -->
-        <footer class="text-center relative-bottom text-white" style="background-color:#853d28;bottom: 0px;">
+        <footer class="text-center text-white" style="background-color:#853d28;bottom: 0px;">
        
   <!-- Copyright -->
     <!-- <div class="text-justify p-3" style="background-color: rgba(0, 0, 0, 0.2);"raj> -->
