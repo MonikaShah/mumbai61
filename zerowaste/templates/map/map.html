@@ -549,6 +549,7 @@ function displaypolygonUpdation(){
 function getBoundaryru(obj) {
     let boundary = obj.value;
     // console.log(boundary)
+    alert("Logged Out")
     if ($(obj).is(":checked")) {
 
         if (boundary == "{suburban}")
@@ -812,7 +813,7 @@ function displaypolygon_buildings_noname(){
             }
         },    
         
-        onEachFeature: onEachFeatureForPointBB,
+        onEachFeature: onEachFeatureForUpdation,
         filter: NonameBuildingFilter,
     // }).addTo(mymap);
     });
@@ -842,7 +843,7 @@ function displaypolygon_regions_noname(){
             }
         },    
         
-        onEachFeature: onEachFeatureForPointBB,
+        onEachFeature: onEachFeatureForUpdation,
         filter: NonameRegionFilter,
     // }).addTo(mymap);
     });
@@ -851,6 +852,7 @@ function displaypolygon_regions_noname(){
     
 }
 function displaypolygon(){
+    alert("Without updation")
     let osm_buildings = JSON.parse('{{ geojson|safe }}')
     // console.log(osm_buildings)
     // alert(osm_buildings);
@@ -921,9 +923,7 @@ function onEachFeatureForPointBB(feature, layer) {
     <tr><td>Number of Wings :</td><td>${feature.properties.wing}</td></tr>
     <tr class="table-danger"><td>Address : </td><td>${feature.properties.addrstreet}</td></tr>
     <tr class="table-danger"><td>Address : </td><td>${feature.properties.addrstreet}</td></tr>
-    <tr colspan =2></tr>
-    <tr ><td colspan =2><b><center><a href = '/buildedit/${feature.properties.osm_id}' class="btn btn-info">Update Building Details</a></center></td></tr>
-    <tr ><td colspan =2 ><a href='/garbage_seg/' class="btn btn-success">Add Waste Segregation Details</a></td></tr></table>
+    
 </div>`)
     // }
     
