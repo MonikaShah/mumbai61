@@ -549,7 +549,7 @@ function displaypolygonUpdation(){
 function getBoundaryru(obj) {
     let boundary = obj.value;
     // console.log(boundary)
-    alert("Logged Out")
+    // alert("Logged Out")
     if ($(obj).is(":checked")) {
 
         if (boundary == "{suburban}")
@@ -852,7 +852,7 @@ function displaypolygon_regions_noname(){
     
 }
 function displaypolygon(){
-    alert("Without updation")
+    // alert("Without updation")
     let osm_buildings = JSON.parse('{{ geojson|safe }}')
     // console.log(osm_buildings)
     // alert(osm_buildings);
@@ -922,7 +922,7 @@ function onEachFeatureForPointBB(feature, layer) {
     <tr class="table-danger"><td>Number of shops :</td><td>${feature.properties.num_shops}</td></tr>
     <tr><td>Number of Wings :</td><td>${feature.properties.wing}</td></tr>
     <tr class="table-danger"><td>Address : </td><td>${feature.properties.addrstreet}</td></tr>
-    <tr class="table-danger"><td>Address : </td><td>${feature.properties.addrstreet}</td></tr>
+    
     
 </div>`)
     // }
