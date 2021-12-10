@@ -16,17 +16,8 @@
 
 {% endblock %} {% block content %}
 
-
-<section id="hero">
-    <div class="hero-container">
-        <h1>{% trans "Zero Waste - Mumbai Ward 61" %}</h1>
-        
-        <!-- <h2>{% trans "A Project by Stree Mukti Sanghatana, sponsored by IDFC FIRST Bank" %}</h2> -->
-        <!-- <a href="#about" class="btn-get-started scrollto">Get Started</a> -->
-    </div>
-   
-</section>
 {% if messages %}
+<div>
 <ul class="messages">
     {% for message in messages %}
 
@@ -39,7 +30,18 @@
 
     {% endfor %}
 </ul>
+</div>
 {% endif %}
+<section id="hero">
+    <div class="hero-container">
+        <h1>{% trans "Zero Waste - Mumbai Ward 61" %}</h1>
+        
+        <!-- <h2>{% trans "A Project by Stree Mukti Sanghatana, sponsored by IDFC FIRST Bank" %}</h2> -->
+        <!-- <a href="#about" class="btn-get-started scrollto">Get Started</a> -->
+    </div>
+   
+</section>
+
 </div>
 <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 

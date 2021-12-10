@@ -102,22 +102,24 @@ class Ward61BuildingsOsm2Nov2021Form(forms.ModelForm):
     # geom = forms.CharField(label = _(u'Geometry'))  # This field type is a guess.
     # fid = forms.IntegerField(label = _(u'FId'))
     # osm_id = forms.DecimalField(label = _(u'OSM ID'))
-    addrstreet = forms.CharField(label = _(u'Address'))
-    building = forms.CharField(label = _(u'Building Type'))
+    addrstreet = forms.CharField(label = _(u'Address'),required=False)
+    building_type = forms.CharField(label = _(u'Building Type'),required=False)
     building_name = forms.CharField(label = _(u'Building Name'))
     num_flat = forms.IntegerField(label = _(u'Number of Flats'))
-    num_shops = forms.IntegerField(label = _(u'Number of Shops'))
-    num_floors = forms.IntegerField(label = _(u'Number of Shops'))
-    wing_name = forms.IntegerField(label = _(u'Wing Name'))
+    num_shops = forms.IntegerField(label = _(u'Number of Shops'),required=False)
+    num_floors = forms.IntegerField(label = _(u'Number of Floors'),required=False)
+    wing_name = forms.CharField(label = _(u'Wing Name'),required=False)
     region = forms.CharField(label = _(u'Region'))
+    councillor_ward = forms.CharField(label = _(u'Councillor Ward'),required=False)
+    admin_ward = forms.CharField(label = _(u'Admin Ward'),required=False)
     # def __str__(self):
     #     return str(self.name)
     def clean(self):
         cleaned_data = self.cleaned_data
         num_flat = cleaned_data.get('num_flat')
-        wing = cleaned_data.get('wing')
-        if not any([num_flat, wing]):
-            raise forms.ValidationError(u'Please enter a value')
+        wing_name = cleaned_data.get('wing_name')
+        if not any([num_flat, wing_name]):
+            raise forms.ValidationError(u'Please enter Name of the Wing')
             # raise forms.ValidationError('Future Dates are not allowed.!!')
         
     class Meta:
