@@ -16,97 +16,40 @@
         {% endfor %}
     </ul>
     {% endif %}
-
-    <form method="POST" class="post-form" action="/buildupdate/{{data.osm_id}}" style="margin-top: 80px;">
+<style>
+.blank_row{
+    height: 8px !important; /* overwrites any other rules */
+    background-color: #FFFFFF;
+}
+</style>
+    <div class="container mb-7 text-start" style="margin-top: 10px;" >
+            
+        <h3>{% trans "Update Buildings Details" %}</h3>
+        </div><hr>
+    <form method="POST" class="post-form" action="/buildupdate/{{data.osm_id}}" style="margin-top: 20px;">
         {% csrf_token %}
-
-
-        <div>
-            <label class="col-sm-1 col-form-label"></label>
-            <div>
-                <h3>{% trans "Update Details of Buildings" %}</h3>
-            </div>
-        </div>
-        <!-- <div>
-            <label> {% trans "OSM ID" %}:</label>
-            <div>
-                <input type="text" name="osm_id" id="id_osm_id" required value="{{ data.osm_id }}" disabled =True />
-            </div>
-        </div> -->
-        <!-- <div>
-            <label> {% trans "Location:" %}</label>
-            <div>
-                <input type="text" name="geom" id="id_geom" value="{{ data.geom }}"  disabled =True />
-            </div>
-        </div> -->
-        <div>
-            <label> {% trans "Region Name:" %}</label>
-            <div>
-                <input type="text" name="region" id="id_region" value="{{ data.region }}" />
-            </div>
-        </div>
+        <table class="table-bordered table-striped">
+            <tr><td align ="left">{% trans "Region Name:" %}</td><td><input type="text" name="region" id="id_region" value="{{ data.region }}" /></td></tr>
+            <tr class="blank_row"></tr>
+            
+            <tr><td align ="left">{% trans "Building Name:" %}</td><td><input type="text" name="name" id="id_name" value="{{ data.building_name }}" /></td></tr>
+            <tr class="blank_row"></tr>
+            <tr><td align ="left">{% trans "Building Type:" %}</td><td><input type="text" name="building" id="id_building" value="{{ data.building_type }}" /></td></tr>
+            <tr class="blank_row"></tr>
+            <tr><td align ="left">{% trans "Wing Name:" %}</td><td><input type="text" name="wing_name" id="id_wing_name" value="{{ data.wing_name }}" /></td></tr>
+            <tr class="blank_row"></tr>
+            <tr><td align ="left">{% trans "Number of Flats:" %}</td><td><input type="text" name="num_flat" id="id_num_flat"  value="{{ data.num_flat }}" /></td></tr>
+            <tr class="blank_row"></tr>
+            <tr><td align ="left">{% trans "Number of Shops:" %}</td><td><input type="text" name="num_shops" id="id_num_shops"  value="{{ data.num_shops }}" /></td></tr>
+            <tr class="blank_row"></tr>
+            <tr><td align ="left">{% trans "Wing Name:" %}</td><td><input type="text" name="wing_name" id="id_wing_name" value="{{ data.wing_name }}" /></td></tr>
+            <tr class="blank_row"></tr>
+            <tr><td align ="left">{% trans "Address:" %}</td><td><input type="text" name="addrstreet" id="id_addrstreet" value="{{ data.addrstreet }}" /></td></tr>
+            <tr class="blank_row"></tr>
+                
+            
+        </table>
        
-        <div>
-            <label> {% trans "Building Type:" %}</label>
-            <div>
-                <input type="text" name="building" id="id_building" value="{{ data.building }}" />
-            </div>
-        </div>
-        <div>
-            <label>{% trans "Building Name:" %}</label>
-            <div>
-                <input type="text" name="name" id="id_name" value="{{ data.name }}" />
-            </div>
-        </div>
-        <div>
-            <label>{% trans "Wing:" %}</label>
-            <div>
-                <input type="text" name="wing" id="id_wing" value="{{ data.wing }}" />
-            </div>
-        </div>
-        <div>
-            <label>{% trans "Number of Flats:" %}</label>
-            <div>
-                <input type="text" name="num_flat" id="id_num_flat"  value="{{ data.num_flat }}" />
-            </div>
-        </div>
-        <div>
-            <label>{% trans "Address:" %}</label>
-            <div>
-                <input type="text" name="addrstreet" id="id_addrstreet" value="{{ data.addrstreet }}" />
-            </div>
-        </div>
-        <!-- <div>
-            <label>{% trans "Zone Name:" %}</label>
-            <div>
-                <input type="text" name="lane_name" id="id_lane_name" required value="{{ data.lane_name }}" />
-            </div>
-        </div> -->
-        
-        <!-- <div>
-            <label>{% trans "Date:" %}</label>
-            <div>
-                <input type="text" name="date" id="id_date" required value="{{ data.date|date:'Y-m-d' }}" />
-            </div>
-        </div> -->
-        <!-- <div>
-            <label>{% trans "Supervisor Name:" %}</label>
-            <div>
-                <input type="text" name="supervisor_name" id="id_supervisor_name" required value="{{ data.supervisor_name }}" />
-            </div>
-        </div> -->
-        <!-- <div>
-            <label>{% trans "Rejected:" %}</label>
-            <div>
-                <input type="text" name="rejected" id="id_rejected" required value="{{ data.rejected }}" />
-            </div>
-        </div> -->
-        <!-- <div style="display:none;">
-            <label>{% trans "Zone ID:" %}</label>
-            <div>
-                <input type="text" name="zone_id_id" id="id_zone_id_id" required value="{{ data.zone_id_id }}" />
-            </div>
-        </div> -->
         <div class="form-group row">
             <label class="col-sm-1 col-form-label"></label>
             <div class="col-sm-4">

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 # from zerowaste.models import OsmBuildings29Oct21
 from django.core.serializers import serialize
-from .models import Ward61OsmBuildings,Ward61BuildingsOsm2Nov2021
+from .models import Ward61BuildingsOsm2Nov2021 #,Ward61OsmBuildings,
 
 # Create your views here.
 # from swk.HelloAnalytics import *

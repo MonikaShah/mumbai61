@@ -340,7 +340,7 @@ table, th, td
                         </div> 
                           {% if request.user|has_group:"Editor" %}
                             <div class="checkbox">
-                                <label><b><input type="checkbox" value="{buildings}" id ="buildings" onchange="getBoundaryruUpdation(this)"><span> {% trans "Buildings" %}</span></b></label>
+                                <label><b><input type="checkbox" value="{buildings}" id ="{buildings}" onchange="getBoundaryruUpdation(this)"><span> {% trans "Buildings" %}</span></b></label>
                             </div> 
                             {%else %}
                                 <div class="checkbox">
@@ -507,6 +507,7 @@ function showCheckboxes7() { //zonal geometry
 }
 function getBoundaryruUpdation(obj) {
     let boundary = obj.value;
+    console.log(boundary);
     if ($(obj).is(":checked")) {
         if (boundary == "{buildings}")    
             // putWMSru("ward61:osm_buildings_29oct21"); 
@@ -524,7 +525,7 @@ function displaypolygonUpdation(){
     // mymap.clearLayers();
     polylayer = L.geoJSON(osm_buildings, 
     {style:function(feature){
-        switch(feature.properties.building){
+        switch(feature.properties.building_type){
             case 'residence':return {color:"#c83daa"};
             case 'residential':return {color:"#c83daa"};
             case 'apartments':return {color:"#c83daa"};
@@ -548,7 +549,7 @@ function displaypolygonUpdation(){
 
 function getBoundaryru(obj) {
     let boundary = obj.value;
-    // console.log(boundary)
+     console.log(boundary)
     // alert("Logged Out")
     if ($(obj).is(":checked")) {
 
@@ -768,15 +769,16 @@ function Identify(e) {
                     popup.setLatLng(e.latlng);
                     mymap.openPopup(popup);
                     }
-                if (feature.properties.building) {
+                if (feature.properties.building_type) {
                     
                     // console.log("I reached at");
                     content = "<table class = 'popupclass' ><tr><td><b>Buildings Info</b></td><td></td></tr>" +
-                        "<tr><td><b>Building Name: </b></td><td>" + feature.properties.name + "</td></tr>"+
-                        "<tr><td><b>Description: </b></td><td>"+feature.properties.building + "</td></tr>"+
+                        "<tr><td><b>Building Name: </b></td><td>" + feature.properties.building_name + "</td></tr>"+
+                        "<tr><td><b>Description: </b></td><td>"+feature.properties.building_type + "</td></tr>"+
                         "<tr><td><b>Region: </b></td><td>" + feature.properties.region + "</td></tr>"+
-                        "<tr><td><b>Number of Flats/shops: </b></td><td>" + feature.properties.flats + "</td></tr>"+
-                        "<tr><td><b>Number of Wings></td><td>" + feature.properties.wings + "</td></tr>"+
+                        "<tr><td><b>Number of Flats: </b></td><td>" + feature.properties.num_flat + "</td></tr>"+
+                        "<tr><td><b>Number of shops: </b></td><td>" + feature.properties.num_shops + "</td></tr>"+
+                        "<tr><td><b>Number of Wings></td><td>" + feature.properties.wing_name + "</td></tr>"+
                         "<tr><td><b>Address: </b></td><td>" + feature.properties.address + "</td></tr>"+
                         "<tr><td><b>MODIFY: </b></td><td><a href = '/buildedit/"+feature.properties.osm_id+"' style ='color:#FF0000;'>" + feature.properties.osm_id + "</a></td></tr>"+
                         "<tr><td rowspan=2><a href = '/buildedit/"+feature.properties.osm_id+"' style ='color:#FF0000;'>" + feature.properties.osm_id + "</a></td></tr>"+
@@ -800,7 +802,7 @@ function displaypolygon_buildings_noname(){
     // mymap.clearLayers();
     polylayer1 = L.geoJSON(osm_buildings, 
     {style:function(feature){
-        switch(feature.properties.building){
+        switch(feature.properties.building_type){
             case 'residence':return {color:"#FF0000"};
             case 'residential':return {color:"#FF0000"};
             case 'apartments':return {color:"#FF0000"};
@@ -830,7 +832,7 @@ function displaypolygon_regions_noname(){
     // mymap.clearLayers();
     polylayer2 = L.geoJSON(osm_buildings, 
     {style:function(feature){
-        switch(feature.properties.building){
+        switch(feature.properties.building_type){
             case 'residence':return {color:"#FF0000"};
             case 'residential':return {color:"#FF0000"};
             case 'apartments':return {color:"#FF0000"};
@@ -861,13 +863,13 @@ function displaypolygon(){
     // mymap.clearLayers();
     polylayer = L.geoJSON(osm_buildings, 
     {style:function(feature){
-        console.log("Name is "+feature.properties.name)
-        switch(feature.properties.name){
+        console.log("Name is "+feature.properties.building_name)
+        switch(feature.properties.building_name){
             case null:return{color:'#ff0000'};
             case 'None':return{color:'#ff0000'};
             // case 'Heera Panna':return{color:'#ff0000'};
           }
-        switch(feature.properties.building){
+        switch(feature.properties.building_type){
             case 'residence':return {color:"#c83daa"};
             case 'residential':return {color:"#c83daa"};
             case 'apartments':return {color:"#c83daa"};
@@ -894,12 +896,12 @@ function onEachFeatureForUpdation(feature, layer) {
     // layer.on({click:onClick })
     // if(${feature.properties.name} !== null){
     layer.bindPopup(`<div class = 'text-left'><table border =2><tr class="bg-primary"><td colspan=2>Building Information</td></tr>
-    <tr class="table-danger"><td>Building Name:</td><td> ${feature.properties.name}</td></tr>
-    <tr><td>Description :</td><td>${feature.properties.building}</td></tr>
+    <tr class="table-danger"><td>Building Name:</td><td> ${feature.properties.building_name}</td></tr>
+    <tr><td>Building Type :</td><td>${feature.properties.building_type}</td></tr>
     <tr class="table-danger"><td>Region:</td><td>${feature.properties.region}</td></tr>
     <tr><td>Number of Flats :</td><td>${feature.properties.num_flat}</td></tr>
     <tr class="table-danger"><td>Number of shops :</td><td>${feature.properties.num_shops}</td></tr>
-    <tr><td>Number of Wings :</td><td>${feature.properties.wing}</td></tr>
+    <tr><td>Wing Name :</td><td>${feature.properties.wing_name}</td></tr>
     <tr class="table-danger"><td>Address : </td><td>${feature.properties.addrstreet}</td></tr>
     <tr colspan =2></tr>
     <tr ><td colspan =2><b><center><a href = '/buildedit/${feature.properties.osm_id}' class="btn btn-info">Update Building Details</a></center></td></tr>
@@ -915,12 +917,12 @@ function onEachFeatureForPointBB(feature, layer) {
     // layer.on({click:onClick })
     // if(${feature.properties.name} !== null){
     layer.bindPopup(`<div class = 'text-left'><table border =2><tr class="bg-primary"><td colspan=2>Building Information</td></tr>
-    <tr class="table-danger"><td>Building Name:</td><td> ${feature.properties.name}</td></tr>
-    <tr><td>Description :</td><td>${feature.properties.building}</td></tr>
+    <tr class="table-danger"><td>Building Name:</td><td> ${feature.properties.building_name}</td></tr>
+    <tr><td>Building Type :</td><td>${feature.properties.building_type}</td></tr>
     <tr class="table-danger"><td>Region:</td><td>${feature.properties.region}</td></tr>
     <tr><td>Number of Flats :</td><td>${feature.properties.num_flat}</td></tr>
     <tr class="table-danger"><td>Number of shops :</td><td>${feature.properties.num_shops}</td></tr>
-    <tr><td>Number of Wings :</td><td>${feature.properties.wing}</td></tr>
+    <tr><td>Wing Name:</td><td>${feature.properties.wing_name}</td></tr>
     <tr class="table-danger"><td>Address : </td><td>${feature.properties.addrstreet}</td></tr>
     
     
@@ -933,7 +935,7 @@ function NonameBuildingFilter(feature) {
     // alert(layer.properties.name+"="+feature);
     // layer.on({click:onClick })
     console.log("Name is ");
-    if(feature.properties.name !== null) 
+    if(feature.properties.building_name !== null) 
         return false    
     else
         return true

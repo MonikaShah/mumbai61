@@ -153,14 +153,6 @@ table {
 }
 </style>
 {% endblock %}
-
-
-
-
-<div class="container mb-7" style="margin-top: 10px;">
-<h2>{% trans "Grievance Form "%}</h2><hr>
-
-<!-- <h1 class='text-center mt-5'>Feedback / Complaint Form</h1> -->
 {% if messages %}
     <ul class="messages">
         {% for message in messages %}
@@ -175,25 +167,21 @@ table {
         {% endfor %}
     </ul>
     {% endif %}
+
+<div class="container mb-7 text-start" style="margin-top: 10px;">
+<h3>{% trans "Grievance Form "%}</h3><hr>
+</div>
+<!-- <h1 class='text-center mt-5'>Feedback / Complaint Form</h1> -->
 <form method="post" data-url="{{ request.build_absolute_uri|safe }}" class="form-group" style="text-align:left;">
     <!-- {{ form.media }} -->
     {% csrf_token %}
 
-    <!-- <select name="selectzones" id="selectzones" onchange="GetSelectedTextValue(this)">
-        
-        <option value="select">please select your zone</option>
-
-        </select>  
-        <select name ="selectlanes" id="selectlanes">
-            <option value="select">please select address lane</option>
-
-        </select> -->
-        
+       
     <div class="container mb-7" style="margin-top: 10px;" id = "feedback_div">
-        <table table style="margin-right: 10px";>{{ form.as_table}}</table> <br>
+        <table>{{ form.as_table}}</table> <br>
         <input type="hidden" id="grievance_no" value=""  name="grievance_no" />
         <button type="submit" style="align-items: center;" class="btn btn-primary">Send Mail</button><br>
     </div>
     </form>
-</div><br>
+<br>
  {% endblock %} 

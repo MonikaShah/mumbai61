@@ -104,9 +104,11 @@ class Ward61BuildingsOsm2Nov2021Form(forms.ModelForm):
     # osm_id = forms.DecimalField(label = _(u'OSM ID'))
     addrstreet = forms.CharField(label = _(u'Address'))
     building = forms.CharField(label = _(u'Building Type'))
-    name = forms.CharField(label = _(u'Name'))
+    building_name = forms.CharField(label = _(u'Building Name'))
     num_flat = forms.IntegerField(label = _(u'Number of Flats'))
-    wing = forms.IntegerField(label = _(u'Wing'))
+    num_shops = forms.IntegerField(label = _(u'Number of Shops'))
+    num_floors = forms.IntegerField(label = _(u'Number of Shops'))
+    wing_name = forms.IntegerField(label = _(u'Wing Name'))
     region = forms.CharField(label = _(u'Region'))
     # def __str__(self):
     #     return str(self.name)
