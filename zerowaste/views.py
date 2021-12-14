@@ -13,8 +13,9 @@ from django.contrib.auth.models import User,auth
 from django.contrib.auth.models import Group
 
 from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail,get_connection
 # from django.contrib import messages
-
+import datetime
 import pandas as pd
 import psycopg2
 import matplotlib.pyplot as plt
@@ -227,16 +228,22 @@ def Graphs(request):
 
 def Grievance(request):
 
-    url = staticfiles_storage.path('hostel.csv')
-    url2 = staticfiles_storage.path('hotel_supervisors.csv')
+    # url = staticfiles_storage.path('hostel.csv')
+    # url2 = staticfiles_storage.path('hotel_supervisors.csv')
     form = GrievanceForm(request.POST or None)
     if request.method == 'POST':
         form = GrievanceForm(request.POST or None)
+        myfile = request.FILES['myfile']
+        fs = FileSystemStorage()
+        filename = fs.save(myfile.name, myfile)
         
+        uploaded_file_url = fs.url(filename)
+ 
         if form.is_valid():
             # latitude = request.POST.get('latitude')
             # longitude = request.POST.get('longitude')
             cd = form.cleaned_data
+
             name = form.cleaned_data['name']
             mobile = form.cleaned_data['mobile']
             # selectzones = form.cleaned_data['selectzones']
@@ -244,68 +251,22 @@ def Grievance(request):
             # selectlanes = form.cleaned_data['selectlanes']
             grievance = form.cleaned_data['grievance']
             # grievance_no = form.cleaned_data['grievance_no']
-            #df = pd.read_csv('zones_lanes.csv', delimiter=',')
-            # User list comprehension to create a list of lists from Dataframe rows
-            #row_wise_csv = [list(row) for row in df.values]
-            # with open(url, "r") as file:
+            # console.log(grievance_no)
+            audio_src = form.cleaned_data['audio_src']
+            img_src = form.cleaned_data['img_src']
+            upload = request.FILES['upload']
 
-            #     lines = file.readlines()
+            fss = FileSystemStorage()
+            file = fss.save(upload.name, upload)
+            file_url = fss.url(file)
 
-            #     row_wise_csv = [[value for value in line.split(",")] for line in lines]
-
-        
-            # list_zones_true = row_wise_csv[1]
-            # list_zones_true = list_zones_true[1:]
-            # list_zones_true_2 =[]
-            # for element in list_zones_true:
-            #     list_zones_true_2.append(element.strip('\n'))
-        
-        
-            # print(list_zones_true_2)
-
-            # ind  =  list_zones_true_2.index(selectzones)
-            # print(ind)
-            # with open(url2) as csvfile:
-            #     rows = csv.reader(csvfile)
-            #     column_wise_csv = list(zip(*rows))
-            
-            # column_zones = column_wise_csv[1]
-            # column_zones = column_zones[1:]
-            # cell_zones = ""
-            # ind = ind+1
-            # i=-1
-            # flag = -1
-            # for cell in column_zones:
-            #     i = i+1
-            #     cell_zones = cell
-                
-                
-            #     my_list = cell_zones.split(",")
-            #     print(my_list)
-            #     for num in my_list:
-            #         num = num.strip()
-            #         curr_num = int(num)
-                    
-            #         if (ind == curr_num) :
-            #             print("here")
-            #             flag = i
-            #             break
-                
-            # supervisor_name = column_wise_csv[0]
-            # supervisor_name = supervisor_name[1:]
-            # supervisor_name_curr = supervisor_name[flag]
-            # print(supervisor_name_curr)
-
-
-            # supervisor_email = column_wise_csv[2]
-            # supervisor_email = supervisor_email[1:]
-            # supervisor_email_curr = supervisor_email[flag]
-            # print(supervisor_email_curr)
            
             print("Grievance is "+cd['grievance'])
             print("email is "+ cd['email'])
             from_email = form.cleaned_data['email']
-            message_mail = 'Senders Name -  '+ name + "\n" + 'Senders Mobile - '+ str(mobile) + "\n" + 'Senders Email Id - ' +from_email + "\n"  + 'Grievance for Zone - ' + "\n" + 'Grievance of lane - ' + "\n"+ 'Grievance Number - ' +"\n"+ 'Grievance Received - '+ grievance
+            grievance_no = datetime.datetime.now()
+            grievance_no = str(grievance_no)
+            message_mail = 'Senders Name -  '+ name + "\n" + 'Senders Mobile - '+ str(mobile) + "\n" + 'Senders Email Id - ' +from_email + "\n" +'Grievance Number - ' + grievance_no +"\n"+ 'Grievance Received - '+ grievance
             # message_mail = 'Senders Name -  '+ name + "\n" + 'Senders Mobile - '+ str(mobile) + "\n" + 'Senders Email Id - ' +from_email + "\n"  + 'Grievance for Zone -' +selectzones + "\n" + 'Grievance of lane - ' +selectlanes + "\n"+ 'Grievance Number - '+grievance_no +"\n"+ 'Grievance Received - '+ grievance
             # message_mail = 'Senders Name -  '+ name + "\n" + 'Senders Mobile - '+ str(mobile) + "\n" + 'Senders Email Id - ' +from_email + "\n" 
             # + 'Is collecting food waste once a day enough? - '+ fw_once + "\n"
@@ -323,24 +284,22 @@ def Grievance(request):
             form.save()
             
 
-            #con = get_connection('django.core.mail.backends.console.EmailBackend')
-            # con = get_connection('django.core.mail.backends.smtp.EmailBackend')
-            # if (send_mail('Feedback (SWK)', cd['feedback'],cd.get('email', 'noreply@example.com'),
-            #     ['monikapatira@gmail.com'],connection=con)):
-            # to_emails = ['karu1098@gmail.com', 'sms.swk@gmail.com']
+            con = get_connection('django.core.mail.backends.console.EmailBackend')
+            con = get_connection('django.core.mail.backends.smtp.EmailBackend')
+            to_emails = ['jituviju@gmail.com', 'monikapatira@gmail.com']
             # to_emails.append(supervisor_email_curr)
 
-            # print(to_emails)
+            print(to_emails)
 
-            # if(send_mail('Grievance received for swk.communitygis.net', message_mail,from_email,to_emails,fail_silently=False,)):
+            if(send_mail('Grievance received for mumbai61.nowastes.in', message_mail,from_email,to_emails,fail_silently=False,)):
             
             # if(send_mail('Feedback (SWK)', message_mail,from_email,['monikapatira@gmail.com'],fail_silently=False,)):
-                # print("message sent")
-            # else :
-            #     console.log(message_mail)
-            #     print("Failure")
+                print("message sent")
+            else :
+                console.log(message_mail)
+                print("Failure")
 
-            messages.success(request, 'Your grievance is saved and email is sent. Your Greivance no. is ') 
+            messages.success(request, _(u'Your grievance is saved and email is sent. Your Greivance no. is {}' ).format(grievance_no))
             return HttpResponseRedirect(request.path_info)
         else:
            
@@ -469,8 +428,8 @@ def showwastesegregationdetails(request):
 
 def WasteSegregationDetailsView(request):
         form = WasteSegregationDetailsForm()
-        building = request.POST.get('building_cluster')
-        # form.fields['building_cluster'].choices = [building.building]
+        building = request.POST.get('building_name')
+        # form.fields[''].choices = [building.building]
         # print(request.method)
         if request.method == 'POST':
             form = WasteSegregationDetailsForm(request.POST)

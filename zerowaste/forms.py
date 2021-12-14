@@ -87,7 +87,10 @@ class GrievanceForm(forms.ModelForm):
     mobile = forms.IntegerField(label = _(u'mobile'))
     grievance = forms.CharField(widget=forms.Textarea(attrs={"rows":15, "cols":50}),label = _(u'grievance'))
     # grievance_no = forms.CharField(widget=forms.HiddenInput(),label = _(u'grievance no'))
-
+    audio_src = forms.CharField(widget=forms.HiddenInput(),required=False)
+    img_src = forms.CharField(widget=forms.HiddenInput(),required=False)
+    # grievance_no = forms.CharField(widget=forms.HiddenInput())
+  
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -96,7 +99,7 @@ class GrievanceForm(forms.ModelForm):
         model = Grievance
         fields = '__all__'
         # exclude = ['latitude','longitude','id','audio_src','img_src']
-        # widgets = {'selectzones': forms.HiddenInput(),'selectlanes':forms.HiddenInput()}
+        widgets = {'audio_src':forms.HiddenInput(),'img_src':forms.HiddenInput(),'grievance_no':forms.HiddenInput()}
 
 class Ward61BuildingsOsm2Nov2021Form(forms.ModelForm): 
     # geom = forms.CharField(label = _(u'Geometry'))  # This field type is a guess.
@@ -133,7 +136,7 @@ class WasteSegregationDetailsForm(forms.ModelForm):
     # region = forms.ModelChoiceField(label = _(u'Region Name'),queryset = WasteSegregationDetails.objects.all(),empty_label="(Choose Region)", to_field_name="region")
     region = forms.ModelChoiceField(label = _(u'Region Name'),queryset =WasteSegregationDetails.objects.all(),to_field_name='region', required=False)
     # building_cluster = forms.CharField(label = _(u'Building Name'),building_choices,widget=forms.Select())
-    building_cluster = forms.ModelChoiceField(label = _(u'Building Name'),queryset = WasteSegregationDetails.objects.all(),widget=forms.Select(attrs={'class': 'form-control'}))
+    building_name = forms.ModelChoiceField(label = _(u'Building Name'),queryset = WasteSegregationDetails.objects.all(),widget=forms.Select(attrs={'class': 'form-control'}))
 
     # category = forms.ModelChoiceField(label = _(u'Building Category'),max_length=100)
     num_wings = forms.IntegerField(label=_(u'Number of Wings'))
@@ -160,12 +163,12 @@ class WasteSegregationDetailsForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['region'].queryset=WasteSegregationDetails.objects.filter(region__isnull=False).values_list('region', flat=True).distinct('region')
         # self.fields['building_cluster'].queryset=WasteSegregationDetails.objects.values_list('building_cluster', flat=True).distinct('building_cluster')
-        self.fields['building_cluster'].queryset=WasteSegregationDetails.objects.filter(region=self.data.get('region'))
+        self.fields['building_name'].queryset=WasteSegregationDetails.objects.filter(region=self.data.get('region'))
         self.fields['building_type'].queryset=WasteSegregationDetails.objects.filter(building_type__isnull=False).values_list('building_type', flat=True).distinct('building_type')
         if 'region' in self.data:
             try:
                 region_id = int(self.data.get('region'))
-                self.fields['building_cluster'].queryset = WasteSegregationDetails.objects.filter(region=region_id)
+                self.fields['building_name'].queryset = WasteSegregationDetails.objects.filter(region=region_id)
             except (ValueError, TypeError):
                 pass  # invalid input from the client; ignore and fallback to empty City queryset
         # elif self.instance.pk:
@@ -174,7 +177,7 @@ class WasteSegregationDetailsForm(forms.ModelForm):
     class Meta:
         model = WasteSegregationDetails
         fields = '__all__'
-        # fields = ['region','building_cluster']
+        # fields = ['region','building_name']
         exclude = ['category']
 
 class NewUserForm(UserCreationForm):

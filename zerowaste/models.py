@@ -148,17 +148,17 @@ class Grievance(models.Model):
     # selectzones = models.CharField(max_length=100)
     # selectlanes = models.CharField(max_length=100)
     # audio_src = models.CharField(max_length=100)
-    # audio_src = models.CharField(max_length=100,null=True, default=None, blank=True)
+    audio_src = models.CharField(max_length=100,null=True, default=None, blank=True)
     # img_src =  models.CharField(max_length=100)
-    # img_src =  models.CharField(max_length=100,null=True, default=None, blank=True)
+    img_src =  models.CharField(max_length=100,null=True, default=None, blank=True)
     grievance = models.TextField(blank=False, null=False, default='Testing')
     # grievance = models.TextField(null=True, default=None, blank=True),
     uploaded_at = models.DateTimeField(auto_now_add=True)
-    # grievance_no = models.CharField(max_length=100)
+    grievance_no = models.CharField(max_length=100,null=True, default=None, blank=True)
 
-    # class Meta:
-    #     managed = False
-    #     db_table = 'grievance'
+    class Meta:
+        managed = True
+        db_table = 'grievance'
 
 class Rating(models.Model):
     name = models.CharField(max_length=100)
@@ -195,11 +195,12 @@ class WasteSegregationDetails(models.Model):
     track_id = models.AutoField(primary_key=True)
     coll_date  = models.DateField(default = 10/10/21)
     region = models.CharField(max_length=100, blank=True, null=True)
-    building_cluster = models.CharField(max_length=100, blank=True, null=True)
+    building_name = models.CharField(max_length=100, blank=True, null=True)
     category = models.CharField(max_length=100,blank=True, null=True)
     num_wings = models.IntegerField(blank=True, null=True)
     wing_name = models.CharField(max_length=100, blank=True, null=True)
     building_type = models.CharField(max_length=100, blank=True, null=True)
+    building_bifurcation = models.CharField(max_length=100, blank=True, null=True)
     population = models.IntegerField(blank=True, null=True)
     num_households_premises = models.IntegerField(blank=True, null=True)
     num_shops_premises = models.IntegerField(blank=True, null=True)
