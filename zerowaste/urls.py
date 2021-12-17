@@ -1,5 +1,4 @@
 from django.urls import path,include
-from django.conf.urls import url
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
@@ -7,6 +6,7 @@ from django.conf.urls.static import static
 # from visits.models import Visits
 urlpatterns = [
     path('',views.HomePage, name = 'homepage'),
+    path('dashboard/',views.base, name = 'dashboard'),
     # path('garbage_seg/', views.GarbageSeg,name='garbage_seg'),
     path('garbage_seg/', views.WasteSegregationDetailsView,name='garbage_seg'),
     # path('show/',views.show, name='show'),  

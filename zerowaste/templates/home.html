@@ -1,0 +1,379 @@
+{% load static %}
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="">
+        <!-- Bootstrap Core CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+        <!-- jQuery UI CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.structure.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.theme.min.css">
+        <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+
+        <!-- <link rel="stylesheet" href="styles.css"> -->
+        <style>
+            body {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: 0;
+  overflow: hidden;
+}
+.map_title{
+  font-size: large;
+  color: black;
+  text-decoration: underline;
+  font-size: 15px;
+  font-weight: bold;
+}
+path {
+  /* margin-top: 100px; */
+  transform: translate(0,50);
+/*   fill: none; */
+  stroke: black;
+}
+#back{
+  color: azure;
+  font-weight: bold;
+  
+}
+
+.boundary {
+  stroke: rgb(0, 0, 0);
+  stroke-width: 1px; 
+}
+h1{
+    color: #8a2be2;
+    font-size: 40px;
+}
+.nav{
+  border: blueviolet 1px solid;
+
+}
+.title{
+    border: blueviolet 1px solid;
+    font-size: 30px;
+}
+        </style>
+    <script src="https://unpkg.com/d3@5.6.0/dist/d3.min.js"></script>
+    </head>
+
+    <body>
+        <div class="title">
+            <H1 class="text-center">Dashboard</H1>
+        </div>
+       
+            
+        <!-- <div class="grid grid-cols-2">
+            <h5>Select Area:</h5>
+            <Select id="area_type">
+                <option value="ward" selected>Ward</option>
+                <option value="region" >Region</option>
+                <option value="building_cluster">Building Clusters</option>
+            </Select>
+        </div> -->
+        <div class="w-full grid grid-cols-3 nav">
+          <div class="w-full">
+            <h5  style="float: right; color: darkviolet;">Select Waste Type:</h5>
+
+          </div>
+          <div>
+            <Select class="w-full" id="waste_type" style="background-color: lightsteelblue;">
+                <option value="total_waste" selected>Total Waste</option>
+                <option value="dry_waste_before_segregation">Dry Waste</option>
+                <option value="wet_waste_before_segregation">Wet Waste</option>
+                <option value="hazardous_waste">Hazardous Waste</option>
+            </Select>
+          </div>
+          <div></div>
+        </div>
+    
+    <button style="background-color: rgb(145, 135, 155); margin: 10px; width: 100px;" id="back">Back</button>
+
+        <div class="grid grid-cols-2 gap-2">
+        
+        <svg></svg>
+        <div id="line_chart"></div>
+    </div>
+        <nav class="navbar navbar-default"></nav>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.7.0/d3.min.js"></script>
+    <script src='https://cdn.plot.ly/plotly-2.3.0.min.js'></script>
+    
+<script type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/1.49.5/plotly-locale-hi-in.js"></script>
+  <!-- <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script> -->
+
+    <!-- <script src="{% static 'js/legend.js' %}"></script> -->
+    <script src="{% static 'js/d3_legend.js' %}"></script>
+
+    <script src="{% static 'map.js' %}"></script>
+    <script src="{% static 'line-chart.js' %}"></script>
+<script>
+let area,selectedjson_ward,selectedjson_region,selectedjson_cluster;
+let colorScale ;
+
+let min_legend, max_legend;
+  var legendElementWidth = 35;
+let w_type="total_waste";
+$('#waste_type').on('change', function() {
+  sampleCategoricalData = [];
+  w_type= this.value;
+  g.selectAll('path').remove();
+  if(area=="ward"){
+  makemap(mergedData);
+
+  drawxmr(date_data,'line_chart',w_type,area);
+  }
+  else if(area=="region"){
+    mergedData = addProperty(data_region, selectedjson_region,area)
+makemap(mergedData);
+drawxmr(date_region,'line_chart',w_type,area);
+  }
+
+});
+area="ward";
+let data = {{ward|safe}};
+console.log(data)
+let data_region = {{region|safe}};
+let date_data = {{date_data|safe}};
+console.log(date_data)
+let date_region = {{date_region_line|safe}};
+
+date_data.forEach(function (d) {
+  d.wet_waste_before_segregation = +d.wet_waste_before_segregation__sum;
+  d.dry_waste_before_segregation = +d.dry_waste_before_segregation__sum;
+  d.hazardous_waste = +d.hazardous_waste__sum;
+  var total = d.hazardous_waste+d.dry_waste_before_segregation+d.wet_waste_before_segregation;
+  d.total_waste = total;
+ 
+  });
+  date_region.forEach(function (d) {
+  d.wet_waste_before_segregation = +d.wet_waste_before_segregation__sum;
+  d.dry_waste_before_segregation = +d.dry_waste_before_segregation__sum;
+  d.hazardous_waste = +d.hazardous_waste__sum;
+  var total = d.hazardous_waste+d.dry_waste_before_segregation+d.wet_waste_before_segregation;
+  d.total_waste = total;
+ 
+  });
+d3.json("{% static 'ward.geojson' %}").then(json =>{
+
+    var scaleCenter = calculateScaleCenter(json);
+      mercator.scale(scaleCenter.scale) .center(scaleCenter.center) .translate([width / 2, height / 2]);
+  
+    mergedData = addProperty(data, json.features,area);
+   
+    makemap(mergedData);
+    drawxmr(date_data,'line_chart',w_type,area);
+    d3.select('button').on('click',function(){
+    
+
+    g.selectAll("*").remove();
+    console.log(area)
+    svg.transition().duration(transitionDuration).call( zzoom.transform, d3.zoomIdentity );
+    if(area=="ward"){
+      makemap(mergedData);
+    drawxmr(date_data,'line_chart',w_type,area);
+    }
+   else if(area=="region"){
+    area = "ward";
+    mergedData = addProperty(data, json.features,area);
+    
+    makemap(mergedData)
+    drawxmr(date_data,'line_chart',w_type,area);
+   }
+   else if(area=="cluster"){
+    // g.selectAll("*").remove();
+    area="region"
+     console.log("true");
+    mergedData = addProperty(data_region, selectedjson_region,area)
+makemap(mergedData);
+area = "region";
+drawxmr(date_region,'line_chart',w_type,area);
+   }
+    // makemap(json.features);
+  })
+  })
+  let makemap = (geojson) => {
+
+    geojson.forEach(d => {
+      sampleCategoricalData.push(ColorValue(d));
+
+    });
+    legend(sampleCategoricalData);
+
+
+  let path = g.selectAll('path').data(geojson)
+                            .enter().append('path')
+                          .attr('d',pathGenerator)
+                        .attr('class','boundary')
+                        .style("fill", d => {
+
+if (ColorValue(d) != undefined) {
+  return colorScale(ColorValue(d));
+  
+  // sampleCategoricalData.push(d.properties.total_waste);
+}
+
+else {
+  return "rgb(169, 169, 176)";
+
+}
+})
+          .on("mouseover", d => onMouseOverPoly(d))
+      .on("mouseout", function (d) {
+        tooltip
+          .transition()
+          .duration(500)
+          .style("opacity", 0);
+      })
+      .attr("transform", "translate(0,10)");
+
+  // legend(sampleCategoricalData);
+    
+      if(area == "ward"){
+  text = "Ward 61 Boundary"
+}
+else if(area=="region"){
+  
+  text = "Region Boundary"
+}
+else if(area=="cluster"){
+  text = "Building Boundary"
+}
+g.selectAll("text").remove();
+g.append("text")
+   .attr("x", width/2)
+   .attr("y", 20)
+   .attr('class','map_title')
+   .attr("text-anchor", "middle")
+   .style("font-size", "16px")
+   .text(text+ '('+ w_type+')');
+//zoomToBoundingBox
+const zoomToBoundingBox = d => {
+let bounds = pathGenerator.bounds(d),
+  dx = bounds[1][0] - bounds[0][0],
+  dy = bounds[1][1] - bounds[0][1],
+  x = (bounds[0][0] + bounds[1][0]) / 2,
+  y = (bounds[0][1] + bounds[1][1]) / 2,
+  
+  scale = Math.max(1, Math.min(10, .81/ Math.max(dx / width, dy / height))),
+  translate = [width / 2 - scale * x, height / 2 - scale * y];
+
+svg.transition().duration(transitionDuration).call(
+  zzoom.transform, d3.zoomIdentity.translate(translate[0],translate[1]).scale(scale)
+); 
+
+}
+
+//clicked
+var clicked = d =>{
+  
+if(area=="ward"){d3.json("{% static 'region.geojson' %}").then(projectGeoJSON =>{
+//removed this to get rid of nan error
+// var scaleCenter = calculateScaleCenter(projectGeoJSON);
+// mercator.scale(scaleCenter.scale) .center(scaleCenter.center) .translate([width / 2, height / 2]);
+
+let projectgeojson = projectGeoJSON.features;
+zoomToBoundingBox(d);
+var selectedBlock = d.properties.ward;
+selectedjson_region = selectMap(projectgeojson,selectedBlock,area);
+g.selectAll("*").remove();
+// console.log(selectedjson)
+area = "region";
+
+// var scaleCenter = calculateScaleCenter(selectedjson);
+// mercator.scale(scaleCenter.scale) .center(scaleCenter.center) .translate([width / 2, height / 2]);
+mergedData = addProperty(data_region, selectedjson_region,area)
+makemap(mergedData);
+drawxmr(date_region,'line_chart',w_type,area);
+
+})
+}
+else if(area=="region"){
+  
+  d3.json("{% static 'cluster.json' %}").then(projectGeoJSON =>{
+console.log(projectGeoJSON,'cluster')
+//removed this to get rid of nan error
+// var scaleCenter = calculateScaleCenter(projectGeoJSON);
+// mercator.scale(scaleCenter.scale) .center(scaleCenter.center) .translate([width / 2, height / 2]);
+
+let projectgeojson = projectGeoJSON.features;
+zoomToBoundingBox(d);
+var selectedBlock = d.properties.region;
+console.log(selectedBlock)
+selectedjson_cluster= selectMap(projectgeojson,selectedBlock,area);
+g.selectAll("*").remove();
+area = "cluster";
+
+// var scaleCenter = calculateScaleCenter(selectedjson);
+// mercator.scale(scaleCenter.scale) .center(scaleCenter.center) .translate([width / 2, height / 2]);
+mergedData = addProperty(data_region, selectedjson_cluster,area)
+makemap(mergedData)
+
+// drawxmr(data_region,'line_chart',w_type);
+
+})
+}
+
+}
+
+path.on('click',clicked)
+}
+const addProperty = (data, geojson,area) => {
+
+    var x, y;
+    for (let i = 0; i < data.length; i++) {
+      for (let j = 0; j < geojson.length; j++) {
+        if(area == "ward"){
+          x = data[i].ward;
+          y = geojson[j].properties.ward;
+          // area == "region";
+          console.log(x,y)
+        }
+        if(area =="region"){
+          x = data[i].region;
+          y = geojson[j].properties.region;
+          // console.log(x,y)
+          // area = "cluster";
+        }
+        else if(area =="region"){
+          x = data[i].region;
+          y = geojson[j].properties.region;
+          // console.log(x,y)
+          // area = "cluster";
+        }
+// total waste,dry waste,wet waste,hazardous waste
+        if (x === y) {
+          data[i].wet_waste_before_segregation = +data[i].wet_waste_before_segregation__sum;
+          data[i].dry_waste_before_segregation = +data[i].dry_waste_before_segregation__sum;
+          data[i].hazardous_waste = +data[i].hazardous_waste__sum;
+          var total = data[i].hazardous_waste+data[i].dry_waste_before_segregation+data[i].wet_waste_before_segregation;
+          data[i].total_waste = total;
+          // let w_total = data[i].dry_waste_before_segregation__sum+data[i].wet_waste_before_segregation__sum+data[i].hazardous_waste__sum;
+          geojson[j].properties.total_waste = total;
+          geojson[j].properties.dry_waste = data[i].dry_waste_before_segregation;
+          geojson[j].properties.wet_waste = data[i].wet_waste_before_segregation;
+          geojson[j].properties.hazardous_waste = data[i].hazardous_waste;
+          // geojson[j].properties.date = data[i].date;
+        
+        }
+      }
+    }
+    return geojson;
+  };
+
+
+
+
+</script>
+
+    </body>
+</html>

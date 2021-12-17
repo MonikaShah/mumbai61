@@ -9,7 +9,7 @@ from crispy_forms.layout import Layout, Submit, Row, Column, ButtonHolder
 import datetime
 # from phonenumber_field.formfields import PhoneNumberField
 from django.contrib.gis import forms
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.core.exceptions import ValidationError
 from datetime import timedelta
 # import pandas as pd

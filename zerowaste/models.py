@@ -192,34 +192,38 @@ class Rating(models.Model):
 #         db_table = 'osm_buildings_29oct21'
 
 class WasteSegregationDetails(models.Model):
-    track_id = models.AutoField(primary_key=True)
-    coll_date  = models.DateField(default = 10/10/21)
+    track_id = models.IntegerField(blank=True, null=True)
     region = models.CharField(max_length=100, blank=True, null=True)
     building_name = models.CharField(max_length=100, blank=True, null=True)
-    category = models.CharField(max_length=100,blank=True, null=True)
-    num_wings = models.IntegerField(blank=True, null=True)
+    category = models.CharField(max_length=100, blank=True, null=True)
+    num_wings = models.CharField(max_length=100, blank=True, null=True)
     wing_name = models.CharField(max_length=100, blank=True, null=True)
     building_type = models.CharField(max_length=100, blank=True, null=True)
-    building_bifurcation = models.CharField(max_length=100, blank=True, null=True)
-    population = models.IntegerField(blank=True, null=True)
-    num_households_premises = models.IntegerField(blank=True, null=True)
-    num_shops_premises = models.IntegerField(blank=True, null=True)
+    population = models.CharField(max_length=100, blank=True, null=True)
+    num_households_premises = models.CharField(max_length=100, blank=True, null=True)
+    num_shops_premises = models.CharField(max_length=100, blank=True, null=True)
     type_waste_generator = models.CharField(max_length=100, blank=True, null=True)
     waste_segregation = models.CharField(max_length=100, blank=True, null=True)
-    wet_waste_before_segregation = models.IntegerField(blank=True, null=True)
-    dry_waste_before_segregation = models.IntegerField(blank=True, null=True)
-    hazardous_waste = models.IntegerField(blank=True, null=True)
-    compostable_waste = models.IntegerField(blank=True, null=True)
-    recyclable_waste = models.IntegerField(blank=True, null=True)
-    rejected_waste = models.IntegerField(blank=True, null=True)
+    wet_waste_before_segregation = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
+    dry_waste_before_segregation = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
+    hazardous_waste = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
+    compostable_waste = models.CharField(max_length=100, blank=True, null=True)
+    recyclable_waste = models.CharField(max_length=100, blank=True, null=True)
+    rejected_waste = models.CharField(max_length=100, blank=True, null=True)
     composting_type = models.CharField(max_length=100, blank=True, null=True)
     compost_bin_by_mcgm = models.CharField(max_length=100, blank=True, null=True)
-    date_notice_issued = models.DateField(null=True,blank=True)
+    date_notice_issued = models.CharField(max_length=100, blank=True, null=True)
     name_number = models.CharField(max_length=100, blank=True, null=True)
+    coll_date = models.DateField(blank=True, null=True)
+    building_bifurcation = models.CharField(max_length=50, blank=True, null=True)
+    admin_ward = models.CharField(max_length=50, blank=True, null=True)
+    councillor_ward = models.CharField(max_length=50, blank=True, null=True)
+    ward = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'waste_segregation_details'
+
 
 class EmployeeDetails(models.Model):
     # emp_id = models.AutoField(primary_key=True)
