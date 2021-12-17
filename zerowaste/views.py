@@ -11,6 +11,9 @@ from django.core.serializers import serialize
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User,auth
 from django.contrib.auth.models import Group
+from django.db.models import Sum
+import json
+from django.core.serializers.json import DjangoJSONEncoder
 
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail,get_connection
@@ -525,3 +528,20 @@ def emp_detail(request):
 
 def resources(request):
     return render(request,'Resources.html')
+
+def base(request):
+    # ward_region = WasteSegregationDetails.objects.values('re').annotate(Sum('wet_waste_before_segregation') , Sum('dry_waste_before_segregation'), Sum('hazardous_waste')  )
+
+    map_ward = WasteSegregationDetails.objects.values('ward').annotate(Sum('wet_waste_before_segregation') , Sum('dry_waste_before_segregation'), Sum('hazardous_waste')  )
+    line_region = WasteSegregationDetails.objects.values('coll_date').annotate(Sum('wet_waste_before_segregation') , Sum('dry_waste_before_segregation'), Sum('hazardous_waste')  )
+    map_region = WasteSegregationDetails.objects.values('region').annotate(Sum('wet_waste_before_segregation') , Sum('dry_waste_before_segregation'), Sum('hazardous_waste')  )
+    line_date_region = WasteSegregationDetails.objects.values('coll_date','region').annotate(Sum('wet_waste_before_segregation') , Sum('dry_waste_before_segregation'), Sum('hazardous_waste')  )
+    
+    # data = WasteSegregationDetails.objects.values('region','wet_waste_before_segregation','dry_waste_before_segregation','hazardous_waste')
+    # data=WasteSegregationDetails.objects.values('region','wet_waste_before_segregation','dry_waste_before_segregation','hazardous_waste').annotate(Count('region')).order_by()
+    new_data = json.dumps(list(map_ward), cls=DjangoJSONEncoder)
+    region_data = json.dumps(list(map_region), cls=DjangoJSONEncoder)
+    date_region = json.dumps(list(line_date_region), cls=DjangoJSONEncoder)
+    date_new_data = json.dumps(list(line_region), cls=DjangoJSONEncoder)
+
+    return render(request,"home.html",{'ward':new_data,'date_data':date_new_data,"region": region_data,"date_region_line":date_region})
