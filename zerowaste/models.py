@@ -218,7 +218,7 @@ class WasteSegregationDetails(models.Model):
     building_bifurcation = models.CharField(max_length=50, blank=True, null=True)
     admin_ward = models.CharField(max_length=50, blank=True, null=True)
     councillor_ward = models.CharField(max_length=50, blank=True, null=True)
-    ward = models.CharField(max_length=100, blank=True, null=True)
+    ward = models.CharField(default = '61',max_length=100, blank=True, null=True)
 
     class Meta:
         managed = False
