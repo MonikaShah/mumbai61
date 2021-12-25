@@ -146,7 +146,10 @@ table, th, td
         display: none;
         /* border: 1px #dadada solid; */
 }
+#kwestbuilding{
+    display: none;
     
+}   
 #checkboxes7 label {
         display: block;
         text-align: left;
@@ -319,7 +322,15 @@ table, th, td
                     </div>
                     
                     <br>
-                      
+                      <div>
+                        <div id="kwestbuilding">
+                            <!-- <div class="checkbox">        
+                                <label><input type="checkbox" value="{regions}"  id ="regions" onchange="getBoundaryru(this)"><span> {% trans "Regions" %}</span></label>
+                          </div> -->
+                          <div class="checkbox">
+                            <label><input type="checkbox" value="{kwest-buildings}"  id ="buildings" onclick="kwestbld()"><span> {% trans "KWest Buildings Clusters" %}</span></label>
+                        </div> 
+                      </div>
                     <div class="multiselect">
                       <div class="selectBox" onclick="showCheckboxes7()">
                           <button type="button" class="btn btn-outline-dark" style="width: 90%;font-size:12px; "> {% trans "Ward 61 Landmarks" %}</button>
@@ -463,6 +474,7 @@ const domain = ['https://geoserver2.communitygis.net/', 'http://localhost/'];
     var polylayer =[];
     var polylayer1 =[];
     var polylayer2 =[];
+    var kwestlayer = [];
     var areaLayerList=[];
     
 
@@ -483,6 +495,7 @@ function showCheckboxes2() { //geographical heirarchy
 }
 
 function showCheckboxes3() { //geographical heirarchy
+    console.log(expanded)
     var checkboxes = document.getElementById("checkboxes3");
     if (!expanded) {
         checkboxes3.style.display = "block";
@@ -502,6 +515,19 @@ function showCheckboxes7() { //zonal geometry
     } else {
 
         checkboxes7.style.display = "none";
+        expanded = false;
+    }
+}
+function showkwestbuilding() { //zonal geometry
+    console.log(expanded)
+    var checkboxes = document.getElementById("kwestbuilding");
+    
+    if (!expanded) {
+        kwestbuilding.style.display = "block";
+        expanded = true;
+    } else {
+
+        kwestbuilding.style.display = "none";
         expanded = false;
     }
 }
@@ -546,7 +572,47 @@ function displaypolygonUpdation(){
     layer ="ward61:osm_buildings_29oct21";
     addWMSLegend(layer);
 }
+var geojsonMarkerOptions = {
+    radius: 8,
+    fillColor: "#ff7800",
+    color: "#000",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8
+};
+function kwestbld(){
+    let kwest_buildings={{ kwestgeojson | safe }};
+    // console.log(kwest_buildings)
+    let kwestBuilding = kwest_buildings.features;
+    // console.log(kwestBuilding)
 
+    // mymap.setView([19.1467,72.8283],16);
+    // mymap.clearLayers();
+    kwestlayer = L.geoJSON(kwestBuilding,{
+        pointToLayer: function (feature, latlng) {
+        return L.circleMarker(latlng, geojsonMarkerOptions);
+    },
+    // {style:function(feature){
+    //     switch(feature.properties.building_type){
+    //         case 'residence':return {color:"#FF0000"};
+    //         case 'residential':return {color:"#FF0000"};
+    //         case 'apartments':return {color:"#FF0000"};
+    //         // case 'yes':return {color:"#c83daa"};
+    //         case 'commercial':return {color:"#FF0000"};
+    //         case 'Commercial':return {color:"#FF0000"};
+    //         case 'office':return {color:"#FF0000"};
+    //         case 'yes':return {color:"#FF0000"};
+    //         case 'school':return {color:"#FF0000"};
+    //         }
+    //     },    
+        
+        onEachFeature: onEachFeatureForUpdation,
+    //     filter: NonameRegionFilter,
+    // }).addTo(mymap);
+    });
+    console.log("polylayer2 is "+kwestlayer);
+    kwestlayer.addTo(mymap);
+}
 function getBoundaryru(obj) {
     let boundary = obj.value;
      console.log(boundary)
@@ -555,8 +621,18 @@ function getBoundaryru(obj) {
 
         if (boundary == "{suburban}")
             putLayer("Mumbai Suburban");
-        else if (boundary == "{wardKWest}")    
+        else if (boundary == "{wardKWest}"){  
             putWMSru("ward61:k_west_mumbai");
+            var checkboxes = document.getElementById("kwestbuilding");
+            
+            // if (!expanded) {
+                kwestbuilding.style.display = "block";
+                expanded = true;
+            // } else {
+
+                // kwestbuilding.style.display = "none";
+                // expanded = false;
+            }
         else if (boundary == "{61bound}")    
             putWMSru("ward61:ward61_boundary_1nov21");
         else if (boundary == "{regions}")    
@@ -579,8 +655,11 @@ function getBoundaryru(obj) {
 
     } else {
 //       alert('in removeWM'+obj.value);
-        if (boundary == "{wardKWest}")
-            removeWMS("ward61:k_west_mumbai");
+        if (boundary == "{wardKWest}"){
+            removeWMS("ward61:k_west_mumbai")
+            kwestbuilding.style.display = "none";
+                expanded = false;
+        }
         else if (boundary == "{suburban}")
             removeWMS("Mumbai Suburban");
         else if (boundary == "{regions}")                        
@@ -856,7 +935,7 @@ function displaypolygon_regions_noname(){
 function displaypolygon(){
     // alert("Without updation")
     let osm_buildings = JSON.parse('{{ geojson|safe }}')
-    // console.log(osm_buildings)
+    console.log(osm_buildings)
     // alert(osm_buildings);
     // mymap.removeLayer(polylayer);
     mymap.setView([19.1467,72.8283],16);
