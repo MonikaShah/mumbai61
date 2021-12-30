@@ -23,6 +23,6 @@ def Map(req):
     kwest  =  AllPropDataKwest.objects.all()
     geojson=serialize('geojson',obj)
     kwestgeojson =  serialize('geojson',kwest)
-    print(geojson)
+   #  print(geojson)
    #  context = 
     return render(req,"map/map.html",{'geojson':geojson,'kwestgeojson':kwestgeojson})
