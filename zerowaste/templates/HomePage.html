@@ -1,20 +1,32 @@
 {% extends 'base.html' %}
 {% load static %}{% load i18n %}
 
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 {% block extra_css%}
 <style>
-    .centered {
-        position: absolute;
-        /* top: 40%; */
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: aliceblue;
-    }
-</style>
+  body {
+  /* position: fixed; */
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: 0;
+  height: 100vh;
+  /* overflow: hidden; */
+ 
+}
 
-{% endblock %} {% block content %}
+.leaflet-tooltip.my-labels {
+background-color: transparent;
+border: transparent;
+box-shadow: none;
+font-size: 8px;
+}
+
+
+</style>
+{% endblock %} 
+
+{% block content %}
 
 {% if messages %}
 <div>
@@ -32,20 +44,199 @@
 </ul>
 </div>
 {% endif %}
-<section id="hero">
-    <div class="hero-container">
-        <h1>{% trans "Zero Waste - Mumbai Ward 61" %}</h1>
-        
-        <!-- <h2>{% trans "A Project by Stree Mukti Sanghatana, sponsored by IDFC FIRST Bank" %}</h2> -->
-        <!-- <a href="#about" class="btn-get-started scrollto">Get Started</a> -->
+
+<div class="container-fluid">
+  <div class="information">
+    <div class="text-center h1 m-2">Zero Waste - Mumbai</div>
+    <div class="text-center h5 m-3">
+      Zero Waste is a concept where waste is completely utilized by reusing or recycling. Only minimal quantity is transported to the dumping ground. This ensures a cyclical process of resources and leaves behind only minimal quantity of residual waste.
     </div>
-   
-</section>
+  </div>
+  <div class="dropdown text-center mb-2">
+    <!-- <label for="ward">Select Ward:</label> -->
+
+    <select  onclick="redirectDashboardDropdown()"name="ward" id="ward">
+      <option>Select Ward</option>
+      <option value="61">Ward - 61</option>
+    </select>
+
+
+
+  </div>
 
 </div>
-<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<div id="map" style="width: 100%; height: 70vh;"></div>
+
+{% endblock %}
+
+{% block extra_javascript %} 
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+
+<!-- <script  type="module" src="https://d3js.org/d3.v7.min.js"></script> -->
+      
+
+<!-- <script type="module">
+    import { json,select,geoMercator,geoPath } from 'https://unpkg.com/d3?module';
+
+    const width = document.body.clientWidth;
+const height = document.body.clientHeight *.8;
+
+
+// let svg = select('body').append('svg').attr('width', width).attr('height', height);
+const svg = select('svg').attr('width', width).attr('height', height);
+
+const g = svg.append('g');
+
+const mercator = geoMercator().scale(100000).translate([width/2, height/2]).center([73.1,19.08]);
+
+const pathGenerator = geoPath().projection(mercator);
+// let url = 'https://geoserver2.communitygis.net/geoserver/geonode/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=geonode%3Acorporatorwardboundary_mumbai_1_0&outputFormat=json'
+// let url = 'https://gis.communitygis.net/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typename=geonode%3ACorporate_Ward_Boundaries_28Dec2021&outputFormat=json&srs=EPSG%3A4326&srsName=EPSG%3A4326'
+
+let activatedWards = [61];
+let render = features =>{
+
+  const paths = g.selectAll('path').data(features)
+  .enter().append('path').attr('class', 'wards').attr('d',pathGenerator).attr('stroke','white').attr('stroke-width','.5px')
+  .attr('fill',d =>{
+  	let wardNo = parseInt(d.properties.prabhag_no);
+  	if(activatedWards.includes(wardNo)) return 'green';
+    else return 'grey';
+  })
+  
+  //on clicking the polygon in ward
+  
+  const clicked = (d,x) =>{ 
+      let wardNo = parseInt(x.properties.prabhag_no);
+      if(activatedWards.includes(wardNo))  window.open('google.com', '_blank');
+	}
+  paths.on('click',clicked)
+  
+  g.selectAll("text").data(features)
+    .enter().append("text")
+    .text(d => parseInt(d.properties.prabhag_no))
+    .attr("x", function(d){
+        return pathGenerator.centroid(d)[0];
+    })
+    .attr("y", function(d){
+        return  pathGenerator.centroid(d)[1];
+    })
+    .attr("text-anchor","middle")
+    .attr('font-size','4pt')
+  	
+    .attr("font-family", "sans-serif");
+  
+  
+  
+  
+}
+
+json('https://gis.communitygis.net/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typename=geonode%3ACorporate_Ward_Boundaries_28Dec2021&outputFormat=json&srs=EPSG%3A4326&srsName=EPSG%3A4326').then(geojson =>{
+  // console.log(geojson)
+ render(geojson.features)
+})
+
+</script> -->
 
 <script>
+  var map = L.map('map',{ scrollWheelZoom: false }).setView([19.08,72.9], 11);
+
+var tiles = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+  maxZoom: 18,
+  attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+    'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+  id: 'mapbox/streets-v11',
+  tileSize: 512,
+  zoomOffset: -1
+}).addTo(map);
+
+let url = 'https://gis.communitygis.net/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typename=geonode%3ACorporate_Ward_Boundaries_28Dec2021&outputFormat=json&srs=EPSG%3A4326&srsName=EPSG%3A4326'
+
+let activatedWards = [61];
+let wardLayer;
+
+
+let myStyle = (feature) =>{
+
+  let activatedStyle = {
+    "fillColor": "lightgreen",
+    "weight": 1,
+    "opacity": 0.9,
+    "color": 'white',
+    "fillOpacity": 1
+  }
+
+  let disabledStyle = {
+    "fillColor": "grey",
+    "weight": 1,
+    "opacity": 0.9,
+    "color": 'white',
+    "fillOpacity": 0.5
+  }
+
+  let wardNo = parseInt(feature.properties.prabhag_no);
+  if(activatedWards.includes(wardNo))  return activatedStyle;
+  else return disabledStyle;
+}
+
+
+
+fetch(url)
+  .then(response => response.json())
+  .then(geojson => {
+    wardLayer = L.geoJSON(geojson,
+    {style:myStyle,onEachFeature: onEachFeature}
+    ).addTo(map);
+  });
+
+  function highlightFeature(e) {
+    var layer = e.target;
+
+    layer.setStyle({
+        weight: 5        
+    });
+    // info.update(layer.feature.properties);
+    // if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+    //     layer.bringToFront();
+    // }
+}
+
+function resetHighlight(e) {
+  wardLayer.resetStyle(e.target);
+    // info.update();
+}
+
+function redirectDashboard(e) {
+  let wardNo = parseInt(e.sourceTarget.feature.properties.prabhag_no)
+  if(activatedWards.includes(wardNo))  window.open('dashboard', '_blank');
+
+  // console.log(e.sourceTarget.feature.properties.prabhag_no)
+}
+
+function redirectDashboardDropdown() {
+  wardNo = document.getElementById('ward').value;  
+  window.open('dashboard', '_blank');
+}
+
+function onEachFeature(feature, layer) {
+    layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+        click: redirectDashboard,
+    });
+
+  layer.bindTooltip("<div style = 'text-transform: capitalize'>"+parseInt(feature.properties.prabhag_no)+"</div>",{permanent: true, 
+   direction: "center",
+   className: "my-labels"});
+   
+
+}
+
+
+
+
 </script>
 
 {% endblock %}
