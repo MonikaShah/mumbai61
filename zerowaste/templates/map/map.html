@@ -324,9 +324,9 @@ table, th, td
                     <br>
                       <div>
                         <div id="kwestbuilding">
-                            <!-- <div class="checkbox">        
-                                <label><input type="checkbox" value="{regions}"  id ="regions" onchange="getBoundaryru(this)"><span> {% trans "Regions" %}</span></label>
-                          </div> -->
+                            <div class="checkbox">        
+                                <label><input type="checkbox" value="{cop}" id ="cop" onchange="putWMSarea(this)"><span> {% trans "Corporate ward Boundary" %}</span></label>
+                          </div>
                           <div class="checkbox">
                             <label><input type="checkbox" value="{kwest-buildings}"  id ="buildings" onclick="kwestbld()"><span> {% trans "KWest Buildings Clusters" %}</span></label>
                         </div> 
@@ -481,8 +481,9 @@ const domain = ['https://geoserver2.communitygis.net/', 'http://localhost/'];
 // <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
+let myselectedarea="Ward61";
 var expanded = false;
-putWMSarea("ward61:ward61_boundary_1nov21");
+putWMSarea(myselectedarea);
 function showCheckboxes2() { //geographical heirarchy
     var checkboxes = document.getElementById("checkboxes2");
     if (!expanded) {
@@ -573,7 +574,7 @@ function displaypolygonUpdation(){
     addWMSLegend(layer);
 }
 var geojsonMarkerOptions = {
-    radius: 8,
+    radius: 3,
     fillColor: "#ff7800",
     color: "#000",
     weight: 1,
@@ -590,23 +591,23 @@ function kwestbld(){
     // mymap.clearLayers();
     kwestlayer = L.geoJSON(kwestBuilding,{
         pointToLayer: function (feature, latlng) {
-        return L.circleMarker(latlng, geojsonMarkerOptions);
-    },
-    // {style:function(feature){
-    //     switch(feature.properties.building_type){
-    //         case 'residence':return {color:"#FF0000"};
-    //         case 'residential':return {color:"#FF0000"};
-    //         case 'apartments':return {color:"#FF0000"};
-    //         // case 'yes':return {color:"#c83daa"};
-    //         case 'commercial':return {color:"#FF0000"};
-    //         case 'Commercial':return {color:"#FF0000"};
-    //         case 'office':return {color:"#FF0000"};
-    //         case 'yes':return {color:"#FF0000"};
-    //         case 'school':return {color:"#FF0000"};
-    //         }
-    //     },    
+        return L.circleMarker(latlng, geojsonMarkerOptions)},
+        style:function(feature){
+        switch(feature.properties.building_type){
+            case 'residence':return {color:"#c83daa"};
+            case 'RESIDENTIAL':return {color:"#c83daa"};
+            case 'apartments':return {color:"#c83daa"};
+            // case 'yes':return {color:"#c83daa"};
+            case 'commercial':return {color:"#55e232"};
+            case 'COMMERCIAL':return {color:"#55e232"};
+            case 'office':return {color:"#7d3fe9"};
+            case 'yes':return {color:"#c83daa"};
+            case 'school':return {color:"#efe115"};
+            }
+        },    
         
-        onEachFeature: onEachFeatureForUpdation,
+    
+        onEachFeature: onEachFeatureForUpdationK_west,
     //     filter: NonameRegionFilter,
     // }).addTo(mymap);
     });
@@ -650,8 +651,7 @@ function getBoundaryru(obj) {
             displaypolygon_buildings_noname();
         else if (boundary == "{regions_noname}")    
             displaypolygon_regions_noname();
-
-        
+           
 
     } else {
 //       alert('in removeWM'+obj.value);
@@ -681,12 +681,21 @@ function getBoundaryru(obj) {
 
 }
 function putWMSarea(layer) {
-    var wms_layer = L.tileLayer.wms('https://geoserver2.communitygis.net/geoserver/wms', {
-                    layers: layer,
+    let layer1;
+    if(layer=="ward61"){
+        layer1 = "ward61_boundary_1nov21";
+    }
+    else if(layer.value == "{cop}"){
+        layer1 = "kwest_coprator_ward_28DECEMBER";
+    }
+    var wms_layer = L.tileLayer.wms('https://gis.communitygis.net/geoserver/wms', {
+                    layers: layer1,
                     format: 'image/png',
                     transparent: 'true',
                     // cql_filter: "district='Raigad'",
                 });
+    
+            
     mymap.setView([19.1423,72.8137],13);
     myselectedarea="Ward61";
     console.log(myselectedarea);
@@ -694,6 +703,8 @@ function putWMSarea(layer) {
     console.log(wms_layer)
     wms_layer.addTo(mymap);
     areaLayerList.push(wms_layer);
+    
+    
 
 }
 function removepolylayer(layer){
@@ -738,6 +749,13 @@ function putWMSru(layer) {
     var maximumzoom = 20;
     var opac = 0.5;
     var zoom = 16;
+    }
+    else if(layer == 'kwest_corporator_boundary:kwest_coprator_ward-28DECEMBER'){
+        layer = "kwest_corporator_boundary:kwest_coprator_ward-28DECEMBER";
+    currentPos = [19.1233,72.7784]; 
+    var maximumzoom = 19;
+    var opac = 0.6;
+    var zoom = 13;
     }
         // console.log(layer)
     var wms_layer = L.tileLayer.wms('https://geoserver2.communitygis.net/geoserver/wms', {
@@ -850,14 +868,16 @@ function Identify(e) {
                     }
                 if (feature.properties.building_type) {
                     
-                    // console.log("I reached at");
+                    // console.log(feature,"I reached at");
                     content = "<table class = 'popupclass' ><tr><td><b>Buildings Info</b></td><td></td></tr>" +
+                        "<tr><td><b>SAC No.: </b></td><td>" + feature.properties.sac_no + "</td></tr>"+
                         "<tr><td><b>Building Name: </b></td><td>" + feature.properties.building_name + "</td></tr>"+
                         "<tr><td><b>Description: </b></td><td>"+feature.properties.building_type + "</td></tr>"+
                         "<tr><td><b>Region: </b></td><td>" + feature.properties.region + "</td></tr>"+
                         "<tr><td><b>Number of Flats: </b></td><td>" + feature.properties.num_flat + "</td></tr>"+
                         "<tr><td><b>Number of shops: </b></td><td>" + feature.properties.num_shops + "</td></tr>"+
                         "<tr><td><b>Number of Wings></td><td>" + feature.properties.wing_name + "</td></tr>"+
+                            "<tr><td><b>Village: </b></td><td>" + feature.properties.village + "</td></tr>"+
                         "<tr><td><b>Address: </b></td><td>" + feature.properties.address + "</td></tr>"+
                         "<tr><td><b>MODIFY: </b></td><td><a href = '/buildedit/"+feature.properties.osm_id+"' style ='color:#FF0000;'>" + feature.properties.osm_id + "</a></td></tr>"+
                         "<tr><td rowspan=2><a href = '/buildedit/"+feature.properties.osm_id+"' style ='color:#FF0000;'>" + feature.properties.osm_id + "</a></td></tr>"+
@@ -969,6 +989,26 @@ function displaypolygon(){
     
     layer ="ward61:osm_buildings_29oct21";
     addWMSLegend(layer);
+}
+function onEachFeatureForUpdationK_west(feature, layer) {
+    // alert(layer.properties.name+"="+feature);
+    // layer.on({click:onClick })
+    // if(${feature.properties.name} !== null){
+    layer.bindPopup(`<div class = 'text-left'><table border =2><tr class="bg-primary"><td colspan=2>Building Information</td></tr>
+        <tr><td>SAC Number:</td><td> ${feature.properties.sac_no}</td></tr>
+    <tr class="table-danger"><td>Building Name:</td><td> ${feature.properties.building_name}</td></tr>
+    <tr><td>Building Type :</td><td>${feature.properties.building_type}</td></tr>
+    <tr class="table-danger"><td>Region:</td><td>${feature.properties.region}</td></tr>
+    <tr><td>Number of Flats :</td><td>${feature.properties.num_flat}</td></tr>
+    <tr class="table-danger"><td>Number of shops :</td><td>${feature.properties.num_shops}</td></tr>
+    <tr><td>Wing Name :</td><td>${feature.properties.wing_name}</td></tr>
+    <tr class="table-danger"><td>Village : </td><td>${feature.properties.village}</td></tr>
+    <tr><td>Address : </td><td>${feature.properties.address}</td></tr>
+</table>
+</div>`)
+    // }
+    
+
 }
 function onEachFeatureForUpdation(feature, layer) {
     // alert(layer.properties.name+"="+feature);
