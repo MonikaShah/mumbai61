@@ -63,6 +63,26 @@ class AllPropDataKwest(models.Model):
         db_table = 'all_prop_data_kwest'
 
 
+class KwestBuildingUpdated(models.Model):
+    # id = models.IntegerField(blank=True, null=True)
+    sac_no = models.CharField(max_length=255, blank=True, null=True)
+    section = models.CharField(max_length=255, blank=True, null=True)
+    building_type = models.CharField(max_length=255, blank=True, null=True)
+    building_name = models.CharField(max_length=255, blank=True, null=True)
+    prop_blng_add = models.CharField(max_length=255, blank=True, null=True)
+    fda = models.CharField(max_length=255, blank=True, null=True)
+    address = models.CharField(max_length=255, blank=True, null=True)
+    metered_un = models.CharField(max_length=255, blank=True, null=True)
+    prop_tax_30_3_20 = models.CharField(max_length=255, blank=True, null=True)
+    yearly_demand = models.CharField(max_length=255, blank=True, null=True)
+    despute = models.CharField(max_length=255, blank=True, null=True)
+    remarks = models.CharField(max_length=255, blank=True, null=True)
+    geom = models.PointField(blank=True, null=True)
+    village = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'kwest_building_updated'
 
 
 

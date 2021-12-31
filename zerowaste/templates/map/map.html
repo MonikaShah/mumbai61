@@ -594,15 +594,16 @@ function kwestbld(){
         return L.circleMarker(latlng, geojsonMarkerOptions)},
         style:function(feature){
         switch(feature.properties.building_type){
-            case 'residence':return {color:"#c83daa"};
-            case 'RESIDENTIAL':return {color:"#c83daa"};
-            case 'apartments':return {color:"#c83daa"};
+            case 'residence':return {color:"#000",fillColor:"red"
+        };
+            case 'RESIDENTIAL':return {color:"#000",fillColor:"red"};
+            case 'apartments':return {color:"#000",fillColor:"red"};
             // case 'yes':return {color:"#c83daa"};
-            case 'commercial':return {color:"#55e232"};
-            case 'COMMERCIAL':return {color:"#55e232"};
-            case 'office':return {color:"#7d3fe9"};
-            case 'yes':return {color:"#c83daa"};
-            case 'school':return {color:"#efe115"};
+            case 'commercial':return {color:"#000",fillColor:"#55e232"};
+            case 'COMMERCIAL':return {color:"#000",fillColor:"#55e232"};
+            case 'office':return {color:"#000",fillColor:"#7d3fe9"};
+            case 'yes':return {color:"#000",fillColor:"#c83daa"};
+            case 'school':return {color:"#000",fillColor:"#efe115"};
             }
         },    
         
@@ -686,12 +687,13 @@ function putWMSarea(layer) {
         layer1 = "ward61_boundary_1nov21";
     }
     else if(layer.value == "{cop}"){
-        layer1 = "kwest_coprator_ward_28DECEMBER";
+        layer1 = "kwest_corporator_ward_31st_dec";
     }
-    var wms_layer = L.tileLayer.wms('https://gis.communitygis.net/geoserver/wms', {
+    var wms_layer = L.tileLayer.wms('https://geoserver2.communitygis.net/geoserver/wms', {
                     layers: layer1,
                     format: 'image/png',
                     transparent: 'true',
+                    opacity: 0.4,
                     // cql_filter: "district='Raigad'",
                 });
     
@@ -750,18 +752,18 @@ function putWMSru(layer) {
     var opac = 0.5;
     var zoom = 16;
     }
-    else if(layer == 'kwest_corporator_boundary:kwest_coprator_ward-28DECEMBER'){
-        layer = "kwest_corporator_boundary:kwest_coprator_ward-28DECEMBER";
-    currentPos = [19.1233,72.7784]; 
-    var maximumzoom = 19;
-    var opac = 0.6;
-    var zoom = 13;
-    }
+    // else if(layer == 'kwest_corporator_boundary:kwest_coprator_ward-28DECEMBER'){
+    //     layer = "kwest_corporator_boundary:kwest_coprator_ward-28DECEMBER";
+    // currentPos = [19.1233,72.7784]; 
+    // var maximumzoom = 19;
+    // var opac = 0.6;
+    // var zoom = 13;
+    // }
         // console.log(layer)
     var wms_layer = L.tileLayer.wms('https://geoserver2.communitygis.net/geoserver/wms', {
         layers: layer,
         format: 'image/png',
-        // opacity:0.5,
+        opacity:0.6,
         transparent:true,
         maxZoom:maximumzoom,
 
