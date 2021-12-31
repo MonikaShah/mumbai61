@@ -1,20 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}{% load i18n %}
 
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 {% block extra_css%}
-<style>
-    .centered {
-        position: absolute;
-        /* top: 40%; */
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: aliceblue;
-    }
-</style>
+{% endblock %} 
 
-{% endblock %} {% block content %}
+{% block content %}
 
 {% if messages %}
 <div>
@@ -32,20 +22,71 @@
 </ul>
 </div>
 {% endif %}
-<section id="hero">
-    <div class="hero-container">
-        <h1>{% trans "Zero Waste - Mumbai Ward 61" %}</h1>
-        
-        <!-- <h2>{% trans "A Project by Stree Mukti Sanghatana, sponsored by IDFC FIRST Bank" %}</h2> -->
-        <!-- <a href="#about" class="btn-get-started scrollto">Get Started</a> -->
-    </div>
-   
-</section>
 
+<div class="container bg-secondary">
+    <div class="wards">
+        <svg width="100%" height="100%"></svg>
+    </div>
 </div>
-<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+{% endblock %}
+
+{% block extra_javascript %} 
+<script src="https://d3js.org/d3.v7.min.js"></script>
+        <!-- <script src="https://d3js.org/d3-geo-projection.v2.min.js">
+      </script> -->
+      <!-- <script src="https://cdn.jsdelivr.net/npm/d3-geo@3"></script> -->
 
 <script>
+    // var svg = d3.select("svg"),
+    //     width = +svg.attr("width"),
+    //     height = +svg.attr("height");
+    const svg = d3.select('svg');
+
+    const projection = d3.geoMercator()
+    const pathGenerator = d3.geoPath().projection(projection);
+    svg.append('path')
+    .attr('d', pathGenerator());
+
+
+    d3.json('https://gis.communitygis.net/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typename=geonode%3ACorporate_Ward_Boundaries_28Dec2021&outputFormat=json&srs=EPSG%3A4326&srsName=EPSG%3A4326')
+  .then(data => {
+    // const countries = feature(data, data.objects.countries);
+    console.log(data)
+    svg.selectAll('path').data(data.features)
+      .enter().append('path')
+        .attr('class', 'country')
+        .attr('d', pathGenerator);
+  });
+
+//   svg.selectAll("path")
+//             .data(data.features).enter()
+//             .append("path").attr("fill", "black")
+//             .attr("d", pathGenerator)
+//             .style("stroke", "#ffff");
+
+//     // Mercator projection
+//     // Center(0, 0) with 0 rotation
+//     var gfg = d3
+//         .geoMercator()
+//         .scale(width / 2.5 / Math.PI)
+//         .rotate([0, 0])
+//         .center([0, 0])
+//         .translate([width / 2, height / 2]);
+
+//     // Loading the json data
+//     // Used json file stored at
+// /*https://raw.githubusercontent.com/janasayantan
+//      /datageojson/master/world.json*/
+//     d3.json(
+// "https://raw.githubusercontent.com/janasayantan/datageojson/master/world.json", 
+//       function (data) {
+//         // Drawing the map
+//         svg.append("g").selectAll(
+//           "path").data(data.features).enter().append(
+//           "path").attr("fill", "black").attr(
+//           "d", d3.geoPath().projection(gfg)).style(
+//           "stroke", "#ffff");
+//     });
 </script>
 
 {% endblock %}
