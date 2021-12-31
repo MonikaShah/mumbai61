@@ -328,7 +328,7 @@ table, th, td
                                 <label><input type="checkbox" value="{cop}" id ="cop" onchange="putWMSarea(this)"><span> {% trans "Corporate ward Boundary" %}</span></label>
                           </div>
                           <div class="checkbox">
-                            <label><input type="checkbox" value="{kwest-buildings}"  id ="buildings" onclick="kwestbld()"><span> {% trans "KWest Buildings Clusters" %}</span></label>
+                            <label><input type="checkbox" value="{kwest-buildings}"  id ="buildings" onclick="kwestbld()"><span> {% trans "K-West Building Points" %}</span></label>
                         </div> 
                       </div>
                     <div class="multiselect">
@@ -351,11 +351,11 @@ table, th, td
                         </div> 
                           {% if request.user|has_group:"Editor" %}
                             <div class="checkbox">
-                                <label><b><input type="checkbox" value="{buildings}" id ="{buildings}" onchange="getBoundaryruUpdation(this)"><span> {% trans "Buildings" %}</span></b></label>
+                                <label><b><input type="checkbox" value="{buildings}" id ="{buildings}" onchange="getBoundaryruUpdation(this)"><span> {% trans "Building Polygons" %}</span></b></label>
                             </div> 
                             {%else %}
                                 <div class="checkbox">
-                                    <label><input type="checkbox" value="{buildings}" id ="buildings" onchange="getBoundaryru(this)"><span> {% trans "Buildings" %}</span></label>
+                                    <label><input type="checkbox" value="{buildings}" id ="buildings" onchange="getBoundaryru(this)"><span> {% trans "Building Polygons" %}</span></label>
                                 </div> 
                           {% endif %}
                           
