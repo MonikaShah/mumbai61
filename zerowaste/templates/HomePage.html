@@ -74,6 +74,9 @@ font-size: 8px;
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
 
+<link rel="stylesheet" href="{%static 'slick-loader/slick-loader.min.css' %}"/>
+<script src="{%static 'slick-loader/slick-loader.min.js' %}" ></script>
+
 <!-- <script  type="module" src="https://d3js.org/d3.v7.min.js"></script> -->
       
 
@@ -182,6 +185,8 @@ let myStyle = (feature) =>{
 }
 
 
+SlickLoader.enable();
+SlickLoader.setText('Map Loading...');
 
 fetch(url)
   .then(response => response.json())
@@ -189,6 +194,8 @@ fetch(url)
     wardLayer = L.geoJSON(geojson,
     {style:myStyle,onEachFeature: onEachFeature}
     ).addTo(map);
+    SlickLoader.disable();
+
   });
 
   function highlightFeature(e) {
