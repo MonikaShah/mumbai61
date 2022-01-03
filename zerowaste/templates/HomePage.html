@@ -19,8 +19,26 @@
 background-color: transparent;
 border: transparent;
 box-shadow: none;
-font-size: 8px;
+font-size: 12px;
 }
+
+.leaflet-tooltip.my-labels-ward {
+background-color: transparent;
+border: transparent;
+box-shadow: none;
+font-size: 12px;
+}
+
+
+.info {
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+
 
 
 </style>
@@ -53,11 +71,10 @@ font-size: 8px;
     </div>
   </div>
   <div class="dropdown text-center mb-2">
-    <!-- <label for="ward">Select Ward:</label> -->
 
     <select  onclick="redirectDashboardDropdown()"name="ward" id="ward">
-      <option>Select Ward</option>
-      <option value="61">Ward - 61</option>
+      <option>Select Prabhag</option>
+      <option value="61">Prabhag - 61</option>
     </select>
 
 
@@ -73,6 +90,14 @@ font-size: 8px;
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.EasyButton/2.4.0/easy-button.min.css" integrity="sha512-Dl8Sq3zeaW4/XeowsD/0Fyn07Cy+1yJlG4/Bs8Lt91P2gZGB3lemVScG8dsNi2pIwhDwuTR22RGumk72cd5OhA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.EasyButton/2.4.0/easy-button.min.js" integrity="sha512-Tndo4y/YJooD/mGXS9D6F1YyBcSyrWnnSWQ5Z9IcKt6bljicjyka9qcP99qMFbQ5+omfOtwwIapv1DjBCZcTJQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<link rel="stylesheet" href="{%static 'slick-loader/slick-loader.min.css' %}"/>
+<script src="{%static 'slick-loader/slick-loader.min.js' %}" ></script>
+
+
 
 <!-- <script  type="module" src="https://d3js.org/d3.v7.min.js"></script> -->
       
@@ -141,26 +166,21 @@ json('https://gis.communitygis.net/geoserver/ows?service=WFS&version=1.0.0&reque
 </script> -->
 
 <script>
-  var map = L.map('map',{ scrollWheelZoom: false }).setView([19.08,72.9], 11);
+  let map = L.map('map',{ scrollWheelZoom: false }).setView([19.08,72.9], 11);
+  let wardGeojson,prabhagGeojson;
 
-var tiles = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-  maxZoom: 18,
-  attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
-    'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-  id: 'mapbox/streets-v11',
-  tileSize: 512,
-  zoomOffset: -1
-}).addTo(map);
+  let tiles = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+    maxZoom: 18,
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+      'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    id: 'mapbox/streets-v11',
+    tileSize: 512,
+    zoomOffset: -1
+  }).addTo(map);
 
-let url = 'https://gis.communitygis.net/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typename=geonode%3ACorporate_Ward_Boundaries_28Dec2021&outputFormat=json&srs=EPSG%3A4326&srsName=EPSG%3A4326'
 
 let activatedWards = [61];
-let wardLayer;
-
-
-let myStyle = (feature) =>{
-
-  let activatedStyle = {
+let activatedStyle = {
     "fillColor": "lightgreen",
     "weight": 1,
     "opacity": 0.9,
@@ -168,51 +188,106 @@ let myStyle = (feature) =>{
     "fillOpacity": 1
   }
 
-  let disabledStyle = {
-    "fillColor": "grey",
-    "weight": 1,
-    "opacity": 0.9,
-    "color": 'white',
-    "fillOpacity": 0.5
-  }
+let disabledStyle = {
+  "fillColor": "grey",
+  "weight": 1,
+  "opacity": 0.9,
+  "color": 'white',
+  "fillOpacity": 0.5
+}
 
+
+
+
+
+            
+let drilldownToPrabhag = e =>{
+  let selectedWardID = e.sourceTarget.feature.properties.ward_id;
+  let selectedPrabhagFeatures = prabhagGeojson.features.filter(d =>(d.properties.Ward_Name == selectedWardID))
+  let selectedPrabhag = {
+  "type": "FeatureCollection",
+  "features": selectedPrabhagFeatures
+  }
+  map.fitBounds([e.sourceTarget._bounds])
+  map.removeLayer(addedLayer)
+  info.update("Click on activated prabhag to view Dashboard");
+  renderLayer(selectedPrabhag,myStyle,onEachFeature)
+}
+let onEachFeatureWard = (feature, layer) => {
+    layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+        click: drilldownToPrabhag,
+    });
+    layer.bindTooltip("<div style = 'text-transform: capitalize'>"+feature.properties.ward_name_+"</div>",{permanent: true, direction: "center",className: "my-labels-ward"});
+
+  }
+//  function to fetch ward and prabhag geojson
+let  fetchData = async() =>{
+let wardURL = 'https://gis.communitygis.net/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typename=geonode%3Amumbai_ward_boundary_2Jan2022&outputFormat=json&srs=EPSG%3A4326&srsName=EPSG%3A4326&access_token=8Rzwv2yElnLetOXVMJtkKerBjA9YlL'
+let prabhagURL   = 'https://gis.communitygis.net/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typename=geonode%3AMumbai_Prabhag_Boundaries_3Jan2022&outputFormat=json&srs=EPSG%3A4326&srsName=EPSG%3A4326&access_token=8Rzwv2yElnLetOXVMJtkKerBjA9YlL'
+
+SlickLoader.enable();
+SlickLoader.setText('Map Loading...');
+  try{
+    const [wardGeojson, prabhagGeojson] = await Promise.all([
+    fetch(wardURL).then(response => response.json()),
+    fetch(prabhagURL).then(response => response.json())
+  ]);
+      SlickLoader.disable();
+    return [wardGeojson,prabhagGeojson]
+  }catch(err){
+    console.log(err)
+  }
+ 
+}
+
+
+let renderLayer = (geojson,style,onEachFeature) =>{
+  addedLayer = L.geoJSON(geojson,{style:style,onEachFeature:onEachFeature}).addTo(map);
+}
+fetchData().then(geojson => {
+  [wardGeojson,prabhagGeojson]= geojson;
+  renderLayer(wardGeojson,activatedStyle,onEachFeatureWard)
+ 
+})
+let onBackClick = (btn,map) => {
+  map.setView([19.08,72.9], 11)
+  map.removeLayer(addedLayer)
+  info.update("Click on Map to Drilldown");
+
+  renderLayer(wardGeojson,activatedStyle,onEachFeatureWard)
+} 
+backButton = L.easyButton('<span class="backButton">&larrhk;</span>', onBackClick,{ position: 'topleft' });
+map.addControl(backButton);
+
+
+
+let addedLayer;
+let myStyle = (feature) =>{ 
   let wardNo = parseInt(feature.properties.prabhag_no);
   if(activatedWards.includes(wardNo))  return activatedStyle;
   else return disabledStyle;
 }
 
 
+function highlightFeature(e) {
+  var layer = e.target;
 
-fetch(url)
-  .then(response => response.json())
-  .then(geojson => {
-    wardLayer = L.geoJSON(geojson,
-    {style:myStyle,onEachFeature: onEachFeature}
-    ).addTo(map);
+  layer.setStyle({
+      weight: 5        
   });
 
-  function highlightFeature(e) {
-    var layer = e.target;
-
-    layer.setStyle({
-        weight: 5        
-    });
-    // info.update(layer.feature.properties);
-    // if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-    //     layer.bringToFront();
-    // }
 }
 
 function resetHighlight(e) {
-  wardLayer.resetStyle(e.target);
-    // info.update();
+  addedLayer.resetStyle(e.target);
 }
 
 function redirectDashboard(e) {
   let wardNo = parseInt(e.sourceTarget.feature.properties.prabhag_no)
   if(activatedWards.includes(wardNo))  window.open('dashboard', '_blank');
 
-  // console.log(e.sourceTarget.feature.properties.prabhag_no)
 }
 
 function redirectDashboardDropdown() {
@@ -226,15 +301,27 @@ function onEachFeature(feature, layer) {
         mouseout: resetHighlight,
         click: redirectDashboard,
     });
-
-  layer.bindTooltip("<div style = 'text-transform: capitalize'>"+parseInt(feature.properties.prabhag_no)+"</div>",{permanent: true, 
-   direction: "center",
-   className: "my-labels"});
+  
+  layer.bindTooltip("<div style = 'text-transform: capitalize'>"+parseInt(feature.properties.prabhag_no)+"</div>",{permanent: true, direction: "center",className: "my-labels"});
    
 
 }
 
+var info = L.control({position: 'bottomleft'});
 
+info.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+    this.update('Click On Map to Drilldown');
+    return this._div;
+};
+
+info.update = function (message) {
+  console.log(message)
+    this._div.innerHTML = message;
+};
+
+
+info.addTo(map);
 
 
 </script>
