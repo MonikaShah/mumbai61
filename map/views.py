@@ -25,4 +25,4 @@ def Map(req):
     kwestgeojson =  serialize('geojson',kwest)
    #  print(geojson)
    #  context = 
-    return render(req,"map/map.html",{'geojson':geojson,'kwestgeojson':kwestgeojson})
+    return render(req,"map/map_new.html",{'geojson':geojson,'kwestgeojson':kwestgeojson})

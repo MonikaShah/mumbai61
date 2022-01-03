@@ -97,7 +97,7 @@ DATABASES = {
     'default': {
         # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'ward61',
+        'NAME': 'ward61_3jan',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
         'HOST': 'localhost',

@@ -655,7 +655,7 @@ function getBoundaryru(obj) {
            
 
     } else {
-//       alert('in removeWM'+obj.value);
+      alert('in removeWM'+obj.value);
         if (boundary == "{wardKWest}"){
             removeWMS("ward61:k_west_mumbai")
             kwestbuilding.style.display = "none";
@@ -896,7 +896,7 @@ function Identify(e) {
     
 function displaypolygon_buildings_noname(){
     let osm_buildings = JSON.parse('{{ geojson|safe }}')
-    // console.log(osm_buildings)
+    console.log(osm_buildings)
     // alert(osm_buildings);
     // mymap.removeLayer(polylayer);
     mymap.setView([19.1467,72.8283],16);
@@ -956,7 +956,7 @@ function displaypolygon_regions_noname(){
 }
 function displaypolygon(){
     // alert("Without updation")
-    let osm_buildings = JSON.parse('{{ geojson|safe }}')
+   
     console.log(osm_buildings)
     // alert(osm_buildings);
     // mymap.removeLayer(polylayer);
@@ -1055,7 +1055,7 @@ function onEachFeatureForPointBB(feature, layer) {
 function NonameBuildingFilter(feature) {
     // alert(layer.properties.name+"="+feature);
     // layer.on({click:onClick })
-    console.log("Name is ");
+    console.log("Name is ",feature.properties.building_name);
     if(feature.properties.building_name !== null) 
         return false    
     else
