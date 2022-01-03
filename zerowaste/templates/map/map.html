@@ -552,6 +552,11 @@ function displaypolygonUpdation(){
     // mymap.clearLayers();
     polylayer = L.geoJSON(osm_buildings, 
     {style:function(feature){
+        switch(feature.properties.building_name){
+            case null:return {color:"#ff0000"};
+            case 'none':return {color:"#ff0000"};
+            
+            }
         switch(feature.properties.building_type){
             case 'residence':return {color:"#c83daa"};
             case 'residential':return {color:"#c83daa"};
@@ -1057,7 +1062,7 @@ function NonameBuildingFilter(feature) {
     // layer.on({click:onClick })
     console.log("Name is ");
     if(feature.properties.building_name !== null) 
-        return false    
+        return false
     else
         return true
 }
