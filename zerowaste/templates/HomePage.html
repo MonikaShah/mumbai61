@@ -30,6 +30,17 @@ font-size: 12px;
 }
 
 
+.info {
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+
+
+
 </style>
 {% endblock %} 
 
@@ -199,7 +210,7 @@ let drilldownToPrabhag = e =>{
   }
   map.fitBounds([e.sourceTarget._bounds])
   map.removeLayer(addedLayer)
-
+  info.update("Click on activated prabhag to view Dashboard");
   renderLayer(selectedPrabhag,myStyle,onEachFeature)
 }
 let onEachFeatureWard = (feature, layer) => {
@@ -243,6 +254,8 @@ fetchData().then(geojson => {
 let onBackClick = (btn,map) => {
   map.setView([19.08,72.9], 11)
   map.removeLayer(addedLayer)
+  info.update("Click on Map to Drilldown");
+
   renderLayer(wardGeojson,activatedStyle,onEachFeatureWard)
 } 
 backButton = L.easyButton('<span class="backButton">&larrhk;</span>', onBackClick,{ position: 'topleft' });
@@ -251,10 +264,7 @@ map.addControl(backButton);
 
 
 let addedLayer;
-let myStyle = (feature) =>{
-
-
-
+let myStyle = (feature) =>{ 
   let wardNo = parseInt(feature.properties.prabhag_no);
   if(activatedWards.includes(wardNo))  return activatedStyle;
   else return disabledStyle;
@@ -296,6 +306,23 @@ function onEachFeature(feature, layer) {
    
 
 }
+
+var info = L.control({position: 'bottomleft'});
+
+info.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+    this.update('Click On Map to Drilldown');
+    return this._div;
+};
+
+info.update = function (message) {
+  console.log(message)
+    this._div.innerHTML = message;
+};
+
+
+info.addTo(map);
+
 
 </script>
 
