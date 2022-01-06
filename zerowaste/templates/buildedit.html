@@ -30,9 +30,11 @@
             
         <h3>{% trans "Update Buildings Details" %}</h3>
         </div><hr>
-    <form method="POST" class="post-form" action="/buildupdate/{{data.osm_id}}" style="margin-top: 20px;">
+    <form method="POST" class="post-form" action="/buildupdate/{{data.sac_no}}" style="margin-top: 20px;">
         {% csrf_token %}
         <table class="table-bordered table-striped">
+            <tr><td align ="left"><label class="required">{% trans "SAC Number" %}</label></td><td><input type="text" disabled name="sac" id="id_sac" value="{{ data.sac_no }}" /></td></tr>
+
             <tr><td align ="left"><label class="required">{% trans "Region Name:" %}</label></td><td><input type="text" name="region" id="id_region" value="{{ data.region }}" /></td></tr>
             <tr class="blank_row"></tr>
             
@@ -48,7 +50,11 @@
             <tr class="blank_row"></tr>
             <tr><td align ="left">{% trans "Number of Floors:" %}</td><td><input type="text" name="num_floors" id="id_num_floors"  value="{{ data.num_floors }}" /></td></tr>
             <tr class="blank_row"></tr>
-            <tr><td align ="left">{% trans "Address:" %}</td><td><input type="text" name="addrstreet" id="id_addrstreet" value="{{ data.addrstreet }}" /></td></tr>
+            
+            <tr><td align ="left">{% trans "Address:" %}</td><td><input type="text" name="village" id="id_village" value="{{ data.village }}" /></td></tr>
+            <tr class="blank_row"></tr>
+            
+            <tr><td align ="left">{% trans "Address:" %}</td><td><input type="text" name="address" id="id_address" value="{{ data.address }}" /></td></tr>
             <tr class="blank_row"></tr>
                 
             

@@ -79,6 +79,11 @@ class KwestBuildingUpdated(models.Model):
     remarks = models.CharField(max_length=255, blank=True, null=True)
     geom = models.PointField(blank=True, null=True)
     village = models.CharField(max_length=255, blank=True, null=True)
+    wing_name = models.CharField(max_length=255, blank=True, null=True)
+    num_flat = models.CharField(max_length=255, blank=True, null=True)
+    region = models.CharField(max_length=255, blank=True, null=True)
+    num_shops = models.CharField(max_length=255, blank=True, null=True)
+    num_floors = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         managed = False

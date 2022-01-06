@@ -862,7 +862,12 @@ function Identify(e) {
                 var feature = data.features[0]; // first feature from response
                 console.log(feature);
                 // Set up popup for clicked feature and open it
-                var popup = new L.Popup({
+               
+            }
+        }
+    });
+    
+    var popup = new L.Popup({
                     maxWidth: 300
                 });
                 if (feature.properties.region) {
@@ -893,9 +898,6 @@ function Identify(e) {
                 popup.setLatLng(e.latlng);
                 mymap.openPopup(popup);
                 }
-            }
-        }
-    });
 }
 
     
