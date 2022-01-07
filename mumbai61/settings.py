@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'django.contrib.gis',
     'map',
+    'dashboard',
     # 'plotly_dash',
     # 'django_plotly_dash.apps.DjangoPlotlyDashConfig',
 ]

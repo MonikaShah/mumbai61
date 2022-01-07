@@ -22,6 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('zerowaste.urls')),
     path('map/',include('map.urls')),
+    path('dash/',include('dashboard.urls')),
     # path('map/',include('map.urls')),
    
 ]

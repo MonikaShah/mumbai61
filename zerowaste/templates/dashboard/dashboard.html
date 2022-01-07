@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block extra_css %} 
+<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.css">
+<script src="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.js"></script>
+{% endblock %}
+
+{% block content%}
+<div class="container-fluid vh-100">
+    <div class="name-dropdown d-flex justify-content-center" style="height: 10%;">
+        <div class="p-name w-25  text-center p-4">Prabhag 61</div>
+        <div class="dropdown  flex-grow-1  text-center p-4">
+            <select name="waste-type" id="waste-type">
+                <option value="Total">Total Waste</option>
+                <option value="Dry">Dry Waste</option>
+                <option value="Wet">Wet Waste</option>
+                <option value="Hazardous">Hazardous Waste</option>
+              </select>
+        </div>
+    </div>
+
+    <!-- <div class="slider d-flex p-2 justify-content-center bg-warning" style="height: 10%;"> Slider </div> -->
+
+    <div class="map-table d-flex justify-content-center"  style="height: 80%;">
+        <div class="map flex-fill bg-primary text-center" id='map'>map</div>
+        <div class="summary-table flex-fill bg-secondary text-center" id='summary-table'>
+            <table class="display"></table>
+
+        </div>
+    </div>
+
+    <!-- <div class="histogram d-flex p-2 justify-content-center bg-warning" style="height: 20%;"> Histogram </div> -->
+
+
+    <!-- <div class="donut-radar d-flex justify-content-center" style="height: 30%;">
+        <div class="donut flex-fill bg-primary text-center">donut</div>
+        <div class="radar flex-fill bg-secondary text-center">radar</div>
+    </div> -->
+
+</div>
+{% endblock %}
+
+{% block extra_javascript %} 
+
+
+<script>
+    let map = L.map('map',{ scrollWheelZoom: false }).setView([19.08,72.9], 11);
+
+  let tiles = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+    maxZoom: 18,
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+      'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    id: 'mapbox/streets-v11',
+    tileSize: 512,
+    zoomOffset: -1
+  }).addTo(map);
+
+
+</script>
+{% endblock %}
