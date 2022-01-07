@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
 from .models import Report,Grievance,WasteSegregationDetails,EmployeeDetails#,OsmBuildings29Oct21
-from map.models import Ward61BuildingsOsm2Nov2021
+from map.models import Ward61BuildingsOsm2Nov2021,KwestBuildingUpdated
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column, ButtonHolder
 import datetime
@@ -129,6 +129,36 @@ class Ward61BuildingsOsm2Nov2021Form(forms.ModelForm):
         model = Ward61BuildingsOsm2Nov2021
         fields = '__all__'
         exclude = ['geom','roofmateri','osm_id']
+
+class KwestBuildingUpdatedForm(forms.ModelForm): 
+    # geom = forms.CharField(label = _(u'Geometry'))  # This field type is a guess.
+    # fid = forms.IntegerField(label = _(u'FId'))
+    # osm_id = forms.DecimalField(label = _(u'OSM ID'))
+    address = forms.CharField(label = _(u'Address'),required=False)
+    building_type = forms.CharField(label = _(u'Building Type'),required=False)
+    building_name = forms.CharField(label = _(u'Building Name'))
+    num_flat = forms.IntegerField(label = _(u'Number of Flats'))
+    num_shops = forms.IntegerField(label = _(u'Number of Shops'),required=False)
+    num_floors = forms.IntegerField(label = _(u'Number of Floors'),required=False)
+    wing_name = forms.CharField(label = _(u'Wing Name'),required=False)
+    region = forms.CharField(label = _(u'Region'))
+    village = forms.CharField(label = _(u'Village'))
+    # councillor_ward = forms.CharField(label = _(u'Councillor Ward'),required=False)
+    # admin_ward = forms.CharField(label = _(u'Admin Ward'),required=False)
+    # def __str__(self):
+    #     return str(self.name)
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        num_flat = cleaned_data.get('num_flat')
+        wing_name = cleaned_data.get('wing_name')
+        if not any([num_flat, wing_name]):
+            raise forms.ValidationError(u'Please enter Name of the Wing')
+            # raise forms.ValidationError('Future Dates are not allowed.!!')
+        
+    class Meta:
+        model = KwestBuildingUpdated
+        fields = '__all__'
+        exclude = ['geom','sac_no','metered_un','prop_tax_30_3_20','yearly_demand','despute','remarks']
 
 class WasteSegregationDetailsForm(forms.ModelForm): 
     coll_date  = forms.DateField(label = _(u'Date'),widget=forms.TextInput(attrs={'type': 'date'}),initial=datetime.date.today)

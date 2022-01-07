@@ -128,8 +128,8 @@
 
     mymap = L.map('mapdiv', {
         // center:[19.7515,75.7139],
-        center: [19.7515, 75.7139],
-        zoom: 7,
+        center: [19.1233, 72.7784],
+        zoom: 12,
         zoomControl: false,
         attributionControl: false,
         messagebox: true,
@@ -204,6 +204,6 @@
     ctlAttribute = L.control.attribution({
         position: 'bottomleft'
     }).addTo(mymap);
-    ctlAttribute.addAttribution('&copy; <a href="http://www.makerghat.org">makerGHAT</a>');
+    // ctlAttribute.addAttribution('&copy; <a href="http://www.makerghat.org">makerGHAT</a>');
 </script>
 {% block extra_map_javascript%} {% endblock extra_map_javascript%} {% endblock extra_javascript %}

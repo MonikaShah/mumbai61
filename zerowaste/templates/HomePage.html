@@ -237,7 +237,7 @@ fetchData().then(geojson => {
 let onBackClick = (btn,map) => {
   map.setView([19.08,72.9], 11)
   map.removeLayer(addedLayer)
-  info.update("Click on Map to Drilldown");
+  info.update("Click on Wards in the Map for Drilldown");
 
   renderLayer(wardGeojson,activatedStyle,onEachFeatureWard)
 } 
@@ -294,7 +294,7 @@ var info = L.control({position: 'bottomleft'});
 
 info.onAdd = function (map) {
     this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
-    this.update('Click On Map to Drilldown');
+    this.update('Click on Wards in the Map for Drilldown');
     return this._div;
 };
 

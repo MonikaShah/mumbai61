@@ -325,10 +325,10 @@ table, th, td
                       <div>
                         <div id="kwestbuilding">
                             <div class="checkbox">        
-                                <label><input type="checkbox" value="{cop}" id ="cop" onchange="putWMSarea(this)"><span> {% trans "Corporate ward Boundary" %}</span></label>
+                                <label><input type="checkbox" value="{cop}" id ="cop" onchange="putWMSarea(this)"><span> {% trans "Prabhag Boundary" %}</span></label>
                           </div>
                           <div class="checkbox">
-                            <label><input type="checkbox" value="{kwest-buildings}"  id ="buildings" onclick="kwestbld()"><span> {% trans "KWest Buildings Clusters" %}</span></label>
+                            <label><input type="checkbox" value="{kwest-buildings}"  id ="buildings" onclick="kwestbld()"><span> {% trans "K-West Building Points" %}</span></label>
                         </div> 
                       </div>
                     <div class="multiselect">
@@ -351,11 +351,11 @@ table, th, td
                         </div> 
                           {% if request.user|has_group:"Editor" %}
                             <div class="checkbox">
-                                <label><b><input type="checkbox" value="{buildings}" id ="{buildings}" onchange="getBoundaryruUpdation(this)"><span> {% trans "Buildings" %}</span></b></label>
+                                <label><b><input type="checkbox" value="{buildings}" id ="{buildings}" onchange="getBoundaryruUpdation(this)"><span> {% trans "Building Polygons" %}</span></b></label>
                             </div> 
                             {%else %}
                                 <div class="checkbox">
-                                    <label><input type="checkbox" value="{buildings}" id ="buildings" onchange="getBoundaryru(this)"><span> {% trans "Buildings" %}</span></label>
+                                    <label><input type="checkbox" value="{buildings}" id ="buildings" onchange="getBoundaryru(this)"><span> {% trans "Building Polygons" %}</span></label>
                                 </div> 
                           {% endif %}
                           
@@ -552,6 +552,11 @@ function displaypolygonUpdation(){
     // mymap.clearLayers();
     polylayer = L.geoJSON(osm_buildings, 
     {style:function(feature){
+        switch(feature.properties.building_name){
+            case null:return {color:"#ff0000"};
+            case 'none':return {color:"#ff0000"};
+            
+            }
         switch(feature.properties.building_type){
             case 'residence':return {color:"#c83daa"};
             case 'residential':return {color:"#c83daa"};
@@ -594,15 +599,16 @@ function kwestbld(){
         return L.circleMarker(latlng, geojsonMarkerOptions)},
         style:function(feature){
         switch(feature.properties.building_type){
-            case 'residence':return {color:"#c83daa"};
-            case 'RESIDENTIAL':return {color:"#c83daa"};
-            case 'apartments':return {color:"#c83daa"};
+            case 'residence':return {color:"#000",fillColor:"red"
+        };
+            case 'RESIDENTIAL':return {color:"#000",fillColor:"red"};
+            case 'apartments':return {color:"#000",fillColor:"red"};
             // case 'yes':return {color:"#c83daa"};
-            case 'commercial':return {color:"#55e232"};
-            case 'COMMERCIAL':return {color:"#55e232"};
-            case 'office':return {color:"#7d3fe9"};
-            case 'yes':return {color:"#c83daa"};
-            case 'school':return {color:"#efe115"};
+            case 'commercial':return {color:"#000",fillColor:"#55e232"};
+            case 'COMMERCIAL':return {color:"#000",fillColor:"#55e232"};
+            case 'office':return {color:"#000",fillColor:"#7d3fe9"};
+            case 'yes':return {color:"#000",fillColor:"#c83daa"};
+            case 'school':return {color:"#000",fillColor:"#efe115"};
             }
         },    
         
@@ -654,7 +660,7 @@ function getBoundaryru(obj) {
            
 
     } else {
-//       alert('in removeWM'+obj.value);
+      alert('in removeWM'+obj.value);
         if (boundary == "{wardKWest}"){
             removeWMS("ward61:k_west_mumbai")
             kwestbuilding.style.display = "none";
@@ -686,12 +692,13 @@ function putWMSarea(layer) {
         layer1 = "ward61_boundary_1nov21";
     }
     else if(layer.value == "{cop}"){
-        layer1 = "kwest_coprator_ward_28DECEMBER";
+        layer1 = "kwest_corporator_ward_31st_dec";
     }
-    var wms_layer = L.tileLayer.wms('https://gis.communitygis.net/geoserver/wms', {
+    var wms_layer = L.tileLayer.wms('https://geoserver2.communitygis.net/geoserver/wms', {
                     layers: layer1,
                     format: 'image/png',
                     transparent: 'true',
+                    opacity: 0.4,
                     // cql_filter: "district='Raigad'",
                 });
     
@@ -750,18 +757,18 @@ function putWMSru(layer) {
     var opac = 0.5;
     var zoom = 16;
     }
-    else if(layer == 'kwest_corporator_boundary:kwest_coprator_ward-28DECEMBER'){
-        layer = "kwest_corporator_boundary:kwest_coprator_ward-28DECEMBER";
-    currentPos = [19.1233,72.7784]; 
-    var maximumzoom = 19;
-    var opac = 0.6;
-    var zoom = 13;
-    }
+    // else if(layer == 'kwest_corporator_boundary:kwest_coprator_ward-28DECEMBER'){
+    //     layer = "kwest_corporator_boundary:kwest_coprator_ward-28DECEMBER";
+    // currentPos = [19.1233,72.7784]; 
+    // var maximumzoom = 19;
+    // var opac = 0.6;
+    // var zoom = 13;
+    // }
         // console.log(layer)
     var wms_layer = L.tileLayer.wms('https://geoserver2.communitygis.net/geoserver/wms', {
         layers: layer,
         format: 'image/png',
-        // opacity:0.5,
+        opacity:0.6,
         transparent:true,
         maxZoom:maximumzoom,
 
@@ -855,7 +862,12 @@ function Identify(e) {
                 var feature = data.features[0]; // first feature from response
                 console.log(feature);
                 // Set up popup for clicked feature and open it
-                var popup = new L.Popup({
+               
+            }
+        }
+    });
+    
+    var popup = new L.Popup({
                     maxWidth: 300
                 });
                 if (feature.properties.region) {
@@ -886,15 +898,12 @@ function Identify(e) {
                 popup.setLatLng(e.latlng);
                 mymap.openPopup(popup);
                 }
-            }
-        }
-    });
 }
 
     
 function displaypolygon_buildings_noname(){
     let osm_buildings = JSON.parse('{{ geojson|safe }}')
-    // console.log(osm_buildings)
+    console.log(osm_buildings)
     // alert(osm_buildings);
     // mymap.removeLayer(polylayer);
     mymap.setView([19.1467,72.8283],16);
@@ -954,7 +963,7 @@ function displaypolygon_regions_noname(){
 }
 function displaypolygon(){
     // alert("Without updation")
-    let osm_buildings = JSON.parse('{{ geojson|safe }}')
+   
     console.log(osm_buildings)
     // alert(osm_buildings);
     // mymap.removeLayer(polylayer);
@@ -1053,9 +1062,9 @@ function onEachFeatureForPointBB(feature, layer) {
 function NonameBuildingFilter(feature) {
     // alert(layer.properties.name+"="+feature);
     // layer.on({click:onClick })
-    console.log("Name is ");
+    console.log("Name is ",feature.properties.building_name);
     if(feature.properties.building_name !== null) 
-        return false    
+        return false
     else
         return true
 }
