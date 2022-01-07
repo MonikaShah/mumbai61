@@ -1,8 +1,8 @@
 # Create your views here.
 from django.shortcuts import render,redirect,HttpResponse,HttpResponseRedirect
-from .forms import GarbageSegForm,GrievanceForm,Ward61BuildingsOsm2Nov2021Form,WasteSegregationDetailsForm,NewUserForm,EmployeeDetailsForm#,OsmBuildings29Oct21Form
+from .forms import GarbageSegForm,GrievanceForm,Ward61BuildingsOsm2Nov2021Form,WasteSegregationDetailsForm,NewUserForm,EmployeeDetailsForm,KwestBuildingUpdatedForm
 from .models import Report,Rating,WasteSegregationDetails #,OsmBuildings29Oct21
-from map.models import Ward61BuildingsOsm2Nov2021#,Ward61OsmBuildings,
+from map.models import Ward61BuildingsOsm2Nov2021,KwestBuildingUpdated#,Ward61OsmBuildings,
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.core.files.storage import FileSystemStorage
 from django.contrib import messages
@@ -355,7 +355,7 @@ def FeedbackView(request):
 
         return render(request, "feedback_form.html")
 def Buildedit(request, id):  
-    data = Ward61BuildingsOsm2Nov2021.objects.get(osm_id=id)
+    data = KwestBuildingUpdated.objects.get(sac_no=id)
     # docdata  = doctor.objects.get(id=id)  
     # print(data.coll_date)
     context = {
@@ -367,9 +367,9 @@ def Buildedit(request, id):
 
 def Buildupdate(request, id):
     # print(id)
-    data = Ward61BuildingsOsm2Nov2021.objects.get(osm_id=id) 
+    data = KwestBuildingUpdated.objects.get(sac_no=id) 
     # print(data) 
-    form = Ward61BuildingsOsm2Nov2021Form(request.POST, instance=data)  
+    form = KwestBuildingUpdatedForm(request.POST, instance=data)  
     print(form)
     # if form.is_valid(): 
     #     print("success") 

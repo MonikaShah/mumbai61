@@ -25,7 +25,7 @@ SECRET_KEY = ')os$@dpb-xv6c@$3#at+nyf3-90-hhrg1jsh93!d%unqhg+$h2'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['mumbai61.nowastes.in','localhost','127.0.0.1']
+ALLOWED_HOSTS = ['mumbaiward61.nowastes.in','5.161.62.117','localhost','127.0.0.1','*','staging.nowastes.in']
 
 
 # Application definition
@@ -97,7 +97,7 @@ DATABASES = {
     'default': {
         # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'ward61',
+        'NAME': 'ward61_3jan',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
         'HOST': 'localhost',
