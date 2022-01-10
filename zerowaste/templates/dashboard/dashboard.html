@@ -3,6 +3,21 @@
 {% block extra_css %} 
 <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.css">
 <script src="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/bootstrap-slider.min.js" integrity="sha512-f0VlzJbcEB6KiW8ZVtL+5HWPDyW1+nJEjguZ5IVnSQkvZbwBt2RfCBY0CBO1PsMAqxxrG4Di6TfsCPP3ZRwKpA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/css/bootstrap-slider.css" integrity="sha512-SZgE3m1he0aEF3tIxxnz/3mXu/u/wlMNxQSnE0Cni9j/O8Gs+TjM9tm1NX34nRQ7GiLwUEzwuE3Wv2FLz2667w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<style>
+  .slider-selection.tick-slider-selection {
+	background: #ffffff;
+}
+.slider-tick.in-selection{
+  background: #ffffff;
+}
+.slider{
+  width: 100% !important;
+}
+</style>
 {% endblock %}
 
 {% block content%}
@@ -10,18 +25,23 @@
     <div class="name-dropdown d-flex justify-content-center" style="height: 10%;">
         <div class="p-name w-25  text-center p-4">Prabhag 61</div>
         <div class="dropdown  flex-grow-1  text-center p-4">
-            <select name="waste-type" id="waste-type">
-                <option value="Total">Total Waste</option>
-                <option value="Dry">Dry Waste</option>
-                <option value="Wet">Wet Waste</option>
-                <option value="Hazardous">Hazardous Waste</option>
+            <select onchange="changeWasteType()" name="waste-type" id="waste-type">
+                <option value="total">Total Waste</option>
+                <option value="dry">Dry Waste</option>
+                <option value="wet">Wet Waste</option>
+                <option value="hazardous">Hazardous Waste</option>
               </select>
         </div>
     </div>
 
-    <!-- <div class="slider d-flex p-2 justify-content-center bg-warning" style="height: 10%;"> Slider </div> -->
+    <div class="slider d-flex p-2 justify-content-center " style="height: 10%;"> 
+      <input type="text" id="monthSlider" name="somename">
+   
+    </div>
 
-    <div class="map-table d-flex justify-content-center"  style="height: 80%;">
+  
+
+    <div class="map-table d-flex justify-content-center"  style="height: 70%;">
         <div class="map flex-fill bg-primary text-center" id='map'>map</div>
         <div class="summary-table flex-fill bg-secondary text-center" id='summary-table'>
             <table class="display"></table>
@@ -43,9 +63,17 @@
 {% block extra_javascript %} 
 
 
-<script>
+<script type="module">
     let map = L.map('map',{ scrollWheelZoom: false }).setView([19.08,72.9], 11);
 
+    
+    let activatedStyle = {
+    "fillColor": "lightgreen",
+    "weight": 1,
+    "opacity": 0.9,
+    "color": 'white',
+    "fillOpacity": 1
+  }
   let tiles = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
     maxZoom: 18,
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
@@ -54,6 +82,121 @@
     tileSize: 512,
     zoomOffset: -1
   }).addTo(map);
+
+  let regionsGeojson;
+  let addedLayer;
+  let region_agg = {{region|safe}};
+
+  const addProperty = (data, geojson,area) => {
+var x, y;
+for (let i = 0; i < data.length; i++) {
+  for (let j = 0; j < geojson.length; j++) {
+    if(area == "ward"){
+      x = data[i].ward;
+      y = geojson[j].properties.ward;
+    }
+    if(area =="region"){
+      x = data[i].region;
+      y = geojson[j].properties.Name;
+    }
+    else if(area =="region"){
+      x = data[i].region;
+      y = geojson[j].properties.region;
+    }
+// total waste,dry waste,wet waste,hazardous waste
+    if (x === y) {
+      data[i].wet_waste_before_segregation = +data[i].wet_waste_before_segregation__sum;
+      data[i].dry_waste_before_segregation = +data[i].dry_waste_before_segregation__sum;
+      data[i].hazardous_waste = +data[i].hazardous_waste__sum;
+      var total = data[i].hazardous_waste+data[i].dry_waste_before_segregation+data[i].wet_waste_before_segregation;
+      data[i].total_waste = total;
+      geojson[j].properties.total_waste = total;
+      geojson[j].properties.dry_waste = data[i].dry_waste_before_segregation;
+      geojson[j].properties.wet_waste = data[i].wet_waste_before_segregation;
+      geojson[j].properties.hazardous_waste = data[i].hazardous_waste;
+    
+    }
+  }
+}
+return geojson;
+};
+
+  let  fetchData = async() =>{
+  const regionsURL = 'https://gis.communitygis.net/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typename=geonode%3Aregions_6dec211&outputFormat=json&srs=EPSG%3A4326&srsName=EPSG%3A4326'
+
+  SlickLoader.enable();
+  SlickLoader.setText('Dashboard Loading...');
+    try{
+      regionsGeojson = await Promise.all([
+      fetch(regionsURL).then(response => response.json())
+    ]);
+        SlickLoader.disable();
+        return regionsGeojson;
+    }catch(err){
+      console.log(err)
+    }
+  
+  }
+  fetchData().then(geojson =>{
+    renderLayer(geojson,'total',activatedStyle)
+
+    document.getElementById("waste-type").onchange = function() {
+      renderLayer(geojson,this.value,activatedStyle)
+  };
+      })
+
+    // console.log(this.value)
+
+
+  function renderLayer(geojson,selectedWaste,style,onEachFeature){
+  if(addedLayer) map.removeLayer(addedLayer)
+  geojson = addProperty(region_agg,geojson['0'].features,'region')
+  addedLayer = L.geoJSON(geojson,{style:style,onEachFeature:onEachFeatureRegion(selectedWaste)}).addTo(map);
+  map.fitBounds(addedLayer.getBounds());
+
+}
+
+function onEachFeatureRegion(selectedWaste){
+  let dataValue;
+  if(selectedWaste == 'total') dataValue = 'total_waste'
+  else if(selectedWaste == 'dry') dataValue = 'dry_waste'
+  else if(selectedWaste == 'wet') dataValue = 'wet_waste'
+  else if(selectedWaste == 'hazardous') dataValue = 'hazardous_waste'
+
+  return function onEachFeature(feature,layer){
+    // layer.on({
+    //     mouseover: highlightFeature,
+    //     mouseout: resetHighlight,
+    //     click: drilldownToPrabhag,
+    // });
+    layer.bindTooltip("<div style = 'text-transform: capitalize'>"+feature.properties.Name+"</br>"+feature.properties[dataValue]+"</div>",{permanent: true, direction: "center",className: "my-labels-ward"});
+
+  }
+  
+  }
+
+//   let slider = new Slider("#ex13", {
+//     // ticks: [1,2,3,4,5,6],
+//     // ticks_labels: ['Aug',"Sept", "Oct", "Nov", "Dec", "Jan"],
+//     // ticks_snap_bounds: 30
+// });
+
+// var valMonth = tickLabels[$('#monthSlider').slider('getValue')];
+
+var slider = new Slider('#monthSlider',{
+  ticks:[0, 1, 2, 3, 4, 5],
+  ticks_labels:["Aug", "Sep", "Oct", "Nov", "Dec", "Jan"],
+  min:0, 
+  max:5,
+  step:1, 
+  value:0,
+  tooltip:"hide"
+});
+
+slider.on('slideStop', function (ev) {
+    console.log(ev)
+  
+  });
 
 
 </script>

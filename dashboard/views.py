@@ -26,12 +26,12 @@ class Dash(View):
         # kwestgeojson =  serialize('geojson',kwest)
 
 
-        # new_data = json.dumps(list(map_ward), cls=DjangoJSONEncoder)
-        # region_data = json.dumps(list(map_region), cls=DjangoJSONEncoder)
-        # date_region = json.dumps(list(line_date_region), cls=DjangoJSONEncoder)
-        # date_new_data = json.dumps(list(line_region), cls=DjangoJSONEncoder)
+        new_data = json.dumps(list(map_ward), cls=DjangoJSONEncoder)
+        region_data = json.dumps(list(map_region), cls=DjangoJSONEncoder)
+        date_region = json.dumps(list(line_date_region), cls=DjangoJSONEncoder)
+        date_new_data = json.dumps(list(line_region), cls=DjangoJSONEncoder)
 
         # print(map_region)
-        # context = {'ward':new_data,'date_data':date_new_data,"region": region_data,"date_region_line":date_region}
-        return render(request, self.template_name)
+        context = {'ward':new_data,'date_data':date_new_data,"region": region_data,"date_region_line":date_region}
+        return render(request, self.template_name,context)
 
