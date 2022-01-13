@@ -130,12 +130,12 @@
     margin: 10px;
   }
 
-  #checkboxes2 {
+  #checkboxes8 {
     display: none;
     /* border: 1px #dadada solid; */
   }
 
-  #checkboxes2 label {
+  #checkboxes8 label {
     display: block;
     text-decoration-color: blue;
     text-align: left;
@@ -171,62 +171,7 @@
     margin: 10px;
   }
 
-  #checkboxes2 {
-    display: none;
-    /* border: 1px #dadada solid; */
-  }
-
-  #checkboxes2 label {
-    display: block;
-    text-align: left;
-    margin: 10px;
-  }
-
-  #checkboxes5 {
-    display: none;
-    /* border: 1px #dadada solid; */
-  }
-
-  #checkboxes5 label {
-    display: block;
-    text-align: left;
-    margin: 10px;
-  }
-
-  #checkboxes4 {
-    display: none;
-    /* border: 1px #dadada solid; */
-  }
-
-  #checkboxeszone {
-    display: none;
-    /* border: 1px #dadada solid; */
-  }
-
-  #checkboxeszone label {
-    display: block;
-    text-align: left;
-    margin: 10px;
-  }
-
-
-  #radiobutt {
-    display: none;
-  }
-
-  #radiobutt label {
-    display: block;
-    text-align: left;
-    margin: 20px;
-  }
-
-  #checkboxes4 label {
-    display: block;
-    text-align: left;
-    margin: 10px;
-  }
-
-
+  
   /* Popup container - can be anything you want */
   .popup {
     position: relative;
@@ -344,6 +289,15 @@
 
               <div class="checkbox" id="boundary">
                 <label><input type="checkbox" value="{wardKWest}" onchange="getBoundaryru(this)"><span> {% trans "Mumbai Suburban - Ward K-WEST" %}</span></label>
+                <div>
+                  <div id="kwestbuilding">
+                    <div class="checkbox">
+                      <label><input type="checkbox" style = "margin: 0 0 0 17px;"value="{cop}" id="cop" onchange="getBoundaryru(this)"><span> {% trans "Prabhag Boundaries" %}</span></label>
+                    </div>
+                    <div class="checkbox">
+                      <label><input type="checkbox" style = "margin: 0 0 0 17px;" value="{kwest-buildings}" id="buildings" onclick="getBoundaryru(this)"><span> {% trans "K-West Building Points" %}</span></label>
+                    </div>
+                  </div>
               </div>
               <div class="checkbox">
                 <label><input type="checkbox"  value="{61bound}" onchange="getBoundaryru(this)"><span> {% trans "61 Ward" %}</span></label>
@@ -353,27 +307,13 @@
           </div>
 
           <br>
-          <div>
-            <div id="kwestbuilding">
-              <div class="checkbox">
-                <label><input type="checkbox" value="{cop}" id="cop" onchange="getBoundaryru(this)"><span> {% trans "Corporate ward Boundary" %}</span></label>
-              </div>
-              <div class="checkbox">
-                <label><input type="checkbox" value="{kwest-buildings}" id="buildings" onclick="getBoundaryru(this)"><span> {% trans "K-West Building Points" %}</span></label>
-              </div>
-            </div>
+          
             <div class="multiselect">
               <div class="selectBox" onclick="showCheckboxes3('ward61')">
-                <button type="button" class="btn btn-outline-dark" style="width: 90%;font-size:12px; "> {% trans "Ward 61 Landmarks" %}</button>
+                <button type="button" class="btn btn-outline-dark" style="width: 90%;font-size:12px; "> {% trans "Prabhag 061 Landmarks" %}</button>
                 <div class="overSelect"></div>
               </div>
               <div id="checkboxes7">
-                <!--<div class="checkbox">
-                             <label><input type="checkbox" value="{zones}" id ="zones" onchange="getBoundaryru(this)"><span> {% trans "Zones" %}</span></label>
-                          </div> -->
-                <!-- <div class="checkbox">
-                              <label><input type="checkbox" value="{osmbuild}" id ="build_osm" onchange="getBoundaryru(this)"><span> {% trans "Building Polygons" %}</span></label>
-                          </div>  -->
                 <div class="checkbox">
                   <label><input type="checkbox" value="{regions}" id="regions" onchange="getBoundaryru(this)"><span> {% trans "Regions" %}</span></label>
                 </div>
@@ -394,13 +334,13 @@
                 {% endif %}
 
                 <div class="checkbox">
-                  <label><input type="checkbox" value="{sra}" id="sra" disabled onchange="getBoundaryru(this)"><span> {% trans "SRA" %}</span></label>
+                  <label><input type="checkbox" style = "margin: 0 0 0 17px;"value="{sra}" id="sra" disabled onchange="getBoundaryru(this)"><span> {% trans "SRA" %}</span></label>
                 </div>
                 <div class="checkbox">
-                  <label><input type="checkbox" value="{chs}" id="chs" disabled onchange="getBoundaryru(this)"><span> {% trans "CHS" %}</span></label>
+                  <label><input type="checkbox" style = "margin: 0 0 0 17px;"value="{chs}" id="chs" disabled onchange="getBoundaryru(this)"><span> {% trans "CHS" %}</span></label>
                 </div>
                 <div class="checkbox">
-                  <label><input type="checkbox" value="{smpa}" id="smpa" disabled onchange="getBoundaryru(this)"><span>
+                  <label><input type="checkbox" style = "margin: 0 0 0 17px;"value="{smpa}" id="smpa" disabled onchange="getBoundaryru(this)"><span>
                       {% trans "SMPA" %}</span></label>
                 </div>
 
@@ -424,9 +364,22 @@
 
               </div>
               <br>
-              <br>
-
-              <!-- <button type="button" class="btn btn-primary" id='locate'>{% trans "Your Location" %}</button> -->
+              <div class="multiselect">
+                <div class="selectBox" onclick="showCheckboxes3('bwg')">
+                  <button type="button" class="btn btn-outline-dark" style="width: 90%;font-size:12px; "> {% trans "Bulk Waste Generators" %}</button>
+                  <div class="overSelect"></div>
+                </div>
+                <div id="checkboxes8">
+                  <div class="checkbox">
+                    <label><input type="checkbox" value="{bwg_city}" id="bwg-city" onchange="getBoundaryru(this)"><span> {% trans "Mumbai City BWG" %}</span></label>
+                  </div>
+                  <div class="checkbox">
+                    <label><input type="checkbox" value="{bwg_city}" id="bwg-es" onchange="getBoundaryru(this)"><span> {% trans "Mumbai Eastern Suburbs BWG" %}</span></label>
+                  </div>
+                  <div class="checkbox">
+                    <label><input type="checkbox" value="{bwg_city}" id="bwg-ws" onchange="getBoundaryru(this)"><span> {% trans "Mumbai Western Suburbs BWG" %}</span></label>
+                  </div>
+               <!-- <button type="button" class="btn btn-primary" id='locate'>{% trans "Your Location" %}</button> -->
             </div>
 
           </div>
@@ -459,6 +412,10 @@
           }
           else if (th == 'ward61') {
             checkboxes = document.getElementById("checkboxes7");
+
+          }
+          else if (th == 'bwg') {
+            checkboxes = document.getElementById("checkboxes8");
 
           }
           if (!expanded) {
@@ -518,17 +475,21 @@
             else if (boundary == "{regions_noname}")
               displaypolygon(boundary);
             else if (boundary == "{kwest-buildings}")
-            putWMSru("ward61:k-west_building");
+              putWMSru("ward61:k-west_building");
 
 
           } else {
             if (boundary == "{wardKWest}") {
               removeWMS("ward61:k_west_mumbai")
+              removeWMS("ward61:k-west_building")
+              removeWMS("kwest_corporator_ward_31st_dec");
               kwestbuilding.style.display = "none";
               expanded = false;
             }
             else if (boundary == "Mumbai Suburban")
               removeWMS("geonode:maha_taluka_13march2021");
+            else if (boundary == "{kwest-buildings}")
+              removeWMS("ward61:k-west_building");
             else if (boundary == "{regions}")
               removeWMS("ward61:regions_6dec21");
             else if (boundary == "{61bound}")
