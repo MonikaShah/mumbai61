@@ -21,12 +21,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY =  'thisisplaceforsecretkey'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [config('ALLOWED_HOST_1'), config('ALLOWED_HOST_2')]
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -86,16 +86,17 @@ WSGI_APPLICATION = 'mumbai61.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': config('DB_ENGINE'),
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASSWORD'),
-        'HOST': config('DB_HOST'),
-        'PORT': config('DB_PORT'),
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'ward61_3jan',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
+AUTH_USER_MODEL = 'zerowaste.User'
 
 AUTH_PASSWORD_VALIDATORS = [
     {

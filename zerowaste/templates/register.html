@@ -12,5 +12,32 @@
 	</form>
 	<p class="text-center">If you already have an account, <a href="/login">login</a> instead.</p>
 </div>
-
+<script>
+	 $("#id_Ward").change(function() {
+	 var $endpoint = window.location.href // or localhost/interface
+	 var selectedValue = $(this).val();
+	 $('#id_prabhag')
+	 .find('option')
+    .remove()
+    .end()
+	 $name= {
+            
+			'name': selectedValue}
+ 		 $.ajax({
+                method: "GET",
+                url: $endpoint,
+                data: $name,
+                success:function(data) {
+					$.each(data, function(key, value) {   
+						console.log(key,value)
+     $('#id_prabhag')
+	 
+         .append($("<option></option>")
+                    .attr("value", value.prabhag_no)
+                    .text(value.prabhag_no)); 
+});
+				}
+  		});
+})
+</script>
 {% endblock %}

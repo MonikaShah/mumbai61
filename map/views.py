@@ -19,6 +19,7 @@ from django.http import JsonResponse
 def is_ajax(request):
    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 def Map(request):
+   print(request)
    if is_ajax(request=request):
 
    # if request.is_ajax():
