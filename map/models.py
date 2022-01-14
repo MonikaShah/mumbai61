@@ -62,6 +62,26 @@ class Ward61BuildingsOsm2Nov2021(models.Model):
         db_table = 'ward61_buildings_osm_2nov2021'
     def __str__(self):        
         return self.building_name
+class DistinctGeomSacNoMumbai(models.Model):
+    geom = models.PointField(blank=True, null=True)
+    wkt = models.CharField(max_length=    255, blank=True, null=True)
+    building_i = models.CharField(max_length=    255, blank=True, null=True)
+    sac_number = models.CharField(max_length=    255, blank=True, null=True)
+    mcgm_usern = models.CharField(max_length=    255, blank=True, null=True)
+    mcgm_updat = models.CharField(max_length=    255, blank=True, null=True)
+    sac_type = models.CharField(max_length=    255, blank=True, null=True)
+    wing_name = models.CharField(max_length=    255, blank=True, null=True)
+    num_flat = models.CharField(max_length=    255, blank=True, null=True)
+    region = models.CharField(max_length=    255, blank=True, null=True)
+    num_shops = models.CharField(max_length=    255, blank=True, null=True)
+    num_floors = models.CharField(max_length=    255, blank=True, null=True)
+    building_name = models.CharField(max_length=    255, blank=True, null=True)
+    building_type = models.CharField(max_length=    255, blank=True, null=True)
+    village = models.CharField(max_length=    255, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'distinct_geom_sac_no_mumbai'
 
 
 

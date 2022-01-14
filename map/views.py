@@ -1,7 +1,7 @@
 from django.shortcuts import render
 # from zerowaste.models import OsmBuildings29Oct21
 from django.core.serializers import serialize
-from .models import Ward61BuildingsOsm2Nov2021,AllPropDataKwest,KwestBldngSacRelation,KwestBuildingUpdated #,Ward61OsmBuildings,
+from .models import Ward61BuildingsOsm2Nov2021,AllPropDataKwest,KwestBldngSacRelation,KwestBuildingUpdated,DistinctGeomSacNoMumbai #,Ward61OsmBuildings,
 from django.http import JsonResponse
 # Create your views here.
 # from swk.HelloAnalytics import *
@@ -24,7 +24,7 @@ def Map(request):
 
    # if request.is_ajax():
       selected_field1 = request.GET['name']
-      docinfo1 = list(KwestBuildingUpdated.objects.defer('geom').filter(sac_no=selected_field1).values('id','sac_no','section','building_type','building_name','prop_blng_add','fda','address','metered_un','prop_tax_30_3_20','yearly_demand','despute','remarks','village','num_flat','region','num_shops','wing_name'))
+      docinfo1 = list(DistinctGeomSacNoMumbai.objects.defer('geom').filter(sac_number=selected_field1).values('sac_number','building_type','building_name','village','num_flat','region','num_shops','wing_name'))
       jsondata2 =docinfo1[0]
       print(jsondata2)
       return JsonResponse(docinfo1[0])

@@ -2,7 +2,7 @@
 from django.shortcuts import render,redirect,HttpResponse,HttpResponseRedirect
 from .forms import GarbageSegForm,GrievanceForm,Ward61BuildingsOsm2Nov2021Form,WasteSegregationDetailsForm,NewUserForm,EmployeeDetailsForm,KwestBuildingUpdatedForm
 from .models import Report,Rating,WasteSegregationDetails #,OsmBuildings29Oct21
-from map.models import Ward61BuildingsOsm2Nov2021,KwestBuildingUpdated,MumbaiPrabhagBoundaries3Jan2022V2#,Ward61OsmBuildings,
+from map.models import Ward61BuildingsOsm2Nov2021,KwestBuildingUpdated,MumbaiPrabhagBoundaries3Jan2022V2,DistinctGeomSacNoMumbai#,Ward61OsmBuildings,
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.core.files.storage import FileSystemStorage
 from django.contrib import messages
