@@ -11,7 +11,10 @@ class Dash(View):
     template_name = "dashboard/dashboard.html"
 
     def get(self, request, *args, **kwargs):
-        map_ward = WasteSegregationDetails.objects.values('ward').annotate(Sum('wet_waste_before_segregation') , Sum('dry_waste_before_segregation'), Sum('hazardous_waste')  )
+        months = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
+          'August', 'September', 'October', 'November', 'December']
+
+        map_ward = WasteSegregationDetails.objects.values('ward','coll_date').annotate(Sum('wet_waste_before_segregation') , Sum('dry_waste_before_segregation'), Sum('hazardous_waste')  )
         line_region = WasteSegregationDetails.objects.values('coll_date').annotate(Sum('wet_waste_before_segregation') , Sum('dry_waste_before_segregation'), Sum('hazardous_waste')  )
         map_region = WasteSegregationDetails.objects.values('region').annotate(Sum('wet_waste_before_segregation') , Sum('dry_waste_before_segregation'), Sum('hazardous_waste')  )
         line_date_region = WasteSegregationDetails.objects.values('coll_date','region').annotate(Sum('wet_waste_before_segregation') , Sum('dry_waste_before_segregation'), Sum('hazardous_waste')  )
@@ -19,11 +22,13 @@ class Dash(View):
         # data = WasteSegregationDetails.objects.values('region','wet_waste_before_segregation','dry_waste_before_segregation','hazardous_waste')
         # data=WasteSegregationDetails.objects.values('region','wet_waste_before_segregation','dry_waste_before_segregation','hazardous_waste').annotate(Count('region')).order_by()
 
-        test=Ward61BuildingsOsm2Nov2021.objects.defer('geom').values()
-        print (test)
         # kwest  =  AllPropDataKwest.objects.all()
         # geojson=serialize('geojson',obj)
         # kwestgeojson =  serialize('geojson',kwest)
+        max_date = WasteSegregationDetails.objects.latest('coll_date').coll_date
+        month_date = 1
+        
+        last6Months = (months[max_date.month -6:max_date.month])
 
 
         new_data = json.dumps(list(map_ward), cls=DjangoJSONEncoder)

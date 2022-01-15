@@ -23,6 +23,8 @@ urlpatterns = [
     path('', include('zerowaste.urls')),
     path('map/',include('map.urls')),
     path('dash/',include('dashboard.urls')),
+    path('__debug__/', include('debug_toolbar.urls')),
+
     # path('map/',include('map.urls')),
    
 ]
