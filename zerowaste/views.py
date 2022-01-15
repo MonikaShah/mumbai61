@@ -2,7 +2,7 @@
 from django.shortcuts import render,redirect,HttpResponse,HttpResponseRedirect
 from .forms import GarbageSegForm,GrievanceForm,Ward61BuildingsOsm2Nov2021Form,WasteSegregationDetailsForm,NewUserForm,EmployeeDetailsForm,KwestBuildingUpdatedForm
 from .models import Report,Rating,WasteSegregationDetails #,OsmBuildings29Oct21
-from map.models import Ward61BuildingsOsm2Nov2021,KwestBuildingUpdated#,Ward61OsmBuildings,
+from map.models import Ward61BuildingsOsm2Nov2021,KwestBuildingUpdated,MumbaiPrabhagBoundaries3Jan2022V2,DistinctGeomSacNoMumbai#,Ward61OsmBuildings,
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.core.files.storage import FileSystemStorage
 from django.contrib import messages
@@ -14,7 +14,7 @@ from django.contrib.auth.models import Group
 from django.db.models import Sum
 import json
 from django.core.serializers.json import DjangoJSONEncoder
-
+from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail,get_connection
 # from django.contrib import messages
@@ -473,19 +473,32 @@ def load_buildings(request):
     building_name = WasteSegregationDetails.objects.filter(region=region)
     return render(request, 'building_dropdown_list_options.html', {'building_name': building_name})
 
+def is_ajax(request):
+   return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 def register_request(request):
-	if request.method == "POST":
-		form = NewUserForm(request.POST)
-		if form.is_valid():
-			user = form.save()
-			login(request, user)
-			messages.success(request, "Registration successful." )
-			return HttpResponseRedirect('../login/')
-		messages.error(request, "Unsuccessful registration. Invalid information.")
+    print(request)
+    if is_ajax(request=request):
+
+      selected_field1 = request.GET['name']
+      print(selected_field1)
+      prabhag_list = list(MumbaiPrabhagBoundaries3Jan2022V2.objects.filter(ward_id=selected_field1).values('prabhag_no').order_by('prabhag_no'))
+
+   
+      return JsonResponse(prabhag_list, safe=False)
+    
+    if request.method == 'POST':
+        form = NewUserForm(request.POST)
+        print(form)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            messages.success(request, "Registration successful.")
+            return HttpResponseRedirect('../login/')
+        messages.error(request, "Unsuccessful registration. Invalid information.")
         
-        
-	form = NewUserForm()
-	return render (request=request, template_name="register.html", context={"register_form":form})
+    form = NewUserForm()
+    # print(form)
+    return render (request=request, template_name="register.html", context={"register_form":form})
 
 def group(self, user):
     groups = []

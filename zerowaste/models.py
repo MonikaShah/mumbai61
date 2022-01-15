@@ -7,9 +7,46 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 from django.utils.translation import gettext as _
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from map.models import *
 # from django.contrib.gis.db import models
+class CustomAccountManager(BaseUserManager):
+    def create_superuser(self, username, first_name,email, password,Ward, **other_fields):
+        
+        other_fields.setdefault('is_superuser', True)
+
+        
+        if other_fields.get('is_superuser') is not True:
+            raise ValueError(
+                'Superuser must be assigned to is_superuser=True.')
+
+        return self.create_user(username, first_name,email, password,Ward,prabhag,**other_fields)
+
+    def create_user(self, username, first_name,email, password,Ward,prabhag,**other_fields):
+
+        print(prabhag,Ward)
+        user = self.model(username=username,first_name=first_name,email=email,Ward=Ward,prabhag=prabhag, **other_fields)
+        user.set_password(password)
+        user.save()
+        return user
 
 
+class User(AbstractBaseUser, PermissionsMixin):
+    
+    username = models.CharField(max_length=150, unique=True)
+    first_name = models.CharField(max_length=150, blank=True)
+    email = models.EmailField()
+    Ward = models.ForeignKey(MumbaiWardBoundary2Jan2022,to_field='ward_id', on_delete=models.SET_NULL, null=True,default=0,blank=True)
+    prabhag = models.ForeignKey(MumbaiPrabhagBoundaries3Jan2022V2,to_field='prabhag_no', on_delete=models.SET_NULL, null=True,default=0,blank=True)
+    
+
+    objects = CustomAccountManager()
+
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['first_name','Ward']
+
+    def __str__(self):
+        return self.username
 class AuthGroup(models.Model):
     name = models.CharField(unique=True, max_length=150)
 
