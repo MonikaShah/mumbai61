@@ -279,7 +279,7 @@
         <form>
           <div class="multiselect">
           <div class="selectBox" onclick="showCheckboxes3('mumbai')">
-            <button type="button" class="btn btn-outline-dark" style="width: 90%;font-size:12px; "> {% trans "Whole Mumbai" %}</button>
+            <button type="button" class="btn btn-outline-dark" style="width: 90%;font-size:12px; "> {% trans "Mumbai Layers" %}</button>
             <div class="overSelect"></div>
           </div>
 
@@ -298,12 +298,12 @@
          
         <br>
 
-          <div class="multiselect">
+          <!-- <div class="multiselect">
             <div class="selectBox" onclick="showCheckboxes3('geo')">
               <button type="button" class="btn btn-outline-dark" style="width: 90%;font-size:12px; "> {% trans "Geographical Hierarchy" %}</button>
               <div class="overSelect"></div>
-            </div>
-            <div id="checkboxes3">
+            </div> -->
+            <!-- <div id="checkboxes3">
               <div class="checkbox" id="boundary">
                 <label><input type="checkbox" value="Mumbai Suburban" onchange="getBoundaryru(this)"><span> {% trans  "Mumbai Suburban Boundary" %}</span></label>
               </div>
@@ -325,10 +325,10 @@
               </div>
 
             </div>
-          </div>
+          </div> -->
 
-          <br>
-          
+          <!-- <br> -->
+          {% if request.user|has_group:"Editor" %}
             <div class="multiselect">
               <div class="selectBox" onclick="showCheckboxes3('ward61')">
                 <button type="button" class="btn btn-outline-dark" style="width: 90%;font-size:12px; "> {% trans "Prabhag 061 Landmarks" %}</button>
@@ -342,17 +342,17 @@
                   <label><input type="checkbox" value="{buildings}" disabled id="buildings"
                       onchange="getBoundaryru(this)"><span> {% trans "Buildings Clusters" %}</span></label>
                 </div>
-                {% if request.user|has_group:"Editor" %}
+           
                 <div class="checkbox">
                   <label><b><input type="checkbox" value="{buildings}" id="{buildings}"
                         onchange="getBoundaryru(this)"><span> {% trans "Building Polygons" %}</span></b></label>
                 </div>
-                {%else %}
+             
                 <div class="checkbox">
                   <label><input type="checkbox" value="{buildings}" id="buildings" onchange="getBoundaryru(this)"><span>
                       {% trans "Building Polygons" %}</span></label>
                 </div>
-                {% endif %}
+              
 
                 <div class="checkbox">
                   <label><input type="checkbox" style = "margin: 0 0 0 17px;"value="{sra}" id="sra" disabled onchange="getBoundaryru(this)"><span> {% trans "SRA" %}</span></label>
@@ -369,7 +369,7 @@
                   <label><input type="checkbox" value="{roads}" id="roads" onchange="getBoundaryru(this)"><span> {% trans "Roads" %}</span></label>
                 </div>
                 <!--Restricted access  -->
-                {% if request.user|has_group:"Editor" %}
+                <!-- {% if request.user|has_group:"Editor" %}
                 <div class="checkbox">
                   <label><input type="checkbox" value="{buildings_noname}" id="buildings_noname"
                       onchange="getBoundaryru(this)"><span> {% trans "UnNamed Buildings" %}</span></label>
@@ -378,12 +378,13 @@
                   <label><input type="checkbox" value="{regions_noname}" id="regions_noname"
                       onchange="getBoundaryru(this)"><span> {% trans "Unamed Regions in Buildings" %}</span></label>
                 </div>
-                {% endif %}
+                {% endif %} -->
                 <!-- <div class="checkbox">
                             <label><input type="checkbox" value="{roads}" id ="buildingsosm" onchange="displayPoint()"><span> {% trans "OSM BUILDINGS" %}</span></label>
                           </div>                       -->
 
               </div>
+              {% endif %}
               <br>
               <div class="multiselect">
                 <div class="selectBox" onclick="showCheckboxes3('bwg')">
@@ -501,7 +502,17 @@
             else if (boundary == "{regions_noname}")
               displaypolygon(boundary);
             else if (boundary == "{kwest-buildings}")
-              putWMSru("ward61:k-west_building");
+              {  var wms_layer = L.tileLayer.wms('https://geoserver2.communitygis.net/geoserver/wms', {
+                layers: 'Buildings_mumbai:mumbai_buildings_14jan_1',
+                format: 'image/png',
+                transparent: 'true',
+                cql_filter: `sac_number='${boundary}'`,
+
+              });
+              wms_layer.addTo(mymap);
+              newLayerList.push(wms_layer);
+
+              mymap.setView([19.1186, 72.8064], 11);}
               else if (boundary == "{mumbai_ward}")
               putWMSru("Buildings_mumbai:mumbai_ward_boundary_2Jan2022");
               else if (boundary == "{mumbai_prabhag}")
