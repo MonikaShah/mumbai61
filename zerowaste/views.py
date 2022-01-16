@@ -53,11 +53,12 @@ def user_login(request):
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username=username, password=password)
+        print(username,password,user)
         
         if user is not None:
-            if user.is_active: 
-                login(request, user)
-                messages.info(request,_(u"Logged in sucessfully."))
+            # if user.is_active: 
+            login(request, user)
+            messages.info(request,_(u"Logged in sucessfully."))
                 # analytics = initialize_analyticsreporting()
                 # response = get_report(analytics)
                 # recd_response = print_response(response)
@@ -66,11 +67,11 @@ def user_login(request):
                 # }
 
                 # return render(request, "rating.html", context)
-                return render(request,"HomePage.html")
-            else:
-                # Return a 'disabled account' error message
-                messages.info(request,_(u"Your account is disabled"))
-                return HttpResponseRedirect_(u"Your account is disabled.")
+            return render(request,"HomePage.html")
+            # else:
+            #     # Return a 'disabled account' error message
+            #     messages.info(request,_(u"Your account is disabled"))
+            #     return HttpResponseRedirect_(u"Your account is disabled.")
         else:
             # Return an 'invalid login' error message.
             print (_(u"invalid login details for " + username))

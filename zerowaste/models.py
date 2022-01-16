@@ -11,21 +11,27 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseU
 from map.models import *
 # from django.contrib.gis.db import models
 class CustomAccountManager(BaseUserManager):
-    def create_superuser(self, username, first_name,email, password,Ward, **other_fields):
-        
-        other_fields.setdefault('is_superuser', True)
+    def create_superuser(self, username, password, **other_fields):
+        default_ward = MumbaiWardBoundary2Jan2022.objects.get(id=1)
+        default_prabhag = MumbaiPrabhagBoundaries3Jan2022V2.objects.get(id=1)
 
+        other_fields.setdefault('is_staff', True)
+        other_fields.setdefault('is_superuser', True)
+        other_fields.setdefault('is_active', True)
+        other_fields.setdefault('Ward', default_ward)
+        other_fields.setdefault('prabhag', default_prabhag)
+        
         
         if other_fields.get('is_superuser') is not True:
             raise ValueError(
                 'Superuser must be assigned to is_superuser=True.')
 
-        return self.create_user(username, first_name,email, password,Ward,prabhag,**other_fields)
+        return self.create_user(username,password,**other_fields)
 
-    def create_user(self, username, first_name,email, password,Ward,prabhag,**other_fields):
+    def create_user(self, username,password,**other_fields):
 
-        print(prabhag,Ward)
-        user = self.model(username=username,first_name=first_name,email=email,Ward=Ward,prabhag=prabhag, **other_fields)
+        # print(prabhag,Ward)
+        user = self.model(username=username, **other_fields)
         user.set_password(password)
         user.save()
         return user
@@ -34,16 +40,17 @@ class CustomAccountManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     
     username = models.CharField(max_length=150, unique=True)
-    first_name = models.CharField(max_length=150, blank=True)
-    email = models.EmailField()
+    # first_name = models.CharField(max_length=150, blank=True)
+    email = models.EmailField(null=True,blank=True)
     Ward = models.ForeignKey(MumbaiWardBoundary2Jan2022,to_field='ward_id', on_delete=models.SET_NULL, null=True,default=0,blank=True)
     prabhag = models.ForeignKey(MumbaiPrabhagBoundaries3Jan2022V2,to_field='prabhag_no', on_delete=models.SET_NULL, null=True,default=0,blank=True)
-    
+    is_staff = models.BooleanField(default=False,null=True,blank=True)
+    is_active = models.BooleanField(default=False,null=True,blank=True)
 
     objects = CustomAccountManager()
 
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['first_name','Ward']
+    # REQUIRED_FIELDS = ['first_name]
 
     def __str__(self):
         return self.username
