@@ -45,7 +45,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     Ward = models.ForeignKey(MumbaiWardBoundary2Jan2022,to_field='ward_id', on_delete=models.SET_NULL, null=True,default=0,blank=True)
     prabhag = models.ForeignKey(MumbaiPrabhagBoundaries3Jan2022V2,to_field='prabhag_no', on_delete=models.SET_NULL, null=True,default=0,blank=True)
     is_staff = models.BooleanField(default=False,null=True,blank=True)
-    is_active = models.BooleanField(default=False,null=True,blank=True)
+    is_active = models.BooleanField(default=True,null=True,blank=True)
 
     objects = CustomAccountManager()
 
