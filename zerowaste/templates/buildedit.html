@@ -30,10 +30,10 @@
             
         <h3>{% trans "Update Buildings Details" %}</h3>
         </div><hr>
-    <form method="POST" class="post-form" action="/buildupdate/{{data.sac_no}}" style="margin-top: 20px;">
+    <form method="POST" class="post-form" action="/buildupdate/{{data.sac_number}}" style="margin-top: 20px;">
         {% csrf_token %}
         <table class="table-bordered table-striped">
-            <tr><td align ="left"><label class="required">{% trans "SAC Number" %}</label></td><td><input type="text" disabled name="sac" id="id_sac" value="{{ data.sac_no }}" /></td></tr>
+            <tr><td align ="left"><label class="required">{% trans "SAC Number" %}</label></td><td><input type="text" disabled name="sac" id="id_sac" value="{{ data.sac_number }}" /></td></tr>
 
             <tr><td align ="left"><label class="required">{% trans "Region Name:" %}</label></td><td><input type="text" name="region" id="id_region" value="{{ data.region }}" /></td></tr>
             <tr class="blank_row"></tr>

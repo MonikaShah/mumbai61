@@ -1,7 +1,7 @@
 from django.shortcuts import render
 # from zerowaste.models import OsmBuildings29Oct21
 from django.core.serializers import serialize
-from .models import Ward61BuildingsOsm2Nov2021,AllPropDataKwest,KwestBldngSacRelation,KwestBuildingUpdated,DistinctGeomSacNoMumbai #,Ward61OsmBuildings,
+from .models import Ward61BuildingsOsm2Nov2021,MumbaiPrabhagBoundaries3Jan2022V2,MumbaiWardBoundary2Jan2022,DistinctGeomSacNoMumbai,MumbaiBuildingsWardPrabhagwise17Jan #,Ward61OsmBuildings,
 from django.http import JsonResponse
 # Create your views here.
 # from swk.HelloAnalytics import *
@@ -19,15 +19,30 @@ from django.http import JsonResponse
 def is_ajax(request):
    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 def Map(request):
-   print(request)
+   
    if is_ajax(request=request):
+      requestvar = request.get_full_path()
+      print(requestvar)
+        # if(requestvar!=null):
+        # docinfo = []
+        # docinfo1 =[]
+        
+        # 
 
+        # if(requestvar.find('name1')):
+      if "name1" in requestvar:
    # if request.is_ajax():
-      selected_field1 = request.GET['name']
-      docinfo1 = list(DistinctGeomSacNoMumbai.objects.defer('geom').filter(sac_number=selected_field1).values('sac_number','building_type','building_name','village','num_flat','region','num_shops','wing_name'))
-      jsondata2 =docinfo1[0]
-      print(jsondata2)
-      return JsonResponse(docinfo1[0])
+         prabhag = request.GET['name1']
+         data= list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(prabhag_no=prabhag))
+         print(data)
+         geojson=serialize('geojson',data)
+         return JsonResponse(geojson, safe=False)
+      elif "name" in requestvar:
+         selected_field1 = request.GET['name']
+         docinfo1 = list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(sac_number=selected_field1).values('sac_number','building_type','building_name','village','num_flat','region','num_shops','wing_name','prabhag_no','ward_name_','address'))
+         jsondata2 =docinfo1[0]
+         print(jsondata2)
+         return JsonResponse(docinfo1[0])
       
    
       # elif "name" in requestvar:
@@ -45,11 +60,28 @@ def Map(request):
        
    #  obj = Ward61OsmBuildings.objects.all()
    if request.method == 'GET':
-
-      obj=Ward61BuildingsOsm2Nov2021.objects.all()
-      kwest  =  KwestBuildingUpdated.objects.all()
-      geojson=serialize('geojson',obj)
-      kwestgeojson =  serialize('geojson',kwest)
+      # print(request.user.is_anonymous)
+      geojson=[]
+      ward=[]
+      ward_id=[]
+      prabhag_list=[]
+      prabhag=[]
+      if (request.user is not None) and (request.user.is_anonymous is False):
+         ward = request.user.Ward
+         prabhag = request.user.prabhag
+         ward_id = list(MumbaiWardBoundary2Jan2022.objects.filter(ward_name_field= ward))
+         sel_ward = ward_id[0].ward_id
+         prabhag_list = list(MumbaiPrabhagBoundaries3Jan2022V2.objects.filter(ward_id=sel_ward))
+         if  request.user.groups.filter(name="prabhagEditor").exists():
+            data= list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(prabhag_no=prabhag))
+            
+         elif  request.user.groups.filter(name="wardEditor").exists():
+            data= list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(ward_id_2=sel_ward))
+         geojson=serialize('geojson',data)
+         return render(request,"map/map_new.html",{ 'ward':ward,'prabhag_list':prabhag_list,'prabhag':prabhag,'geojson':geojson})
+      # obj=Ward61BuildingsOsm2Nov2021.objects.all()
+      # kwest  =  KwestBuildingUpdated.objects.all()
+      # kwestgeojson =  serialize('geojson',kwest)
 #  print(geojson)
 #  context = 
-   return render(request,"map/map_new.html",{'geojson':geojson,'kwestgeojson':kwestgeojson})
+   return render(request,"map/map_new.html",{ 'ward':ward,'prabhag_list':prabhag_list,'prabhag':prabhag,'geojson':geojson})

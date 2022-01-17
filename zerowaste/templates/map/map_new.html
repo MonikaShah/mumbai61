@@ -142,7 +142,7 @@
     margin: 10px;
   }
 
-  #checkboxes3,#mumbai_whole {
+  #checkboxes3,#mumbai_whole,#ward_check {
     display: none;
     /* border: 1px #dadada solid; */
   }
@@ -160,12 +160,12 @@
     /* border: 1px #dadada solid; */
   }
 
-  #kwestbuilding {
+  #kwestbuilding,#ward_checklist {
     display: none;
 
   }
 
-  #checkboxes7 label,#mumbai_whole label {
+  #checkboxes7 label,#mumbai_whole label,#ward_check label,#ward_check select {
     display: block;
     text-align: left;
     margin: 10px;
@@ -328,15 +328,23 @@
           </div> -->
 
           <!-- <br> -->
-          {% if request.user|has_group:"Editor" %}
-            <div class="multiselect">
-              <div class="selectBox" onclick="showCheckboxes3('ward61')">
-                <button type="button" class="btn btn-outline-dark" style="width: 90%;font-size:12px; "> {% trans "Prabhag 061 Landmarks" %}</button>
-                <div class="overSelect"></div>
-              </div>
-              <div id="checkboxes7">
+          {% if request.user|has_group:"wardEditor" %}
+          <div class="multiselect">
+            <div class="selectBox" onclick="showCheckboxes3('ward')">
+              <button type="button" class="btn btn-outline-dark" id="ward" style="width: 90%;font-size:12px; "> {% trans " " %}</button>
+              <div class="overSelect"></div>
+            </div>
+            <div id="ward_check">
+              <select class="custom-select" name="dist_select" id="prabhaglist">
+                    <option selected disabled>Select Prabhag</option>
+                    {% for dist_select in prabhag_list %}
+                    <option value="{{ dist_select.prabhag_no }}">{{ dist_select.prabhag_no }}
+                    </option>
+                    {% endfor %}
+                </select>
+              <div id="ward_checklist">
                 <div class="checkbox">
-                  <label><input type="checkbox" value="{regions}" id="regions" onchange="getBoundaryru(this)"><span> {% trans "Regions" %}</span></label>
+                  <label><input type="checkbox" value="{regions}" disabled id="regions" onchange="getBoundaryru(this)"><span> {% trans "Regions" %}</span></label>
                 </div>
                 <div class="checkbox">
                   <label><input type="checkbox" value="{buildings}" disabled id="buildings"
@@ -348,10 +356,46 @@
                         onchange="getBoundaryru(this)"><span> {% trans "Building Polygons" %}</span></b></label>
                 </div>
              
+
                 <div class="checkbox">
-                  <label><input type="checkbox" value="{buildings}" id="buildings" onchange="getBoundaryru(this)"><span>
-                      {% trans "Building Polygons" %}</span></label>
+                  <label><input type="checkbox" style = "margin: 0 0 0 17px;"value="{sra}" id="sra" disabled onchange="getBoundaryru(this)"><span> {% trans "SRA" %}</span></label>
                 </div>
+                <div class="checkbox">
+                  <label><input type="checkbox" style = "margin: 0 0 0 17px;"value="{chs}" id="chs" disabled onchange="getBoundaryru(this)"><span> {% trans "CHS" %}</span></label>
+                </div>
+                <div class="checkbox">
+                  <label><input type="checkbox" style = "margin: 0 0 0 17px;"value="{smpa}" id="smpa" disabled onchange="getBoundaryru(this)"><span>
+                      {% trans "SMPA" %}</span></label>
+                </div>
+
+                <div class="checkbox">
+                  <label><input type="checkbox" value="{roads}" id="roads" disabled onchange="getBoundaryru(this)"><span> {% trans "Roads" %}</span></label>
+                </div>
+              </div>
+              </div>
+            {% endif %}
+
+          {% if request.user|has_group:"prabhagEditor" %}
+            <div class="multiselect">
+              <div class="selectBox" onclick="showCheckboxes3('prabhag')">
+                <button type="button" class="btn btn-outline-dark" id="prabhag" style="width: 90%;font-size:12px; "> {% trans " " %}</button>
+                <div class="overSelect"></div>
+              </div>
+              <div id="checkboxes7">
+                <div class="checkbox">
+                  <label><input type="checkbox" value="{regions}" id="regions" disabled onchange="getBoundaryru(this)"><span> {% trans "Regions" %}</span></label>
+                </div>
+                <div class="checkbox">
+                  <label><input type="checkbox" value="{buildings}" disabled id="buildings"
+                      onchange="getBoundaryru(this)"><span> {% trans "Buildings Clusters" %}</span></label>
+                </div>
+           
+                <div class="checkbox">
+                  <label><b><input type="checkbox" value="{buildings}" id="{buildings}"
+                        onchange="getBoundaryru(this)"><span> {% trans "Building Polygons" %}</span></b></label>
+                </div>
+             
+              
               
 
                 <div class="checkbox">
@@ -366,7 +410,7 @@
                 </div>
 
                 <div class="checkbox">
-                  <label><input type="checkbox" value="{roads}" id="roads" onchange="getBoundaryru(this)"><span> {% trans "Roads" %}</span></label>
+                  <label><input type="checkbox" value="{roads}" id="roads" disabled onchange="getBoundaryru(this)"><span> {% trans "Roads" %}</span></label>
                 </div>
                 <!--Restricted access  -->
                 <!-- {% if request.user|has_group:"Editor" %}
@@ -420,20 +464,23 @@
         let wms_legend,popup_layer;
         let newLayerList = [];
         var polylayer;
-    var polylayer2 =[];
-    var kwestlayer = [];
-    var areaLayerList=[];
-    var markerClusters = L.markerClusterGroup({"chunkedLoading": true});
+        var polylayer2 =[];
+        var kwestlayer = [];
+        var areaLayerList=[];
+        var markerClusters = L.markerClusterGroup({"chunkedLoading": true});
 
-    let osm_buildings = JSON.parse('{{ geojson|safe }}')
-
+        let buildings = {{ geojson|safe }};
+        let ward= '{{ward}}';
+        let prabhag = '{{prabhag}}'
+        $('#prabhag').html('Prabhag '+prabhag +' landmarks')
+        $('#ward').html('Ward '+ward +' landmarks')
         function showCheckboxes3(th) {
           let checkboxes;
           if (th == 'geo') {
             checkboxes = document.getElementById("checkboxes3");
 
           }
-          else if (th == 'ward61') {
+          else if (th == 'prabhag') {
             checkboxes = document.getElementById("checkboxes7");
 
           }
@@ -445,6 +492,10 @@
             checkboxes = document.getElementById("mumbai_whole");
 
           }
+          else if (th == 'ward') {
+            checkboxes = document.getElementById("ward_check");
+
+          }
           if (!expanded) {
             checkboxes.style.display = "block";
             expanded = true;
@@ -453,7 +504,28 @@
             expanded = false;
           }
         }
+        $("#prabhaglist").change(function() {
+	 var $endpoint = window.location.href // or localhost/interface
+	 var selectedValue = $(this).val();
+	 
+	 $name1= {
+            
+			'name1': selectedValue}
+ 		 $.ajax({
+                method: "GET",
+                url: $endpoint,
+                data: $name1,
+                success:function(data) {
+			
+					buildings = JSON.parse(data);
+          var checkboxes = document.getElementById("ward_checklist");
 
+          ward_checklist.style.display = "block";
+expanded = true;
+          // displaypolygon('{buildings}');
+				}
+  		});
+})
         function getBoundaryru(obj) {
           
           let boundary = obj.value;
@@ -503,7 +575,7 @@
               displaypolygon(boundary);
             else if (boundary == "{kwest-buildings}")
               {  var wms_layer = L.tileLayer.wms('https://geoserver2.communitygis.net/geoserver/wms', {
-                layers: 'Buildings_mumbai:mumbai_buildings_14jan_1',
+                layers: '	Buildings_mumbai:Buildings_mumbai',
                 format: 'image/png',
                 transparent: 'true',
                 cql_filter: `sac_number='${boundary}'`,
@@ -518,7 +590,7 @@
               else if (boundary == "{mumbai_prabhag}")
               putWMSru("Buildings_mumbai:Corporate_Ward_Boundaries_8jan");
               else if (boundary == "{mumbai_buildings}")
-              putWMSru("Buildings_mumbai:mumbai_buildings_14jan_1");
+              putWMSru("	Buildings_mumbai:Buildings_mumbai");
 
           } else {
             if (boundary == "{wardKWest}") {
@@ -543,7 +615,7 @@
               else if (boundary == "{mumbai_prabhag}")
               removeWMS("Buildings_mumbai:Corporate_Ward_Boundaries_8jan");
               else if (boundary == "{mumbai_buildings}")
-              removeWMS("Buildings_mumbai:mumbai_buildings_14jan_1");
+              removeWMS("	Buildings_mumbai:Buildings_mumbai");
 
             else if (boundary == "{buildings}") {
               removepolylayer(polylayer);
@@ -615,9 +687,9 @@
           }
 else{
   currentPos = [19.1467, 72.8283];
-            var maximumzoom = 16;
+            var maximumzoom = 20;
             var opac = 0.5;
-            var zoom = 10;
+            var zoom = 12;
 }
           var wms_layer = L.tileLayer.wms('https://geoserver2.communitygis.net/geoserver/wms', {
             layers: layer,
@@ -645,19 +717,24 @@ else{
     // if(${feature.properties.name} !== null){
      
     layer.bindPopup(`<div class = 'text-left'><table border =2><tr class="bg-primary"><td colspan=2>Building Information</td></tr>
-    <tr class="table-danger"><td>Building Name:</td><td> ${feature.properties.building_name}</td></tr>
-    <tr><td>Building Type :</td><td>${feature.properties.building_type}</td></tr>
-    <tr class="table-danger"><td>Region:</td><td>${feature.properties.region}</td></tr>
-    <tr><td>Number of Flats :</td><td>${feature.properties.num_flat}</td></tr>
-    <tr class="table-danger"><td>Number of shops :</td><td>${feature.properties.num_shops}</td></tr>
-    <tr><td>Wing Name:</td><td>${feature.properties.wing_name}</td></tr>
-    <tr class="table-danger"><td>Address : </td><td>${feature.properties.addrstreet}</td></tr>
+      <tr><td><b>SAC No.: </b></td><td> ${feature.properties.sac_number} </td></tr>
+                        <tr><td><b>Building Name: </b></td><td>${feature.properties.building_name} </td></tr>
+                        <tr><td><b>Description: </b></td><td>${feature.properties.building_type} </td></tr>
+                        <tr><td><b>Region: </b></td><td> ${feature.properties.region} </td></tr>
+                        <tr><td><b>Number of Flats: </b></td><td> ${feature.properties.num_flat} </td></tr>
+                        <tr><td><b>Number of shops: </b></td><td> ${feature.properties.num_shops} </td></tr>
+                        <tr><td><b>Number of Wings></td><td> ${feature.properties.wing_name} </td></tr>
+                          <tr><td><b>Prabhag: </b></td><td> ${feature.properties.prabhag_no} </td></tr>
+                        <tr><td><b>Ward: </b></td><td>${feature.properties.ward_name_field} </td></tr>
+      
+                        <tr><td><b>Village: </b></td><td> ${feature.properties.village} </td></tr>
+                        <tr><td><b>Address: </b></td><td>${feature.properties.address} </td></tr>
       
 `
 +
 `
 
-     <tr ><td colspan =2><b><center><a href = '/buildedit/${feature.properties.osm_id}' class="btn btn-info">Update Building Details</a></center></td></tr>
+     <tr ><td colspan =2><b><center><a href = '/buildedit/${feature.properties.sac_number}' class="btn btn-info">Update Building Details</a></center></td></tr>
      <tr ><td colspan =2 ><a href='/garbage_seg/' class="btn btn-success">Add Waste Segregation Details</a></td></tr></table>
 
 `+`</table></div>`
@@ -666,14 +743,50 @@ else{
 
 
 }
-function kwestbld(){
-    let kwest_buildings={{ kwestgeojson | safe }};
-    // console.log(kwest_buildings)
-    let kwestBuilding = kwest_buildings.features;
-    // console.log(kwestBuilding)
-    // mymap.setView([19.1467,72.8283],16);
-    // mymap.clearLayers();
-    kwestlayer = L.geoJSON(kwestBuilding,{
+var geojsonMarkerOptions = {
+    radius: 3,
+    fillColor: "#ff7800",
+    color: "#000",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8
+};
+        function displaypolygon(poly_layer){
+          
+   console.log(poly_layer)
+   if(poly_layer == '{buildings}'){
+    console.log(buildings)
+    mymap.setView([19.1467,72.8283],10);
+    polylayer = L.geoJSON(buildings.features, {
+        pointToLayer: function (feature, latlng) {
+        return L.circleMarker(latlng, geojsonMarkerOptions)},
+        style:function(feature){
+          console.log(feature.properties.building_name)
+        switch(feature.properties.building_name){
+          
+            case null :return {color:"#000",fillColor:"red"
+        };
+            case !null:return {color:"#000",fillColor:"green"};
+            // case 'apartments':return {color:"#000",fillColor:"red"};
+            // // case 'yes':return {color:"#c83daa"};
+            // case 'commercial':return {color:"#000",fillColor:"#55e232"};
+            // case 'COMMERCIAL':return {color:"#000",fillColor:"#55e232"};
+            // case 'office':return {color:"#000",fillColor:"#7d3fe9"};
+            // case 'yes':return {color:"#000",fillColor:"#c83daa"};
+            // case 'school':return {color:"#000",fillColor:"#efe115"};
+            }
+        },    
+        
+    
+        onEachFeature: onEachFeatureForPointBB,
+    });
+    
+    
+    // layer ="ward61:osm_buildings_29oct21";
+    // addWMSLegend(layer);
+  }
+  else if(poly_layer == '{buildings_noname}'){
+    polylayer = L.geoJSON(osm_buildings,{
         pointToLayer: function (feature, latlng) {
         return L.circleMarker(latlng, geojsonMarkerOptions)},
         style:function(feature){
@@ -693,64 +806,6 @@ function kwestbld(){
         
     
         onEachFeature: onEachFeatureForUpdationK_west,
-    //     filter: NonameRegionFilter,
-    // }).addTo(mymap);
-    });
-    markerClusters.addLayer(geojson);
-    mymap.addLayer(markerClusters);
-    // console.log("polylayer2 is "+kwestlayer);
-    // kwestlayer.addTo(mymap);
-}
-        function displaypolygon(poly_layer){
-  //  console.log(poly_layer)
-   if(poly_layer == '{buildings}'){
-    
-    mymap.setView([19.1467,72.8283],16);
-    polylayer = L.geoJSON(osm_buildings, 
-    {style:function(feature){
-        switch(feature.properties.building_name){
-            case null:return{color:'#ff0000'};
-            case 'None':return{color:'#ff0000'};
-          }
-        switch(feature.properties.building_type){
-            case 'residence':return {color:"#c83daa"};
-            case 'residential':return {color:"#c83daa"};
-            case 'apartments':return {color:"#c83daa"};
-            // case 'yes':return {color:"#c83daa"};
-            case 'commercial':return {color:"#55e232"};
-            case 'Commercial':return {color:"#55e232"};
-            case 'office':return {color:"#7d3fe9"};
-            case 'yes':return {color:"#1d80e3"};
-            case 'school':return {color:"#efe115"};
-            }
-       
-        },    
-        
-        onEachFeature: onEachFeatureForPointBB,
-    });
-    
-    
-    layer ="ward61:osm_buildings_29oct21";
-    addWMSLegend(layer);
-  }
-  else if(poly_layer == '{buildings_noname}'){
-    polylayer = L.geoJSON(osm_buildings, 
-    {style:function(feature){
-        switch(feature.properties.building_type){
-            case 'residence':return {color:"#FF0000"};
-            case 'residential':return {color:"#FF0000"};
-            case 'apartments':return {color:"#FF0000"};
-            // case 'yes':return {color:"#c83daa"};
-            case 'commercial':return {color:"#FF0000"};
-            case 'Commercial':return {color:"#FF0000"};
-            case 'office':return {color:"#FF0000"};
-            case 'yes':return {color:"#FF0000"};
-            case 'school':return {color:"#FF0000"};
-            }
-        },    
-        
-        onEachFeature: onEachFeatureForPointBB,
-        filter: NonameBuildingFilter,
     });
   }
   else if(poly_layer =="{regions_noname}"){

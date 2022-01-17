@@ -26,6 +26,8 @@ class MumbaiWardBoundary2Jan2022(models.Model):
     class Meta:
         managed = False
         db_table = 'mumbai_ward_boundary_2Jan2022'
+        
+        ordering = ["ward_name_field"]
     def __str__(self):
         return self.ward_name_field
 class MumbaiPrabhagBoundaries3Jan2022V2(models.Model):
@@ -38,6 +40,7 @@ class MumbaiPrabhagBoundaries3Jan2022V2(models.Model):
     class Meta:
         managed = False
         db_table = 'Mumbai_Prabhag_Boundaries_3Jan2022V2'
+        ordering = ["prabhag_no"]
     def __str__(self):
         return self.prabhag_no
 
@@ -64,20 +67,21 @@ class Ward61BuildingsOsm2Nov2021(models.Model):
         return self.building_name
 class DistinctGeomSacNoMumbai(models.Model):
     geom = models.PointField(blank=True, null=True)
-    wkt = models.CharField(max_length=    255, blank=True, null=True)
-    building_i = models.CharField(max_length=    255, blank=True, null=True)
-    sac_number = models.CharField(max_length=    255, blank=True, null=True)
-    mcgm_usern = models.CharField(max_length=    255, blank=True, null=True)
-    mcgm_updat = models.CharField(max_length=    255, blank=True, null=True)
-    sac_type = models.CharField(max_length=    255, blank=True, null=True)
-    wing_name = models.CharField(max_length=    255, blank=True, null=True)
-    num_flat = models.CharField(max_length=    255, blank=True, null=True)
-    region = models.CharField(max_length=    255, blank=True, null=True)
-    num_shops = models.CharField(max_length=    255, blank=True, null=True)
-    num_floors = models.CharField(max_length=    255, blank=True, null=True)
-    building_name = models.CharField(max_length=    255, blank=True, null=True)
-    building_type = models.CharField(max_length=    255, blank=True, null=True)
-    village = models.CharField(max_length=    255, blank=True, null=True)
+    wkt = models.CharField(max_length=255, blank=True, null=True)
+    building_i = models.CharField(max_length=255, blank=True, null=True)
+    sac_number = models.CharField(max_length=255, blank=True, null=True)
+    mcgm_usern = models.CharField(max_length=255, blank=True, null=True)
+    mcgm_updat = models.CharField(max_length=255, blank=True, null=True)
+    sac_type = models.CharField(max_length=255, blank=True, null=True)
+    wing_name = models.CharField(max_length=255, blank=True, null=True)
+    num_flat = models.CharField(max_length=255, blank=True, null=True)
+    region = models.CharField(max_length=255, blank=True, null=True)
+    num_shops = models.CharField(max_length=255, blank=True, null=True)
+    num_floors = models.CharField(max_length=255, blank=True, null=True)
+    building_name = models.CharField(max_length=255, blank=True, null=True)
+    building_type = models.CharField(max_length=255, blank=True, null=True)
+    village = models.CharField(max_length=255, blank=True, null=True)
+    address = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -85,70 +89,40 @@ class DistinctGeomSacNoMumbai(models.Model):
 
 
 
-class AllPropDataKwest(models.Model):
-    # id = models.IntegerField(blank=True, null=True, )
-    sac_no = models.CharField(max_length=255, blank=True, null=True)
-    section = models.CharField(max_length=255, blank=True, null=True)
-    building_type = models.CharField(max_length=255, blank=True, null=True)
-    building_name = models.CharField(max_length=255, blank=True, null=True)
-    prop_blng_add = models.CharField(max_length=255, blank=True, null=True)
-    fda = models.CharField(max_length=255, blank=True, null=True)
-    address = models.CharField(max_length=255, blank=True, null=True)
-    metered_un = models.CharField(max_length=255, blank=True, null=True)
-    prop_tax_30_3_20 = models.CharField(max_length=255, blank=True, null=True)
-    yearly_demand = models.CharField(max_length=255, blank=True, null=True)
-    despute = models.CharField(max_length=255, blank=True, null=True)
-    remarks = models.CharField(max_length=255, blank=True, null=True)
-    geom = models.PointField(blank=True, null=True)
-    village = models.CharField(max_length=255, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'all_prop_data_kwest'
 
 
-class KwestBuildingUpdated(models.Model):
-    # id = models.IntegerField(blank=True, null=True)
-    sac_no = models.CharField(max_length=255, blank=True, null=True)
-    section = models.CharField(max_length=255, blank=True, null=True)
-    building_type = models.CharField(max_length=255, blank=True, null=True)
-    building_name = models.CharField(max_length=255, blank=True, null=True)
-    prop_blng_add = models.CharField(max_length=255, blank=True, null=True)
-    fda = models.CharField(max_length=255, blank=True, null=True)
-    address = models.CharField(max_length=255, blank=True, null=True)
-    metered_un = models.CharField(max_length=255, blank=True, null=True)
-    prop_tax_30_3_20 = models.CharField(max_length=255, blank=True, null=True)
-    yearly_demand = models.CharField(max_length=255, blank=True, null=True)
-    despute = models.CharField(max_length=255, blank=True, null=True)
-    remarks = models.CharField(max_length=255, blank=True, null=True)
-    geom = models.PointField(blank=True, null=True)
-    village = models.CharField(max_length=255, blank=True, null=True)
+
+
+
+class MumbaiBuildingsWardPrabhagwise17Jan(models.Model):
+    geom = models.MultiPointField(blank=True, null=True)
+    wkt = models.CharField(max_length=255, blank=True, null=True)
+    building_i = models.CharField(max_length=255, blank=True, null=True)
+    sac_number = models.CharField(max_length=255, blank=True, null=True)
+    mcgm_usern = models.CharField(max_length=255, blank=True, null=True)
+    mcgm_updat = models.CharField(max_length=255, blank=True, null=True)
+    sac_type = models.CharField(max_length=255, blank=True, null=True)
     wing_name = models.CharField(max_length=255, blank=True, null=True)
     num_flat = models.CharField(max_length=255, blank=True, null=True)
     region = models.CharField(max_length=255, blank=True, null=True)
     num_shops = models.CharField(max_length=255, blank=True, null=True)
     num_floors = models.CharField(max_length=255, blank=True, null=True)
+    building_name = models.CharField(max_length=255, blank=True, null=True)
+    building_type = models.CharField(max_length=255, blank=True, null=True)
+    village = models.CharField(max_length=255, blank=True, null=True)
+    address = models.CharField(max_length=255, blank=True, null=True)
+    before_geo = models.CharField(max_length=254, blank=True, null=True)
+    id1 = models.BigIntegerField(blank=True, null=True)
+    prabhag_no = models.CharField(max_length=254, blank=True, null=True)
+    fid = models.IntegerField(blank=True, null=True)
+    district = models.CharField(max_length=254, blank=True, null=True)
+    ward_id_2 = models.CharField(max_length=254, blank=True, null=True)
+    ward_name_field = models.CharField(db_column='ward_name_', max_length=254, blank=True, null=True)  # Field renamed because it ended with '_'.
 
     class Meta:
         managed = False
-        db_table = 'kwest_building_updated'
+        db_table = 'mumbai_buildings_ward_prabhagwise_17jan'
 
-
-
-class KwestBldngSacRelation(models.Model):
-    geom = models.PointField(blank=True, null=True)
-    wkt = models.CharField(max_length=254, blank=True, null=True)
-    building_i = models.CharField(max_length=254, blank=True, null=True)
-    sac_number = models.CharField(max_length=254, blank=True, null=True)
-    mcgm_usern = models.CharField(max_length=254, blank=True, null=True)
-    mcgm_updat = models.CharField(max_length=254, blank=True, null=True)
-    sac_type = models.CharField(max_length=254, blank=True, null=True)
-    long = models.CharField(max_length=254, blank=True, null=True)
-    lat = models.CharField(max_length=254, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'KWESt_bldng_sac_relation'
 
 
 # class Ward61OsmBuildings1Nov21(models.Model):
