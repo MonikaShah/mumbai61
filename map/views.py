@@ -66,6 +66,7 @@ def Map(request):
       ward_id=[]
       prabhag_list=[]
       prabhag=[]
+      data = []
       if (request.user is not None) and (request.user.is_anonymous is False):
          ward = request.user.Ward
          prabhag = request.user.prabhag
