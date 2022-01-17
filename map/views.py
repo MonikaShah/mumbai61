@@ -34,14 +34,12 @@ def Map(request):
    # if request.is_ajax():
          prabhag = request.GET['name1']
          data= list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(prabhag_no=prabhag))
-         print(data)
          geojson=serialize('geojson',data)
          return JsonResponse(geojson, safe=False)
       elif "name" in requestvar:
          selected_field1 = request.GET['name']
-         docinfo1 = list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(sac_number=selected_field1).values('sac_number','building_type','building_name','village','num_flat','region','num_shops','wing_name','prabhag_no','ward_name_','address'))
+         docinfo1 = list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(sac_number=selected_field1).values('sac_number','building_type','building_name','village','num_flat','region','num_shops','wing_name','prabhag_no','ward_name_field','address'))
          jsondata2 =docinfo1[0]
-         print(jsondata2)
          return JsonResponse(docinfo1[0])
       
    
@@ -64,6 +62,9 @@ def Map(request):
       geojson=[]
       ward=[]
       ward_id=[]
+      ward_list=list(MumbaiWardBoundary2Jan2022.objects.values('ward_id','ward_name_field'))
+      # print(ward_list)
+      prabhag_mumbai=list(MumbaiPrabhagBoundaries3Jan2022V2.objects.values('prabhag_no'))
       prabhag_list=[]
       prabhag=[]
       data = []
@@ -79,10 +80,10 @@ def Map(request):
          elif  request.user.groups.filter(name="wardEditor").exists():
             data= list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(ward_id_2=sel_ward))
          geojson=serialize('geojson',data)
-         return render(request,"map/map_new.html",{ 'ward':ward,'prabhag_list':prabhag_list,'prabhag':prabhag,'geojson':geojson})
+         return render(request,"map/map_new.html",{ 'ward':ward,'prabhag_list':prabhag_list,'prabhag_mumbai':prabhag_mumbai,'ward_list':ward_list,'prabhag':prabhag,'geojson':geojson})
       # obj=Ward61BuildingsOsm2Nov2021.objects.all()
       # kwest  =  KwestBuildingUpdated.objects.all()
       # kwestgeojson =  serialize('geojson',kwest)
 #  print(geojson)
 #  context = 
-   return render(request,"map/map_new.html",{ 'ward':ward,'prabhag_list':prabhag_list,'prabhag':prabhag,'geojson':geojson})
+   return render(request,"map/map_new.html",{ 'ward':ward,'prabhag_list':prabhag_list,'ward_list':ward_list,'prabhag':prabhag,'geojson':geojson,'prabhag_mumbai':prabhag_mumbai})

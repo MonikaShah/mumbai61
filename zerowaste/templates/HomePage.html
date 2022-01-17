@@ -287,13 +287,13 @@ function resetHighlight(e) {
 
 function redirectDashboard(e) {
   let wardNo = parseInt(e.sourceTarget.feature.properties.prabhag_no)
-  if(activatedWards.includes(wardNo))  window.open('dashboard', '_blank');
+  if(activatedWards.includes(wardNo))  window.open('/dashboard', '_blank');
 
 }
 
 function redirectDashboardDropdown() {
   wardNo = document.getElementById('ward').value;  
-  window.open('dashboard', '_blank');
+  window.open('/dashboard', '_blank');
 }
 
 function onEachFeature(feature, layer) {
