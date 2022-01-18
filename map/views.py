@@ -38,7 +38,7 @@ def Map(request):
          return JsonResponse(geojson, safe=False)
       elif "name" in requestvar:
          selected_field1 = request.GET['name']
-         docinfo1 = list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(sac_number=selected_field1).values('sac_number','building_type','building_name','village','num_flat','region','num_shops','wing_name','prabhag_no','ward_name_field','address'))
+         docinfo1 = list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(sac_number=selected_field1).values('sac_number','prop_add','building_type','building_name','village','num_flat','region','num_shops','wing_name','prabhag_no','ward_name_field','address'))
          jsondata2 =docinfo1[0]
          return JsonResponse(docinfo1[0])
       

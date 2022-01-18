@@ -548,6 +548,7 @@
   		});
 })
 function setView1(layerName,val, selectedBoundary) {
+  console.log(layerName,val, selectedBoundary)
     if (area) {
         mymap.removeLayer(area);
     }
@@ -574,6 +575,7 @@ function setView1(layerName,val, selectedBoundary) {
             }
             response.json().then(function(geojsonData) {
                 area = L.geoJson(geojsonData.features)
+                console.log(area)
                 lat = area.getBounds()._northEast.lat
                 lng = area.getBounds()._northEast.lng
                 mymap.setView([lat, lng], 14)
@@ -820,7 +822,8 @@ else{
                         <tr><td><b>Ward: </b></td><td>${feature.properties.ward_name_field} </td></tr>
       
                         <tr><td><b>Village: </b></td><td> ${feature.properties.village} </td></tr>
-                        <tr><td><b>Address: </b></td><td>${feature.properties.address} </td></tr>
+                        <tr><td><b>Billing Address: </b></td><td>${feature.properties.address} </td></tr>
+                        <tr><td><b>Property Address: </b></td><td>${feature.properties.prop_add} </td></tr>
       
 `
 +
@@ -1036,7 +1039,8 @@ function new_ajax(e){
                         "<tr><td><b>Number of shops: </b></td><td>" + data.num_shops + "</td></tr>"+
                         "<tr><td><b>Number of Wings></td><td>" + data.wing_name + "</td></tr>"+
                             "<tr><td><b>Village: </b></td><td>" + data.village + "</td></tr>"+
-                        "<tr><td><b>Address: </b></td><td>" + data.address + "</td></tr>"+
+                        "<tr><td><b>Billing Address: </b></td><td>" + data.address + "</td></tr>"+
+                        "<tr><td><b>Property Address: </b></td><td>" + data.prop_add + "</td></tr>"+
                         // "<tr><td><b>MODIFY: </b></td><td><a href = '/buildedit/"+data.osm_id+"' style ='color:#FF0000;'>" + data.osm_id + "</a></td></tr>"+
                         // "<tr><td rowspan=2><a href = '/buildedit/"+data.osm_id+"' style ='color:#FF0000;'>" + data.osm_id + "</a></td></tr>"+
                         "{% if request.user|has_group:'Editor' %}"+

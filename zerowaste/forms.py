@@ -158,7 +158,7 @@ class MumbaiBuildingsWardPrabhagwise17JanForm(forms.ModelForm):
     class Meta:
         model = MumbaiBuildingsWardPrabhagwise17Jan
         fields = '__all__'
-        exclude = ['geom','wkt','building_i','sac_number','sac_type','before_geo','id1','prabhag_no','fid','district','ward_id','ward_name_field','mcgm_usern','mcgm_updat']
+        exclude = ['geom','wkt','building_i','sac_number','sac_type','before_geo','id1','prabhag_no','description','fid','district','ward_id','ward_name_field','mcgm_usern','mcgm_updat','prop_add']
 
 class WasteSegregationDetailsForm(forms.ModelForm): 
     coll_date  = forms.DateField(label = _(u'Date'),widget=forms.TextInput(attrs={'type': 'date'}),initial=datetime.date.today)

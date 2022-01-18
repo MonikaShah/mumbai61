@@ -118,10 +118,13 @@ class MumbaiBuildingsWardPrabhagwise17Jan(models.Model):
     district = models.CharField(max_length=254, blank=True, null=True)
     ward_id_2 = models.CharField(max_length=254, blank=True, null=True)
     ward_name_field = models.CharField(db_column='ward_name_', max_length=254, blank=True, null=True)  # Field renamed because it ended with '_'.
+    description = models.CharField(max_length=255, blank=True, null=True)
+    prop_add = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'mumbai_buildings_ward_prabhagwise_17jan'
+
 
 
 
