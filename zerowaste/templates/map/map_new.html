@@ -358,7 +358,7 @@
                     </option>
                     {% endfor %}
                 </select>
-              <div id="ward_checklist">
+              <!-- <div id="ward_checklist">
                 <div class="checkbox">
                   <label><input type="checkbox" value="{regions}" disabled id="regions" onchange="getBoundaryru(this)"><span> {% trans "Regions" %}</span></label>
                 </div>
@@ -387,7 +387,7 @@
                 <div class="checkbox">
                   <label><input type="checkbox" value="{roads}" id="roads" disabled onchange="getBoundaryru(this)"><span> {% trans "Roads" %}</span></label>
                 </div>
-              </div>
+              </div> -->
               </div>
             {% endif %}
 
@@ -526,7 +526,9 @@
         $("#prabhaglist").change(function() {
 	 var $endpoint = window.location.href // or localhost/interface
 	 var selectedValue = $(this).val();
-	 
+   console.log(polylayer)
+   if(polylayer != undefined){
+   removepolylayer(polylayer);}
 	 $name1= {
             
 			'name1': selectedValue}
@@ -537,11 +539,11 @@
                 success:function(data) {
 			
 					buildings = JSON.parse(data);
-          var checkboxes = document.getElementById("ward_checklist");
+//           var checkboxes = document.getElementById("ward_checklist");
 
-          ward_checklist.style.display = "block";
-expanded = true;
-          // displaypolygon('{buildings}');
+//           ward_checklist.style.display = "block";
+// expanded = true;
+          displaypolygon('{buildings}');
 				}
   		});
 })
@@ -736,7 +738,7 @@ $("#prabhaglistwms").change(function() {
         }
         function removepolylayer(layer){
     mymap.removeLayer(layer);
-    mymap.removeControl(wms_legend);
+    // mymap.removeControl(wms_legend);
     // mymap.clearLayers();
 }
         function putWMSru(layer) {
