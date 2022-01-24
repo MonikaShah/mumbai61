@@ -389,6 +389,15 @@
                 </div>
               </div> -->
               </div>
+              <div id="checkboxes4">
+                <div class="checkbox">
+                  <label><input type="checkbox" value="{kwestarea}" id="kwestarea" disabled onchange="getBoundaryru(this)"><span> {% trans "K-WestArea" %}</span></label>
+                </div>
+                <div class="checkbox">
+                  <label><input type="checkbox" value="{kwestbeat}"  id="kwestbeat"
+                      onchange="getBoundaryru(this)"><span> {% trans "K-West Beat" %}</span></label>
+                </div>
+              </div>
             {% endif %}
 
           {% if request.user|has_group:"prabhagEditor" %}
