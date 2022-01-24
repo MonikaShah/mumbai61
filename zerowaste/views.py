@@ -155,7 +155,7 @@ def update(request, id):
         } 
     print(GarbageSegForm.errors)
     
-    return render(request,'edit.html',context) 
+    return render(request,'map_new.html',context) 
     
 
 def Graphs(request):
@@ -397,7 +397,7 @@ def Buildupdate(request, id):
         } 
     print(Ward61BuildingsOsm2Nov2021Form.errors)
     
-    return render(request,'buildedit.html',context) 
+    return redirect('/map/')
     
 
 def Buildshow(request):

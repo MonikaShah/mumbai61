@@ -498,8 +498,9 @@
 
         let buildings = {{ geojson|safe }};
         let ward= '{{ward}}';
-        console.log(ward)
-        let prabhag = '{{prabhag}}'
+        let prabhag = '{{prabhag}}';
+        console.log(prabhag)
+
         $('#prabhag').html('Prabhag '+prabhag +' landmarks')
         $('#ward').html('Ward '+ward +' landmarks')
         function showCheckboxes3(th) {
@@ -556,6 +557,7 @@
 				}
   		});
 })
+
 function setView1(layerName,val, selectedBoundary) {
   console.log(layerName,val, selectedBoundary)
     if (area) {
@@ -818,30 +820,69 @@ else{
     // alert(layer.properties.name+"="+feature);
     // layer.on({click:onClick })
     // if(${feature.properties.name} !== null){
-     
-    layer.bindPopup(`<div class = 'text-left'><table border =2><tr class="bg-primary"><td colspan=2>Building Information</td></tr>
-      <tr><td><b>SAC No.: </b></td><td> ${feature.properties.sac_number} </td></tr>
-                        <tr><td><b>Building Name: </b></td><td>${feature.properties.building_name} </td></tr>
-                        <tr><td><b>Description: </b></td><td>${feature.properties.building_type} </td></tr>
-                        <tr><td><b>Region: </b></td><td> ${feature.properties.region} </td></tr>
-                        <tr><td><b>Number of Flats: </b></td><td> ${feature.properties.num_flat} </td></tr>
-                        <tr><td><b>Number of shops: </b></td><td> ${feature.properties.num_shops} </td></tr>
-                        <tr><td><b>Number of Wings></td><td> ${feature.properties.wing_name} </td></tr>
-                          <tr><td><b>Prabhag: </b></td><td> ${feature.properties.prabhag_no} </td></tr>
-                        <tr><td><b>Ward: </b></td><td>${feature.properties.ward_name_field} </td></tr>
-      
-                        <tr><td><b>Village: </b></td><td> ${feature.properties.village} </td></tr>
-                        <tr><td><b>Billing Address: </b></td><td>${feature.properties.address} </td></tr>
-                        <tr><td><b>Property Address: </b></td><td>${feature.properties.prop_add} </td></tr>
-      
-`
-+
-`
+     console.log(feature)
+    layer.bindPopup(`<div class = 'text-left'><form method="POST" class="post-form" action="/buildupdate/${feature.properties.sac_number}" style="margin-top: 20px;">
+        {% csrf_token %}
+        <table class="table-bordered table-striped">
+            <tr><td align ="left"><label class="required">{% trans "SAC Number" %}</label></td><td><input type="text" disabled name="sac" id="id_sac" value="${feature.properties.sac_number}" /></td></tr>
+            <tr><td align ="left"><label class="required">{% trans "Region Name:" %}</label></td><td><input type="text" name="region" id="id_region" value="${feature.properties.region}" /></td></tr>
+            <tr class="blank_row"></tr>
+            
+            <tr><td align ="left"><label class="required">{% trans "Building Name:" %}</label></td><td><input type="text" name="building_name" id="id_building_name" value="${feature.properties.building_name}" /></td></tr>
+            <tr class="blank_row"></tr>
+            <tr><td align ="left">{% trans "Building Type:" %}</td><td><input type="text" name="building_type" id="id_building_type" value="${feature.properties.building_type}" /></td></tr>
+            <tr class="blank_row"></tr>
+            <tr><td align ="left">{% trans "Wing Name:" %}</td><td><input type="text" name="wing_name" id="id_wing_name" value="${feature.properties.wing_name}" /></td></tr>
+            <tr class="blank_row"></tr>
+            <tr><td align ="left"><label class="required">{% trans "Number of Flats:" %}</label></td><td><input type="number" name="num_flat" id="id_num_flat"  value=" ${feature.properties.num_flat}" /></td></tr>
+            <tr class="blank_row"></tr>
+            <tr><td align ="left">{% trans "Number of Shops:" %}</td><td><input type="number" name="num_shops" id="id_num_shops"  value="${feature.properties.num_shops}" /></td></tr>
+            <tr class="blank_row"></tr>
+           
+            
+            <tr><td align ="left">{% trans "Village:" %}</td><td><input type="text" name="village" id="id_village" value="${feature.properties.village}" /></td></tr>
+            <tr class="blank_row"></tr>
+            
+            <tr><td align ="left">{% trans "Billing Address:" %}</td><td><input type="text" name="address" id="id_address" value="${feature.properties.address}" /></td></tr>
+            <tr class="blank_row"></tr>
+            <tr><td align ="left">{% trans "Property Address:" %}</td><td><input type="text" name="address" id="id_address" value="${feature.properties.prop_add}" /></td></tr>
+            <tr class="blank_row"></tr>    
+            
+        </table>
+       
+        <div class="form-group row">
+            <label class="col-sm-1 col-form-label"></label>
+            <div class="col-sm-4">
+                <button type="submit" class="btn btn-success">{% trans "Update" %}</button>
 
-     <tr ><td colspan =2><b><center><a href = '/buildedit/${feature.properties.sac_number}' class="btn btn-info">Update Building Details</a></center></td></tr>
-     <tr ><td colspan =2 ><a href='/garbage_seg/' class="btn btn-success">Add Waste Segregation Details</a></td></tr></table>
+            </div>
+        </div>
+    </form>
+    <tr ><td colspan =2 ><a href='/garbage_seg/' class="btn btn-success">Add Waste Segregation Details</a></td></tr></div>`
+//       <table border =2><tr class="bg-primary"><td colspan=2>Building Information</td></tr>
+//       <tr><td><b>SAC No.: </b></td><td> ${feature.properties.sac_number} </td></tr>
+//                         <tr><td><b>Building Name: </b></td><td>${feature.properties.building_name} </td></tr>
+//                         <tr><td><b>Description: </b></td><td>${feature.properties.building_type} </td></tr>
+//                         <tr><td><b>Region: </b></td><td> ${feature.properties.region} </td></tr>
+//                         <tr><td><b>Number of Flats: </b></td><td> ${feature.properties.num_flat} </td></tr>
+//                         <tr><td><b>Number of shops: </b></td><td> ${feature.properties.num_shops} </td></tr>
+//                         <tr><td><b>Number of Wings></td><td> ${feature.properties.wing_name} </td></tr>
+//                           <tr><td><b>Prabhag: </b></td><td> ${feature.properties.prabhag_no} </td></tr>
+//                         <tr><td><b>Ward: </b></td><td>${feature.properties.ward_name_field} </td></tr>
+      
+//                         <tr><td><b>Village: </b></td><td> ${feature.properties.village} </td></tr>
+//                         <tr><td><b>Billing Address: </b></td><td>${feature.properties.address} </td></tr>
+//                         <tr><td><b>Property Address: </b></td><td>${feature.properties.prop_add} </td></tr>
+      
+// `
+// +
+// `
 
-`+`</table></div>`
+//      <tr ><td colspan =2><b><center><a href = '/buildedit/${feature.properties.sac_number}' class="btn btn-info">Update Building Details</a></center></td></tr>
+//      <tr ><td colspan =2 ><a href='/garbage_seg/' class="btn btn-success">Add Waste Segregation Details</a></td></tr></table>
+
+// `+`</table>
+
 )
  
 
