@@ -651,6 +651,15 @@ $("#prabhaglistwms").change(function() {
 
               mymap.setView([19.1186, 72.8064], 11);
             }
+            else if (boundary == '{kwestbeat}'){
+              var wms_layer = L.tileLayer.wms('https://gis.communitygis.net/layers/', {
+                layers: 'geonode:k_west_beat_22jan',
+                format: 'image/png',
+                transparent: 'true',
+                // cql_filter: `distname='${boundary}'`,
+
+              });
+            }
             else if (boundary == "{wardKWest}") {
               putWMSru("ward61:k_west_mumbai");
               var checkboxes = document.getElementById("kwestbuilding");
