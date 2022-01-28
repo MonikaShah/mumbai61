@@ -36,12 +36,15 @@ class CustomAccountManager(BaseUserManager):
         user.save()
         return user
 
-
+level = (('Ward','Ward'),('Prabhag','Prabhag'))
 class User(AbstractBaseUser, PermissionsMixin):
     
     username = models.CharField(max_length=150, unique=True)
     # first_name = models.CharField(max_length=150, blank=True)
     email = models.EmailField(null=True,blank=True)
+    # area = models.CharField(max_length=9,
+    #               choices=level,
+    #               default='Ward')
     Ward = models.ForeignKey(MumbaiWardBoundary2Jan2022,to_field='ward_id', on_delete=models.SET_NULL, null=True,default=0,blank=True)
     prabhag = models.ForeignKey(MumbaiPrabhagBoundaries3Jan2022V2,to_field='prabhag_no', on_delete=models.SET_NULL, null=True,default=0,blank=True)
     is_staff = models.BooleanField(default=False,null=True,blank=True)
