@@ -387,8 +387,8 @@
                 <div class="checkbox">
                   <label><input type="checkbox" value="{roads}" id="roads" disabled onchange="getBoundaryru(this)"><span> {% trans "Roads" %}</span></label>
                 </div>
-              </div> -->
-              </div>
+              </div> 
+              </div>-->
               <div id="checkboxes4">
                 <div class="checkbox">
                   <label><input type="checkbox" value="{kwestarea}" id="kwestarea" disabled onchange="getBoundaryru(this)"><span> {% trans "K-WestArea" %}</span></label>
@@ -652,15 +652,22 @@ $("#prabhaglistwms").change(function() {
               mymap.setView([19.1186, 72.8064], 11);
             }
             else if (boundary == '{kwestbeat}'){
-              var wms_layer = L.tileLayer.wms('https://gis.communitygis.net/layers/', {
+              // putbeat(kwestbeat);
+              var wms_layer = L.tileLayer.wms('https://gis.communitygis.net/geoserver/wms', {
                 layers: 'geonode:k_west_beat_22jan',
                 format: 'image/png',
                 transparent: 'true',
                 // cql_filter: `distname='${boundary}'`,
 
               });
+              
+              wms_layer.addTo(mymap);
+              newLayerList.push(wms_layer);
+
+              mymap.setView([19.1233, 72.7784], 13);
             }
             else if (boundary == "{wardKWest}") {
+              
               putWMSru("ward61:k_west_mumbai");
               var checkboxes = document.getElementById("kwestbuilding");
 
@@ -754,6 +761,28 @@ $("#prabhaglistwms").change(function() {
     // mymap.removeControl(wms_legend);
     // mymap.clearLayers();
 }
+        // function putbeat(layer) {
+        //   if (layer == "kwestbeat") {
+        //     layer = 'geonode:k_west_beat_22jan';
+        //     // var currentPos = [19.1233, 72.7784];
+        //     var maximumzoom = 19;
+        //     var opac = 0.6;
+        //     var zoom = 13;
+
+        //   }
+        //   var wms_layer1 = L.tileLayer.wms('https://gis.communitygis.net/geoserver/wms', {
+        //     layers: layer,
+        //     format: 'image/png',
+        //     opacity: opac,
+        //     // transparent: true,
+        //     // currentPos:[19.1233, 72.7784],
+        //     maxZoom: maximumzoom,
+
+        //   });
+        //   wms_layer1.addTo(mymap);
+        //   mymap.setView([19.1233, 72.7784], zoom);
+        //   newLayerList.push(wms_layer1);
+        // }
         function putWMSru(layer) {
           if (layer == "ward61:k_west_mumbai") {
             layer = 'ward61:k_west_mumbai';
@@ -789,8 +818,8 @@ $("#prabhaglistwms").change(function() {
             var opac = 0.5;
             var zoom = 16;
           }
-else{
-  currentPos = [19.1467, 72.8283];
+          else{
+            currentPos = [19.1467, 72.8283];
             var maximumzoom = 20;
             var opac = 0.5;
             var zoom = 12;
