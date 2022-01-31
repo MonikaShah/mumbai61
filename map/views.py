@@ -36,13 +36,17 @@ def Map(request):
          data= list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(prabhag_no=prabhag))
          geojson=serialize('geojson',data)
          return JsonResponse(geojson, safe=False)
-      elif "name" in requestvar:
+      
+      elif "name2" in requestvar:
+         sel_ward = request.GET['name2']
+         prabhag_list = list(MumbaiPrabhagBoundaries3Jan2022V2.objects.filter(ward_id=sel_ward).values('prabhag_no','ward_name','ward_id'))
+         print(prabhag_list)
+         return JsonResponse(prabhag_list, safe=False)
+      else:
          selected_field1 = request.GET['name']
          docinfo1 = list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(sac_number=selected_field1).values('sac_number','prop_add','building_type','building_name','village','num_flat','region','num_shops','wing_name','prabhag_no','ward_name_field','address'))
          jsondata2 =docinfo1[0]
          return JsonResponse(docinfo1[0])
-      
-   
       # elif "name" in requestvar:
       #    selected_field = request.GET['name']
       #    print(selected_field)
