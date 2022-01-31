@@ -155,12 +155,17 @@ def update(request, id):
         } 
     print(GarbageSegForm.errors)
     
-    return render(request,'map_new.html',context) 
+    return render(request,'edit.html',context) 
     
 
 def Graphs(request):
     df = pd.read_excel('/home/ubuntu/Documents/ward/MCGM/Ward 61 Waste Collection data.xlsx.xlsx',0)
     df.head(2)
+
+    #Line Chart 
+    x = df['Do you consume bottle gourd (dudhi/lauki)peel?'].value_counts().index
+    fig = px.line(df, x="", y="", color='country')
+    fig.show()
     # Bar chart 
     # fig = px.bar(df, x = 'What is your Weight? (kgs)', y = 'What is your Height? (cms)', title='Weight to Height ratio')
     # plot_div = plot(fig, output_type='div')
@@ -397,7 +402,7 @@ def Buildupdate(request, id):
         } 
     print(Ward61BuildingsOsm2Nov2021Form.errors)
     
-    return redirect('/map/')
+    return render(request,'buildedit.html',context) 
     
 
 def Buildshow(request):
