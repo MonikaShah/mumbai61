@@ -159,7 +159,7 @@ def update(request, id):
     
 
 def Graphs(request):
-    df = pd.read_excel('/home/ubuntu/Documents/Diet-Diversity/Nutri-infotainment survey (Part 1) (Responses).xlsx',0)
+    df = pd.read_excel('/home/ubuntu/Documents/ward/MCGM/Ward 61 Waste Collection data.xlsx.xlsx',0)
     df.head(2)
     # Bar chart 
     # fig = px.bar(df, x = 'What is your Weight? (kgs)', y = 'What is your Height? (cms)', title='Weight to Height ratio')
@@ -560,3 +560,75 @@ def base(request):
     date_new_data = json.dumps(list(line_region), cls=DjangoJSONEncoder)
 
     return render(request,"home.html",{'ward':new_data,'date_data':date_new_data,"region": region_data,"date_region_line":date_region})
+
+def w61wcd(request):
+    df = pd.read_excel('/home/ubuntu/Documents/Diet-Diversity/Nutri-infotainment survey (Part 1) (Responses).xlsx',0)
+    df.head(2)
+    # Bar chart 
+    # fig = px.bar(df, x = 'What is your Weight? (kgs)', y = 'What is your Height? (cms)', title='Weight to Height ratio')
+    # plot_div = plot(fig, output_type='div')
+    
+    # Pie Chart
+    names = ['White colour', 'Orange colour', 'No Ration card']
+    fig = px.pie(df, names=names, title ='Ration card Holders')
+    fig.update_traces(
+        textposition = 'inside',
+        textinfo = 'percent+label'
+    )
+    fig.update_layout(
+        title_font_size = 42
+    )
+
+    # Bar Chart with count and index
+    entities = df['What is your dietary habit?'].value_counts()
+    index = entities.index
+    fig1 = px.bar(df, x=index, y=entities, title= 'Dietary Habits')
+    fig1.update_layout(
+        title_font_size = 42
+    )
+
+     # Grouped Bar Chart with count and index
+
+    fig2 = og.Figure(data=[og.Bar(
+    name = 'Consume Banana Peel',
+    y = df['Do you consume banana peel?'].value_counts(),
+    x = df['Do you consume banana peel?'].value_counts().index
+   ),
+    og.Bar(
+    name = 'Consume Dudhi (Bottle gourd) Peel',
+    y = df['Do you consume bottle gourd (dudhi/lauki)peel?'].value_counts(),
+    x = df['Do you consume bottle gourd (dudhi/lauki)peel?'].value_counts().index
+   )   
+])
+     
+    
+    fig2.update_layout(
+    title ='Consumption of banana and dudhi peel',
+    title_font_size = 42
+    )
+
+    
+
+    alchemyEngine   = create_engine('postgresql://postgres:postgres@localhost/iitb', pool_recycle=3600);
+# Connect to PostgreSQL server
+    dbConnection    = alchemyEngine.connect()
+# Read data from PostgreSQL database table and load into a DataFrame instance
+    dataFrame       = pd.read_sql("select * from \"report\"", dbConnection);
+    pd.set_option('display.expand_frame_repr', False)
+    dataFrame.plot(y="kitchen waste in kg", x="coll_date")
+    plt.show()
+
+    # data = [og.Scatter(x="coll_date")]
+    
+# Print the DataFrame
+    print(dataFrame)
+# Close the database connection
+
+    dbConnection.close()
+
+    plot_div = plot(fig, output_type='div')
+    plot_div1 = plot(fig1,output_type='div')
+    plot_div2 = plot(fig2,output_type='div')
+    # plot_div3 = plot(fig3,output_type='div')
+    return render(request,'w61wcd.html', context={'plot_div': plot_div, 'plot_div1':plot_div1,'plot_div2':plot_div2 })
+    
