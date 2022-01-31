@@ -1,5 +1,15 @@
 {% extends 'base.html' %}
 {% block content %} 
+<style>
+#div_id_Ward{
+	display: none;
+}
+#div_id_prabhag{
+	display: none;
+}
+
+
+</style>
 {% load crispy_forms_tags %}         
 
 <!--Register--> 
@@ -13,6 +23,23 @@
 	<p class="text-center">If you already have an account, <a href="/login">login</a> instead.</p>
 </div>
 <script>
+	$("#id_area").change(function() {
+		var val = $(this).val();
+		console.log(val)
+		if(val == "Ward"){
+
+			div_id_Ward.style.display = "block";
+			div_id_prabhag.style.display = "none";
+		
+		}
+		else if(val == "Prabhag"){
+
+			div_id_Ward.style.display = "block";
+
+			div_id_prabhag.style.display = "block";
+		}
+
+	})
 	 $("#id_Ward").change(function() {
 	 var $endpoint = window.location.href // or localhost/interface
 	 var selectedValue = $(this).val();

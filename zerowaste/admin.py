@@ -9,11 +9,11 @@ from django.forms import TextInput, Textarea
 class UserAdminConfig(UserAdmin):
     model = User
     search_fields = ( 'username', 'email',)
-    list_filter = ( 'username',  'email','Ward','prabhag','is_active', 'is_staff')
+    list_filter = ( 'username',  'email','designation','area','Ward','prabhag','is_active', 'is_staff')
     # ordering = ('-start_date',)
-    list_display = ( 'username', 'email','Ward','prabhag','is_active', 'is_staff')
+    list_display = ( 'username', 'email','designation','area','Ward','prabhag','is_active', 'is_staff')
     fieldsets = (
-        (None, {'fields': ( 'username', 'email','Ward','prabhag')}),
+        (None, {'fields': ( 'username', 'email','designation','area','Ward','prabhag')}),
         ('Group Permissions', {
     'fields': ('groups', 'user_permissions', )
 }),
@@ -24,7 +24,7 @@ class UserAdminConfig(UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ( 'username', 'email','password1', 'password2', 'Ward','prabhag')}
+            'fields': ( 'username', 'email','password1', 'password2','designation','area', 'Ward','prabhag')}
          ),
     )
 

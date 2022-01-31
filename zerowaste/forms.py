@@ -215,7 +215,7 @@ class NewUserForm(UserCreationForm):
 
 	class Meta:
 		model = User
-		fields = ("username", "email",'Ward','prabhag', "password1", "password2")
+		fields = ("username", "email",'designation','area','Ward','prabhag', "password1", "password2")
 
 	def save(self, commit=True):
 		user = super(NewUserForm, self).save(commit=False)
