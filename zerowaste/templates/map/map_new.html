@@ -692,7 +692,7 @@ $("#prabhaglistwms").change(function() {
               mymap.setView([19.1233, 72.7784], 13);
             }
             else if (boundary == '{bwg_city}'){
-              alert(boundary);
+              // alert(boundary);
               // putbeat(kwestbeat);
               var wms_layer = L.tileLayer.wms('https://gis.communitygis.net/geoserver/wms', {
                 layers: 'geonode:BWG_CITY_28Jan',
