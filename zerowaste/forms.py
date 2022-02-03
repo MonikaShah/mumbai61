@@ -143,6 +143,7 @@ class MumbaiBuildingsWardPrabhagwise17JanForm(forms.ModelForm):
     wing_name = forms.CharField(label = _(u'Wing Name'),required=False)
     region = forms.CharField(label = _(u'Region'))
     village = forms.CharField(label = _(u'Village'))
+    validity = forms.CharField(label = _(u'Validity'))
     # councillor_ward = forms.CharField(label = _(u'Councillor Ward'),required=False)
     # admin_ward = forms.CharField(label = _(u'Admin Ward'),required=False)
     # def __str__(self):
@@ -215,7 +216,7 @@ class NewUserForm(UserCreationForm):
 
 	class Meta:
 		model = User
-		fields = ("username", "email",'designation','area','Ward','prabhag', "password1", "password2")
+		fields = ("username", "email",'role','designation','area','Ward','prabhag', "password1", "password2")
 
 	def save(self, commit=True):
 		user = super(NewUserForm, self).save(commit=False)

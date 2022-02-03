@@ -39,11 +39,15 @@ class CustomAccountManager(BaseUserManager):
         return user
 
 level = (('Select','none'),('Ward','Ward'),('Prabhag','Prabhag'))
+role_list = (('Select','none'),('CT','Citizen'),('MO','Municipality Officer'),('SR','Society Representative'),('SV','Student Volunteer'))
 class User(AbstractBaseUser, PermissionsMixin):
     
     username = models.CharField(max_length=150, unique=True)
     # first_name = models.CharField(max_length=150, blank=True)
     email = models.EmailField(null=True,blank=True)
+    role = models.CharField(max_length=9,
+                  choices=role_list,
+                  default='none')
     designation = models.CharField(max_length=150,null=True,blank=True )
     area = models.CharField(max_length=9,
                   choices=level,

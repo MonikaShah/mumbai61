@@ -390,7 +390,7 @@
                   <label><input type="checkbox" value="{roads}" id="roads"  onchange="getBoundaryru(this)"><span> {% trans "Roads" %}</span></label>
                 </div>
               </div> 
-              </div>-->
+              </div>
               <div id="checkboxes4">
                 <div class="checkbox">
                   <label><input type="checkbox" value="{kwestarea}" id="kwestarea" disabled onchange="getBoundaryru(this)"><span> {% trans "K-WestArea" %}</span></label>
@@ -753,7 +753,7 @@ $("#prabhaglistwms").change(function() {
               });
               wms_layer.addTo(mymap);
               newLayerList.push(wms_layer);
-
+              addWMSLegend('Buildings_mumbai:mumbai_roads_prabhag_wise_29jan');
               setView1('Buildings_mumbai:Buildings_mumbai','prabhag_no', prabhag);}
             else if(boundary == '{cop}')
               putWMSru("kwest_corporator_ward_31st_dec");
@@ -930,7 +930,7 @@ else{
     // alert(layer.properties.name+"="+feature);
     // layer.on({click:onClick })
     // if(${feature.properties.name} !== null){
-    layer.bindPopup(`<div class = 'text-left'><form method="POST" class="post-form" action="/buildupdate/${feature.properties.sac_number}" style="margin-top: 20px;">
+    layer.bindPopup(`<div class = 'text-left'><label>Hello ! {{ request.user }}. </lable><form method="POST" class="post-form" action="/buildupdate/${feature.properties.sac_number}" style="margin-top: 20px;">
         {% csrf_token %}
         <table class="table-bordered table-striped">
             <tr><td align ="left"><label class="required">{% trans "SAC Number" %}</label></td><td><input type="text" disabled name="sac" id="id_sac" value="${feature.properties.sac_number}" /></td></tr>
@@ -956,7 +956,8 @@ else{
             <tr class="blank_row"></tr>
             <tr><td align ="left">{% trans "Property Address:" %}</td><td><input type="text" name="address" id="id_address" value="${feature.properties.prop_add}" /></td></tr>
             <tr class="blank_row"></tr>    
-            
+
+        
         </table>
        
         <div class="form-group row">
@@ -966,7 +967,17 @@ else{
 
             </div>
         </div>
+        
     </form>
+    {% if request.user|has_group:"wardEditor" and request.user.role == "MO" %}
+        <div class="form-group row">
+            <label class="col-sm-1 col-form-label"></label>
+            <div class="col-sm-4">
+                <button type="submit" class="btn btn-danger">{% trans "Authenticate" %}</button>
+
+            </div>
+        </div>
+        {% endif %}
     <tr ><td colspan =2 ><a href='/garbage_seg/' class="btn btn-success">Add Waste Segregation Details</a></td></tr></div>`
 //       <table border =2><tr class="bg-primary"><td colspan=2>Building Information</td></tr>
 //       <tr><td><b>SAC No.: </b></td><td> ${feature.properties.sac_number} </td></tr>
