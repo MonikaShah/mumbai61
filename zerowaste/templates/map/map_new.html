@@ -467,10 +467,10 @@
                     <label><input type="checkbox" value="{bwg_city}" id="bwg-city" onchange="getBoundaryru(this)"><span> {% trans "Mumbai City BWG" %}</span></label>
                   </div>
                   <div class="checkbox">
-                    <label><input type="checkbox" value="{bwg_city}" id="bwg-es" onchange="getBoundaryru(this)"><span> {% trans "Mumbai Eastern Suburbs BWG" %}</span></label>
+                    <label><input type="checkbox" value="{bwg_es}" id="bwg-es" onchange="getBoundaryru(this)"><span> {% trans "Mumbai Eastern Suburbs BWG" %}</span></label>
                   </div>
                   <div class="checkbox">
-                    <label><input type="checkbox" value="{bwg_city}" id="bwg-ws" onchange="getBoundaryru(this)"><span> {% trans "Mumbai Western Suburbs BWG" %}</span></label>
+                    <label><input type="checkbox" value="{bwg_ws}" id="bwg-ws" onchange="getBoundaryru(this)"><span> {% trans "Mumbai Western Suburbs BWG" %}</span></label>
                   </div>
                <!-- <button type="button" class="btn btn-primary" id='locate'>{% trans "Your Location" %}</button> -->
             </div>
@@ -660,7 +660,7 @@ $("#prabhaglistwms").change(function() {
         function getBoundaryru(obj) {
           
           let boundary = obj.value;
-          // alert("Logged Out")
+          console.log("boundary is :"+boundary);
           if ($(obj).is(":checked")) {
 
             if (boundary == "Mumbai Suburban") {
@@ -691,6 +691,38 @@ $("#prabhaglistwms").change(function() {
 
               mymap.setView([19.1233, 72.7784], 13);
             }
+            else if (boundary == '{bwg_city}'){
+              // alert(boundary);
+              // putbeat(kwestbeat);
+              var wms_layer = L.tileLayer.wms('https://gis.communitygis.net/geoserver/wms', {
+                layers: 'geonode:BWG_CITY_28Jan',
+                format: 'image/png',
+                transparent: 'true',
+                // cql_filter: `distname='${boundary}'`,
+
+              });
+              
+              wms_layer.addTo(mymap);
+              newLayerList.push(wms_layer);
+
+              mymap.setView([18.9944, 72.8043], 12);
+            }
+            // else if (boundary == '{bwg_ws}'){
+            //   alert(boundary);
+            //   // putbeat(kwestbeat);
+            //   var wms_layer = L.tileLayer.wms('https://gis.communitygis.net/geoserver/wms', {
+            //     layers: 'geonode:BWG_CITY_28Jan',
+            //     format: 'image/png',
+            //     transparent: 'true',
+            //     // cql_filter: `distname='${boundary}'`,
+
+            //   });
+              
+            //   wms_layer.addTo(mymap);
+            //   newLayerList.push(wms_layer);
+
+            //   mymap.setView([19.1233, 72.7784], 13);
+            // }
             else if (boundary == "{wardKWest}") {
               
               putWMSru("ward61:k_west_mumbai");
