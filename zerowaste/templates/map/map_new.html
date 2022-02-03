@@ -297,6 +297,7 @@
                 <div class="checkbox">
                   <label><input type="checkbox" style = "margin: 0 0 0 17px;" value="{DP}" id="DP" onclick="getBoundaryru(this)"><span> {% trans "Development Plan :Whole Mumbai" %}</span></label>
                 </div>
+                <hr><label for="" style="margin: 0 0 0 37px; font-weight: bolder;">Building Points: Selected Parts</label>
               <label for="" style="text-align: center; font-weight: bolder;">Ward wise</label>
               <select class="custom-select" name="dist_select" id="wardlistwms"> 
                 <option selected disabled>Select ward</option>
@@ -312,13 +313,13 @@
               <option value="{{ dist_select.prabhag_no }}">{{ dist_select.prabhag_no }}
               </option>
               {% endfor %} -->
-          </select>
+          </select><hr>
         </div>
         <br>
 
           <div class="multiselect">
             <div class="selectBox" onclick="showCheckboxes3('geo')">
-              <button type="button" class="btn btn-outline-dark" style="width: 90%;font-size:12px; " title="More interactions have been enable here  as a Pilot area"> {% trans "Focus: K-West Pilot" %}</button>
+              <button type="button" class="btn btn-outline-dark addMore" title = "More interactions are enable here  as a Pilot area"style="width: 90%;font-size:12px; " title="More interactions have been enable here  as a Pilot area"> {% trans "Focus: K-West Pilot" %}</button>
               <div class="overSelect"></div>
             </div>
              <div id="checkboxes3">
@@ -340,6 +341,12 @@
               </div>
               <div class="checkbox">
                 <label><input type="checkbox"  value="{61bound}" onchange="getBoundaryru(this)"><span> {% trans "61 Ward" %}</span></label>
+              </div>
+              <div id="checkboxes4">
+                <div class="checkbox">
+                  <label><input type="checkbox" value="{kwestbeat}"  id="kwestbeat"
+                      onchange="getBoundaryru(this)"><span> {% trans "K-West Beat" %}</span></label>
+                </div>
               </div>
 
             </div>
@@ -390,16 +397,8 @@
                   <label><input type="checkbox" value="{roads}" id="roads"  onchange="getBoundaryru(this)"><span> {% trans "Roads" %}</span></label>
                 </div>
               </div> 
-              </div>-->
-              <div id="checkboxes4">
-                <div class="checkbox">
-                  <label><input type="checkbox" value="{kwestarea}" id="kwestarea" disabled onchange="getBoundaryru(this)"><span> {% trans "K-WestArea" %}</span></label>
-                </div>
-                <div class="checkbox">
-                  <label><input type="checkbox" value="{kwestbeat}"  id="kwestbeat"
-                      onchange="getBoundaryru(this)"><span> {% trans "K-West Beat" %}</span></label>
-                </div>
               </div>
+             
             {% endif %}
 
           {% if request.user|has_group:"prabhagEditor" %}
@@ -464,13 +463,13 @@
                 </div>
                 <div id="checkboxes8">
                   <div class="checkbox">
-                    <label><input type="checkbox" value="{bwg_city}" id="bwg-city" onchange="getBoundaryru(this)"><span> {% trans "Mumbai City BWG" %}</span></label>
+                    <label><input type="checkbox" value="{bwg_city}" id="bwg_city" onchange="getBoundaryru(this)"><span> {% trans "Mumbai City BWG" %}</span></label>
                   </div>
                   <div class="checkbox">
-                    <label><input type="checkbox" value="{bwg_es}" id="bwg-es" onchange="getBoundaryru(this)"><span> {% trans "Mumbai Eastern Suburbs BWG" %}</span></label>
+                    <label><input type="checkbox" value="{bwg_es}" id="bwg_es" onchange="getBoundaryru(this)"><span> {% trans "Mumbai Eastern Suburbs BWG" %}</span></label>
                   </div>
                   <div class="checkbox">
-                    <label><input type="checkbox" value="{bwg_ws}" id="bwg-ws" onchange="getBoundaryru(this)"><span> {% trans "Mumbai Western Suburbs BWG" %}</span></label>
+                    <label><input type="checkbox" value="{bwg_ws}" id="bwg_ws" onchange="getBoundaryru(this)"><span> {% trans "Mumbai Western Suburbs BWG" %}</span></label>
                   </div>
                <!-- <button type="button" class="btn btn-primary" id='locate'>{% trans "Your Location" %}</button> -->
             </div>
@@ -677,52 +676,33 @@ $("#prabhaglistwms").change(function() {
               mymap.setView([19.1186, 72.8064], 11);
             }
             else if (boundary == '{kwestbeat}'){
-              // putbeat(kwestbeat);
-              var wms_layer = L.tileLayer.wms('https://gis.communitygis.net/geoserver/wms', {
-                layers: 'geonode:k_west_beat_22jan',
-                format: 'image/png',
-                transparent: 'true',
-                // cql_filter: `distname='${boundary}'`,
+              putfrmgeo(kwestbeat);
+              // var wms_layer = L.tileLayer.wms('https://gis.communitygis.net/geoserver/wms', {
+              //   layers: 'geonode:k_west_beat_22jan',
+              //   format: 'image/png',
+              //   transparent: 'true',
+              //   // cql_filter: `distname='${boundary}'`,
 
-              });
+              // });
               
-              wms_layer.addTo(mymap);
-              newLayerList.push(wms_layer);
+              // wms_layer.addTo(mymap);
+              // newLayerList.push(wms_layer);
 
-              mymap.setView([19.1233, 72.7784], 13);
+              // mymap.setView([19.1233, 72.7784], 13);
             }
             else if (boundary == '{bwg_city}'){
-              // alert(boundary);
-              // putbeat(kwestbeat);
-              var wms_layer = L.tileLayer.wms('https://gis.communitygis.net/geoserver/wms', {
-                layers: 'geonode:BWG_CITY_28Jan',
-                format: 'image/png',
-                transparent: 'true',
-                // cql_filter: `distname='${boundary}'`,
-
-              });
+              putfrmgeo(bwg_city);
+            
+             }
+            else if (boundary == '{bwg_ws}'){
               
-              wms_layer.addTo(mymap);
-              newLayerList.push(wms_layer);
-
-              mymap.setView([18.9944, 72.8043], 12);
+              putfrmgeo(bwg_ws);
+              
             }
-            // else if (boundary == '{bwg_ws}'){
-            //   alert(boundary);
-            //   // putbeat(kwestbeat);
-            //   var wms_layer = L.tileLayer.wms('https://gis.communitygis.net/geoserver/wms', {
-            //     layers: 'geonode:BWG_CITY_28Jan',
-            //     format: 'image/png',
-            //     transparent: 'true',
-            //     // cql_filter: `distname='${boundary}'`,
-
-            //   });
+            else if (boundary == '{bwg_es}'){
               
-            //   wms_layer.addTo(mymap);
-            //   newLayerList.push(wms_layer);
-
-            //   mymap.setView([19.1233, 72.7784], 13);
-            // }
+              putfrmgeo(bwg_es);
+            }
             else if (boundary == "{wardKWest}") {
               
               putWMSru("ward61:k_west_mumbai");
@@ -780,6 +760,14 @@ $("#prabhaglistwms").change(function() {
               kwestbuilding.style.display = "none";
               expanded = false;
             }
+            else if(boundary =="{kwestbeat}")
+                removeWMS("geonode:k_west_beat_22jan")
+            else if (boundary == "{bwg_city}")
+              removeWMS("geonode:BWG_City_29Jan");
+            else if (boundary == "{bwg_ws}")
+              removeWMS("geonode:BWG_WS_27Jan2022");
+            else if (boundary == "{bwg_es}")
+              removeWMS("BWG_ES_29Jan");
             else if (boundary == "Mumbai Suburban")
               removeWMS("geonode:maha_taluka_13march2021");
             else if (boundary == "{kwest-buildings}")
@@ -832,27 +820,78 @@ $("#prabhaglistwms").change(function() {
     // mymap.removeControl(wms_legend);
     // mymap.clearLayers();
 }
-        // function putbeat(layer) {
-        //   if (layer == "kwestbeat") {
-        //     layer = 'geonode:k_west_beat_22jan';
-        //     // var currentPos = [19.1233, 72.7784];
-        //     var maximumzoom = 19;
-        //     var opac = 0.6;
-        //     var zoom = 13;
+        function putfrmgeo(layers) {
+          // alert(layers.value)
+          // alert(layers);
+          var obj = layers.value;
+          console.log(obj);
+          if (obj == "{kwestbeat}") {
+           
+            layer = 'geonode:k_west_beat_22jan';
+            var currentPos = [19.1211, 72.8155];
+            var maximumzoom = 19;
+            // var opac = 0.6;
+            var zoom = 13;
 
-        //   }
-        //   var wms_layer1 = L.tileLayer.wms('https://gis.communitygis.net/geoserver/wms', {
-        //     layers: layer,
-        //     format: 'image/png',
-        //     opacity: opac,
-        //     // transparent: true,
-        //     // currentPos:[19.1233, 72.7784],
-        //     maxZoom: maximumzoom,
+          }
+          else if (obj == '{bwg_city}'){
+            layer = 'geonode:BWG_City_29Jan';
+            var currentPos = [18.9944, 72.8043];
+            var maximumzoom = 19;
+            // tranparent = true;
+            // var opac = 0.7;
+            var zoom = 12;
+            
+      
+          }
+          else if (obj == '{bwg_ws}'){
+            layer = 'geonode:BWG_WS_27Jan2022';
+            var currentPos = [19.1337, 72.7954];
+            var maximumzoom = 19;
+            // var opac = 0.3;
+            var zoom = 13;
+      
+          }
+          else if (obj == '{bwg_es}'){
+            layer = 'BWG_ES_29Jan';
+            var currentPos = [19.1022, 72.8752];
+            var maximumzoom = 19;
+            // var opac = 1.0;
+            var zoom = 13;
+      
+          }
+          var wms_layer1 = L.tileLayer.wms('https://gis.communitygis.net/geoserver/wms', {
+            layers: layer,
+            format: 'image/png',
+            
+            // opacity: opac,
+            transparent: true,
+            currentPos:[19.1233, 72.7784],
+            maxZoom: maximumzoom,
+            // style: subteStyle(feature),
 
-        //   });
-        //   wms_layer1.addTo(mymap);
-        //   mymap.setView([19.1233, 72.7784], zoom);
-        //   newLayerList.push(wms_layer1);
+          });
+          wms_layer1.addTo(mymap);
+          mymap.setView(currentPos, zoom);
+          newLayerList.push(wms_layer1);
+        }
+        // Set up styles for subway lines
+        // function subteStyle(feature) {
+        //   var colorToUse;
+        //   var line = feature.properties.daily_wast;
+        //   alert("in style");
+        //   if (line >= "500") colorToUse = "#46C7FA";
+        //   // else if (line === "LINEA B") colorToUse = "#E81D1A";
+        //   // else if (line === "LINEA C") colorToUse = "#4161BA";
+        //   // else if (line === "LINEA D") colorToUse = "#599C65";
+        //   // else if (line === "LINEA E") colorToUse = "#65018A";
+        //   // else if (line === "LINEA H") colorToUse = "#FAF739";
+        //   else colorToUse = "#000000";
+                    
+        //   return {
+        //     "color": colorToUse,
+        //     "weight": 5
+        //   };
         // }
         function putWMSru(layer) {
           if (layer == "ward61:k_west_mumbai") {
