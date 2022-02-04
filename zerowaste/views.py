@@ -373,11 +373,19 @@ def Buildedit(request, id):
     return render(request,'buildedit.html',context) 
 
 def Buildupdate(request, id):
+    print(id)
+    if('-Auth' in id):
+        data = MumbaiBuildingsWardPrabhagwise17Jan.objects.get(sac_number=id) 
+        # print(data) 
+        form = MumbaiBuildingsWardPrabhagwise17JanForm(request.POST, instance=data)  
+        form.validity = True
+    
+    else:
     # print(id)
-    data = MumbaiBuildingsWardPrabhagwise17Jan.objects.get(sac_number=id) 
-    # print(data) 
-    form = MumbaiBuildingsWardPrabhagwise17JanForm(request.POST, instance=data)  
-    print(form)
+        data = MumbaiBuildingsWardPrabhagwise17Jan.objects.get(sac_number=id) 
+        # print(data) 
+        form = MumbaiBuildingsWardPrabhagwise17JanForm(request.POST, instance=data)  
+        print(form)
     # if form.is_valid(): 
     #     print("success") 
     #     form.save()  
@@ -389,6 +397,7 @@ def Buildupdate(request, id):
     #     'data':data,
     #     #'Visitor_count': recd_response
     # }
+    
     if form.is_valid(): 
         print("success") 
         messages.success(request,"Record Updated")          
@@ -402,7 +411,7 @@ def Buildupdate(request, id):
         } 
     print(Ward61BuildingsOsm2Nov2021Form.errors)
     
-    return render(request,'buildedit.html',context) 
+    return redirect("/map/") 
     
 
 def Buildshow(request):
