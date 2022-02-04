@@ -373,19 +373,34 @@ def Buildedit(request, id):
     return render(request,'buildedit.html',context) 
 
 def Buildupdate(request, id):
-    print(id)
-    if('-Auth' in id):
-        data = MumbaiBuildingsWardPrabhagwise17Jan.objects.get(sac_number=id) 
-        # print(data) 
-        form = MumbaiBuildingsWardPrabhagwise17JanForm(request.POST, instance=data)  
-        form.validity = True
+    print(request,"in bildupdate")
+    if is_ajax(request=request):
+        id = id.split("-")
+        id1 = id[0]
+        print("id1")
+
+        MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(sac_number=id1).update(validity=True)
+
+        return JsonResponse("Success", safe=False)
+    # if('-Auth' in id):
+    #     print(request.POST)
+    #     id = id.split("-")
+    #     id1 = id[0]
+    #     print("id1")
+
+    #     MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(sac_number=id1).update(validity=True)
+        
+        
+        # form = MumbaiBuildingsWardPrabhagwise17JanForm(request.POST, instance=data)
+        # print(form)  
     
-    else:
-    # print(id)
+    if request.method == 'POST':
+        print(request.POST)
         data = MumbaiBuildingsWardPrabhagwise17Jan.objects.get(sac_number=id) 
         # print(data) 
         form = MumbaiBuildingsWardPrabhagwise17JanForm(request.POST, instance=data)  
         print(form)
+        
     # if form.is_valid(): 
     #     print("success") 
     #     form.save()  
@@ -398,17 +413,14 @@ def Buildupdate(request, id):
     #     #'Visitor_count': recd_response
     # }
     
-    if form.is_valid(): 
-        print("success") 
-        messages.success(request,"Record Updated")          
-        form.save()          
-    else:
-        print("fail")
-        messages.error(request,"Sorry! Record not updated. Try Again")
-    context = {
-        'data':data,
-        #'Visitor_count': recd_response
-        } 
+        if form.is_valid(): 
+            print("success") 
+            messages.success(request,"Record Updated")          
+            form.save()          
+        else:
+            print("fail")
+            messages.error(request,"Sorry! Record not updated. Try Again")
+    
     print(Ward61BuildingsOsm2Nov2021Form.errors)
     
     return redirect("/map/") 

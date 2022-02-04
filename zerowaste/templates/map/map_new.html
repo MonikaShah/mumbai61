@@ -991,7 +991,7 @@ else{
           addWMSLegend(layer);
         }
         function onEachFeatureForPointBB(feature, layer) {
-         
+         console.log(feature.properties.validity)
     // alert(layer.properties.name+"="+feature);
     // layer.on({click:onClick })
     // if(${feature.properties.name} !== null){
@@ -1022,10 +1022,10 @@ else{
             <tr><td align ="left">{% trans "Property Address:" %}</td><td><input type="text" name="address" id="id_address" value="${feature.properties.prop_add}" /></td></tr>
             <tr class="blank_row"></tr>    
             {% if request.user.role != "MO" and request.user|has_group:"wardEditor" or request.user|has_group:"prabhagEditor" %}
-            <tr><td align ="left">{% trans "Validity:" %}</td><td><input type="text" disabled name="validity" id="id_validity" value="${feature.properties.validity}" /></td></tr>
+            <tr ><td align ="left">{% trans "Validity:" %}</td><td><input type="text" disabled name="validity" id="id_validity" value="${feature.properties.validity}" /></td></tr>
             <tr class="blank_row"></tr>    
             {% elif request.user.role == "MO" and request.user|has_group:"wardEditor" or request.user|has_group:"prabhagEditor" %}
-            <tr><td align ="left">{% trans "Validity:" %}</td><td><input type="text" disabled name="validity" id="id_validity" value="${feature.properties.validity}" /></td></tr>
+            <tr ><td align ="left">{% trans "Validity:" %}</td><td><input type="text" disabled name="validity" id="id_validity" value="${feature.properties.validity}" /></td></tr>
             <tr class="blank_row"></tr>  
             {% endif %}
         </table>
@@ -1043,7 +1043,15 @@ else{
         <div class="form-group row">
             <label class="col-sm-1 col-form-label"></label>
             <div class="col-sm-4">
-                <button type="submit" class="btn btn-danger" id="validate" onclick=""window.location.href = '/buildupdate/${feature.properties.sac_number}'">{% trans "Authenticate" %}</button>
+           
+                <button type="submit"
+                {% if "{{ ${feature.properties.validity} }}" == "true" %} 
+                class="btn btn-success"
+                {% else%}
+                class="btn btn-danger"
+              
+                {% endif%}
+                 id="validate" onclick="validate('${feature.properties.sac_number}')">{% trans "Authenticate" %}</button>
 
             </div>
         </div>
@@ -1074,9 +1082,7 @@ else{
 // `+`</table>
 
 )
- 
-// if(feature.properties.validity == "True"){
-//             document.getElementById("validate").classList.add('btn-success');
+
 
 // document.getElementById("validate").classList.remove('btn-danger');
 //           }
@@ -1085,6 +1091,22 @@ else{
 
 // document.getElementById("validate").classList.remove('btn-success');
 //           }
+
+}
+function validate(id){
+  let url_val = "/buildupdate/"+id+"-Auth";
+  console.log(id,url_val)
+
+  $.ajax({
+        url: url_val,
+        dataType: "json",
+        type: "GET",
+        success: function(data) {
+          $('#validate').removeClass('btn-danger');
+$('#validate').addClass('btn-success');
+        }
+      })
+
 
 }
 var geojsonMarkerOptions = {
