@@ -994,6 +994,9 @@ else{
         function onEachFeatureForPointBB(feature, layer) {
          let variable = feature.properties.validity;
          console.log(typeof variable)
+var today = new Date();
+let time = today.toLocaleString();
+
          // alert(layer.properties.name+"="+feature);
     // layer.on({click:onClick })
     // if(${feature.properties.name} !== null){
@@ -1030,6 +1033,12 @@ else{
             <tr hidden><td align ="left">{% trans "Validity:" %}</td><td><input type="text" disabled name="validity" id="id_validity" value="${feature.properties.validity}" /></td></tr>
             <tr class="blank_row"></tr>  
             {% endif %}
+            <tr disaled><td align ="left">{% trans "Updated By:" %}</td><td> <input type="text" name="updated_by" required   id="id_updated_by" value="{{ request.user.username }}" /></td></tr>
+            <tr class="blank_row"></tr>
+            <tr disabled><td align ="left">{% trans "Update Time:" %}</td><td><input type="text" name="update_time" required   id="id_update_time" value="${time}" /></td></tr>
+            <tr class="blank_row"></tr>
+            <tr><td align ="left">{% trans "Device IP:" %}</td><td><input type="text" name="device_ip" disabled id="id_device_ip" value="" /></td></tr>
+            <tr class="blank_row"></tr>
         </table>
        
         <div class="form-group row">
@@ -1084,7 +1093,6 @@ else{
 // `+`</table>
 
 )
-
 
 // document.getElementById("validate").classList.remove('btn-danger');
 //           }

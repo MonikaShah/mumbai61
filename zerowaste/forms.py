@@ -145,6 +145,10 @@ class MumbaiBuildingsWardPrabhagwise17JanForm(forms.ModelForm):
     village = forms.CharField(label = _(u'Village'),required=False)
 
     validity = forms.CharField(label = _(u'Validity'),required=False)
+    updated_by = forms.CharField(label = _(u'Updated By'))
+    update_time = forms.CharField(label = _(u'Update Time'))
+    device_ip = forms.CharField(label = _(u'Device IP'),required=False)
+
     
     def clean(self):
         cleaned_data = self.cleaned_data
