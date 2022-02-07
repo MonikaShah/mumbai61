@@ -81,6 +81,7 @@
 
   /* css to customize Leaflet default styles  */
   .leaflet-popup-content-wrapper {
+    width: 400px;
     background: rgba(0, 0, 0, 0.9);
     color: #ffffff;
   }
@@ -194,7 +195,7 @@
   /* The actual popup */
   .popup .popuptext {
     visibility: hidden;
-    width: 160px;
+    width: 260px;
     background-color: #555;
     color: #fff;
     text-align: center;
@@ -991,8 +992,9 @@ else{
           addWMSLegend(layer);
         }
         function onEachFeatureForPointBB(feature, layer) {
-         console.log(feature.properties.validity)
-    // alert(layer.properties.name+"="+feature);
+         let variable = feature.properties.validity;
+         console.log(typeof variable)
+         // alert(layer.properties.name+"="+feature);
     // layer.on({click:onClick })
     // if(${feature.properties.name} !== null){
     layer.bindPopup(`<div class = 'text-left'><label>Hello ! {{ request.user.role }}. </lable><form method="POST" class="post-form" action="/buildupdate/${feature.properties.sac_number}" style="margin-top: 20px; width:400px">
@@ -1008,7 +1010,7 @@ else{
             <tr class="blank_row"></tr>
             <tr><td align ="left">{% trans "Wing Name:" %}</td><td><input type="text" name="wing_name" id="id_wing_name" value="${feature.properties.wing_name}" /></td></tr>
             <tr class="blank_row"></tr>
-            <tr><td align ="left"><label>{% trans "Number of Flats:" %}</label></td><td><input type="number" name="num_flat" id="id_num_flat"  value=" ${feature.properties.num_flat}" /></td></tr>
+            <tr><td align ="left"><label>{% trans "Number of Flats:" %}</label></td><td><input type="number" name="num_flat" id="id_num_flat"  value="${feature.properties.num_flat}" /></td></tr>
             <tr class="blank_row"></tr>
             <tr><td align ="left">{% trans "Number of Shops:" %}</td><td><input type="number" name="num_shops" id="id_num_shops"  value="${feature.properties.num_shops}" /></td></tr>
             <tr class="blank_row"></tr>
@@ -1022,10 +1024,10 @@ else{
             <tr><td align ="left">{% trans "Property Address:" %}</td><td><input type="text" name="address" id="id_address" value="${feature.properties.prop_add}" /></td></tr>
             <tr class="blank_row"></tr>    
             {% if request.user.role != "MO" and request.user|has_group:"wardEditor" or request.user|has_group:"prabhagEditor" %}
-            <tr ><td align ="left">{% trans "Validity:" %}</td><td><input type="text" disabled name="validity" id="id_validity" value="${feature.properties.validity}" /></td></tr>
+            <tr hidden><td align ="left">{% trans "Validity:" %}</td><td><input type="text" disabled name="validity" id="id_validity" value="${feature.properties.validity}" /></td></tr>
             <tr class="blank_row"></tr>    
             {% elif request.user.role == "MO" and request.user|has_group:"wardEditor" or request.user|has_group:"prabhagEditor" %}
-            <tr ><td align ="left">{% trans "Validity:" %}</td><td><input type="text" disabled name="validity" id="id_validity" value="${feature.properties.validity}" /></td></tr>
+            <tr hidden><td align ="left">{% trans "Validity:" %}</td><td><input type="text" disabled name="validity" id="id_validity" value="${feature.properties.validity}" /></td></tr>
             <tr class="blank_row"></tr>  
             {% endif %}
         </table>
@@ -1045,9 +1047,9 @@ else{
             <div class="col-sm-4">
            
                 <button type="submit"
-                {% if "{{ ${feature.properties.validity} }}" == "true" %} 
+                {% if '${variable}' is true %} 
                 class="btn btn-success"
-                {% else%}
+                {% elif '${variable}' is not false %}
                 class="btn btn-danger"
               
                 {% endif%}

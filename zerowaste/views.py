@@ -373,7 +373,7 @@ def Buildedit(request, id):
     return render(request,'buildedit.html',context) 
 
 def Buildupdate(request, id):
-    print(request,"in bildupdate")
+    
     if is_ajax(request=request):
         id = id.split("-")
         id1 = id[0]
@@ -395,7 +395,7 @@ def Buildupdate(request, id):
         # print(form)  
     
     if request.method == 'POST':
-        print(request.POST)
+        print("post")
         data = MumbaiBuildingsWardPrabhagwise17Jan.objects.get(sac_number=id) 
         # print(data) 
         form = MumbaiBuildingsWardPrabhagwise17JanForm(request.POST, instance=data)  
