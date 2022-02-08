@@ -107,13 +107,30 @@
     .select {
         background: rgb(255, 255, 255);
     }
-    
+    #container1 {
+  position: relative;
+}
+#legend,#my_dataviz{
+position:absolute;
+background-color: white;
+z-index:999;
+left:90%;
+top:50%;
+}
+circle{
+    z-index: 999;
+}
     .select.highlight {
         background: rgb(26, 255, 0);
     }
 </style>
 {% block extra_map_css%} {% endblock extra_map_css%} {% endblock extra_css%} {% block content%}
-<div id="mapdiv" class="col-md-12"></div>
+<div id='container1'>
+<div id="mapdiv"></div>
+<!-- <div id="legend" style="display: none;">
+    <svg id="my_dataviz"></svg>
+  </div> -->
+</div>
 {% block map_content%} {% endblock map_content%} {% endblock content%} {% block extra_javascript %}
 
 <script>

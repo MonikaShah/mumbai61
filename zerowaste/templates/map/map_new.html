@@ -141,6 +141,9 @@
     /* border: 1px #dadada solid; */
   }
 
+  .legend{
+    background-color: white;
+  }
   #checkboxes8 label {
     display: block;
     text-decoration-color: blue;
@@ -280,9 +283,9 @@
   </div>
   {% endif %}
 
-
 <div id="side-bar" style="background-color:  rgba(255, 255, 255);">
   <!-- side-bar container -->
+
   <div class="mobileShow">
 
     <div style="text-align: center">
@@ -509,9 +512,14 @@
       {% block extra_map_javascript%}
 <script src="{% static 'tilelayer-leaflet.js' %}"></script>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+      <script src="https://d3js.org/d3.v4.js"></script>
+
+<!-- Create a div where the graph will take place -->
+
       <script>
         let area = null;
-
+        let windowWidth = window.screen.width;
+  let windowHeight = window.screen.height;
         let expanded = false;
         console.log(expanded)
         let wms_legend,popup_layer;
@@ -1094,6 +1102,7 @@ let time = today.toLocaleString();
 
 )
 
+
 // document.getElementById("validate").classList.remove('btn-danger');
 //           }
 //           else{
@@ -1134,25 +1143,70 @@ function displaypolygon(poly_layer){
         pointToLayer: function (feature, latlng) {
         return L.circleMarker(latlng, geojsonMarkerOptions)},
         style:function(feature){
-        switch(feature.properties.building_name){
-          
-            case null :return {color:"#000",fillColor:"red"
-        };
-        default:return {color:"#000",fillColor:"green"};
-            // case 'apartments':return {color:"#000",fillColor:"red"};
-            // // case 'yes':return {color:"#c83daa"};
-            // case 'commercial':return {color:"#000",fillColor:"#55e232"};
-            // case 'COMMERCIAL':return {color:"#000",fillColor:"#55e232"};
-            // case 'office':return {color:"#000",fillColor:"#7d3fe9"};
-            // case 'yes':return {color:"#000",fillColor:"#c83daa"};
-            // case 'school':return {color:"#000",fillColor:"#efe115"};
+          if(feature.properties.validity == true){
+            if(feature.properties.building_name != null & feature.properties.num_flat != null & feature.properties.address !=null &feature.properties.prop_add != null & feature.properties.building_type != null & feature.properties.wing_name !=null & feature.properties.num_shops != null & feature.properties.village != null){
+              return {color:"#000",fillColor:"green"};
             }
+            else  if(feature.properties.building_name != null){
+              return {color:"#000",fillColor:"yellow"};
+            }
+            }
+            else if(feature.properties.validity == false){
+              if(feature.properties.building_name != null){
+                return {color:"#000",fillColor:"grey"};
+              }
+              else if(feature.properties.building_name == null){
+                return {color:"#000",fillColor:"red"};
+              }
+            }
+
+        // switch(feature.properties.validity){
+          
+        //     case false :
+        //       switch(feature.properties.building_name){ case null:return {color:"#000",fillColor:"red"};}
+        //     case true:
+              
+        
+        // default:return {color:"#000",fillColor:"green"};
+        //     // case 'apartments':return {color:"#000",fillColor:"red"};
+        //     // // case 'yes':return {color:"#c83daa"};
+        //     // case 'commercial':return {color:"#000",fillColor:"#55e232"};
+        //     // case 'COMMERCIAL':return {color:"#000",fillColor:"#55e232"};
+        //     // case 'office':return {color:"#000",fillColor:"#7d3fe9"};
+        //     // case 'yes':return {color:"#000",fillColor:"#c83daa"};
+        //     // case 'school':return {color:"#000",fillColor:"#efe115"};
+        //     }
         },    
         
     
         onEachFeature: onEachFeatureForPointBB,
     });
-    
+    // legend.style.display = "block";
+
+// var svg = d3.select("#my_dataviz")
+
+// // Handmade legend
+// svg.append("circle").attr("cx",windowWidth/1.1).attr("cy",windowHeight/2).attr("r", 6).style("fill", "#69b3a2")
+// svg.append("circle").attr("cx",200).attr("cy",160).attr("r", 6).style("fill", "#404080")
+// svg.append("text").attr("x", 220).attr("y", 130).text("variable A").style("font-size", "15px").attr("alignment-baseline","middle")
+// svg.append("text").attr("x", 220).attr("y", 160).text("variable B").style("font-size", "15px").attr("alignment-baseline","middle")
+var legend = L.control({position: 'bottomright'});
+legend.onAdd = function(mymap) {
+  var div = L.DomUtil.create("div", "legend");
+  div.innerHTML += "<h4>Color codes</h4>";
+  div.innerHTML += '<i style="background: green"></i><span>Complete and authorized data.</span><br>';
+  div.innerHTML += '<i style="background: yellow"></i><span>Incomplete and authorized data.</span><br>';
+  div.innerHTML += '<i style="background: grey"></i><span>Building name available and unauthorized data.</span><br>';
+  div.innerHTML += '<i style="background: red"></i><span>Building name is null and unauthorized data.</span><br>';
+  // div.innerHTML += '<i style="background: #FFFFFF"></i><span>Ice</span><br>';
+  // div.innerHTML += '<i class="icon" style="background-image: url(https://d30y9cdsu7xlg0.cloudfront.net/png/194515-200.png);background-repeat: no-repeat;"></i><span>Grænse</span><br>';
+  
+  
+
+  return div;
+};
+
+legend.addTo(mymap);
     setView1('Buildings_mumbai:Buildings_mumbai','prabhag_no', prabhag);
     // layer ="ward61:osm_buildings_29oct21";
     // addWMSLegend(layer);
