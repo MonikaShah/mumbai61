@@ -376,7 +376,7 @@ def table(request,id):
     df =json.dumps(data) 
 # saving the dataframe 
     # df.to_csv('GFG.csv') 
-    return render(request,'table.html',{'data':df,'id':id}) 
+    return render(request,'table.html',{'data':df,'id':id,'prabhag':prabhag}) 
 
 def Buildedit(request, id):  
     data = MumbaiBuildingsWardPrabhagwise17Jan.objects.get(sac_number=id)

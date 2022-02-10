@@ -4,6 +4,12 @@
 
 <style>
 /*  */
+Label{
+    font-size: larger;
+    color: darkblue;
+    font-weight: bolder;
+    text-decoration: underline;
+}
   th, td, p, input {
             font:14px Verdana;
         }
@@ -33,7 +39,9 @@
     
         {% endfor %}
     </ul>
-    {% endif %} 
+    {% endif %}  
+    <div class="container text-center">
+    <Label class="text-center"> Prabhag {{ prabhag }} Building Points</Label></div>
         <!-- <input type="button" onclick="CreateTableFromJSON()" value="Create Table From JSON" /> -->
         <p id="showData"></p>
 </div>
