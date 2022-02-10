@@ -23,6 +23,8 @@ import pandas as pd
 import psycopg2
 import matplotlib.pyplot as plt
 from sqlalchemy import create_engine
+from operator import is_not
+from functools import partial
 
 import plotly.express as px
 from plotly.offline import plot
@@ -360,6 +362,22 @@ def FeedbackView(request):
         
 
         return render(request, "feedback_form.html")
+def table(request,id):
+    requestvar = request.get_full_path()
+    print(requestvar)
+    data = []
+    prabhag = id[-3:]
+    if '_up' in id:
+        data = list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(prabhag_no=prabhag , update_time__contains =yesterday).values('sac_number','prop_add','building_type','building_name','village','num_flat','region','num_shops','wing_name','prabhag_no','ward_name_field','address','validity'))
+
+    else:
+        data= list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(prabhag_no=prabhag).values('sac_number','prop_add','building_type','building_name','village','num_flat','region','num_shops','wing_name','prabhag_no','ward_name_field','address','validity'))
+    # df = pd.DataFrame(data) 
+    df =json.dumps(data) 
+# saving the dataframe 
+    # df.to_csv('GFG.csv') 
+    return render(request,'table.html',{'data':df,'id':id,'prabhag':prabhag}) 
+
 def Buildedit(request, id):  
     data = MumbaiBuildingsWardPrabhagwise17Jan.objects.get(sac_number=id)
     print(data)

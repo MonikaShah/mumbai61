@@ -3,6 +3,11 @@ from django.shortcuts import render
 from django.core.serializers import serialize
 from .models import Ward61BuildingsOsm2Nov2021,MumbaiPrabhagBoundaries3Jan2022V2,MumbaiWardBoundary2Jan2022,DistinctGeomSacNoMumbai,MumbaiBuildingsWardPrabhagwise17Jan #,Ward61OsmBuildings,
 from django.http import JsonResponse
+from datetime import date
+from datetime import timedelta
+ 
+# Get today's date
+
 # Create your views here.
 # from swk.HelloAnalytics import *
 
@@ -31,11 +36,23 @@ def Map(request):
 
         # if(requestvar.find('name1')):
       if "name1" in requestvar:
+         today = date.today()
+         
+         # Yesterday date
+         yesterday = today - timedelta(days = 1)
    # if request.is_ajax():
          prabhag = request.GET['name1']
          data= list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(prabhag_no=prabhag))
+         data_up = list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(prabhag_no=prabhag , update_time__contains =yesterday))
          geojson=serialize('geojson',data)
-         return JsonResponse(geojson, safe=False)
+
+         if(len(data_up)>1):
+            geojson1=serialize('geojson',data_up)
+
+            return JsonResponse(geojson,geojson1, safe=False)
+         else:
+            return JsonResponse(geojson, safe=False)
+
       
       elif "name2" in requestvar:
          sel_ward = request.GET['name2']
