@@ -29,6 +29,7 @@ urlpatterns = [
     path("emp_detail/",views.emp_detail, name="emp_detail"),
     path("resources/",views.resources, name="resources"),
     # path("showgroup/",views.group,name="showgroup"),
+    path("w61wcd/",views.w61wcd, name="w61wcd"),
 ]
 
 
