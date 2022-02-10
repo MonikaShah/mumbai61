@@ -532,6 +532,7 @@
 
       <script>
         let area = null;
+        var legend;
         let windowWidth = window.screen.width;
   let windowHeight = window.screen.height;
         let expanded = false;
@@ -845,6 +846,13 @@ $("#prabhaglistwms").change(function() {
               removeWMS("Buildings_mumbai:mumbai_city_3july2021");
             else if (boundary == "{buildings}") {
               removepolylayer(polylayer);
+  mymap.removeControl(legend);
+
+            }
+            else if (boundary == "{buildings_up}") {
+              removepolylayer(polylayer);
+  mymap.removeControl(legend);
+
             }
             else if (boundary == "{roads}")
               removeWMS('Buildings_mumbai:mumbai_roads_prabhag_wise_29jan');
@@ -1215,13 +1223,12 @@ building_data = buildings.features;
     // legend.style.display = "block";
 
 // var svg = d3.select("#my_dataviz")
-
 // // Handmade legend
 // svg.append("circle").attr("cx",windowWidth/1.1).attr("cy",windowHeight/2).attr("r", 6).style("fill", "#69b3a2")
 // svg.append("circle").attr("cx",200).attr("cy",160).attr("r", 6).style("fill", "#404080")
 // svg.append("text").attr("x", 220).attr("y", 130).text("variable A").style("font-size", "15px").attr("alignment-baseline","middle")
 // svg.append("text").attr("x", 220).attr("y", 160).text("variable B").style("font-size", "15px").attr("alignment-baseline","middle")
-var legend = L.control({position: 'bottomright'});
+ legend = L.control({position: 'bottomright'});
 legend.onAdd = function(mymap) {
   var div = L.DomUtil.create("div", "legend");
   div.innerHTML += "<h4>Color codes</h4>";
@@ -1247,7 +1254,7 @@ div.appendChild(btn);
 
   return div;
 };
-
+console.log(legend,"legend");
 legend.addTo(mymap);
     setView1('Buildings_mumbai:Buildings_mumbai','prabhag_no', prabhag);
   polylayer.addTo(mymap);
@@ -1259,7 +1266,7 @@ legend.addTo(mymap);
   }
   else if(building_data == undefined){
     polylayer = {};
-var legend = L.control({position: 'bottomright'});
+ legend = L.control({position: 'bottomright'});
 legend.onAdd = function(mymap) {
   var div = L.DomUtil.create("div", "legend");
   div.innerHTML += "<h4>No Data updated yesterday.</h4>";
