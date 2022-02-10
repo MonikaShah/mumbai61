@@ -12,6 +12,7 @@ urlpatterns = [
     # path('show/',views.show, name='show'),  
     # path('graphs/',views.Graphs, name='graphs'),  
     path('grievance/',views.Grievance, name = 'grievance'),
+    path('table/<str:id>',views.table, name = 'table'),
     path('edit/<int:id>', views.edit),  
     path('update/<int:id>', views.update),  
     path('delete/<int:id>', views.destroy),  

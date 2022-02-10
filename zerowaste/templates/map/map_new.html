@@ -128,13 +128,20 @@
     display: none;
     /* border: 1px #dadada solid; */
   }
-
+#side-bar{
+  min-height: min-content;
+  max-height: 700px;
+  overflow-y: scroll;
+}
   #checkboxes label {
     display: block;
     text-decoration-color: blue;
     text-align: left;
     margin: 10px;
   }
+#formBtn{
+  background-color: rgb(131, 131, 241)78, 78, 80);
+}
 
   #checkboxes8 {
     display: none;
@@ -408,6 +415,13 @@
                   <label><b><input type="checkbox" value="{buildings}" id="{buildings}"
                         onchange="getBoundaryru(this)"><span> {% trans "Building Points:Prabhag Wise" %}</span></b></label>
                 </div>
+                {% if request.user.role == "MO" and request.user|has_group:"wardEditor" or request.user|has_group:"prabhagEditor" %}
+
+                <div class="checkbox">
+                  <label><b><input type="checkbox" value="{buildings_up}" id="{buildings}"
+                        onchange="getBoundaryru(this)"><span> {% trans "Building Points:updated Yesterday" %}</span></b></label>
+                </div>
+                {% endif %}
              
 
                 <div class="checkbox">
@@ -529,7 +543,7 @@
         var kwestlayer = [];
         var areaLayerList=[];
         var markerClusters = L.markerClusterGroup({"chunkedLoading": true});
-
+        let buildings_up = [];
         let buildings = {{ geojson|safe }};
         let ward= '{{ward}}';
         let prabhag = '{{prabhag}}';
@@ -590,7 +604,14 @@
                 url: $endpoint,
                 data: $name1,
                 success:function(data) {
-					buildings = JSON.parse(data);
+                  if(data.length == 2){
+                    buildings = JSON.parse(data.geojson);
+          buildings_up = JSON.parse(data.geojson1)
+                  }
+					else{
+            buildings = JSON.parse(data);
+buildings_up = [];
+          }
           // prabhag= data.prabhag;
 //           var checkboxes = document.getElementById("ward_checklist");
 
@@ -753,6 +774,8 @@ $("#prabhaglistwms").change(function() {
               putWMSru("ward61:regions_6dec21");
 
             else if (boundary == "{buildings}")
+              displaypolygon(boundary);
+            else if (boundary == "{buildings_up}")
               displaypolygon(boundary);
             else if (boundary == "{buildings_only}")
               putWMSru("ward61:osm_buildings_29oct21");
@@ -1137,9 +1160,17 @@ var geojsonMarkerOptions = {
     fillOpacity: 0.8
 };
 function displaypolygon(poly_layer){
-   if(poly_layer == '{buildings}'){
-    
-    polylayer = L.geoJSON(buildings.features, {
+  let building_data;
+  if(poly_layer == '{buildings}' ){
+building_data = buildings.features;
+
+  }
+  else if(poly_layer=='{buildings_up}'){
+    building_data= buildings_up.features;
+  }
+
+  if(building_data !=undefined){
+    polylayer = L.geoJSON(building_data, {
         pointToLayer: function (feature, latlng) {
         return L.circleMarker(latlng, geojsonMarkerOptions)},
         style:function(feature){
@@ -1198,6 +1229,17 @@ legend.onAdd = function(mymap) {
   div.innerHTML += '<i style="background: yellow"></i><span>Incomplete and authorized data.</span><br>';
   div.innerHTML += '<i style="background: grey"></i><span>Building name available and unauthorized data.</span><br>';
   div.innerHTML += '<i style="background: red"></i><span>Building name is null and unauthorized data.</span><br>';
+  let btn = document.createElement("button");
+btn.innerHTML = "View as table";
+btn.id = "formBtn";
+
+btn.onclick = function () {
+  let url_val = "/table/"+poly_layer+prabhag;
+
+  window.location.href = url_val;
+
+};
+div.appendChild(btn);
   // div.innerHTML += '<i style="background: #FFFFFF"></i><span>Ice</span><br>';
   // div.innerHTML += '<i class="icon" style="background-image: url(https://d30y9cdsu7xlg0.cloudfront.net/png/194515-200.png);background-repeat: no-repeat;"></i><span>Grænse</span><br>';
   
@@ -1208,8 +1250,30 @@ legend.onAdd = function(mymap) {
 
 legend.addTo(mymap);
     setView1('Buildings_mumbai:Buildings_mumbai','prabhag_no', prabhag);
+  polylayer.addTo(mymap);
+
     // layer ="ward61:osm_buildings_29oct21";
     // addWMSLegend(layer);
+  
+
+  }
+  else if(building_data == undefined){
+    polylayer = {};
+var legend = L.control({position: 'bottomright'});
+legend.onAdd = function(mymap) {
+  var div = L.DomUtil.create("div", "legend");
+  div.innerHTML += "<h4>No Data updated yesterday.</h4>";
+  // div += '<button style="background: #FFFFFF"></i><span>Ice</span><br>';
+  // div.innerHTML += '<i class="icon" style="background-image: url(https://d30y9cdsu7xlg0.cloudfront.net/png/194515-200.png);background-repeat: no-repeat;"></i><span>Grænse</span><br>';
+  
+  
+
+  return div;
+};
+
+legend.addTo(mymap);
+    setView1('Buildings_mumbai:Buildings_mumbai','prabhag_no', prabhag);
+    polylayer.addTo(mymap);
   }
   else if(poly_layer == '{buildings_noname}'){
     polylayer = L.geoJSON(osm_buildings,{
@@ -1255,7 +1319,6 @@ legend.addTo(mymap);
     // }).addTo(mymap);
     });
   }
-  polylayer.addTo(mymap);
 }
         function addWMSLegend(layer) {
           lagendGraphic = "https://geoserver2.communitygis.net/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=" + layer + "&LEGEND_OPTIONS=forceLabels:on";
