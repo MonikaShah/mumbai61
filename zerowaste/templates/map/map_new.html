@@ -939,6 +939,11 @@ $("#prabhaglistwms").change(function() {
           mymap.setView(currentPos, zoom);
           newLayerList.push(wms_layer1);
           popup_layer = "https://gis.communitygis.net/geoserver/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetFeatureInfo&LAYERS=" + wms_layer1.options.layers + "&QUERY_LAYERS=" + wms_layer1.options.layers;
+          if (wms_legend) {
+            mymap.removeControl(wms_legend);
+          }
+          addWMSLegendfromgeo(layer);
+          // alert(layer);
         }
         // Set up styles for subway lines
         // function subteStyle(feature) {
@@ -1328,15 +1333,14 @@ legend.addTo(mymap);
   }
 }
         function addWMSLegend(layer) {
-          let btn = document.createElement("button");
-          btn.innerHTML = "Click Me";
-          // document.body.appendChild(btn);
-          $('.leaflet-control-wms-legend leaflet-control').attr('id','legend-div');
-          document.getElementById(legend-div).appendChild(btn);
-          // leaflet-control-wms-legend leaflet-control
-          
+               
           lagendGraphic = "https://geoserver2.communitygis.net/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=" + layer + "&LEGEND_OPTIONS=forceLabels:on";
           wms_legend = L.wmsLegend(lagendGraphic);
+                  
+        }
+        function addWMSLegendfromgeo(layer) {                  
+          lagendGraphic = "https://gis.communitygis.net/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=" + layer + "&LEGEND_OPTIONS=forceLabels:on";
+          wms_legend = L.wmsLegend(lagendGraphic);         
         }
         function NonameBuildingFilter(feature) {
     // alert(layer.properties.name+"="+feature);
