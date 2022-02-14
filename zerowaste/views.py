@@ -393,6 +393,7 @@ def Buildedit(request, id):
 def Buildupdate(request, id):
     
     if is_ajax(request=request):
+        print(id)
         id = id.split("-")
         id1 = id[0]
         print("id1")
@@ -415,7 +416,7 @@ def Buildupdate(request, id):
     if request.method == 'POST':
         print("post")
         data = MumbaiBuildingsWardPrabhagwise17Jan.objects.get(sac_number=id) 
-        # print(data) 
+        print(data) 
         form = MumbaiBuildingsWardPrabhagwise17JanForm(request.POST, instance=data)  
         print(form)
         

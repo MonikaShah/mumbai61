@@ -36,14 +36,15 @@
   /* } */
 
 
-  table{
+  /* table{
     width: 350px;
-  }
+  } */
   table,
   th,
   td {
     border-bottom: 1px solid #ddd;
     border-collapse: collapse;
+    width: 600px !important;
     /* padding: 2px 3px; */
     /* text-align: center; */
   }
@@ -363,7 +364,7 @@
               </div> -->
               
               <div class="checkbox" id="boundary">
-                <label><input type="checkbox" value="{wardKWest}" onchange="getBoundaryru(this)"><span> {% trans "Mumbai Suburban - Ward K-WEST" %}</span></label>
+                <label><input type="checkbox" value="{wardKWest}" onchange="getBoundaryru(this)"><span> {% trans "K-WEST" %}</span></label>
                 <div>
                   <div id="kwestbuilding">
                     <div class="checkbox" style = "margin: 0 0 0 17px;">
@@ -375,12 +376,12 @@
                   </div>
               </div>
               <div class="checkbox">
-                <label><input type="checkbox"  value="{61bound}" onchange="getBoundaryru(this)"><span> {% trans "61 Ward" %}</span></label>
+                <label><input type="checkbox"  value="{61bound}" onchange="getBoundaryru(this)"><span> {% trans "Prabhag 61" %}</span></label>
               </div>
               <div id="checkboxes4">
                 <div class="checkbox">
                   <label><input type="checkbox" value="{kwestbeat}"  id="kwestbeat"
-                      onchange="getBoundaryru(this)"><span> {% trans "K-West Beat" %}</span></label>
+                      onchange="getBoundaryru(this)"><span> {% trans "K-West Sweep Beats" %}</span></label>
                 </div>
               </div>
 
@@ -1039,7 +1040,7 @@ let time = today.toLocaleString();
          // alert(layer.properties.name+"="+feature);
     // layer.on({click:onClick })
     // if(${feature.properties.name} !== null){
-    layer.bindPopup(`<div class = 'text-left'><label>Hello ! {{ request.user.role }}. </lable><form method="POST" class="post-form" action="/buildupdate/${feature.properties.sac_number}" style="margin-top: 20px; width:400px">
+    layer.bindPopup(`<div class = 'text-left'><label>Hello ! {{ request.user.username }}. </lable><form method="POST" class="post-form" action="/buildupdate/${feature.properties.sac_number}" style="margin-top: 20px; width:400px">
         {% csrf_token %}
         <table class="table-bordered table-striped">
             <tr><td align ="left"><label class="required">{% trans "SAC Number" %}</label></td><td><input type="text" disabled name="sac" id="id_sac" value="${feature.properties.sac_number}" /></td></tr>
