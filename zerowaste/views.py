@@ -416,6 +416,9 @@ def Buildupdate(request, id):
     if request.method == 'POST':
         print("post")
         data = MumbaiBuildingsWardPrabhagwise17Jan.objects.get(sac_number=id) 
+        if request.user.role == "MO":
+            MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(sac_number=id).update(validity=True)
+
         print(data) 
         form = MumbaiBuildingsWardPrabhagwise17JanForm(request.POST, instance=data)  
         print(form)

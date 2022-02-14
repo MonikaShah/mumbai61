@@ -1247,7 +1247,9 @@ btn.onclick = function () {
   window.location.href = url_val;
 
 };
-div.appendChild(btn);
+if('{{ request.user.role }}'=='MO'){
+
+div.appendChild(btn);}
   // div.innerHTML += '<i style="background: #FFFFFF"></i><span>Ice</span><br>';
   // div.innerHTML += '<i class="icon" style="background-image: url(https://d30y9cdsu7xlg0.cloudfront.net/png/194515-200.png);background-repeat: no-repeat;"></i><span>Grænse</span><br>';
   
