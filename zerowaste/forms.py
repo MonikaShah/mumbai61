@@ -137,23 +137,22 @@ class MumbaiBuildingsWardPrabhagwise17JanForm(forms.ModelForm):
     address = forms.CharField(label = _(u'Address'),required=False)
     building_type = forms.CharField(label = _(u'Building Type'),required=False)
     building_name = forms.CharField(label = _(u'Building Name'))
-    num_flat = forms.IntegerField(label = _(u'Number of Flats'))
+    num_flat = forms.IntegerField(label = _(u'Number of Flats'),required=False)
     num_shops = forms.IntegerField(label = _(u'Number of Shops'),required=False)
     num_floors = forms.IntegerField(label = _(u'Number of Floors'),required=False)
     wing_name = forms.CharField(label = _(u'Wing Name'),required=False)
-    region = forms.CharField(label = _(u'Region'))
-    village = forms.CharField(label = _(u'Village'))
-    # councillor_ward = forms.CharField(label = _(u'Councillor Ward'),required=False)
-    # admin_ward = forms.CharField(label = _(u'Admin Ward'),required=False)
-    # def __str__(self):
-    #     return str(self.name)
+    region = forms.CharField(label = _(u'Region'),required=False)
+    village = forms.CharField(label = _(u'Village'),required=False)
+
+    validity = forms.CharField(label = _(u'Validity'),required=False)
+    updated_by = forms.CharField(label = _(u'Updated By'))
+    update_time = forms.CharField(label = _(u'Update Time'))
+    device_ip = forms.CharField(label = _(u'Device IP'),required=False)
+
+    
     def clean(self):
         cleaned_data = self.cleaned_data
-        num_flat = cleaned_data.get('num_flat')
-        wing_name = cleaned_data.get('wing_name')
-        if not any([num_flat, wing_name]):
-            raise forms.ValidationError(u'Please enter Name of the Wing')
-            # raise forms.ValidationError('Future Dates are not allowed.!!')
+   
         
     class Meta:
         model = MumbaiBuildingsWardPrabhagwise17Jan
@@ -215,7 +214,7 @@ class NewUserForm(UserCreationForm):
 
 	class Meta:
 		model = User
-		fields = ("username", "email",'designation','area','Ward','prabhag', "password1", "password2")
+		fields = ("username", "email",'role','designation','area','Ward','prabhag', "password1", "password2")
 
 	def save(self, commit=True):
 		user = super(NewUserForm, self).save(commit=False)

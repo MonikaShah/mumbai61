@@ -12,6 +12,7 @@ urlpatterns = [
     # path('show/',views.show, name='show'),  
     # path('graphs/',views.Graphs, name='graphs'),  
     path('grievance/',views.Grievance, name = 'grievance'),
+    path('table/<str:id>',views.table, name = 'table'),
     path('edit/<int:id>', views.edit),  
     path('update/<int:id>', views.update),  
     path('delete/<int:id>', views.destroy),  
@@ -29,6 +30,9 @@ urlpatterns = [
     path("emp_detail/",views.emp_detail, name="emp_detail"),
     path("resources/",views.resources, name="resources"),
     # path("showgroup/",views.group,name="showgroup"),
+    path("w61wcd/",views.w61wcd, name="w61wcd"),
+    path('dashboard_piecharts/',views.Piecharts, name="dashboard_piecharts"),
+    
 ]
 
 

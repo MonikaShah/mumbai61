@@ -23,6 +23,8 @@ import pandas as pd
 import psycopg2
 import matplotlib.pyplot as plt
 from sqlalchemy import create_engine
+from operator import is_not
+from functools import partial
 
 import plotly.express as px
 from plotly.offline import plot
@@ -360,6 +362,22 @@ def FeedbackView(request):
         
 
         return render(request, "feedback_form.html")
+def table(request,id):
+    requestvar = request.get_full_path()
+    print(requestvar)
+    data = []
+    prabhag = id[-3:]
+    if '_up' in id:
+        data = list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(prabhag_no=prabhag , update_time__contains =yesterday).values('sac_number','prop_add','building_type','building_name','village','num_flat','region','num_shops','wing_name','prabhag_no','ward_name_field','address','validity'))
+
+    else:
+        data= list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(prabhag_no=prabhag).values('sac_number','prop_add','building_type','building_name','village','num_flat','region','num_shops','wing_name','prabhag_no','ward_name_field','address','validity'))
+    # df = pd.DataFrame(data) 
+    df =json.dumps(data) 
+# saving the dataframe 
+    # df.to_csv('GFG.csv') 
+    return render(request,'table.html',{'data':df,'id':id,'prabhag':prabhag}) 
+
 def Buildedit(request, id):  
     data = MumbaiBuildingsWardPrabhagwise17Jan.objects.get(sac_number=id)
     print(data)
@@ -373,11 +391,38 @@ def Buildedit(request, id):
     return render(request,'buildedit.html',context) 
 
 def Buildupdate(request, id):
-    # print(id)
-    data = MumbaiBuildingsWardPrabhagwise17Jan.objects.get(sac_number=id) 
-    # print(data) 
-    form = MumbaiBuildingsWardPrabhagwise17JanForm(request.POST, instance=data)  
-    print(form)
+    
+    if is_ajax(request=request):
+        print(id)
+        id = id.split("-")
+        id1 = id[0]
+        print("id1")
+
+        MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(sac_number=id1).update(validity=True)
+
+        return JsonResponse("Success", safe=False)
+    # if('-Auth' in id):
+    #     print(request.POST)
+    #     id = id.split("-")
+    #     id1 = id[0]
+    #     print("id1")
+
+    #     MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(sac_number=id1).update(validity=True)
+        
+        
+        # form = MumbaiBuildingsWardPrabhagwise17JanForm(request.POST, instance=data)
+        # print(form)  
+    
+    if request.method == 'POST':
+        print("post")
+        data = MumbaiBuildingsWardPrabhagwise17Jan.objects.get(sac_number=id) 
+        if request.user.role == "MO":
+            MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(sac_number=id).update(validity=True)
+
+        print(data) 
+        form = MumbaiBuildingsWardPrabhagwise17JanForm(request.POST, instance=data)  
+        print(form)
+        
     # if form.is_valid(): 
     #     print("success") 
     #     form.save()  
@@ -389,20 +434,18 @@ def Buildupdate(request, id):
     #     'data':data,
     #     #'Visitor_count': recd_response
     # }
-    if form.is_valid(): 
-        print("success") 
-        messages.success(request,"Record Updated")          
-        form.save()          
-    else:
-        print("fail")
-        messages.error(request,"Sorry! Record not updated. Try Again")
-    context = {
-        'data':data,
-        #'Visitor_count': recd_response
-        } 
+    
+        if form.is_valid(): 
+            print("success") 
+            messages.success(request,"Record Updated")          
+            form.save()          
+        else:
+            print("fail")
+            messages.error(request,"Sorry! Record not updated. Try Again")
+    
     print(Ward61BuildingsOsm2Nov2021Form.errors)
     
-    return render(request,'buildedit.html',context) 
+    return redirect("/map/") 
     
 
 def Buildshow(request):
@@ -549,6 +592,8 @@ def emp_detail(request):
 def resources(request):
     return render(request,'Resources.html')
 
+
+
 def base(request):
     # ward_region = WasteSegregationDetails.objects.values('re').annotate(Sum('wet_waste_before_segregation') , Sum('dry_waste_before_segregation'), Sum('hazardous_waste')  )
 
@@ -636,4 +681,7 @@ def w61wcd(request):
     plot_div2 = plot(fig2,output_type='div')
     # plot_div3 = plot(fig3,output_type='div')
     return render(request,'w61wcd.html', context={'plot_div': plot_div, 'plot_div1':plot_div1,'plot_div2':plot_div2 })
+
+def Piecharts(request):
+    return render(request,'piecharts.html')
     

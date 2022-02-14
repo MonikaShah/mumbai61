@@ -1,0 +1,1318 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-02-03 22:29+0530\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: zerowaste/forms.py:66 zerowaste/forms.py:164
+#: zerowaste/static/assets/css/mumbai61/zerowaste/forms.py:19
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/show_data.html:79
+#: zerowaste/templates/build_show_data.html:79
+#: zerowaste/templates/show_data.html:79 zerowaste/templates/show_wsd.html:79
+msgid "Date"
+msgstr ""
+
+#: zerowaste/forms.py:85 zerowaste/models.py:195
+#: zerowaste/static/assets/css/mumbai61/zerowaste/forms.py:49
+#: zerowaste/static/assets/css/mumbai61/zerowaste/models.py:143
+msgid "Name"
+msgstr "नाम"
+
+#: zerowaste/forms.py:86
+#: zerowaste/static/assets/css/mumbai61/zerowaste/forms.py:50
+msgid "email"
+msgstr "मेल"
+
+#: zerowaste/forms.py:87
+#: zerowaste/static/assets/css/mumbai61/zerowaste/forms.py:51
+msgid "mobile"
+msgstr "मोबाइल"
+
+#: zerowaste/forms.py:88
+#: zerowaste/static/assets/css/mumbai61/zerowaste/forms.py:52
+msgid "grievance"
+msgstr "शिकायत"
+
+#: zerowaste/forms.py:108 zerowaste/forms.py:137
+msgid "Address"
+msgstr "पता"
+
+#: zerowaste/forms.py:109 zerowaste/forms.py:138 zerowaste/forms.py:174
+msgid "Building Type"
+msgstr "इमारत का प्रकार"
+
+#: zerowaste/forms.py:110 zerowaste/forms.py:139 zerowaste/forms.py:169
+#: zerowaste/templates/show_data.html:81 zerowaste/templates/show_wsd.html:81
+msgid "Building Name"
+msgstr "इमारत का नाम"
+
+#: zerowaste/forms.py:111 zerowaste/forms.py:140
+msgid "Number of Flats"
+msgstr "फ्लैटों की संख्या"
+
+#: zerowaste/forms.py:112 zerowaste/forms.py:141 zerowaste/forms.py:178
+msgid "Number of Shops"
+msgstr "दुकानों की संख्या"
+
+#: zerowaste/forms.py:113 zerowaste/forms.py:142
+msgid "Number of Floors"
+msgstr "मंजिलों की संख्या"
+
+#: zerowaste/forms.py:114 zerowaste/forms.py:143
+msgid "Wing Name"
+msgstr "विंग की संख्या"
+
+#: zerowaste/forms.py:115 zerowaste/forms.py:144
+msgid "Region"
+msgstr "क्षेत्र"
+
+#: zerowaste/forms.py:116
+msgid "Councillor Ward"
+msgstr "पार्षद वार्ड"
+
+#: zerowaste/forms.py:117
+msgid "Admin Ward"
+msgstr "व्यवस्थापक वार्ड"
+
+#: zerowaste/forms.py:145
+msgid "Village"
+msgstr "गांव"
+
+#: zerowaste/forms.py:167 zerowaste/forms.py:230
+#: zerowaste/templates/build_show_data.html:80
+#: zerowaste/templates/show_data.html:80 zerowaste/templates/show_wsd.html:80
+msgid "Region Name"
+msgstr "क्षेत्र का नाम"
+
+#: zerowaste/forms.py:172
+msgid "Number of Wings"
+msgstr "विंग की संख्या"
+
+#: zerowaste/forms.py:176
+msgid "Building Population"
+msgstr "इमारतों की आबादी"
+
+#: zerowaste/forms.py:177
+msgid "Number of households"
+msgstr "घर की संख्या"
+
+#: zerowaste/forms.py:179
+msgid "Type of waste generator"
+msgstr "अपशिष्ट उत्पन्न करने का प्रकार"
+
+#: zerowaste/forms.py:180
+msgid "Is segregation done"
+msgstr "क्या पृथक्करण हो गया है?"
+
+#: zerowaste/forms.py:181
+msgid "Wet Waste before Segregation (in Kgs)"
+msgstr "अलग करने से पहले गीला कचरा (किलोग्राम में)"
+
+#: zerowaste/forms.py:182
+msgid "Dry Waste before Segregation (in Kgs)"
+msgstr "अलग करने से पहले सूखा कचरा (किलोग्राम में)"
+
+#: zerowaste/forms.py:183
+msgid "Hazardous Waste before Segregation (in Kgs)"
+msgstr "पृथक्करण से पहले खतरनाक अपशिष्ट (किलोग्राम में)"
+
+#: zerowaste/forms.py:184
+msgid "Compostable Waste before Segregation (in Kgs)"
+msgstr "पृथक्करण से पहले कम्पोस्टेबल अपशिष्ट"
+
+#: zerowaste/forms.py:185
+msgid "Recyclable Waste before Segregation (in Kgs)"
+msgstr "पृथक्करण से पहले पुनर्चक्रण योग्य अपशिष्ट (किलोग्राम में)"
+
+#: zerowaste/forms.py:186
+msgid "Rejected Waste before Segregation (in Kgs)"
+msgstr "पृथक्करण से पहले अस्वीकृत अपशिष्ट (किलोग्राम में)"
+
+#: zerowaste/forms.py:187
+msgid "Composting Type"
+msgstr "खाद का प्रकार"
+
+#: zerowaste/forms.py:188
+msgid "Bin provided by MCGM"
+msgstr "एमसीजीएम द्वारा प्रदान किया गया पात्र"
+
+#: zerowaste/forms.py:189
+msgid "Date of Notice Issued"
+msgstr "नोटिस जारी करने की तिथि"
+
+#: zerowaste/forms.py:190
+msgid "Name and Mobile number of Building Secretaty/Incharge"
+msgstr "भवन सचिव/प्रभारी का नाम और मोबाइल नंबर"
+
+#: zerowaste/forms.py:229
+#, fuzzy
+#| msgid "Councillor Ward (Prabhag)"
+msgid "Councillor Ward (Prabhag) "
+msgstr "पार्षद वार्ड (प्रभाग)"
+
+#: zerowaste/forms.py:231
+msgid "Scavenger"
+msgstr "मेहतर"
+
+#: zerowaste/forms.py:232
+msgid "Employee Name"
+msgstr "कर्मचारी का नाम"
+
+#: zerowaste/forms.py:233
+msgid "Employee Mobile No."
+msgstr "कर्मचारी मोबाइल नंबर"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/HomePage.html:22
+msgid "Zero Waste - Mumbai Ward 61"
+msgstr "जीरो वेस्ट - मुंबई वार्ड 61"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/HomePage.html:24
+msgid "A Project by Stree Mukti Sanghatana, sponsored by IDFC FIRST Bank"
+msgstr "आईडीएफसी फर्स्ट बैंक द्वारा प्रायोजित स्त्री मुक्ति संगठन की एक परियोजना"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/base.html:88
+#: zerowaste/templates/base.html:98
+msgid "Home"
+msgstr "घर"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/base.html:91
+#: zerowaste/templates/base.html:101
+msgid "Maps"
+msgstr "नक्शा"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/base.html:94
+#: zerowaste/templates/base.html:135
+msgid "Grievance"
+msgstr "शिकायत"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/base.html:97
+msgid "Garbage Collection "
+msgstr "कचरा संग्रहण"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/base.html:100
+msgid "Segreagation Report "
+msgstr "पृथक्करण रिपोर्ट"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/base.html:103
+msgid "Demo Dashboard "
+msgstr "डेमो डैशबोर्ड"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/base.html:106
+#: zerowaste/templates/base.html:141
+msgid "Feedback "
+msgstr "प्रतिपुष्टि"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/base.html:109
+#: zerowaste/templates/base.html:144
+msgid "FAQ "
+msgstr "सामान्य प्रश्न"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/edit.html:13
+#: zerowaste/templates/edit.html:28
+msgid "Update Details"
+msgstr "विवरण अपडेट करें"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/edit.html:17
+#: zerowaste/templates/edit.html:32
+msgid "ID"
+msgstr "आइडी"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/edit.html:23
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/edit.html:65
+msgid "Zone Name:"
+msgstr "क्षेत्र का नाम"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/edit.html:29
+#: zerowaste/templates/edit.html:45
+msgid "Collection Date:"
+msgstr "संग्रहण दिनांक"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/edit.html:35
+msgid "Kitchen Waste:"
+msgstr "रसोई का कचरा"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/edit.html:41
+msgid "Dry Waste BF:"
+msgstr "सूखा कचरा बीएफ"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/edit.html:47
+msgid "Dry Waste AF:"
+msgstr "सूखा कचरा ए.एफ"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/edit.html:53
+msgid "Wet Waste BF:"
+msgstr "भीगा हुआ कचरा बीएफ"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/edit.html:59
+msgid "Wet Waste AF:"
+msgstr "भीगा हुआ कचरा ए.एफ"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/edit.html:72
+#: zerowaste/templates/edit.html:88
+msgid "Date:"
+msgstr "दिनांक"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/edit.html:78
+#: zerowaste/templates/edit.html:94
+msgid "Supervisor Name:"
+msgstr "पर्यवेक्षक का नाम"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/edit.html:84
+#: zerowaste/templates/edit.html:100
+msgid "Rejected:"
+msgstr "अस्वीकार"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/edit.html:90
+#: zerowaste/templates/edit.html:106
+msgid "Zone ID:"
+msgstr "जोन आईडी"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/edit.html:98
+#: zerowaste/templates/buildedit.html:66 zerowaste/templates/edit.html:114
+#: zerowaste/templates/map/map_new.html:1009
+msgid "Update"
+msgstr "अपडेट"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:5
+#: zerowaste/templates/faq.html:5
+msgid "OUR VISION"
+msgstr "हमारा नज़रिया"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:10
+#: zerowaste/templates/faq.html:10
+msgid ""
+"Making the area of Mumbai - WARD 61 a Zero Waste Area, \n"
+"    thus helping in environment and creating job opportunities \n"
+"    for women and men from  marginalised section of the \n"
+"    society. "
+msgstr ""
+"मुंबई के क्षेत्र - वार्ड 61 को शून्य अपशिष्ट क्षेत्र बनाना,इस प्रकार पर्यावरण में मदद करना और "
+"रोजगार के अवसर पैदा करना के हाशिए पर रहने वाले वर्ग की महिलाओं और पुरुषों के लिए समाज"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:20
+#: zerowaste/templates/faq.html:20
+msgid "FREQUENTLY ASKED QUESTIONS"
+msgstr "अक्सर पूछे जाने वाले प्रश्नों"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:21
+#: zerowaste/templates/faq.html:21
+msgid "1. What do you mean by Zero Waste?"
+msgstr "जीरो वेस्ट से आप क्या समझते हैं?"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:22
+#: zerowaste/templates/faq.html:22
+#, fuzzy
+#| msgid ""
+#| "ANS:&nbsp;&nbsp;  Zero Waste is a concept where waste is completely "
+#| "utilizedby reusing or recycling.   Only minimal quantity is transported "
+#| "to thedumping ground.  This ensures a cyclical process of resources and "
+#| "leavesbehind only minimal quantity of residual waste."
+msgid ""
+"ANS:&nbsp;&nbsp;  Zero Waste is a concept where waste is completely utilized "
+"by reusing or recycling.   Only minimal quantity is transported to the "
+"dumping ground.  This ensures a cyclical process of resources and leaves "
+"behind only minimal quantity of residual waste."
+msgstr ""
+" उत्तर:&nbsp;&nbsp; शून्य अपशिष्ट एक अवधारणा है जहां कचरे का पूरी तरह से उपयोग किया "
+"जाता है पुन: उपयोग या पुनर्चक्रण द्वारा। केवल न्यूनतम मात्रा में पहुँचाया जाता है डंपिंग "
+"ग्राउंड। यह संसाधनों और पत्तियों की चक्रीय प्रक्रिया सुनिश्चित करता है अवशिष्ट कचरे की केवल "
+"न्यूनतम मात्रा के पीछे।"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:24
+#: zerowaste/templates/faq.html:24
+msgid "2. What are the advantages of ensuring Zero Waste?"
+msgstr "2. जीरो वेस्ट सुनिश्चित करने के क्या फायदे हैं?"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:25
+#: zerowaste/templates/faq.html:25
+msgid ""
+"Ans:&nbsp;&nbsp;  Ensuring Zero Waste is the most environmentally friendly "
+"way of living as it prevents valuable recyclable materials(Dry and Wet) from "
+"being wasted at the dumping ground.  Our country depends much on "
+"agriculture.  Chemical fertilizers spoil the quality of the soil.  Organic "
+"manure gives better water retention capacity to the soil.\n"
+"    Our effective action towards achieving this goal will ensure:"
+msgstr ""
+"उत्तर:&nbsp;&nbsp; जीरो वेस्ट सुनिश्चित करना सबसे पर्यावरण के अनुकूल है जीने का तरीका "
+"क्योंकि यह मूल्यवान पुन: प्रयोज्य सामग्री (सूखी और गीली) को रोकता है डंपिंग ग्राउंड में "
+"बर्बाद किया जा रहा है। हमारा देश बहुत कुछ निर्भर करता है कृषि। रासायनिक उर्वरक मिट्टी "
+"की गुणवत्ता को खराब करते हैं। जैविकखाद मिट्टी को बेहतर जल धारण क्षमता प्रदान करती है।इस "
+"लक्ष्य को प्राप्त करने की दिशा में हमारी प्रभावी कार्रवाई सुनिश्चित करेगी:"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:30
+#: zerowaste/templates/faq.html:30
+msgid ""
+"that valuable recyclable materials (Dry and Wet) are not wasted at the "
+"dumping grounds."
+msgstr ""
+"मूल्यवान पुन: प्रयोज्य सामग्री (सूखी और गीली) को बर्बाद नहीं किया जाता है डंपिंग ग्राउंड।"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:33
+#: zerowaste/templates/faq.html:33
+msgid "conversion of wet waste into compost thus restoring nature’s wealth."
+msgstr "गीले कचरे को खाद में बदलना इस प्रकार प्रकृति के धन को बहाल करता है।"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:36
+#: zerowaste/templates/faq.html:36
+msgid "saving of transport cost and tipping fee for Local Self Governments."
+msgstr "स्थानीय स्वशासन के लिए परिवहन लागत और टिपिंग शुल्क की बचत"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:39
+#: zerowaste/templates/faq.html:39
+msgid "saving of emissions due to transport, cleaner roads, lesser pollution."
+msgstr "परिवहन, स्वच्छ सड़कों, कम प्रदूषण के कारण उत्सर्जन की बचत।"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:42
+#: zerowaste/templates/faq.html:42
+msgid "prevention of Air Pollution."
+msgstr "वायु प्रदूषण की रोकथाम।"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:45
+#: zerowaste/templates/faq.html:45
+msgid "prevention of Water Pollution."
+msgstr "जल प्रदूषण की रोकथाम।"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:48
+#: zerowaste/templates/faq.html:48
+msgid "prevention of Land Pollution."
+msgstr "भूमि प्रदूषण की रोकथाम।"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:51
+#: zerowaste/templates/faq.html:51
+msgid ""
+"economy of resources thus enabling savings at individual level, family "
+"level, society level, state level, national level and also universal level."
+msgstr ""
+"संसाधनों की अर्थव्यवस्था इस प्रकार व्यक्तिगत स्तर पर बचत को सक्षम बनाती है, परिवार स्तर, "
+"समाज स्तर, राज्य स्तर, राष्ट्रीय स्तर और सार्वभौमिक स्तर भी।"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:55
+#: zerowaste/templates/faq.html:55
+msgid ""
+"It is a way to give back to the nature and also an unconditional gift of "
+"love intended from us to the next generation."
+msgstr ""
+"यह प्रकृति को वापस देने का एक तरीका है और 'बिना शर्त उपहार' भी है।प्यार हम से अगली "
+"पीढ़ी के लिए इरादा है।"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:58
+#: zerowaste/templates/faq.html:58
+msgid "3. What is the process adopted to ensure Zero Waste?"
+msgstr "3. जीरो वेस्ट सुनिश्चित करने के लिए क्या प्रक्रिया अपनाई जाती है?"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:59
+#: zerowaste/templates/faq.html:59
+msgid ""
+"Ans:&nbsp;&nbsp;  The process of Zero Waste Management involves 4 simple "
+"steps:"
+msgstr "उत्तर:&nbsp;&nbsp; शून्य अपशिष्ट प्रबंधन की प्रक्रिया में 4 सरल शामिल हैं प्रकार:"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:63
+#: zerowaste/templates/faq.html:63
+msgid ""
+"Collection of the waste separated according to categories namely (a) Dry "
+"Waste. (b) Wet Waste and (c) Hazardous Waste."
+msgstr ""
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:66
+#: zerowaste/templates/faq.html:66
+msgid "Further segregation depending on the requirement for recycling."
+msgstr ""
+"श्रेणियों के अनुसार अलग किए गए कचरे का संग्रह अर्थात् (ए) सूखाअपशिष्ट। (बी) गीला अपशिष्ट "
+"और (सी) खतरनाक अपशिष्ट।"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:69
+#: zerowaste/templates/faq.html:69
+msgid "Recycling"
+msgstr "रीसाइक्लिंग"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:72
+#: zerowaste/templates/faq.html:72
+msgid "Disposal of Hazardous Waste."
+msgstr "खतरनाक अपशिष्ट का निपटान"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:79
+#: zerowaste/templates/faq.html:79
+msgid "4. What do you do with the Separated Waste?"
+msgstr "4. आप अलग किए गए कचरे के साथ क्या करते हैं?"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:80
+#: zerowaste/templates/faq.html:80
+msgid ""
+"Ans:&nbsp;&nbsp;We (i)convert Organic Wet Waste into compost,  (ii) send Dry "
+"Waste for recycling & (iii) send the hazardous waste to the municipality for "
+"processing in the incinerator."
+msgstr ""
+"उत्तर:&nbsp;&nbsp;हम (i) जैविक गीले कचरे को खाद में बदलते हैं, (ii) सूखा भेजते हैं पुनर्चक्रण "
+"के लिए अपशिष्ट और (iii) खतरनाक कचरे को नगरपालिका को भेजने के लिएभस्मक में प्रसंस्करण।"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:87
+#: zerowaste/templates/faq.html:87
+msgid ""
+"5. Would you be processing the waste in our nearby localities?  If so, it "
+"will lead to foul smell.  We do not want the process to be carried out in "
+"our backyard. We would rather give mixed waste so it may be sent to  the "
+"dump yard.  Out of sight is out of mind. We are therefore left with no "
+"choice but to throw it in the sea/dump/kiosk."
+msgstr ""
+"5. क्या आप हमारे आस-पास के इलाकों में कचरे का प्रसंस्करण करेंगे? अगर ऐसा है तो इससे दुर्गंध "
+"आएगी। हम नहीं चाहते कि इस प्रक्रिया को किया जाएहमारे पिछवाड़े। हम मिश्रित कचरा देना "
+"पसंद करेंगे ताकि इसे भेजा जा सकेडंप यार्ड। दृष्टि से बाहर दिमाग से बाहर है। इसलिए हमारे पास "
+"कोई नहीं बचा हैपसंद है लेकिन इसे समुद्र/डंप/कियोस्क में फेंकने के लिए।"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:88
+#: zerowaste/templates/faq.html:88
+msgid ""
+" \"Ans:&nbsp;&nbsp; It is a misconception that the process leads to "
+"generation of foul smell.  We have been processing the waste in Kandivali "
+"Cemetery for over 6 months now.\n"
+"       We strongly recommend that you visit the cemetery and experience for "
+"yourself how least inconvenient the process is to the community.   Instead, "
+"it in fact contributes to reducing health hazards.\""
+msgstr ""
+"उत्तर:&nbsp;&nbsp; यह एक गलत धारणा है कि यह प्रक्रिया गंध की पीढ़ी। हम कांदिवली में "
+"कचरे का प्रसंस्करण कर रहे हैंकब्रिस्तान अब 6 महीने से अधिक समय से है।हम दृढ़ता से अनुशंसा करते "
+"हैं कि आप कब्रिस्तान जाएँ और अनुभव करें अपने आप से समुदाय के लिए प्रक्रिया कितनी कम "
+"असुविधाजनक है। इसके बजाय,यह वास्तव में स्वास्थ्य संबंधी खतरों को कम करने में योगदान देता है।"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:91
+#: zerowaste/templates/faq.html:91
+msgid "6. Why should we maintain the Waste separately before giving?"
+msgstr "6. हमें देने से पहले कचरे को अलग से क्यों रखना चाहिए?"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:92
+#: zerowaste/templates/faq.html:92
+msgid ""
+"Ans:&nbsp;&nbsp;  Maintaining different kinds of waste separately is the "
+"first step towards cleanliness.  It helps to ensure better public health.  "
+"It also helps in minimizing the pollution of air, water, and land and thus "
+"also prevents health hazards"
+msgstr ""
+"उत्तर:&nbsp;&nbsp; विभिन्न प्रकार के कचरे का अलग-अलग रखरखाव करना है स्वच्छता की ओर "
+"पहला कदम। यह बेहतर सार्वजनिक स्वास्थ्य सुनिश्चित करने में मदद करता है।यह वायु, जल और भूमि "
+"के प्रदूषण को कम करने में भी मदद करता है और इस प्रकारस्वास्थ्य के खतरों को भी रोकता है"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:94
+#: zerowaste/templates/faq.html:94
+msgid ""
+"All of these can happen only if the community participates whole heartedly "
+"and gives the waste of different kinds in separate category.  It is not "
+"difficult. "
+msgstr ""
+"ये सब तभी हो सकता है जब समुदाय पूरे दिल से भाग ले।और विभिन्न प्रकार के कचरे को अलग-अलग "
+"श्रेणी में देता है। ऐसा नहीं हैकठिन। "
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:96
+#: zerowaste/templates/faq.html:96
+msgid ""
+"7. We pay tax to the municipality.  To take care of issues relating to "
+"public health is the responsibility of the Municipality. Why should we do "
+"their job?"
+msgstr ""
+"7. हम नगर पालिका को कर का भुगतान करते हैं। से संबंधित मुद्दों की देखभाल करने के "
+"लिएसार्वजनिक स्वास्थ्य नगर पालिका की जिम्मेदारी है। हम क्यों करें उनकी नौकरी?"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:97
+#: zerowaste/templates/faq.html:97
+msgid ""
+"Ans:&nbsp;&nbsp;If we cannot as a family provide one kilogram of waste "
+"separated appropriately it is unreasonable to expect Municipality to "
+"segregate 7-8 thousand kilograms of waste."
+msgstr ""
+"उत्तर:&nbsp;&nbsp;यदि हम एक परिवार के रूप में एक किलोग्राम कचरा उपलब्ध नहीं करा सकते "
+"हैंउचित रूप से अलग-अलग नगर पालिका से अपेक्षा करना अनुचित है7-8 हजार किलोग्राम कचरे को "
+"अलग करें।"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:99
+#: zerowaste/templates/faq.html:99
+msgid ""
+"To dispose off the waste in appropriate manner is indeed the job of the "
+"municipality.  However, unless we provide waste separately, the same cannot "
+"be processed; instead it then has to be sent to the dumping ground."
+msgstr ""
+"कचरे को उचित तरीके से निपटाना वास्तव में का काम हैनगर पालिका। हालांकि, जब तक हम अलग "
+"से कचरा उपलब्ध नहीं कराते हैं, तब तक यह नहीं हो सकतासंसाधित किया जाए, इसके बजाय इसे "
+"डंपिंग ग्राउंड में भेजा जाना है।"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:101
+#: zerowaste/templates/faq.html:101
+msgid ""
+"You are not providing the waste separately to help Municipality; you are "
+"maintaining the different categories of waste separately to ensure better "
+"recyclying of resources in the present and ensuring availability of "
+"sufficient and better quality resources(air, water and land) for the future "
+"generation."
+msgstr ""
+"आप नगर पालिका की मदद के लिए अलग से कचरा उपलब्ध नहीं करा रहे हैं, आप हैंबेहतर सुनिश्चित "
+"करने के लिए कचरे की विभिन्न श्रेणियों को अलग-अलग रखनावर्तमान में संसाधनों का पुनर्चक्रण और "
+"उपलब्धता सुनिश्चित करनाभविष्य के लिए पर्याप्त और बेहतर गुणवत्ता वाले संसाधन (वायु, जल और "
+"भूमि) पीढ़ी।"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:103
+#: zerowaste/templates/faq.html:103
+msgid ""
+"8. Even if we give different kinds of waste separately, most of the people "
+"in the neighborhood throw their waste in the sea/kiosk/dumping bin."
+msgstr ""
+"भले ही हम अलग-अलग तरह के कचरे को अलग-अलग दे दें, ज्यादातर लोग पड़ोस में अपना कचरा समुद्र/"
+"कियोस्क/डंपिंग बिन में फेंक दें।"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:104
+#: zerowaste/templates/faq.html:104
+msgid ""
+"Ans:&nbsp;&nbsp; Waste segregation by the waste generator is a new thought "
+"and requires change in habit of the people. This transformation will take "
+"some time. But we are working together to bring about the much needed "
+"change.   We are also making significant progress in bringing about this "
+"change."
+msgstr ""
+"उत्तर:&nbsp;&nbsp; अपशिष्ट जनरेटर द्वारा अपशिष्ट पृथक्करण एक नया विचार है और लोगों की "
+"आदत में बदलाव की आवश्यकता है। यह परिवर्तन लेगाकुछ समय। लेकिन हम बहुत जरूरी चीजों को लाने "
+"के लिए मिलकर काम कर रहे हैंपरिवर्तन। हम इसे लाने में भी महत्वपूर्ण प्रगति कर रहे हैं परिवर्तन।"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:106
+#: zerowaste/templates/faq.html:106
+msgid ""
+"Earlier in August 2020 we did not get different kinds of waste separately "
+"from people but gradually by September 2020 we started getting 2 tons (2000 "
+"kg) of wet waste per month and by January 2021 this number has increased to "
+"21 tons (21,000 kg) per month."
+msgstr ""
+"इससे पहले अगस्त 2020 में हमें अलग-अलग तरह का कचरा अलग से नहीं मिलता था।लोगों से लेकिन "
+"धीरे-धीरे सितंबर 2020 तक हमें 2 टन (2000) मिलने लगे। किलोग्राम) प्रति माह गीला कचरा "
+"और जनवरी 2021 तक यह संख्या बढ़कर 21 टन (21,000 किग्रा) प्रति माह।"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:108
+#: zerowaste/templates/faq.html:108
+msgid ""
+"If we continue to progress at this rate, and the number of people's "
+"participation continues to increase, we will soon be able to declare our "
+"Mumabi Ward 61 as a Zero-Waste area."
+msgstr ""
+"यदि हम इसी गति से आगे बढ़ते रहे और जितने लोगों की संख्या भागीदारी बढ़ती जा रही है, हम "
+"जल्द ही अपनी घोषणा कर पाएंगेमुंबई के वार्ड 61 को जीरो वेस्ट एरिया घोषित किया गया है।"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:110
+#: zerowaste/templates/faq.html:110
+msgid ""
+"9. Our house is small. How can we keep different kinds of waste separately "
+"without having to use more bins and space?"
+msgstr ""
+"9. हमारा घर छोटा है। हम अलग-अलग तरह के कचरे को अलग-अलग कैसे रख सकते हैं।अधिक डिब्बे और "
+"स्थान का उपयोग किए बिना?"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:111
+#: zerowaste/templates/faq.html:111
+msgid ""
+"Ans:&nbsp;&nbsp;For day to day use, you need only one bin per household.To "
+"ensure that different kinds of waste are maintained separately :"
+msgstr ""
+"उत्तर:&nbsp;&nbsp;दैनिक उपयोग के लिए, आपको प्रति परिवार केवल एक बिन की आवश्यकता है।"
+"सुनिश्चित करें कि विभिन्न प्रकार के कचरे का अलग-अलग रखरखाव किया जाता है:"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:115
+#: zerowaste/templates/faq.html:115
+msgid "Put the Organic/ Wet Waste food items in the bin"
+msgstr "जैविक/गीले अपशिष्ट खाद्य पदार्थों को बिन में डालें"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:118
+#: zerowaste/templates/faq.html:118
+msgid "Keep a plastic bag to put the dry waste and e-waste in."
+msgstr "सूखा कचरा और ई-कचरा डालने के लिए प्लास्टिक की थैली रखें।"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:121
+#: zerowaste/templates/faq.html:121
+msgid ""
+"Keep another plastic bag to put the hazardous waste like sanitary napkins, "
+"diapers,  needles and syringes  -  This waste is not generated very often "
+"and therefore when generated may be handed over in a separate plastic bag, "
+"preferably with a mark as will signify that it is hazardous waste."
+msgstr ""
+"सैनिटरी नैपकिन जैसे खतरनाक कचरे को डालने के लिए एक और प्लास्टिक बैग रखें।डायपर, सुई और "
+"सीरिंज - यह कचरा बहुत बार उत्पन्न नहीं होता हैऔर इसलिए उत्पन्न होने पर एक अलग प्लास्टिक "
+"बैग में सौंप दिया जा सकता है,अधिमानतः एक निशान के साथ जो दर्शाता है कि यह खतरनाक "
+"कचरा है।"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:127
+#: zerowaste/templates/faq.html:127
+msgid ""
+"10. We cannot be keeping the fish waste at home and therefore we throw it in "
+"the sea."
+msgstr "10. हम मछली के कचरे को घर पर नहीं रख सकते हैं और इसलिए हम इसे फेंक देते हैं समुद्र में।"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:128
+#: zerowaste/templates/faq.html:128
+msgid ""
+"Ans:&nbsp;&nbsp;Fish waste comprises of flesh, skin, and bones.  Fish wastes "
+"degrade rapidly in warm temperatures. As a result of bacterial "
+"decomposition, it emits foul smell. If not managed properly, such disposal "
+"poses environmental and health problems as it requires higher levels of "
+"oxygen to process the organic waste."
+msgstr ""
+"उत्तर:&nbsp;&nbsp;मछली के कचरे में मांस, त्वचा और हड्डियां शामिल हैं। मछली अपशिष्टगर्म "
+"तापमान में तेजी से गिरावट। बैक्टीरिया के परिणामस्वरूपअपघटन, यह दुर्गंध का उत्सर्जन करता है। "
+"यदि ठीक से प्रबंधित नहीं किया जाता है, तो ऐसा निपटानपर्यावरण और स्वास्थ्य समस्याओं का "
+"कारण बनता है क्योंकि इसके लिए उच्च स्तर की आवश्यकता होती हैजैविक कचरे को संसाधित करने के "
+"लिए ऑक्सीजन।"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:130
+#: zerowaste/templates/faq.html:130
+msgid ""
+"Environmental concerns associated with disposal of fish wastes into ocean "
+"waters include:"
+msgstr "समुद्र में मछली के कचरे के निपटान से जुड़ी पर्यावरणीय चिंताएं पानी में शामिल हैं:"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:134
+#: zerowaste/templates/faq.html:134
+msgid "reduced oxygen levels in the seawaters at the ocean bottom;"
+msgstr "समुद्र तल पर समुद्री जल में ऑक्सीजन के स्तर में कमी;"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:137
+#: zerowaste/templates/faq.html:137
+msgid "burial or smothering of living organisms; and"
+msgstr "जीवित जीवों को दफनाना या गलाना; तथा"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:140
+#: zerowaste/templates/faq.html:140
+msgid ""
+"introduction of disease or non-native and invasive species to the ecosystem "
+"of the sea floor.To add to this if any plastic is disposed along-with the "
+"organic waste, it imposes even greater threat with its adverse effect seen "
+"at multiple levels."
+msgstr ""
+"पारिस्थितिक तंत्र में रोग या गैर-देशी और आक्रामक प्रजातियों का परिचयसमुद्र तल का। इसमें "
+"जोड़ने के लिए यदि किसी प्लास्टिक का निपटान किया जाता है-जैविक अपशिष्ट, यह देखे गए "
+"प्रतिकूल प्रभाव के साथ और भी बड़ा खतरा पैदा करता हैकई स्तरों पर।"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:147
+#: zerowaste/templates/faq.html:147
+msgid ""
+"11. As our houses are on loft-like premises and/or are far placed from the "
+"spot location or the location wherefrom the Collection team blows the "
+"whistle, we do not get to hear the whistle when the team comes to collect "
+"the waste."
+msgstr ""
+"11. चूंकि हमारे घर मचान जैसे परिसर में हैं और/या से दूर स्थित हैंस्पॉट लोकेशन या वह स्थान जहां "
+"से कलेक्शन टीम उड़ाती हैसीटी, जब टीम इकट्ठा करने आती है तो हमें सीटी नहीं सुनाई देतीकूड़ा।"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/faq.html:148
+#: zerowaste/templates/faq.html:148
+#, fuzzy
+#| msgid ""
+#| "Ans:&nbsp;&nbsp;Our aim is to attend to each and every complaint within "
+#| "24 hours. \n"
+#| "    We are in the process of creating an option to get people's feedback "
+#| "on the ZeroWaste website. Once it is ready, you will also be able to keep "
+#| "track of the status of the complaint, if any.    In the meanwhile, you "
+#| "can also meet the concerned supervisors at project office at Mahakali "
+#| "container office near Sea corner hotel.\""
+msgid ""
+"Ans:&nbsp;&nbsp;Our aim is to attend to each and every complaint within 24 "
+"hours. \n"
+"    We are in the process of creating an option to get people's feedback on "
+"the ZeroWaste website. Once it is ready, you will also be able to keep track "
+"of the status of the complaint, if any. \n"
+"    In the meanwhile, you can also meet the concerned supervisors at project "
+"office at Mahakali container office near Sea corner hotel.\""
+msgstr ""
+"उत्तर:&nbsp;&nbsp;हमारा उद्देश्य 24 के भीतर प्रत्येक शिकायत पर ध्यान देना हैघंटे। हम लोगों "
+"की प्रतिक्रिया प्राप्त करने के लिए एक विकल्प बनाने की प्रक्रिया में हैंज़ीरोवेस्ट वेबसाइट। एक "
+"बार यह तैयार हो जाने पर, आप ट्रैक रखने में भी सक्षम होंगेशिकायत की स्थिति, यदि कोई हो।"
+"इस बीच, आप परियोजना में संबंधित पर्यवेक्षकों से भी मिल सकते हैंसी कॉर्नर होटल के पास "
+"महाकाली कंटेनर कार्यालय में कार्यालय।"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/feedback_form.html:176
+#: zerowaste/templates/feedback_form.html:176
+msgid "Feedback"
+msgstr "प्रतिपुष्टि"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/feedback_form.html:179
+#: zerowaste/templates/feedback_form.html:179
+msgid "Your name"
+msgstr "नाम"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/feedback_form.html:180
+#: zerowaste/templates/feedback_form.html:180
+msgid "Your email"
+msgstr "ईमेल"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/feedback_form.html:181
+#: zerowaste/templates/feedback_form.html:181
+msgid "Your mobile"
+msgstr "मोबाइल नंबर"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/feedback_form.html:186
+msgid "How do you find overall daily collection service of SWK ?"
+msgstr "आप एसडब्ल्यूके की समग्र दैनिक संग्रह सेवा कैसे पाते हैं?"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/feedback_form.html:201
+msgid "How suitable  is the timing of SWK collection  to you?"
+msgstr "एसडब्ल्यूके संग्रह का समय आपके लिए कितना उपयुक्त है?"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/feedback_form.html:214
+msgid "How do you find the SWK website on mobile ?"
+msgstr "आप मोबाइल पर एसडब्ल्यूके वेबसाइट कैसे ढूंढते हैं?"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/feedback_form.html:226
+#: zerowaste/templates/feedback_form.html:226
+msgid "How useful is the compost for your kitchen garden ?"
+msgstr "आपके किचन गार्डन के लिए कम्पोस्ट कितनी उपयोगी है?"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/feedback_form.html:238
+msgid "Are you able to communicate your problems to SWK supervisors ? "
+msgstr "क्या आप एसडब्ल्यूके पर्यवेक्षकों को अपनी समस्याएं बताने में सक्षम हैं?"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/feedback_form.html:251
+#: zerowaste/templates/feedback_form.html:251
+msgid "Information received on Solid Waste Management "
+msgstr "ठोस अपशिष्ट प्रबंधन पर प्राप्त जानकारी"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/feedback_form.html:264
+#: zerowaste/templates/feedback_form.html:264
+msgid "The services received from the Cleanliness Workers "
+msgstr "सफाई कर्मियों से प्राप्त सेवाएं"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/feedback_form.html:277
+#: zerowaste/templates/feedback_form.html:277
+msgid "Segregation of Waste "
+msgstr "कचरे का पृथक्करण"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/feedback_form.html:290
+#: zerowaste/templates/feedback_form.html:290
+msgid ""
+"The process involved in systematic recycling/disposal of Wet waste, Dry "
+"waste and Hazardous Waste."
+msgstr ""
+"गीले कचरे, सूखे के व्यवस्थित पुनर्चक्रण/निपटान में शामिल प्रक्रिया अपशिष्ट और खतरनाक अपशिष्ट।"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/feedback_form.html:303
+#: zerowaste/templates/feedback_form.html:303
+msgid ""
+"Waste Management Awareness campaigns conducted by the team in your "
+"neighborhood. "
+msgstr "आपकी टीम द्वारा आयोजित अपशिष्ट प्रबंधन जागरूकता अभियानअड़ोस - पड़ोस। "
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/feedback_form.html:316
+#: zerowaste/templates/feedback_form.html:316
+msgid "Your contribution/role in the Waste Management Program "
+msgstr "अपशिष्ट प्रबंधन कार्यक्रम में आपका योगदान/भूमिका"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/feedback_form.html:359
+#: zerowaste/templates/GarbageSeg.html:42
+#: zerowaste/templates/feedback_form.html:359
+msgid "Submit"
+msgstr "सब्मिट"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/grievance_form.html:164
+msgid "Grievance Form "
+msgstr "शिकायत फ़ार्म"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/map/map.html:302
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/map/map157.html:302
+#: zerowaste/templates/map/map.html:306 zerowaste/templates/map/map157.html:302
+msgid "Geographical Hierarchy"
+msgstr "भौगोलिक पदानुक्रम"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/map/map.html:307
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/map/map157.html:307
+#: zerowaste/templates/map/map.html:311 zerowaste/templates/map/map157.html:307
+#: zerowaste/templates/map/map_new.html:331
+msgid "Mumbai Suburban Boundary"
+msgstr "मुंबई उपनगरीय सीमा"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/map/map.html:310
+#: zerowaste/templates/map/map.html:315
+msgid "Mumbai Suburban -  Ward K-WEST"
+msgstr "मुंबई उपनगरीय - वार्ड के-वेस्ट"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/map/map.html:313
+#: zerowaste/templates/map/map.html:318
+#: zerowaste/templates/map/map_new.html:347
+msgid "61 Ward"
+msgstr "61 वार्ड"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/map/map.html:323
+#: zerowaste/templates/map/map.html:336
+msgid "Ward 61 Landmarks"
+msgstr "वार्ड 61 स्थलचिह्न"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/map/map.html:328
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/map/map157.html:328
+#: zerowaste/templates/map/map.html:341 zerowaste/templates/map/map157.html:328
+msgid "Zones"
+msgstr "क्षेत्र"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/map/map.html:331
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/map/map157.html:331
+#: zerowaste/templates/map/map.html:344 zerowaste/templates/map/map.html:354
+#: zerowaste/templates/map/map.html:358 zerowaste/templates/map/map157.html:331
+msgid "Building Polygons"
+msgstr "बहुभुज की इमारत"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/map/map.html:334
+msgid "Buildings Polygons"
+msgstr "बहुभुज की इमारत"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/map/map.html:337
+#: zerowaste/templates/map/map.html:373
+#: zerowaste/templates/map/map_new.html:401
+#: zerowaste/templates/map/map_new.html:443
+msgid "Roads"
+msgstr "सड़कें"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/map/map.html:344
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/map/map157.html:341
+#: zerowaste/templates/map/map.html:392 zerowaste/templates/map/map157.html:341
+#: zerowaste/templates/map/map_new.html:478
+msgid "Your Location"
+msgstr "स्थान"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/map/map157.html:310
+#: zerowaste/templates/map/map157.html:310
+msgid "Mumbai Suburban -  Ward L"
+msgstr "मुंबई उपनगरीय - वार्ड एल"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/map/map157.html:313
+#: zerowaste/templates/map/map157.html:313
+msgid "157 Ward"
+msgstr "157 वार्ड"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/map/map157.html:323
+#: zerowaste/templates/map/map157.html:323
+msgid "Ward 157 Landmarks"
+msgstr "वार्ड 157 स्थलचिह्न"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/map/map157.html:334
+#: zerowaste/templates/map/map157.html:334
+msgid "Buildings Points"
+msgstr "इमारत पॉइंट्स"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/show_data.html:80
+msgid "Zone Name"
+msgstr "क्षेत्र का नाम"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/show_data.html:81
+msgid "Kitchen Waste(Kg)"
+msgstr "रसोई अपशिष्ट (किलो)"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/show_data.html:82
+msgid "Burnable Waste(Kg)"
+msgstr "जलने योग्य अपशिष्ट (किलो)"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/show_data.html:83
+msgid "Landfill(indside)"
+msgstr "लैंडफिल (अंदर)"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/show_data.html:84
+msgid "Landfill(outside)"
+msgstr "लैंडफिल (बाहर)"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/show_data.html:85
+#: zerowaste/templates/build_show_data.html:84
+#: zerowaste/templates/show_data.html:85 zerowaste/templates/show_wsd.html:85
+msgid "Recyclable Waste"
+msgstr "पुन: उपयोग अपशिष्ट "
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/templates/show_data.html:86
+#: zerowaste/templates/build_show_data.html:87
+#: zerowaste/templates/show_data.html:88 zerowaste/templates/show_wsd.html:89
+msgid "Zone ID"
+msgstr "जोन आईडी"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/views.py:44
+msgid "Please select Zone"
+msgstr "कृपया जोन का चयन करें"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/views.py:46
+#: zerowaste/views.py:100 zerowaste/views.py:458
+msgid "Data already exists for this Zone and Date."
+msgstr "इस क्षेत्र और दिनांक के लिए डेटा पहले से मौजूद है"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/views.py:50
+#: zerowaste/views.py:104 zerowaste/views.py:462
+msgid "Your data is saved for {} dated {}"
+msgstr "आपका डेटा {} दिनांक {} के लिए सहेजा गया है"
+
+#: zerowaste/static/assets/css/mumbai61/zerowaste/views.py:334
+#: zerowaste/views.py:355
+msgid " Your feedback is saved. "
+msgstr "आपकी प्रतिक्रिया सहेज ली गई है।"
+
+#: zerowaste/templates/EmployeeDetails.html:27
+msgid "Employee Detail"
+msgstr "कर्मचारी विवरण"
+
+#: zerowaste/templates/GarbageSeg.html:35
+msgid "Waste Collection / Segregation Details"
+msgstr "अपशिष्ट संग्रह / पृथक्करण विवरण"
+
+#: zerowaste/templates/Resources.html:9
+msgid "Resources"
+msgstr "संसाधन"
+
+#: zerowaste/templates/adminlogin.html:38
+msgid "Mumbai Ward-61 Portal Login"
+msgstr "मुंबई वार्ड-61 पोर्टल लॉगिन"
+
+#: zerowaste/templates/adminlogin.html:41
+msgid "EnterUsername"
+msgstr "उपयोगकर्ता नाम दर्ज करें"
+
+#: zerowaste/templates/adminlogin.html:45
+msgid "Password"
+msgstr "पासवर्ड"
+
+#: zerowaste/templates/adminlogin.html:48
+msgid "Login"
+msgstr "लॉगिन"
+
+#: zerowaste/templates/base.html:105
+msgid "Mapathon"
+msgstr ""
+
+#: zerowaste/templates/base.html:118
+msgid "Forms"
+msgstr "फार्म"
+
+#: zerowaste/templates/base.html:122
+msgid "Enter Garbage Collection Details"
+msgstr "कचरा संग्रहण विवरण दर्ज करें"
+
+#: zerowaste/templates/base.html:123
+msgid "Enter Employee Details"
+msgstr "कर्मचारी विवरण दर्ज करें"
+
+#: zerowaste/templates/base.html:128
+msgid "(K-West) Survey Form "
+msgstr "(के-वेस्ट) सर्वे फॉर्म"
+
+#: zerowaste/templates/base.html:132
+msgid "Segregation Report"
+msgstr "पृथक्करण रिपोर्ट"
+
+#: zerowaste/templates/base.html:138
+msgid "Dashboard"
+msgstr "डैशबोर्ड"
+
+#: zerowaste/templates/base.html:147
+msgid "Student-Project "
+msgstr "छात्र-परियोजना"
+
+#: zerowaste/templates/base.html:150
+msgid "Resources "
+msgstr "संसाधन"
+
+#: zerowaste/templates/base.html:169
+msgid "Logout"
+msgstr "लॉग आउट"
+
+#: zerowaste/templates/base.html:173
+msgid "Login/Register"
+msgstr "लॉग इन/रजिस्टर"
+
+#: zerowaste/templates/build_show_data.html:81
+#: zerowaste/templates/show_data.html:82 zerowaste/templates/show_wsd.html:82
+msgid "Wet Waste(Kg)"
+msgstr "गीला अपशिष्ट (किलो)"
+
+#: zerowaste/templates/build_show_data.html:82
+#: zerowaste/templates/show_data.html:83 zerowaste/templates/show_wsd.html:83
+msgid "Dry Waste(Kg)"
+msgstr "सूखा अपशिष्ट (किलोग्राम)"
+
+#: zerowaste/templates/build_show_data.html:83
+#: zerowaste/templates/show_data.html:84 zerowaste/templates/show_wsd.html:84
+msgid "Hazardous Waste(kg)"
+msgstr "खतरनाक अपशिष्ट (किलो)"
+
+#: zerowaste/templates/build_show_data.html:85
+#: zerowaste/templates/show_data.html:86 zerowaste/templates/show_wsd.html:86
+msgid "Compostable Waste"
+msgstr "कम्पोस्ट अपशिष्ट"
+
+#: zerowaste/templates/build_show_data.html:86
+#: zerowaste/templates/show_data.html:87 zerowaste/templates/show_wsd.html:87
+msgid "Rejected Waste(Dumping Yard)"
+msgstr "अस्वीकृत अपशिष्ट (डंपिंग यार्ड)"
+
+#: zerowaste/templates/buildedit.html:31
+msgid "Update Buildings Details"
+msgstr "इमारतों का विवरण अपडेट करें"
+
+#: zerowaste/templates/buildedit.html:36
+#: zerowaste/templates/map/map_new.html:980
+msgid "SAC Number"
+msgstr "सैक संख्या"
+
+#: zerowaste/templates/buildedit.html:38 zerowaste/templates/edit.html:38
+#: zerowaste/templates/map/map_new.html:981
+msgid "Region Name:"
+msgstr "क्षेत्र का नाम:"
+
+#: zerowaste/templates/buildedit.html:41 zerowaste/templates/edit.html:81
+#: zerowaste/templates/map/map_new.html:984
+msgid "Building Name:"
+msgstr "इमारत का नाम:"
+
+#: zerowaste/templates/buildedit.html:43
+#: zerowaste/templates/map/map_new.html:986
+msgid "Building Type:"
+msgstr "इमारत प्रकार"
+
+#: zerowaste/templates/buildedit.html:45
+#: zerowaste/templates/map/map_new.html:988
+msgid "Wing Name:"
+msgstr "विंग का नाम:"
+
+#: zerowaste/templates/buildedit.html:47
+#: zerowaste/templates/map/map_new.html:990
+msgid "Number of Flats:"
+msgstr "फ्लैटों की संख्या"
+
+#: zerowaste/templates/buildedit.html:49
+#: zerowaste/templates/map/map_new.html:992
+msgid "Number of Shops:"
+msgstr "दुकानों की संख्या:"
+
+#: zerowaste/templates/buildedit.html:51
+msgid "Number of Floors:"
+msgstr "मंजिलों की संख्या:"
+
+#: zerowaste/templates/buildedit.html:54
+#: zerowaste/templates/map/map_new.html:996
+msgid "Village:"
+msgstr "गांव"
+
+#: zerowaste/templates/buildedit.html:57
+msgid "Address:"
+msgstr "पता:"
+
+#: zerowaste/templates/edit.html:51
+msgid "Wet Waste Before Seg.:"
+msgstr "पृथक्करण से पहले गीला अपशिष्ट"
+
+#: zerowaste/templates/edit.html:57
+msgid "Dry Waste Before Seg.:"
+msgstr "पृथक्करण से पहले सूखा कचरा"
+
+#: zerowaste/templates/edit.html:63
+msgid "Recyclable Waste:"
+msgstr "पुन: उपयोग कचरा"
+
+#: zerowaste/templates/edit.html:69
+msgid "Compostable Waste:"
+msgstr "कम्पोस्टेबल अपशिष्ट:"
+
+#: zerowaste/templates/edit.html:75
+msgid "Harzardous Waste:"
+msgstr "हानिकारक अपशिष्ट:"
+
+#: zerowaste/templates/feedback_form.html:186
+msgid "How do you find overall daily collection service of your ward ?"
+msgstr "आप अपने वार्ड की समग्र दैनिक संग्रहण सेवा कैसे पाते हैं?"
+
+#: zerowaste/templates/feedback_form.html:201
+msgid "How suitable  is the timing of Waste collection  to you?"
+msgstr "कचरा संग्रहण का समय आपके लिए कितना उपयुक्त है?"
+
+#: zerowaste/templates/feedback_form.html:214
+msgid "How do you find the mumbai61.nowastes.in website on mobile ?"
+msgstr "आप मोबाइल पर mumbai61.nowastes.in वेबसाइट कैसे ढूंढते हैं?"
+
+#: zerowaste/templates/feedback_form.html:238
+msgid "Are you able to communicate your problems to supervisors ? "
+msgstr "क्या आप पर्यवेक्षकों को अपनी समस्याओं के बारे में बताने में सक्षम हैं?"
+
+#: zerowaste/templates/grievance_form.html:305
+msgid "Audio Grievance Form "
+msgstr "ऑडियो शिकायत प्रपत्र"
+
+#: zerowaste/templates/map/map.html:328
+msgid "Prabhag Boundary"
+msgstr "प्रभाग सीमा"
+
+#: zerowaste/templates/map/map.html:331
+#: zerowaste/templates/map/map_new.html:342
+msgid "K-West Building Points"
+msgstr "के-वेस्ट इमारत पॉइंट्स"
+
+#: zerowaste/templates/map/map.html:347
+#: zerowaste/templates/map/map_new.html:376
+#: zerowaste/templates/map/map_new.html:416
+msgid "Regions"
+msgstr "क्षेत्र"
+
+#: zerowaste/templates/map/map.html:350
+#: zerowaste/templates/map/map_new.html:380
+#: zerowaste/templates/map/map_new.html:420
+msgid "Buildings Clusters"
+msgstr "इमारत समूह"
+
+#: zerowaste/templates/map/map.html:363
+#: zerowaste/templates/map/map_new.html:390
+#: zerowaste/templates/map/map_new.html:432
+msgid "SRA"
+msgstr "एसआरए"
+
+#: zerowaste/templates/map/map.html:366
+#: zerowaste/templates/map/map_new.html:393
+#: zerowaste/templates/map/map_new.html:435
+msgid "CHS"
+msgstr "सीएचएस"
+
+#: zerowaste/templates/map/map.html:369
+#: zerowaste/templates/map/map_new.html:397
+#: zerowaste/templates/map/map_new.html:439
+msgid "SMPA"
+msgstr "एसएमपीए"
+
+#: zerowaste/templates/map/map.html:378
+#: zerowaste/templates/map/map_new.html:449
+msgid "UnNamed Buildings"
+msgstr "बिना नाम वाली इमारत"
+
+#: zerowaste/templates/map/map.html:381
+#: zerowaste/templates/map/map_new.html:453
+msgid "Unamed Regions in Buildings"
+msgstr "बिना नाम वाला क्षेत्र"
+
+#: zerowaste/templates/map/map.html:385
+#: zerowaste/templates/map/map_new.html:457
+msgid "OSM BUILDINGS"
+msgstr "ओएसएम इमारत"
+
+#: zerowaste/templates/map/map_new.html:282
+#, fuzzy
+#| msgid "Mumbai Layers"
+msgid "Mumbai Layers _ 2022 rev"
+msgstr "मुंबई परतें"
+
+#: zerowaste/templates/map/map_new.html:286
+msgid "Mumbai Layers"
+msgstr "मुंबई परतें"
+
+#: zerowaste/templates/map/map_new.html:293
+msgid "Ward Boundaries"
+msgstr "वार्ड की सीमाएं"
+
+#: zerowaste/templates/map/map_new.html:296
+#: zerowaste/templates/map/map_new.html:339
+msgid "Prabhag Boundaries"
+msgstr "प्रभग सीमाएं"
+
+#: zerowaste/templates/map/map_new.html:299
+msgid "Building points :Whole Mumbai"
+msgstr "इमारत पॉइंट :संपूर्ण मुंबई"
+
+#: zerowaste/templates/map/map_new.html:302
+msgid "Development Plan :Whole Mumbai"
+msgstr "विकास योजना :संपूर्ण मुंबई"
+
+#: zerowaste/templates/map/map_new.html:326
+msgid "Focus: K-West Pilot"
+msgstr "फोकस: के-वेस्ट पायलट"
+
+#: zerowaste/templates/map/map_new.html:335
+msgid "Mumbai Suburban - Ward K-WEST"
+msgstr "मुंबई उपनगरीय - वार्ड के-वेस्ट"
+
+#: zerowaste/templates/map/map_new.html:352
+msgid "K-West Beat"
+msgstr "के-वेस्ट बीट"
+
+#: zerowaste/templates/map/map_new.html:363
+#: zerowaste/templates/map/map_new.html:411
+msgid " "
+msgstr ""
+
+#: zerowaste/templates/map/map_new.html:385
+msgid "Building Points:Prabhag Wise"
+msgstr "इमारत पॉइंट्स: प्रभग वाइज"
+
+#: zerowaste/templates/map/map_new.html:425
+msgid "Building points :Prabhag Wise"
+msgstr "इमारत पॉइंट्स: प्रभग वाइज"
+
+#: zerowaste/templates/map/map_new.html:465
+#, fuzzy
+#| msgid "Bulk Waste generator"
+msgid "Bulk Waste Generators"
+msgstr "थोक अपशिष्ट जनरेटर"
+
+#: zerowaste/templates/map/map_new.html:470
+msgid "Mumbai City BWG"
+msgstr "मुंबई शहर बीडब्ल्यूजी"
+
+#: zerowaste/templates/map/map_new.html:473
+msgid "Mumbai Eastern Suburbs BWG"
+msgstr "मुंबई पूर्वी उपनगर बीडब्ल्यूजी"
+
+#: zerowaste/templates/map/map_new.html:476
+msgid "Mumbai Western Suburbs BWG"
+msgstr "मुंबई पश्चिमी उपनगर बीडब्ल्यूजी"
+
+#: zerowaste/templates/map/map_new.html:999
+msgid "Billing Address:"
+msgstr "बिल भेजने का पता"
+
+#: zerowaste/templates/map/map_new.html:1001
+msgid "Property Address:"
+msgstr "संपत्ति का पता:"
+
+#: zerowaste/templates/show_wsd.html:88
+msgid "Date of notice Issued"
+msgstr "नोटिस जारी करने की तिथि"
+
+#: zerowaste/views.py:61
+msgid "Logged in sucessfully."
+msgstr "सफलतापूर्वक लॉग इन किया"
+
+#: zerowaste/views.py:77
+msgid "invalid login details for "
+msgstr "अमान्य लॉगिन विवरण"
+
+#: zerowaste/views.py:79
+msgid "Invalid username or password."
+msgstr "अमान्य उपयोगकर्ता नाम या पासवर्ड।"
+
+#: zerowaste/views.py:86
+msgid "Logged out successfully!"
+msgstr "सफलतापूर्वक लॉग आउट किया!"
+
+#: zerowaste/views.py:98 zerowaste/views.py:456
+msgid "Please select Region"
+msgstr "कृपया क्षेत्र का चयन करें"
+
+#: zerowaste/views.py:311
+msgid "Your grievance is saved and email is sent. Your Greivance no. is {}"
+msgstr "आपकी शिकायत सहेज ली गई है और ईमेल भेज दिया गया है। आपकी शिकायत नं. है {}"
+
+#: zerowaste/views.py:470 zerowaste/views.py:542
+msgid "Please check your form"
+msgstr "कृपया अपना फॉर्म जांचें"
+
+#: zerowaste/views.py:531
+msgid "Please Add Employee Name"
+msgstr "कृपया कर्मचारी का नाम जोड़ें"
+
+#: zerowaste/views.py:534
+msgid "Please Add Employee Number, ELse default no 1111111111 wil be entered."
+msgstr "कृपया कर्मचारी संख्या जोड़ें, अन्यथा डिफ़ॉल्ट संख्या 1111111111 दर्ज की जाएगी"
+
+#: zerowaste/views.py:539
+msgid "Your data is saved for {} as {}"
+msgstr "आपका डेटा {} के लिए {} के रूप में सहेजा गया है"

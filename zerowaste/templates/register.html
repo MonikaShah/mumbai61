@@ -11,7 +11,22 @@
 
 </style>
 {% load crispy_forms_tags %}         
+{% if messages %}
+<div>
+<ul class="messages">
+    {% for message in messages %}
 
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{message}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+    </div>
+
+    {% endfor %}
+</ul>
+</div>
+{% endif %}
 <!--Register--> 
 <div class="container py-5">
 	<h3>Register</h3><hr>
