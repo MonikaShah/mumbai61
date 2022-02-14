@@ -592,6 +592,8 @@ def emp_detail(request):
 def resources(request):
     return render(request,'Resources.html')
 
+
+
 def base(request):
     # ward_region = WasteSegregationDetails.objects.values('re').annotate(Sum('wet_waste_before_segregation') , Sum('dry_waste_before_segregation'), Sum('hazardous_waste')  )
 
@@ -679,4 +681,7 @@ def w61wcd(request):
     plot_div2 = plot(fig2,output_type='div')
     # plot_div3 = plot(fig3,output_type='div')
     return render(request,'w61wcd.html', context={'plot_div': plot_div, 'plot_div1':plot_div1,'plot_div2':plot_div2 })
+
+def Piecharts(request):
+    return render(request,'piecharts.html')
     
