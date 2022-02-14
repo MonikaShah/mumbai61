@@ -31,6 +31,8 @@ urlpatterns = [
     path("resources/",views.resources, name="resources"),
     # path("showgroup/",views.group,name="showgroup"),
     path("w61wcd/",views.w61wcd, name="w61wcd"),
+    path('dashboard_piecharts/',views.Piecharts, name="dashboard_piecharts"),
+    
 ]
 
 

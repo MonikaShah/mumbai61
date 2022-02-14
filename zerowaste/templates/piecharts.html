@@ -1,0 +1,229 @@
+{% load static %}
+{% load i18n %}
+{% block content %} 
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="">
+        <!-- Bootstrap Core CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+        <!-- jQuery UI CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.structure.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.theme.min.css">
+        <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+
+        <!-- <link rel="stylesheet" href="styles.css"> -->
+        <style>
+            body {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: 0;
+  overflow: hidden;
+}
+.map_title{
+  font-size: large;
+  color: black;
+  text-decoration: underline;
+  font-size: 15px;
+  font-weight: bold;
+}
+path {
+  /* margin-top: 100px; */
+  transform: translate(0,50);
+/*   fill: none; */
+  stroke: black;
+}
+#back{
+  color: azure;
+  font-weight: bold;
+  
+}
+
+.boundary {
+  stroke: rgb(0, 0, 0);
+  stroke-width: 1px; 
+}
+h1{
+    color: #8a2be2;
+    font-size: 30px;
+}
+.nav{
+  border: blueviolet 1px solid;
+
+}
+.title{
+    border: blueviolet 1px solid;
+    font-size: 30px;
+    
+}
+        </style>
+    <script src="https://unpkg.com/d3@5.6.0/dist/d3.min.js"></script>
+    </head>
+
+    <body>
+      
+        <div class="title">
+
+        
+            <H1 class="text-center">Dashboard: Ward61 Waste Collection Data</H1>
+        </div>
+       
+            
+        <!-- <div class="grid grid-cols-2">
+            <h5>Select Area:</h5>
+            <Select id="area_type">
+                <option value="ward" selected>Ward</option>
+                <option value="region" >Region</option>
+                <option value="building_cluster">Building Clusters</option>
+            </Select>
+        </div> -->
+        <div class="w-full grid grid-cols-3 nav">
+          <div class="w-full">
+            <h5  style="float: right; color: darkviolet;">Select Waste Type:</h5>
+
+          </div>
+          <div>
+            <Select class="w-full" id="waste_type" style="background-color: lightsteelblue;">
+                <option value="Mix_waste" selected>Total Waste</option>
+                <option value="Dry">Dry Waste</option>
+                <option value="Wet">Wet Waste</option>
+                <option value="Dom_Hazard">Hazardous Waste</option>
+            </Select>
+          </div>
+          <br>
+          <div class="w-full">
+            <h5  style="float: right; color: darkviolet;">Select Month:</h5>
+
+          </div>
+          <div>
+            <Select class="w-full" id="month" name="month" style="background-color: lightsteelblue;">
+                <option value="January" disabled>January</option>
+                <option value="February" disabled>February</option>
+                <option value="March" disabled>March</option>
+                <option value="April" disabled>April</option>
+                <option value="May" disabled>May</option>
+                <option value="June" disabled>June</option>
+                <option value="July" disabled>July</option>
+                <option value="August">August</option>
+                <option value="September">September</option>
+                <option value="October">October</option>
+                <option value="November">November</option>
+                <option value="December">December</option>
+            </Select>
+          </div>
+          &nbsp;&nbsp;&nbsp;
+          <div id = 'selectedata'></div>
+    
+        </div>
+                  
+        <div style="text-align: center; margin-top: 10px; overflow-y: scroll; overflow: scroll; overflow-x: hidden;">        
+          <button class = 'btn btn-success' onclick="showLayers()">Show Charts</button>
+          
+          
+              <button class = 'btn btn-success' onclick="clearAllLayers()">Remove Charts</button>
+        </div>       
+      
+
+    
+    
+    
+        <div class="grid grid-cols-2 gap-20"  id="body">
+              
+            
+            <div id="body1">
+            
+            </div> 
+            </div>
+       
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.7.0/d3.min.js"></script>
+    <script src='https://cdn.plot.ly/plotly-2.3.0.min.js'></script>
+    
+<script type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/1.49.5/plotly-locale-hi-in.js"></script>
+  <!-- <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script> -->
+
+    <!-- <script src="{% static 'js/legend.js' %}"></script> -->
+    <script src="{% static 'js/d3_legend.js' %}"></script>
+
+    <script src="{% static 'map.js' %}"></script>
+    
+<script>
+
+
+var x = 1;
+
+function showLayers(){
+    var check = x;
+    //clearAllLayers();
+    var waste_type = document.getElementById('waste_type').value;
+    for (i = 0; i < check; i++) {
+    var month = document.getElementsByName("month")[i].value;
+    
+    console.log(waste_type,month);
+    addMyNewLayers(waste_type,month);
+    }
+}
+    function addMyNewLayers(waste_type,month){
+        filename=waste_type+'_'+month+'.png';
+        filename1=waste_type+'_'+month+'_bar'+'.png';
+        console.log(filename);
+        //document.write("img src=/home/admin1/mumbai61/zerowaste/static/images/piecharts/Dom Hazard_August.png");
+        var img = document.createElement("img");
+        var img1 = document.createElement("img");
+        img1.src = '/static/images/piecharts/'+filename;
+        img1.id = 'image_id1';
+        //img.height = '900px';
+        //img.width = '900px'; 
+        img.src = '/static/images/barcharts/'+filename1;
+        img.id = 'image_id';
+        img.style = 'float:right;height:500px;width:500px';
+        //img.src = 'https://media.geeksforgeeks.org/wp-content/uploads/20190529122828/bs21.png';
+        console.log(img);
+        document.getElementById('body').appendChild(img);
+        console.log(img1);
+        document.getElementById('body1').appendChild(img1);
+        //var index = listOfDistrict.indexOf(dis);
+   //mymap.setView([districtLat[index], districtLong[index]], districtZoom[index]);
+
+
+}
+
+    function clearAllLayers(){
+        //var amenity = document.getElementById('waste_type').value;
+        //var dis = document.getElementById("month").value;
+        //filename=amenity+'_'+dis+'.png';
+        //var img = document.createElement("img");
+        //img.src = '/static/images/piecharts/'+filename;
+        //img.id = 'image_id';
+        var image_x = document.getElementById('image_id');
+        console.log(image_x);
+        image_x.parentNode.removeChild(image_x);
+        var image_x1 = document.getElementById('image_id1');
+        console.log(image_x1);
+        image_x1.parentNode.removeChild(image_x1);
+
+        //img.removeChild();
+        //image_x.removeChild(img);
+        //image_x.remove();
+        //document.getElementById('image_id').remove();
+        //document.getElementById('body').appendChild(img);
+        
+        //document.getElementById('body').removeChild(img);
+        
+    }
+
+
+
+</script>
+
+    </body>
+</html>
+{% endblock %}
