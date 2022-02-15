@@ -405,11 +405,8 @@
                 </select>
               <div id="ward_checklist">
                 <div class="checkbox">
-                  {% if '{{prabhag}}' == '061' %}
-                  <label><input type="checkbox" value="{regions}"  id="regions" onchange="getBoundaryru(this)"><span> {% trans "Regions" %}</span></label>
-                  {% else %}
+                  
                   <label><input type="checkbox" value="{regions}" disabled id="regions" onchange="getBoundaryru(this)"><span> {% trans "Regions" %}</span></label>
-{% endif %}
                 </div>
                 <div class="checkbox">
                   <label><input type="checkbox" value="{buildings}" disabled id="buildings"
@@ -456,11 +453,7 @@
               </div>
               <div id="checkboxes7">
                 <div class="checkbox">
-                  {% if '{{prabhag}}' == '061' %}
-                  <label><input type="checkbox" value="{regions}"  id="regions" onchange="getBoundaryru(this)"><span> {% trans "Regions" %}</span></label>
-                  {% else %}
-                  <label><input type="checkbox" value="{regions}" disabled id="regions" onchange="getBoundaryru(this)"><span> {% trans "Regions" %}</span></label>
-{% endif %}
+                  <label><input type="checkbox" value="{regions}" id="regions" disabled onchange="getBoundaryru(this)"><span> {% trans "Regions" %}</span></label>
                 </div>
                 <div class="checkbox">
                   <label><input type="checkbox" value="{buildings}" disabled id="buildings"
