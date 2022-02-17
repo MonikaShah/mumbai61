@@ -712,14 +712,14 @@ $("#prabhaglistwms").change(function() {
 	 var selectedValue = $(this).val();
    removeWMS('Buildings_mumbai:Buildings_mumbai');
    var wms_layer2 = L.tileLayer.wms('https://geoserver2.communitygis.net/geoserver/wms', {
-                layers: 'Buildings_mumbai:Corporate_Ward_Boundaries_8jan',
+                layers: 'Buildings_mumbai:Corporate_Ward_Boundaries_15feb22',
                 format: 'image/png',
                 transparent: 'true',
                 cql_filter: `prabhag_no='${selectedValue}'`,
 
               });
               wms_layer2.addTo(mymap);
-              removeWMS('Buildings_mumbai:Corporate_Ward_Boundaries_8jan');
+              removeWMS('Buildings_mumbai:Corporate_Ward_Boundaries_15feb22');
               newLayerList.push(wms_layer2);
 
    var wms_layer = L.tileLayer.wms('https://geoserver2.communitygis.net/geoserver/wms', {
