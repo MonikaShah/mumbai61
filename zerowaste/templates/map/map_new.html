@@ -759,6 +759,9 @@ $("#prabhaglistwms").change(function() {
               
               putfrmgeo(bwg_es);
             }
+            else if (boundary == '{DP}'){
+              putfrmgeo(DP);
+            }
             else if (boundary == "{wardKWest}") {
               
               putWMSru("ward61:k_west_mumbai");
@@ -807,8 +810,8 @@ $("#prabhaglistwms").change(function() {
               putWMSru("Buildings_mumbai:Corporate_Ward_Boundaries_8jan");
               else if (boundary == "{mumbai_buildings}")
               putWMSru("Buildings_mumbai:Buildings_mumbai");
-              else if (boundary == "{DP}")
-              putWMSru("Buildings_mumbai:mumbai_city_3july2021");
+              // else if (boundary == "{DP}")
+              // putWMSru("Buildings_mumbai:mumbai_city_3july2021");
 
           } else {
             if (boundary == "{wardKWest}") {
@@ -924,7 +927,16 @@ $("#prabhaglistwms").change(function() {
             // var opac = 1.0;
             var zoom = 13;
       
+          } 
+          else if (obj == '{DP}'){
+            layer = 'DP_Digitization_16Feb2022';
+            var currentPos = [19.1337, 72.7954];
+            var maximumzoom = 19;
+            // var opac = 0.3;
+            var zoom = 13;
+          
           }
+
           var wms_layer1 = L.tileLayer.wms('https://gis.communitygis.net/geoserver/wms', {
             layers: layer,
             format: 'image/png',
