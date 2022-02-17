@@ -109,14 +109,19 @@
     }
     #container1 {
   position: relative;
+  /* z-index: -1; */
 }
-#legend,#my_dataviz{
+.dropdown, .dropdown-menu.show{
+    opacity: 1;
+    z-index: 999;
+}
+/* #legend,#my_dataviz{
 position:absolute;
 background-color: white;
 z-index:999;
 left:90%;
 top:50%;
-}
+} */
 circle{
     z-index: 999;
 }
