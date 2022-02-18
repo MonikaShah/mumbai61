@@ -405,7 +405,6 @@
                 </select>
               <div id="ward_checklist">
                 <div class="checkbox">
-                  
                   <label><input type="checkbox" value="{regions}" disabled id="regions" onchange="getBoundaryru(this)"><span> {% trans "Regions" %}</span></label>
                 </div>
                 <div class="checkbox">
@@ -666,15 +665,7 @@ $("#wardlistwms").change(function() {
 	//  var $endpoint = window.location.href // or localhost/interface
   layer = 'Buildings_mumbai:Buildings_mumbai';
   wardwms = $(this).val();
-  var wms_layer2 = L.tileLayer.wms('https://geoserver2.communitygis.net/geoserver/wms', {
-                layers: 'Buildings_mumbai:mumbai_ward_boundary_2Jan2022',
-                format: 'image/png',
-                transparent: 'true',
-                cql_filter: `ward_id='${wardwms}'`,
-              });
-              wms_layer2.addTo(mymap); 
-              console.log(wms_layer2);
-   var wms_layer = L.tileLayer.wms('https://geoserver2.communitygis.net/geoserver/wms', {
+     var wms_layer = L.tileLayer.wms('https://geoserver2.communitygis.net/geoserver/wms', {
                 layers: 'Buildings_mumbai:Buildings_mumbai',
                 format: 'image/png',
                 transparent: 'true',
@@ -683,10 +674,8 @@ $("#wardlistwms").change(function() {
               wms_layer.addTo(mymap);
 popup_layer = "https://geoserver2.communitygis.net/geoserver/"+layer.split(":")[0]+"/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetFeatureInfo&LAYERS=" + wms_layer.options.layers + "&QUERY_LAYERS=" + wms_layer.options.layers;
               removeWMS('Buildings_mumbai:Buildings_mumbai');
-              removeWMS('Buildings_mumbai:mumbai_ward_boundary_2Jan2022');
 
               newLayerList.push(wms_layer);
-              newLayerList.push(wms_layer2);
               setView1('Buildings_mumbai:Buildings_mumbai','ward_id_2', wardwms);
               let $name2= {            
             'name2':wardwms}
@@ -710,18 +699,6 @@ popup_layer = "https://geoserver2.communitygis.net/geoserver/"+layer.split(":")[
 $("#prabhaglistwms").change(function() {
 	//  var $endpoint = window.location.href // or localhost/interface
 	 var selectedValue = $(this).val();
-   removeWMS('Buildings_mumbai:Buildings_mumbai');
-   var wms_layer2 = L.tileLayer.wms('https://geoserver2.communitygis.net/geoserver/wms', {
-                layers: 'Buildings_mumbai:Corporate_Ward_Boundaries_15feb22',
-                format: 'image/png',
-                transparent: 'true',
-                cql_filter: `prabhag_no='${selectedValue}'`,
-
-              });
-              wms_layer2.addTo(mymap);
-              removeWMS('Buildings_mumbai:Corporate_Ward_Boundaries_15feb22');
-              newLayerList.push(wms_layer2);
-
    var wms_layer = L.tileLayer.wms('https://geoserver2.communitygis.net/geoserver/wms', {
                 layers: 'Buildings_mumbai:Buildings_mumbai',
                 format: 'image/png',
@@ -782,9 +759,6 @@ $("#prabhaglistwms").change(function() {
               
               putfrmgeo(bwg_es);
             }
-            else if (boundary == '{DP}'){
-              putfrmgeo(DP);
-            }
             else if (boundary == "{wardKWest}") {
               
               putWMSru("ward61:k_west_mumbai");
@@ -833,8 +807,8 @@ $("#prabhaglistwms").change(function() {
               putWMSru("Buildings_mumbai:Corporate_Ward_Boundaries_8jan");
               else if (boundary == "{mumbai_buildings}")
               putWMSru("Buildings_mumbai:Buildings_mumbai");
-              // else if (boundary == "{DP}")
-              // putWMSru("Buildings_mumbai:mumbai_city_3july2021");
+              else if (boundary == "{DP}")
+              putWMSru("Buildings_mumbai:mumbai_city_3july2021");
 
           } else {
             if (boundary == "{wardKWest}") {
@@ -950,16 +924,7 @@ $("#prabhaglistwms").change(function() {
             // var opac = 1.0;
             var zoom = 13;
       
-          } 
-          else if (obj == '{DP}'){
-            layer = 'DP_Digitization_16Feb2022';
-            var currentPos = [19.1337, 72.7954];
-            var maximumzoom = 19;
-            // var opac = 0.3;
-            var zoom = 13;
-          
           }
-
           var wms_layer1 = L.tileLayer.wms('https://gis.communitygis.net/geoserver/wms', {
             layers: layer,
             format: 'image/png',
