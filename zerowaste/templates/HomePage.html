@@ -118,7 +118,7 @@ const mercator = geoMercator().scale(100000).translate([width/2, height/2]).cent
 
 const pathGenerator = geoPath().projection(mercator);
 // let url = 'https://geoserver2.communitygis.net/geoserver/geonode/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=geonode%3Acorporatorwardboundary_mumbai_1_0&outputFormat=json'
-// let url = 'https://gis.communitygis.net/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typename=geonode%3ACorporate_Ward_Boundaries_28Dec2021&outputFormat=json&srs=EPSG%3A4326&srsName=EPSG%3A4326'
+// let url = 'https://geonode.communitygis.net/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typename=geonode%3ACorporate_Ward_Boundaries_28Dec2021&outputFormat=json&srs=EPSG%3A4326&srsName=EPSG%3A4326'
 
 let activatedWards = [61];
 let render = features =>{
@@ -158,7 +158,7 @@ let render = features =>{
   
 }
 
-json('https://gis.communitygis.net/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typename=geonode%3ACorporate_Ward_Boundaries_28Dec2021&outputFormat=json&srs=EPSG%3A4326&srsName=EPSG%3A4326').then(geojson =>{
+json('https://geonode.communitygis.net/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typename=geonode%3ACorporate_Ward_Boundaries_28Dec2021&outputFormat=json&srs=EPSG%3A4326&srsName=EPSG%3A4326').then(geojson =>{
   // console.log(geojson)
  render(geojson.features)
 })
@@ -225,8 +225,8 @@ let onEachFeatureWard = (feature, layer) => {
   }
 //  function to fetch ward and prabhag geojson
 let  fetchData = async() =>{
-let wardURL = 'https://gis.communitygis.net/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typename=geonode%3Amumbai_ward_boundary_2Jan2022&outputFormat=json&srs=EPSG%3A4326&srsName=EPSG%3A4326&access_token=8Rzwv2yElnLetOXVMJtkKerBjA9YlL'
-let prabhagURL   = 'https://gis.communitygis.net/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typename=geonode%3AMumbai_Prabhag_Boundaries_3Jan2022V2&outputFormat=json&srs=EPSG%3A4326&srsName=EPSG%3A4326&access_token=iWVlDtClk3ZiHKwlMh57X1BhzhsSse'
+let wardURL = 'https://geonode.communitygis.net/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typename=geonode%3Amumbai_ward_boundary_2Jan2022&outputFormat=json&srs=EPSG%3A4326&srsName=EPSG%3A4326&access_token=8Rzwv2yElnLetOXVMJtkKerBjA9YlL'
+let prabhagURL   = 'https://geonode.communitygis.net/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typename=geonode%3AMumbai_Prabhag_Boundaries_3Jan2022V2&outputFormat=json&srs=EPSG%3A4326&srsName=EPSG%3A4326&access_token=iWVlDtClk3ZiHKwlMh57X1BhzhsSse'
 
 SlickLoader.enable();
 SlickLoader.setText('Map Loading...');
