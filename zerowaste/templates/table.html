@@ -129,12 +129,17 @@ table.width =  window.screen.width/1.5;
                 valid=data[i][cols[12]];
                 tabCell.innerHTML = data[i][cols[j]];
             }
-            let btn = document.createElement("button");
+            
+            if(valid==false){
+                let btn = document.createElement("button");
             btn.innerHTML = "Authenticate";
             btn.id = "formBtn"+i;
-            if(valid==false){
-            btn.className = "btn-danger"}
+            btn.className = "btn-danger";
+        }
             else if(valid==true){
+                let btn = document.createElement("button");
+            btn.innerHTML = "Deauthenticate";
+            btn.id = "formBtn"+i;
             btn.className = "btn-success"}
             else{
             btn.className = "btn-warning"
