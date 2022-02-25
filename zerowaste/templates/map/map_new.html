@@ -563,7 +563,7 @@
         let ward= '{{ward}}';
         let prabhag = '{{prabhag}}';
         // console.log(prabhag)
-
+        legend = L.control({position: 'bottomright'});
         $('#prabhag').html('Prabhag '+prabhag +' landmarks')
         $('#ward').html('Ward '+ward +' landmarks')
         function showCheckboxes3(th) {
@@ -598,6 +598,8 @@
         }
         // var prabhag_sel;
         $("#prabhaglist").change(function() {
+  mymap.removeControl(legend);
+
 	 var $endpoint = window.location.href // or localhost/interface
 	 prabhag = $(this).val();
   //  console.log(prabhag)
@@ -848,13 +850,15 @@ $("#prabhaglistwms").change(function() {
               else if (boundary == "{DP}")
               removeWMS("Buildings_mumbai:mumbai_city_3july2021");
             else if (boundary == "{buildings}") {
-              removepolylayer(polylayer);
   mymap.removeControl(legend);
+
+              removepolylayer(polylayer);
 
             }
             else if (boundary == "{buildings_up}") {
-              removepolylayer(polylayer);
   mymap.removeControl(legend);
+
+              removepolylayer(polylayer);
 
             }
             else if (boundary == "{roads}")
@@ -1178,13 +1182,15 @@ var geojsonMarkerOptions = {
     fillOpacity: 0.8
 };
 function displaypolygon(poly_layer){
+  legend = L.control({position: 'bottomright'});
   let building_data;
+  let building_data_up;
   if(poly_layer == '{buildings}' ){
 building_data = buildings.features;
 
   }
   else if(poly_layer=='{buildings_up}'){
-    building_data= buildings_up.features;
+    building_data_up= buildings_up.features;
   }
 
   if(building_data !=undefined){
