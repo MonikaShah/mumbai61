@@ -31,7 +31,7 @@ table {
 th,
 td {
   border: 1px solid black;
-  width: 135px;
+  width: 125px;
   height: 100px;
   overflow: hidden;
   border: solid 1px #DDD;
@@ -111,7 +111,7 @@ table.width =  window.screen.width/1.5;
 
         var tr = table.insertRow(-1);                   // TABLE ROW.
 
-        for (var i = 0; i < col.length-1; i++) {
+        for (var i = 0; i < col.length; i++) {
             var th = document.createElement("th");      // TABLE HEADER.
             th.innerHTML = col[i];
             tr.appendChild(th);
@@ -122,26 +122,29 @@ table.width =  window.screen.width/1.5;
 // console.log(data[i])
             tr = table.insertRow(-1);
             
-            for (var j = 0; j < cols.length-1; j++) {
+            for (var j = 0; j < cols.length; j++) {
                
                 var tabCell = tr.insertCell(-1);
                 sac = data[i][cols[0]];
                 valid=data[i][cols[12]];
                 tabCell.innerHTML = data[i][cols[j]];
             }
-            
+            let btn;
             if(valid==false){
-                let btn = document.createElement("button");
+                btn = document.createElement("button");
             btn.innerHTML = "Authenticate";
             btn.id = "formBtn"+i;
             btn.className = "btn-danger";
         }
             else if(valid==true){
-                let btn = document.createElement("button");
+                 btn = document.createElement("button");
             btn.innerHTML = "Deauthenticate";
             btn.id = "formBtn"+i;
             btn.className = "btn-success"}
             else{
+                btn = document.createElement("button");
+            btn.innerHTML = "Authenticate";
+            btn.id = "formBtn"+i;
             btn.className = "btn-warning"
             }
             let btn1 = document.createElement("button");
