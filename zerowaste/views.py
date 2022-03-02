@@ -1,7 +1,7 @@
 # Create your views here.
 from django.shortcuts import render,redirect,HttpResponse,HttpResponseRedirect
-from .forms import GarbageSegForm,GrievanceForm,Ward61BuildingsOsm2Nov2021Form,WasteSegregationDetailsForm,NewUserForm,EmployeeDetailsForm,MumbaiBuildingsWardPrabhagwise17JanForm
-from .models import Report,Rating,WasteSegregationDetails #,OsmBuildings29Oct21
+from .forms import GarbageSegForm,GrievanceForm,Ward61BuildingsOsm2Nov2021Form,WasteSegregationDetailsForm,NewUserForm,EmployeeDetailsForm,MumbaiBuildingsWardPrabhagwise17JanForm,WasteSegregationDetailsRevised2march22Form
+from .models import Report,Rating,WasteSegregationDetails,WasteSegregationDetailsRevised2March22#CensusTable #,OsmBuildings29Oct21
 from map.models import Ward61BuildingsOsm2Nov2021,MumbaiBuildingsWardPrabhagwise17Jan,MumbaiPrabhagBoundaries3Jan2022V2,DistinctGeomSacNoMumbai#,Ward61OsmBuildings,
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.core.files.storage import FileSystemStorage
@@ -48,6 +48,9 @@ import numpy
 #######################################################
 def HomePage(request):
     return render(request,"HomePage.html")
+
+def restrictedHomePage(request):
+    return render(request,"restrictedHomePage.html")
 
 def user_login(request):
     # context = RequestContext(request)
@@ -685,3 +688,109 @@ def w61wcd(request):
 def Piecharts(request):
     return render(request,'piecharts.html')
     
+# def tree_census_charts(request):
+#     census_table_csv_data = CensusTable.objects.all()
+
+#     df = pd.DataFrame(census_table_csv_data.values())
+    
+#     print(df.columns)
+#     fig = px.histogram(df, x = 'name_of_the_city')
+#     plt.xlabel('Number of Trees')
+#     plt.ylabel('Cities')
+#     fig.write_image('zerowaste/static/charts/tree-city.png')
+#     plt.close()
+    
+    
+#     # fig = px.pie(df,values='name_of_the_city',names=df['tree_type']=='Indegenious')
+#     fig = px.histogram(df[df['tree_type']=='Indegenious'], x = 'name_of_the_city')
+#     plt.xlabel('Number of Indegenious Trees')
+#     plt.ylabel('Cities')
+#     fig.write_image('zerowaste/static/charts/indegenious-city.png')
+#     plt.close()
+    
+#     fig = px.bar(df, x='tree_common_name', y= 'total_area_in_sq_kms_under_all_trees')
+#     plt.xlabel('Common Name of the tree')
+#     plt.ylabel('Total are in sq kms under all tree')
+#     plt.xticks(rotation=40)
+#     fig.write_image('zerowaste/static/charts/tree-area.png')
+#     plt.close()
+
+#     no_of_heritage_trees = len(df[df['current_tree_age'] >= 50])
+#     no_of_newly_planted_trees = len(df[df['current_tree_age'] <= 25])
+#     total_area_under_indegenious_trees = sum(df['total_area_in_sq_kms_under_native_indegeniuos_trees'].tolist())
+#     total_area_under_all_trees = sum(df['total_area_in_sq_kms_under_all_trees'].tolist())
+#     trees_under_govt_land = sum(df[df['tree_ownership_plantation_initiated_by'] == 'Government']['total_area_in_sq_kms_under_all_trees'].tolist())
+#     trees_under_private_land = sum(df[df['tree_ownership_plantation_initiated_by'] == 'Private']['total_area_in_sq_kms_under_all_trees'].tolist())
+#     trees_under_other_land = sum(df[df['tree_ownership_plantation_initiated_by'] == 'Others']['total_area_in_sq_kms_under_all_trees'].tolist())
+
+#     print(no_of_heritage_trees)
+#     print(no_of_newly_planted_trees)
+#     print(total_area_under_indegenious_trees)
+#     print(total_area_under_all_trees)
+#     print(trees_under_govt_land)
+#     print(trees_under_private_land)
+#     print(trees_under_other_land)
+
+#     context = {
+#         'heritage_trees' : no_of_heritage_trees,
+#         'newly_planted_trees' : no_of_newly_planted_trees,
+#         'area_under_indegenious_trees' : total_area_under_indegenious_trees,
+#         'area_under_all_trees' : total_area_under_all_trees,
+#         'govt_land_trees' : trees_under_govt_land,
+#         'private_land_trees' : trees_under_private_land,
+#         'other_land_trees' : trees_under_other_land
+#     }
+
+
+#     return render(request,'tree_census_charts.html')
+
+def WasteSegregationDetailsRevisedView(request):
+        form = WasteSegregationDetailsRevised2march22Form()
+        # building = request.POST.get('building_name')
+        # form.fields[''].choices = [building.building]
+        print(request.method)
+        # if is_ajax(request=request):
+
+        #     selected_field1 = request.GET['ward_no']
+        #     print(selected_field1)
+        #     prabhag_list = list(MumbaiPrabhagBoundaries3Jan2022V2.objects.filter(ward_id=selected_field1).values('prabhag_no').order_by('prabhag_no'))
+
+   
+        # return JsonResponse(prabhag_list, safe=False)
+        if request.method == 'POST':
+            form = WasteSegregationDetailsRevised2march22Form(request.POST)
+            # region = form.cleaned_data['region']
+            # print(region)
+            # regionName = form.cleaned_data['region']
+            # print(form['region'].value())
+            # print(form['building_cluster'].value())
+            if form.is_valid():
+                sacNo = form.cleaned_data['sac_no']
+                # print(regionName)
+                collDate = form.cleaned_data['coll_date']
+                # if regionName =="none":
+                #     messages.warning(request, _(u'Please select Region'))
+                # if  WasteSegregationDetails.objects.filter(coll_date=collDate, region=regionName).exists():
+                #     messages.warning(request, _(u'Data already exists for this Zone and Date.'))
+                # else:  
+                    # instance = form.save(commit=False)
+                    # instance.save()
+                    # messages.success(request, _(u'Your data is saved for {} dated {}').format(regionName,collDate))
+                    # print(form)
+                #   messages.success(request,'Form is valid')
+                instance = form.save(commit=False)
+                instance.save()
+                messages.success(request, _(u'Your data is saved for date {}').format(collDate))
+                print(form)
+                return HttpResponseRedirect(request.path_info)
+            else:
+                # print(form['region'].value())
+                # print(form['building_cluster'].value())
+                form.errors.as_json()
+                messages.warning(request, _(u'Please check your form'))
+                # messages.warning(request,form.errors.as_json)
+        else:
+                form = WasteSegregationDetailsRevised2march22Form()
+                # print(form)
+                form.errors.as_json()
+        return render(request, 'GarbageSegRevised.html', {'form': form})

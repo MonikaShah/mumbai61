@@ -6,6 +6,7 @@ from django.conf.urls.static import static
 # from visits.models import Visits
 urlpatterns = [
     path('',views.HomePage, name = 'homepage'),
+    # path('',views.restrictedHomePage,name = 'restrictedHomePage'),
     path('dashboard/',views.base, name = 'dashboard'),
     # path('garbage_seg/', views.GarbageSeg,name='garbage_seg'),
     path('garbage_seg/', views.WasteSegregationDetailsView,name='garbage_seg'),
@@ -32,6 +33,8 @@ urlpatterns = [
     # path("showgroup/",views.group,name="showgroup"),
     path("w61wcd/",views.w61wcd, name="w61wcd"),
     path('dashboard_piecharts/',views.Piecharts, name="dashboard_piecharts"),
+    # path('tree_census_charts/',views.tree_census_charts, name="tree_census_charts"),
+    path('garbage_seg_rev/', views.WasteSegregationDetailsRevisedView,name='garbage_seg_rev'),
     
 ]
 
