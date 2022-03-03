@@ -9,6 +9,7 @@ from django.db import models
 from django.utils.translation import gettext as _
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from map.models import *
+from django.core.validators import MinLengthValidator, int_list_validator
 # from django.contrib.gis.db import models
 class CustomAccountManager(BaseUserManager):
     def create_superuser(self, username, password, **other_fields):
@@ -281,19 +282,22 @@ class WasteSegregationDetails(models.Model):
 
 class EmployeeDetails(models.Model):
     # emp_id = models.AutoField(primary_key=True)
-    adminward =models.CharField(max_length=50,default = 'Ward-KWest')
-    councillorward = models.CharField(max_length=100)
-    region = models.CharField(max_length=100)
-    emp_category =models.CharField(max_length = 100)
-    emp_name =models.CharField(max_length = 100)
-    emp_mobile =models.IntegerField()
+    ward =models.CharField(max_length=50,default= 'K/W')
+    prabhag = models.CharField(max_length=100)
+    chowky = models.CharField(max_length=100)
+    post =models.CharField(max_length = 100)
+    name =models.CharField(max_length = 100)
+    mobile = models.CharField(verbose_name="Phone number", max_length=10,
+    validators=[int_list_validator(sep=''),MinLengthValidator(10),], 
+    default='1111111111')
+    councillor = models.CharField(max_length = 100)
 
     class Meta:
         managed = True
         db_table = 'employee_details'
 
     def __str__(self):
-        return self.emp_name
+        return self.prabhag
 
 # class CensusTable(models.Model):
 #     sstart = models.DateTimeField(blank=True, null=True)
