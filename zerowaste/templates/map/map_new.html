@@ -95,7 +95,7 @@
 
   /* css to customize Leaflet default styles  */
   .leaflet-popup-content-wrapper {
-    width: 400px;
+    width: 500px;
     background: rgba(0, 0, 0, 0.9);
     color: #ffffff;
   }
@@ -551,7 +551,7 @@
   let windowHeight = window.screen.height;
         let expanded = false;
         console.log(expanded)
-        let wms_legend,popup_layer;
+        let wms_legend,popup_layer,layer1;
         let newLayerList = [];
         var polylayer;
         var polylayer2 =[];
@@ -972,6 +972,7 @@ $("#prabhaglistwms").change(function() {
         //   };
         // }
         function putWMSru(layer) {
+          layer1 = layer;
           if (layer == "ward61:k_west_mumbai") {
             layer = 'ward61:k_west_mumbai';
             currentPos = [19.1233, 72.7784];
@@ -1389,7 +1390,7 @@ function Identify(e) {
     
     var URL = popup_layer + '&BBOX=' + BBOX + '&FEATURE_COUNT=1&HEIGHT=' + HEIGHT + '&WIDTH=' + WIDTH + '&INFO_FORMAT=application%2Fjson&TILED=false&CRS=EPSG%3A3857&I=' + X + '&J=' + Y;
     //send GetFeatureInfo as asynchronous HTTP request using jQuery $.ajax
-  
+  console.log("cl;lick",popup_layer,layer1)
     $.ajax({
         url: URL,
         dataType: "json",
@@ -1411,6 +1412,21 @@ function Identify(e) {
                     popup.setLatLng(e.latlng);
                     mymap.openPopup(popup);
                     }
+                    if(layer1=="ward61:k-west_building"){
+                      console.log(feature)
+                      content= `<table border =2><tr class="bg-primary"><td colspan=2>Building Information</td></tr>
+                        <tr class="table-danger"><td>SAC Number:</td><td> ${feature.properties.sac_no}</td></tr>
+    <tr><td>Building Name:</td><td> ${feature.properties.building_n}</td></tr>
+    <tr class="table-danger"><td>Building Type :</td><td>${feature.properties.building_t}</td></tr>
+
+    <tr><td>Property Address:</td><td>${feature.properties.prop_blng_}</td></tr>
+    <tr class="table-danger"><td>Village:</td><td>${feature.properties.village}</td></tr>
+    <tr><td>Address : </td><td>${feature.properties.address}</td></tr>
+    </table>`
+    popup.setContent(content);
+                    popup.setLatLng(e.latlng);
+                    mymap.openPopup(popup);
+                    }
                 if (feature.properties.region) {
                     // alert("in region");
                     content = "<table class = 'popupclass' ><tr><td><b>Region Info</b></td><td></td></tr>" +
@@ -1419,7 +1435,7 @@ function Identify(e) {
                     popup.setLatLng(e.latlng);
                     mymap.openPopup(popup);
                     }
-                if (feature.properties.building_t) {
+                else if (feature.properties.building_t) {
 
                  
                     

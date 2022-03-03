@@ -43,7 +43,6 @@ role_list = (('Select','none'),('CT','Citizen'),('MO','Municipality Officer'),('
 class User(AbstractBaseUser, PermissionsMixin):
     
     username = models.CharField(max_length=150, unique=True)
-    # first_name = models.CharField(max_length=150, blank=True)
     email = models.EmailField(null=True,blank=True)
     role = models.CharField(max_length=9,
                   choices=role_list,
