@@ -283,20 +283,44 @@ class EmployeeDetails(models.Model):
     # emp_id = models.AutoField(primary_key=True)
     ward =models.CharField(max_length=50,default= 'K/W')
     prabhag = models.CharField(max_length=100)
+    # prabhag = models.ForeignKey(MumbaiPrabhagBoundaries3Jan2022V2.objects.filter(ward_name__contains='K/W'))
     chowky = models.CharField(max_length=100)
     post =models.CharField(max_length = 100)
     name =models.CharField(max_length = 100)
-    mobile = models.CharField(verbose_name="Phone number", max_length=10,
-    validators=[int_list_validator(sep=''),MinLengthValidator(10),], 
-    default='1111111111')
+    mobile = models.CharField(verbose_name="Phone number", max_length=10,validators=[int_list_validator(sep=''),MinLengthValidator(10),],default='1111111111')
     councillor = models.CharField(max_length = 100)
 
     class Meta:
         managed = True
         db_table = 'employee_details'
+        
 
     def __str__(self):
-        return self.prabhag
+        return "Prabhag -"+self.prabhag + " " + self.post+ " "+ self.name
+
+class HumanResourceData(models.Model):
+    # emp_id = models.AutoField(primary_key=True)
+    ward =models.CharField(max_length=50,default= 'K/W')
+    prabhag = models.CharField(max_length=100)
+    # prabhag = models.ForeignKey(MumbaiPrabhagBoundaries3Jan2022V2.objects.filter(ward_name__contains='K/W'))
+    # chowky = models.CharField(max_length=100)
+    road_name = models.CharField(max_length=100)
+    building_name = models.CharField(max_length=100)
+    sac_no = models.IntegerField
+    designation =models.CharField(max_length = 100)
+    name_contact_person =models.CharField(max_length = 100)
+    mobile_contact_person = models.CharField(verbose_name="Phone number", max_length=10,
+    validators=[int_list_validator(sep=''),MinLengthValidator(10),], 
+    default='1111111111')
+    email_contact_person = models.EmailField(verbose_name="Email Id", max_length=50)
+    
+
+    class Meta:
+        managed = True
+        db_table = 'humanresourcedata'
+
+    def __str__(self):
+        return "Prabhag -"+self.prabhag + " " + self.designation+ " "+ self.name_contact_person
 
 # class CensusTable(models.Model):
 #     sstart = models.DateTimeField(blank=True, null=True)

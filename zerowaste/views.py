@@ -1,7 +1,7 @@
 # Create your views here.
 from django.shortcuts import render,redirect,HttpResponse,HttpResponseRedirect
-from .forms import GarbageSegForm,GrievanceForm,Ward61BuildingsOsm2Nov2021Form,WasteSegregationDetailsForm,NewUserForm,EmployeeDetailsForm,MumbaiBuildingsWardPrabhagwise17JanForm,WasteSegregationDetailsRevised2march22Form
-from .models import Report,Rating,WasteSegregationDetails,WasteSegregationDetailsRevised2March22#CensusTable #,OsmBuildings29Oct21
+from .forms import GarbageSegForm,GrievanceForm,Ward61BuildingsOsm2Nov2021Form,WasteSegregationDetailsForm,NewUserForm,EmployeeDetailsForm,HumanResourceDataForm,MumbaiBuildingsWardPrabhagwise17JanForm,WasteSegregationDetailsRevised2march22Form
+from .models import Report,Rating,WasteSegregationDetails,WasteSegregationDetailsRevised2March22,HumanResourceData#CensusTable #,OsmBuildings29Oct21
 from map.models import Ward61BuildingsOsm2Nov2021,MumbaiBuildingsWardPrabhagwise17Jan,MumbaiPrabhagBoundaries3Jan2022V2,DistinctGeomSacNoMumbai#,Ward61OsmBuildings,
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.core.files.storage import FileSystemStorage
@@ -567,16 +567,18 @@ list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'gro
 
 def emp_detail(request):
     if request.method == "POST":
-        form = EmployeeDetailsForm(request.POST or None)
-               
-        if form.is_valid():
-            EmpName = form.cleaned_data['emp_name']
-            EmpMobile =form.cleaned_data['emp_mobile']
-            EmpPost =form.cleaned_data['emp_category']
+        form = EmployeeDetailsForm('K/W',request.POST or None)
+        print(request.POST)
+        print ("Form valid- ",form.is_valid())
+        print (form.errors)     
+        if form.is_valid():            
+            EmpName = form.cleaned_data['name']
+            EmpMobile =form.cleaned_data['mobile']
+            EmpPost =form.cleaned_data['post']
             if EmpName =="none":
                 messages.warning(request, _(u'Please Add Employee Name'))
             if EmpMobile =="none":
-                EmpMobile = 11111111
+                EmpMobile = 1111111111
                 messages.warning(request, _(u'Please Add Employee Number, ELse default no 1111111111 wil be entered.'))
             else:
                 instance = form.save(commit=False)
@@ -584,13 +586,61 @@ def emp_detail(request):
                 print(form)
                 messages.success(request, _(u'Your data is saved for {} as {}').format(EmpName,EmpPost))
                 return HttpResponseRedirect(request.path_info)
+            # return JsonResponse({"message": 'Got it inside valid'})
         else:
+            err=form.errors
+            # messages.warning(request,form.errors.as_json)
             messages.warning(request, _(u'Please check your form'))
+            return HttpResponseRedirect(request.path_info,{'err':err})
+            # return JsonResponse({"message": 'Got it inside invalid'})
     else:
-        form = EmployeeDetailsForm(request.POST or None)
+        print(request.method)
+        ward_name = 'K/W'
+        print(ward_name)
+        form = EmployeeDetailsForm(ward_name,request.POST or None)
         context= {
         'form': form}
         return render(request, 'EmployeeDetails.html',context)
+
+def hrd_detail(request):
+    if request.method == "POST":
+        form = HumanResourceDataForm('K/W',request.POST or None)
+        print(request.POST)
+        print ("Form valid- ",form.is_valid())
+        print (form.errors)     
+        if form.is_valid():            
+            EmpName = form.cleaned_data['name_contact_person']
+            EmpMobile =form.cleaned_data['mobile_contact_person']
+            EmpPost =form.cleaned_data['designation']
+            Empprabhag = form.cleaned_data['prabhag']
+            if EmpName =="none":
+                messages.warning(request, _(u'Please Add Employee Name'))
+            if EmpMobile =="none":
+                EmpMobile = 1111111111
+                messages.warning(request, _(u'Please Add Employee Number, ELse default no 1111111111 wil be entered.'))
+            else:
+                instance = form.save(commit=False)
+                instance.save()
+                print(form)
+                messages.success(request, _(u'Your data is saved for {} having designation {} in prabhag {}').format(EmpName,EmpPost,Empprabhag))
+                return HttpResponseRedirect(request.path_info)
+            # return JsonResponse({"message": 'Got it inside valid'})
+        else:
+            
+            # messages.warning(request,form.errors.as_json)
+            messages.warning(request, _(u'Please check your form'))
+            
+            return HttpResponseRedirect(request.path_info)
+            # return JsonResponse({"message": 'Got it inside invalid'})
+    else:
+        print(request.method)
+        ward_name = 'K/W'
+        print(ward_name)
+        form = HumanResourceDataForm(ward_name,request.POST or None)
+        context= {
+        'form': form}
+        return render(request, 'HRDDetails.html',context)
+
 
 def resources(request):
     return render(request,'Resources.html')

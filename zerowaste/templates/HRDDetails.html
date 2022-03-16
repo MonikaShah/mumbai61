@@ -1,0 +1,43 @@
+{% extends 'base.html' %} {% load static%} {% block content %}
+{% load i18n %}{% load crispy_forms_tags %}
+
+<div class="container mb-5 text-center">
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+    
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{message}}
+            <!-- {{form.errors}} -->
+            {{ form.comment.errors }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+        </div>
+    
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <form method="POST" action="" class="form-group" style="text-align:left;" data-url="{{ request.build_absolute_uri|safe }}">
+        {% csrf_token %}
+
+
+        <div>
+            <label class="col-sm-1 col-form-label"></label>
+            <div>
+                <h3>{% trans "Human Resource Data" %}</h3>
+            </div>
+        </div>
+        <hr>       
+        <div class="container mb-7" style="margin-top: 10px;" id = "feedback_div">
+            <table table style="margin-right: 10px";>{{ form.as_table}}</table> <br>
+           
+            <button type="submit" style="align-items: center;" class="btn btn-primary">Add Employee</button><br>
+        </div>
+    </form>
+</div>
+<script>
+    // console.log("{{ data.zone_id_id }}")
+</script>
+{% endblock %}

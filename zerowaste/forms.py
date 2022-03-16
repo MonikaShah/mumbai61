@@ -2,11 +2,11 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 # from django.contrib.auth.models import User
 
-from .models import Report,Grievance,WasteSegregationDetails,EmployeeDetails,User,MumbaiBuildingsWardPrabhagwise17Jan,WasteSegregationDetailsRevised2March22#,OsmBuildings29Oct21
+from .models import Report,Grievance,WasteSegregationDetails,EmployeeDetails,User,MumbaiBuildingsWardPrabhagwise17Jan,WasteSegregationDetailsRevised2March22,MumbaiWardBoundary2Jan2022,HumanResourceData#,MumbaiPrabhagBoundaries3Jan2022V2#,OsmBuildings29Oct21
 from map.models import Ward61BuildingsOsm2Nov2021
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column, ButtonHolder
-import datetime
+import datetime,re
 # from phonenumber_field.formfields import PhoneNumberField
 from django.contrib.gis import forms
 from django.utils.translation import gettext_lazy as _
@@ -18,19 +18,19 @@ import xlrd
 import csv
 
 councillorWard = [
-    ('Ward 61','Ward 61'),
-    ('Ward 59','Ward 59'),
-    ('Ward 60','Ward 60'),
-    ('Ward 62','Ward 62'),
-    ('Ward 63','Ward 63'),
-    ('Ward 64','Ward 64'),
-    ('Ward 65','Ward 65'),
-    ('Ward 66','Ward 66'),
-    ('Ward 67','Ward 67'),
-    ('Ward 68','Ward 68'),
-    ('Ward 69','Ward 69'),
-    ('Ward 70','Ward 70'),
-    ('Ward 71','Ward 71'),
+    ('61','61'),
+    ('59','59'),
+    ('60','60'),
+    ('62','62'),
+    ('63','63'),
+    ('64','64'),
+    ('65','65'),
+    ('66','66'),
+    ('67','67'),
+    ('68','68'),
+    ('69','69'),
+    ('70','70'),
+    ('71','71'),
 ]
 Regions = [
     ('Anandnagar','Anandnagar'),
@@ -224,21 +224,60 @@ class NewUserForm(UserCreationForm):
 		return user
 
 class EmployeeDetailsForm(forms.ModelForm): 
+    # ward =forms.CharField(label = _(u'Admin Ward'),max_length=50)
     #adminward =forms.CharField(label = _(u'Admin Ward'),max_length=50)
-    councillorward = forms.CharField(label=_(u'Councillor Ward (Prabhag) '),max_length=100,widget=forms.Select(choices=councillorWard))
-    region = forms.CharField(label = _(u'Region Name'),widget=forms.Select(choices=Regions))
-    emp_category =forms.CharField(label = _(u'Scavenger'),widget=forms.Select(choices=EmployeePost))
-    emp_name =forms.CharField(label = _(u'Employee Name'),max_length = 100)
-    emp_mobile =forms.IntegerField(label = _(u'Employee Mobile No.'))
-    
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        
+    prabhag = forms.CharField(label=_(u'Prabhag '),max_length=100,widget=forms.Select(choices=councillorWard))
+    # region = forms.CharField(label = _(u'Region Name'),widget=forms.Select(choices=Regions))
+    # emp_category =forms.CharField(label = _(u'Scavenger'),widget=forms.Select(choices=EmployeePost))
+    # emp_name =forms.CharField(label = _(u'Employee Name'),max_length = 100)
+    # emp_mobile =forms.IntegerField(label = _(u'Employee Mobile No.'))
+    # mobile = forms.RegexField(regex=r'^[6-9][0-9]\d{10}$',error_message = ("Phone number must be entered in the format: '999999999'. Up to 10 digits allowed."))
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+        # 
+    def clean_comment(self):
+        mob = self.cleaned_data.get['mobile']
+        r=re.fullmatch('[6-9][0-9]{10}',mob)
+        if r!=None:
+            print('valid Mobile')
+        else:
+            raise form.ValidationError({'comment':['Enter something']})
+        return mobile
+        # if self.cleaned_data['mobile'] is None:
+        #     raise form.ValidationError({'comment':['Enter something']})
     class Meta:
         model = EmployeeDetails
         fields = '__all__'
         # exclude =['emp_id']
+    def __init__(self, ward_name, *args, **kwargs):
         
+        super(EmployeeDetailsForm, self).__init__(*args, **kwargs)
+        self.fields['ward'].widget.attrs['readonly'] = True
+        # self.fields['prabhag'].queryset = MumbaiWardBoundary2Jan2022.objects.filter(ward_name_field=ward_name)
+    
+class HumanResourceDataForm(forms.ModelForm): 
+    # ward =forms.CharField(label = _(u'Admin Ward'),max_length=50)
+    #adminward =forms.CharField(label = _(u'Admin Ward'),max_length=50)
+    prabhag = forms.CharField(label=_(u'Prabhag '),max_length=100,widget=forms.Select(choices=councillorWard))
+    # region = forms.CharField(label = _(u'Region Name'),widget=forms.Select(choices=Regions))
+    # emp_category =forms.CharField(label = _(u'Scavenger'),widget=forms.Select(choices=EmployeePost))
+    # emp_name =forms.CharField(label = _(u'Employee Name'),max_length = 100)
+    # emp_mobile =forms.IntegerField(label = _(u'Employee Mobile No.'))
+    
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+        # 
+    class Meta:
+        model = HumanResourceData
+        fields = '__all__'
+       
+    def __init__(self, ward_name, *args, **kwargs):
+        
+        super(HumanResourceDataForm, self).__init__(*args, **kwargs)
+        self.fields['ward'].widget.attrs['readonly'] = True
+        # self.fields['prabhag'].queryset = MumbaiWardBoundary2Jan2022.objects.filter(ward_name_field=ward_name)
+    
+    
         
 class WasteSegregationDetailsRevised2march22Form(forms.ModelForm): 
     coll_date  = forms.DateField(label = _(u'Date'),widget=forms.TextInput(attrs={'type': 'date'}),initial=datetime.date.today)
