@@ -174,7 +174,7 @@ class WasteSegregationDetailsForm(forms.ModelForm):
     # building_type = forms.CharField(label = _(u'Building Type'))
     population = forms.IntegerField(label=_(u'Building Population'))
     num_households_premises = forms.IntegerField(label=_(u'Number of households'))
-    num_shops_premises = forms.IntegerField(label=_(u'Number of Shops'))
+    num_shops_premises = forms.IntegerField(label=_(u'NewUserFormNumber of Shops'))
     type_waste_generator = forms.CharField(label = _(u'Type of waste generator'),max_length=100)
     waste_segregation = forms.CharField(label = _(u'Is segregation done'),max_length=100)
     wet_waste_before_segregation = forms.IntegerField(label=_(u'Wet Waste before Segregation (in Kgs)'))
@@ -307,7 +307,11 @@ class WasteSegregationDetailsRevised2march22Form(forms.ModelForm):
     # compost_bin_by_mcgm = forms.CharField(label = _(u'Bin provided by MCGM'),max_length=100)
     # date_notice_issued = forms.DateField(label=_(u'Date of Notice Issued'),widget=forms.TextInput(attrs={'type': 'date'}),initial=datetime.date.today)
     # name_number = forms.CharField(label=_(u'Name and Mobile number of Building Secretaty/Incharge'),max_length=100)
+    def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
 
+            for field in self.Meta.required:
+                self.fields[field].required = True
     # def __init__(self, *args, **kwargs):
     #     super().__init__(*args, **kwargs)
     #     self.fields['region'].queryset=WasteSegregationDetails.objects.filter(region__isnull=False).values_list('region', flat=True).distinct('region')
@@ -326,5 +330,13 @@ class WasteSegregationDetailsRevised2march22Form(forms.ModelForm):
     class Meta:
         model = WasteSegregationDetailsRevised2March22
         fields = '__all__'
-        # fields = ['region','building_name']
-        # exclude = ['id']
+        required = (
+            'ward',
+            'prabhag',
+            'road_name',
+            'building_name',
+            'building_type',
+            'building_cluster',
+            'wet_waste',
+            'dry_waste','coll_date'
+        )

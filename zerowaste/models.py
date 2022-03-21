@@ -282,13 +282,13 @@ class WasteSegregationDetails(models.Model):
 class EmployeeDetails(models.Model):
     # emp_id = models.AutoField(primary_key=True)
     ward =models.CharField(max_length=50,default= 'K/W')
-    prabhag = models.CharField(max_length=100)
+    prabhag = models.CharField(max_length=100,blank=True, null=True)
     # prabhag = models.ForeignKey(MumbaiPrabhagBoundaries3Jan2022V2.objects.filter(ward_name__contains='K/W'))
     chowky = models.CharField(max_length=100)
     post =models.CharField(max_length = 100)
     name =models.CharField(max_length = 100)
     mobile = models.CharField(verbose_name="Phone number", max_length=10,validators=[int_list_validator(sep=''),MinLengthValidator(10),],default='1111111111')
-    councillor = models.CharField(max_length = 100)
+    councillor = models.CharField(max_length = 100,null=True,blank=True)
 
     class Meta:
         managed = True
@@ -366,26 +366,47 @@ class HumanResourceData(models.Model):
 #     class Meta:
 #         managed = False
 #         db_table = 'census_table'
-
+cluster = (('Yes','Yes'),('No','No'))
 class WasteSegregationDetailsRevised2March22(models.Model):
-    # id = models.IntegerField(primary_key=True)
-    # ward = models.CharField(max_length=50, default='KWest')
     ward = models.ForeignKey(MumbaiWardBoundary2Jan2022,to_field='ward_id', on_delete=models.SET_NULL, null=True,default=0,blank=True)
     prabhag = models.ForeignKey(MumbaiPrabhagBoundaries3Jan2022V2,to_field='prabhag_no', on_delete=models.SET_NULL, null=True,default=0,blank=True)
-    sac_no = models.CharField(max_length=150)
     road_name = models.CharField(max_length=254, blank=True, null=True)
-    building_type = models.CharField(max_length=100, blank=True, null=True)
-    building_name = models.CharField(max_length=100, blank=True, null=True)
-    building_cluster = models.CharField(max_length=100, blank=True, null=True)
-    num_wings = models.CharField(max_length=100, blank=True, null=True)
-    wing_name = models.CharField(max_length=100, blank=True, null=True)
-    num_households_premises = models.CharField(max_length=100, blank=True, null=True)
-    num_shops_premises = models.CharField(max_length=100, blank=True, null=True)
-    approx_population = models.CharField(max_length=100, blank=True, null=True)
+    building_name = models.CharField(max_length=255, blank=True, null=True)
+    sac_no = models.CharField(max_length=254, blank=True, null=True)
+    building_type = models.CharField(max_length=255, blank=True, null=True)
+    building_cluster = models.CharField(choices=cluster,default='No',max_length=255, blank=True, null=True)
+    cluster_name = models.CharField(max_length=255, blank=True, null=True)
+    num_wings = models.CharField(max_length=255, blank=True, null=True)
+    wing_name = models.CharField(max_length=255, blank=True, null=True)
+    num_households_premises = models.CharField(max_length=255, blank=True, null=True)
+    num_shops_premises = models.CharField(max_length=255, blank=True, null=True)
+    approx_population = models.CharField(max_length=255, blank=True, null=True)
     wet_waste = models.DecimalField(max_digits=65535, decimal_places=2, blank=True, null=True)
     dry_waste = models.DecimalField(max_digits=65535, decimal_places=2, blank=True, null=True)
     coll_date = models.DateField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'waste_segregation_details_revised_2march22'
+
+
+
+class BuildingsWardWise4March(models.Model):
+    building_id = models.IntegerField()
+    ward_name = models.CharField(max_length=50, blank=True, null=True)
+    ward_id = models.CharField(max_length=50, blank=True, null=True)
+    prabhag_no = models.CharField(max_length=50, blank=True, null=True)
+    building_name = models.CharField(max_length=250, blank=True, null=True)
+    road_name = models.CharField(max_length=250, blank=True, null=True)
+    name_jo = models.CharField(max_length=250, blank=True, null=True)
+    section = models.CharField(max_length=230, blank=True, null=True)
+    building_type = models.CharField(max_length=30, blank=True, null=True)
+    dry = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
+    wet = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
+    cluster_name = models.CharField(max_length=270, blank=True, null=True)
+    building_cluster = models.CharField(max_length=270, blank=True, null=True)
+    no_of_house = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'buildings_ward_wise_4march'

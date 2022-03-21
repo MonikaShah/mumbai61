@@ -2,6 +2,7 @@ from django.shortcuts import render
 # from zerowaste.models import OsmBuildings29Oct21
 from django.core.serializers import serialize
 from .models import Ward61BuildingsOsm2Nov2021,MumbaiPrabhagBoundaries3Jan2022V2,MumbaiWardBoundary2Jan2022,DistinctGeomSacNoMumbai,MumbaiBuildingsWardPrabhagwise17Jan #,Ward61OsmBuildings,
+from zerowaste.models import BuildingsWardWise4March
 from django.http import JsonResponse
 from datetime import date
 from datetime import timedelta
@@ -28,13 +29,7 @@ def Map(request):
    if is_ajax(request=request):
       requestvar = request.get_full_path()
       print(requestvar)
-        # if(requestvar!=null):
-        # docinfo = []
-        # docinfo1 =[]
         
-        # 
-
-        # if(requestvar.find('name1')):
       if "name1" in requestvar:
          today = date.today()
          
@@ -44,21 +39,25 @@ def Map(request):
          prabhag = request.GET['name1']
          data= list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(prabhag_no=prabhag))
          data_up = list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(prabhag_no=prabhag , update_time__contains =yesterday))
+         building_list = list(BuildingsWardWise4March.objects.filter(prabhag_no=prabhag).values('building_name').order_by('building_name'))
          geojson=serialize('geojson',data)
 
          if(len(data_up)>1):
             geojson1=serialize('geojson',data_up)
+            data = {'geojson':geojson,'geojson1':geojson1,'building_list':building_list}
 
-            return JsonResponse(geojson,geojson1, safe=False)
+
+            return JsonResponse(data, safe=False)
          else:
-            return JsonResponse(geojson, safe=False)
+            data = {'geojson':geojson,'building_list':building_list}
+            return JsonResponse(data, safe=False)
 
       
       elif "name2" in requestvar:
          sel_ward = request.GET['name2']
          prabhag_list = list(MumbaiPrabhagBoundaries3Jan2022V2.objects.filter(ward_id=sel_ward).values('prabhag_no','ward_name','ward_id'))
-         print(prabhag_list)
-         return JsonResponse(prabhag_list, safe=False)
+         
+         return JsonResponse(data, safe=False)
       else:
          selected_field1 = request.GET['name']
          docinfo1 = list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(sac_number=selected_field1).values('sac_number','prop_add','building_type','building_name','village','num_flat','region','num_shops','wing_name','prabhag_no','ward_name_field','updated_by','update_time','device_ip','address','validity'))

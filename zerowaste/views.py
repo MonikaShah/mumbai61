@@ -1,7 +1,7 @@
 # Create your views here.
 from django.shortcuts import render,redirect,HttpResponse,HttpResponseRedirect
 from .forms import GarbageSegForm,GrievanceForm,Ward61BuildingsOsm2Nov2021Form,WasteSegregationDetailsForm,NewUserForm,EmployeeDetailsForm,HumanResourceDataForm,MumbaiBuildingsWardPrabhagwise17JanForm,WasteSegregationDetailsRevised2march22Form
-from .models import Report,Rating,WasteSegregationDetails,WasteSegregationDetailsRevised2March22,HumanResourceData#CensusTable #,OsmBuildings29Oct21
+from .models import Report,Rating,WasteSegregationDetails,BuildingsWardWise4March,WasteSegregationDetailsRevised2March22,HumanResourceData#CensusTable #,OsmBuildings29Oct21
 from map.models import Ward61BuildingsOsm2Nov2021,MumbaiBuildingsWardPrabhagwise17Jan,MumbaiPrabhagBoundaries3Jan2022V2,DistinctGeomSacNoMumbai#,Ward61OsmBuildings,
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.core.files.storage import FileSystemStorage
@@ -799,14 +799,39 @@ def WasteSegregationDetailsRevisedView(request):
         # building = request.POST.get('building_name')
         # form.fields[''].choices = [building.building]
         print(request.method)
-        # if is_ajax(request=request):
 
-        #     selected_field1 = request.GET['ward_no']
-        #     print(selected_field1)
-        #     prabhag_list = list(MumbaiPrabhagBoundaries3Jan2022V2.objects.filter(ward_id=selected_field1).values('prabhag_no').order_by('prabhag_no'))
+        if is_ajax(request=request):
+            requestvar = request.get_full_path()
+            print(requestvar)
+                # if(requestvar!=null):
+                # docinfo = []
+                # docinfo1 =[]
+                
+                # 
 
-   
-        # return JsonResponse(prabhag_list, safe=False)
+                # if(requestvar.find('name1')):
+            if "prabhag" in requestvar:
+                selected_field1 = request.GET['prabhag']
+                print(selected_field1)
+                prabhag_list = list(BuildingsWardWise4March.objects.filter(prabhag_no=selected_field1).values('road_name').order_by('road_name').distinct())
+                sac_list = list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(prabhag_no=selected_field1).values('sac_number').order_by('sac_number'))
+                data = {'prabhag_list':prabhag_list,'sac_list':sac_list}
+                return JsonResponse(data, safe=False)
+            elif "ward" in requestvar:
+                selected_field1 = request.GET['ward']
+                print(selected_field1)
+                prabhag_list = list(MumbaiPrabhagBoundaries3Jan2022V2.objects.filter(ward_id=selected_field1).values('prabhag_no').order_by('prabhag_no'))
+
+
+        
+                return JsonResponse(prabhag_list, safe=False)
+            elif "road" in requestvar:
+                selected_field1 = request.GET['road']
+                print(selected_field1)
+                prabhag_list = list(BuildingsWardWise4March.objects.filter(road_name=selected_field1).values('building_name').order_by('building_name'))
+
+        
+                return JsonResponse(prabhag_list, safe=False)
         if request.method == 'POST':
             form = WasteSegregationDetailsRevised2march22Form(request.POST)
             # region = form.cleaned_data['region']
@@ -828,8 +853,9 @@ def WasteSegregationDetailsRevisedView(request):
                     # messages.success(request, _(u'Your data is saved for {} dated {}').format(regionName,collDate))
                     # print(form)
                 #   messages.success(request,'Form is valid')
-                instance = form.save(commit=False)
-                instance.save()
+                form.save()
+                # print(instance)
+                # instance.save()
                 messages.success(request, _(u'Your data is saved for date {}').format(collDate))
                 print(form)
                 return HttpResponseRedirect(request.path_info)
@@ -841,6 +867,6 @@ def WasteSegregationDetailsRevisedView(request):
                 # messages.warning(request,form.errors.as_json)
         else:
                 form = WasteSegregationDetailsRevised2march22Form()
-                # print(form)
+                print(form)
                 form.errors.as_json()
         return render(request, 'GarbageSegRevised.html', {'form': form})

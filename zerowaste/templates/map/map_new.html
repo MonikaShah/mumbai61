@@ -418,6 +418,9 @@
                 </select>
               <div id="ward_checklist">
                 <div class="checkbox">
+                  <label>Search Building name:<input type="input" id="search_building"></label>
+                </div>
+                <div class="checkbox">
                   <label><input type="checkbox" value="{regions}" disabled id="regions" onchange="getBoundaryru(this)"><span> {% trans "Regions" %}</span></label>
                 </div>
                 <div class="checkbox">
@@ -546,6 +549,7 @@
 
       <script>
         let area = null;
+        let building_list;
         var legend;
         let windowWidth = window.screen.width;
   let windowHeight = window.screen.height;
@@ -621,12 +625,14 @@
                 url: $endpoint,
                 data: $name1,
                 success:function(data) {
-                  if(data.length == 2){
+                  console.log(data)
+                  building_list = data.building_list;
+                  if(data.length > 2){
                     buildings = JSON.parse(data.geojson);
           buildings_up = JSON.parse(data.geojson1)
                   }
 					else{
-            buildings = JSON.parse(data);
+            buildings = JSON.parse(data.geojson);
 buildings_up = [];
           }
           // prabhag= data.prabhag;
@@ -637,6 +643,19 @@ expanded = true;
           // displaypolygon('{buildings}');
 				}
   		});
+      var sac_no = document.getElementById('search_building');
+        sac_no.setAttribute("list", "browsers2");
+
+        var data_sac_list = document.createElement("DATALIST");
+        data_sac_list.setAttribute("id", "browsers2");
+        document.getElementById("search_building").appendChild(data_sac_list);
+        $.each(building_list, function(key, value) {   
+          console.log(key,value)
+                                    var opt_sac = document.createElement("OPTION");
+                                    opt_sac.setAttribute("value", value.building_name);
+        document.getElementById("browsers2").appendChild(opt_sac);
+            
+                });
 })
 
 function setView1(layerName,val, selectedBoundary) {

@@ -45,22 +45,133 @@
     </form>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script>
-    // $("#id_region").change(function () {
-    //   var url = $("#regionForm").attr("data-url");  // get the url of the `load_cities` view
-    //   var regionId = $(this).val();  // get the selected country ID from the HTML input
+      let ward, prabhag,sac;
+            $("#id_ward").change(function() {
+            var $endpoint = window.location.href // or localhost/interface
+            ward = $(this).val();
+            $('#id_prabhag')
+                .find('option')
+                .remove()
+                .end()
+                $('#id_prabhag')
+                
+                .append($("<option></option>")
+                            .attr("value", "Select One")
+                            .text("Select One")); 
+                $ward= {
+                        
+                        'ward': ward}
 
-    //   $.ajax({                       // initialize an AJAX request
-    //     url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
-    //     data: {
-    //       'region': regionId       // add the country id to the GET parameters
-    //     },
-    //     success: function (data) {   // `data` is the return of the `load_cities` view function
-    //       $("#id_building_name").html(data);  // replace the contents of the city input with the data that came from the server
-    //     }
-    //   });
+                    $.ajax({
+                            method: "GET",
+                            url: $endpoint,
+                            data: $ward,
+                            success:function(data) {
+                                $.each(data, function(key, value) {   
+                                    console.log(key,value)
+                $('#id_prabhag').append($("<option></option>")
+                                    .attr("value", value.prabhag_no)
+                                    .text(value.prabhag_no)); 
+                });
+                        }
+                });
+        })
+        $("#id_prabhag").change(function() {
+            var $endpoint = window.location.href // or localhost/interface
+            var prabhag = $(this).val();
+            var x = document.getElementById('id_road_name');
+            x.setAttribute("list", "browsers");
 
-    // });
-    
+        var y = document.createElement("DATALIST");
+        y.setAttribute("id", "browsers");
+        document.getElementById("id_road_name").appendChild(y);
+
+        
+
+            $('#id_road_name')
+                .find('option')
+                .remove()
+                .end()
+                $('#id_road_name')
+                
+                .append($("<option></option>")
+                            .attr("value", "Select One")
+                            .text("Select One")); 
+                $prabhag= {
+                        
+                        'prabhag': prabhag}
+                    $.ajax({
+                            method: "GET",
+                            url: $endpoint,
+                            data: $prabhag,
+                            success:function(data) {
+                                console.log(data)
+                                sac = data.sac_list;
+                                $.each(data.prabhag_list, function(key, value) {   
+                                    var z = document.createElement("OPTION");
+        z.setAttribute("value", value.road_name);
+        document.getElementById("browsers").appendChild(z);
+            
+                });
+                        }
+                });
+        })
+        // $("#id_road_name").change(function() {
+            console.log($("#id_road_name").val())
+            document.getElementById("id_road_name").addEventListener('change', doThing);
+            function doThing(){
+            var selectedValue = $("#id_road_name").val();
+
+
+            var $endpoint = window.location.href // or localhost/interface
+            console.log(selectedValue)
+            var x = document.getElementById('id_building_name');
+            x.setAttribute("list", "browsers1");
+
+        var y = document.createElement("DATALIST");
+        y.setAttribute("id", "browsers1");
+        document.getElementById("id_building_name").appendChild(y);
+
+        
+
+            $('#id_building_name')
+                .find('option')
+                .remove()
+                .end()
+                $('#id_building_name')
+                
+                .append($("<option></option>")
+                            .attr("value", "Select One")
+                            .text("Select One")); 
+                $road= {'road': selectedValue,'pra':prabhag}
+                    $.ajax({
+                            method: "GET",
+                            url: $endpoint,
+                            data: {'road': selectedValue},
+                            success:function(data) {
+                                console.log(data)
+                                $.each(data, function(key, value) {   
+                                    var z = document.createElement("OPTION");
+        z.setAttribute("value", value.building_name);
+        document.getElementById("browsers1").appendChild(z);
+            
+                });
+                        }
+                });
+        // })
+        var sac_no = document.getElementById('id_sac_no');
+        sac_no.setAttribute("list", "browsers2");
+
+        var data_sac_list = document.createElement("DATALIST");
+        data_sac_list.setAttribute("id", "browsers2");
+        document.getElementById("id_sac_no").appendChild(data_sac_list);
+        $.each(sac, function(key, value) {   
+                                    var opt_sac = document.createElement("OPTION");
+                                    opt_sac.setAttribute("value", value.sac_number);
+        document.getElementById("browsers2").appendChild(opt_sac);
+            
+                });
+            }
   </script>
 
 
