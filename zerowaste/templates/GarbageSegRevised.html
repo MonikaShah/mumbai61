@@ -177,16 +177,16 @@
                         }
                 });
         // })
-        var sac_no = document.getElementById('id_sac_no');
-        sac_no.setAttribute("list", "browsers2");
+        // var sac_no = document.getElementById('id_sac_no');
+        // sac_no.setAttribute("list", "browsers2");
 
-        var data_sac_list = document.createElement("DATALIST");
-        data_sac_list.setAttribute("id", "browsers2");
-        document.getElementById("id_sac_no").appendChild(data_sac_list);
-        $.each(sac, function(key, value) {   
-                                    var opt_sac = document.createElement("OPTION");
-                                    opt_sac.setAttribute("value", value.sac_number);
-        document.getElementById("browsers2").appendChild(opt_sac);
+        // var data_sac_list = document.createElement("DATALIST");
+        // data_sac_list.setAttribute("id", "browsers2");
+        // document.getElementById("id_sac_no").appendChild(data_sac_list);
+        // $.each(sac, function(key, value) {   
+        //                             var opt_sac = document.createElement("OPTION");
+        //                             opt_sac.setAttribute("value", value.sac_number);
+        // document.getElementById("browsers2").appendChild(opt_sac);
             
                 });
             }
@@ -197,12 +197,14 @@
                     $("label[for='id_cluster_name']").css("display", "block");
 
                     $("#id_cluster_name").css("display", "block");
+                    document.getElementById("id_cluster_name").required = true;
+
 
 
                 }
                 else{
                     $("#id_cluster_name").css("display", "none");
-
+                    document.getElementById("id_cluster_name").required = false;
                 }
   })
   </script>

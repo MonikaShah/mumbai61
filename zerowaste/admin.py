@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import EmployeeDetails,HumanResourceData
+from .models import EmployeeDetails,HumanResourceData,WasteSegregationDetailsRevised2March22
 # Register your models here.
 from .models import User
 from django.contrib.auth.admin import UserAdmin
@@ -32,3 +32,4 @@ class UserAdminConfig(UserAdmin):
 admin.site.register(User, UserAdminConfig)
 admin.site.register(EmployeeDetails)
 admin.site.register(HumanResourceData)
+admin.site.register(WasteSegregationDetailsRevised2March22)
