@@ -381,8 +381,8 @@ class WasteSegregationDetailsRevised2March22(models.Model):
     num_households_premises = models.CharField(max_length=255, blank=True, null=True)
     num_shops_premises = models.CharField(max_length=255, blank=True, null=True)
     approx_population = models.CharField(max_length=255, blank=True, null=True)
-    wet_waste = models.DecimalField(max_digits=65535, decimal_places=2, blank=True, null=True)
-    dry_waste = models.DecimalField(max_digits=65535, decimal_places=2, blank=True, null=True)
+    wet_waste = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    dry_waste = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     coll_date = models.DateField(blank=True, null=True)
 
     class Meta:
