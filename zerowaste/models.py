@@ -410,3 +410,59 @@ class BuildingsWardWise4March(models.Model):
     class Meta:
         managed = False
         db_table = 'buildings_ward_wise_4march'
+
+class KWestBeat22Jan(models.Model):
+    geom = models.MultiLineStringField(blank=True, null=True)
+    fid = models.IntegerField(blank=True, null=True)
+    name = models.CharField(max_length=254, blank=True, null=True)
+    descriptio = models.CharField(max_length=254, blank=True, null=True)
+    length = models.CharField(max_length=254, blank=True, null=True)
+    buffer = models.GeometryField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'k_west_beat_22jan'
+
+
+class BuildingUnder30Mtr(models.Model):
+    uid = models.IntegerField(primary_key=True)
+    geom = models.MultiPointField(blank=True, null=True)
+    wkt = models.CharField(max_length=255, blank=True, null=True)
+    building_i = models.CharField(max_length=255, blank=True, null=True)
+    sac_number = models.CharField(max_length=255, blank=True, null=True)
+    mcgm_usern = models.CharField(max_length=255, blank=True, null=True)
+    mcgm_updat = models.CharField(max_length=255, blank=True, null=True)
+    sac_type = models.CharField(max_length=255, blank=True, null=True)
+    wing_name = models.CharField(max_length=255, blank=True, null=True)
+    num_flat = models.CharField(max_length=255, blank=True, null=True)
+    region = models.CharField(max_length=255, blank=True, null=True)
+    num_shops = models.CharField(max_length=255, blank=True, null=True)
+    num_floors = models.CharField(max_length=255, blank=True, null=True)
+    building_name = models.CharField(max_length=255, blank=True, null=True)
+    building_type = models.CharField(max_length=255, blank=True, null=True)
+    village = models.CharField(max_length=255, blank=True, null=True)
+    address = models.CharField(max_length=255, blank=True, null=True)
+    before_geo = models.CharField(max_length=254, blank=True, null=True)
+    id1 = models.BigIntegerField(blank=True, null=True)
+    prabhag_no = models.CharField(max_length=254, blank=True, null=True)
+    fid = models.IntegerField(blank=True, null=True)
+    district = models.CharField(max_length=254, blank=True, null=True)
+    ward_id_2 = models.CharField(max_length=254, blank=True, null=True)
+    ward_name_field = models.CharField(db_column='ward_name_', max_length=254, blank=True, null=True)  # Field renamed because it ended with '_'.
+    id = models.IntegerField(blank=True, null=True)
+    description = models.CharField(max_length=255, blank=True, null=True)
+    prop_add = models.CharField(max_length=255, blank=True, null=True)
+    update_time = models.CharField(max_length=255, blank=True, null=True)
+    updated_by = models.CharField(max_length=255, blank=True, null=True)
+    device_ip = models.CharField(max_length=255, blank=True, null=True)
+    validity = models.BooleanField(blank=True, null=True)
+    id_2 = models.BigIntegerField(blank=True, null=True)
+    fid_2 = models.BigIntegerField(blank=True, null=True)
+    name = models.CharField(max_length=254, blank=True, null=True)
+    descriptio = models.CharField(max_length=254, blank=True, null=True)
+    length = models.CharField(max_length=254, blank=True, null=True)
+    buffer = models.CharField(max_length=254, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'building_under_30mtr'

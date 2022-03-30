@@ -1,7 +1,7 @@
 # Create your views here.
 from django.shortcuts import render,redirect,HttpResponse,HttpResponseRedirect
 from .forms import GarbageSegForm,GrievanceForm,Ward61BuildingsOsm2Nov2021Form,WasteSegregationDetailsForm,NewUserForm,EmployeeDetailsForm,HumanResourceDataForm,MumbaiBuildingsWardPrabhagwise17JanForm,WasteSegregationDetailsRevised2march22Form
-from .models import Report,Rating,WasteSegregationDetails,BuildingsWardWise4March,WasteSegregationDetailsRevised2March22,HumanResourceData#CensusTable #,OsmBuildings29Oct21
+from .models import Report,Rating,WasteSegregationDetails,BuildingsWardWise4March,BuildingUnder30Mtr,KWestBeat22Jan,WasteSegregationDetailsRevised2March22,HumanResourceData#CensusTable #,OsmBuildings29Oct21
 from map.models import Ward61BuildingsOsm2Nov2021,MumbaiBuildingsWardPrabhagwise17Jan,MumbaiPrabhagBoundaries3Jan2022V2,DistinctGeomSacNoMumbai#,Ward61OsmBuildings,
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.core.files.storage import FileSystemStorage
@@ -793,7 +793,29 @@ def Piecharts(request):
 
 
 #     return render(request,'tree_census_charts.html')
+def road_bufferView(request):
+    if is_ajax(request=request):
+        requestvar = request.get_full_path()
+        print(requestvar)
+            
+      
+        road = request.GET['road']
+        print(road)
+        data= list(KWestBeat22Jan.objects.filter(fid=road))
+        
+        # data_up = list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(prabhag_no=prabhag , update_time__contains =yesterday))
+        building_list = list(BuildingUnder30Mtr.objects.filter(fid_2=road))
+        geojson=serialize('geojson',data)
 
+        geojson1=serialize('geojson',building_list)
+        data = {'geojson':geojson,'geojson1':geojson1}
+
+
+        return JsonResponse(data, safe=False)
+    if request.method == 'GET':
+        prabhag_list = list(KWestBeat22Jan.objects.values('fid','name').exclude(name__isnull=True).distinct())
+        print(prabhag_list)
+        return render(request,'road_buf.html',{'prabhag_list':prabhag_list})
 def WasteSegregationDetailsRevisedView(request):
         form = WasteSegregationDetailsRevised2march22Form()
         # building = request.POST.get('building_name')

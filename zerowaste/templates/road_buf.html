@@ -1,0 +1,266 @@
+{% extends 'map/map_base.html' %}
+{% load static%}{% load has_group %}
+{% load i18n %}
+{% block map_content%}
+<!-- {% block sidebar %}
+  {% endblock %} -->
+  {% if messages %}
+  <div>
+  <ul class="messages">
+      {% for message in messages %}
+  
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+          {{message}}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+      </div>
+  
+      {% endfor %}
+  </ul>
+  </div>
+  {% endif %}
+
+<div id="side-bar" style="background-color:  rgba(255, 255, 255);">
+  <!-- side-bar container -->
+
+  <div class="mobileShow">
+
+    <div style="text-align: center">
+      <button style="display: inline-block ;position: relative; background: #000; opacity: 0.60;" id="closebutton"
+        name="closebutton" class="btn btn-secondary"><span class="fa fa-bars"></span></button>
+    </div>
+
+  </div>
+  <div>
+    <div class="text-center border">
+
+
+      <form id="projectList" style="width: 100%">
+
+        <form>
+            <div class="multiselect">
+                
+                <div id="ward_check"><label for=""> Select Road:</label>
+                  <select class="custom-select" name="dist_select" id="prabhaglist">
+                        <option selected disabled>Select Road</option>
+                        {% for dist_select in prabhag_list %}
+                        <option value="{{ dist_select.fid }}">{{ dist_select.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                  <div id="ward_checklist">
+                    
+                    <div class="checkbox">
+                      <label><input type="checkbox" value="{road}"  id="road" onchange="getBoundaryru(this)"><span> {% trans "road" %}</span></label>
+                    </div>
+                    <div class="checkbox">
+                      <label><input type="checkbox" value="{buildings}"  id="buildings"
+                          onchange="getBoundaryru(this)"><span> {% trans "Buildings Clusters" %}</span></label>
+                    </div>
+               
+                    </div>
+                    </div></div></form>
+
+                    {% endblock map_content%}
+                    {% block extra_map_javascript%}
+                    <script src="{% static 'tilelayer-leaflet.js' %}"></script>
+                          <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+                          <script src="https://d3js.org/d3.v4.js"></script>
+                    
+                    <!-- Create a div where the graph will take place -->
+                    
+                          <script>
+                              let polylayer,polylayer1,road,road_name,building;
+                              let newLayerList=[];
+                    var wms_layer = L.tileLayer.wms('https://geonode.communitygis.in/geoserver/wms', {
+                        layers: 'geonode:k_west_beat_22jan',
+                        format: 'image/png',
+                        transparent: 'true'
+        
+                      });
+                      wms_layer.addTo(mymap);
+                   
+        
+                    //   mymap.setVi/ew([19.1186, 72.8064], 11);
+//
+function setView1(layerName,val, selectedBoundary) {
+    
+    let rootUrl = 'https://geonode.communitygis.in/geoserver/'+layerName.split(":")[0]+'/ows';
+
+    let options = {
+        service: 'WFS',
+        version: '1.0.0',
+        request: 'GetFeature',
+        outputFormat: 'application/json',
+        typeName: layerName,
+        cql_filter: `${val}='${selectedBoundary}'`,
+        propertyName: 'the_geom'
+    };
+    let parameters = L.Util.extend(options);
+    layer_url = rootUrl + L.Util.getParamString(parameters)
+    fetch(layer_url).then(
+        function(response) {
+            if (response.status !== 200) {
+                console.log('Looks like there was a problem. Status Code: ' +
+                    response.status);
+                return;
+            }
+            response.json().then(function(geojsonData) {
+                area = L.geoJson(geojsonData.features)
+                console.log(area)
+                lat = area.getBounds()._northEast.lat
+                lng = area.getBounds()._northEast.lng
+                mymap.setView([lat, lng], 16)
+            });
+        }).catch(function(err) {
+        console.log('Fetch Error :-S', err);
+    });
+}
+var geojsonMarkerOptions = {
+    radius: 3,
+    fillColor: "blue",
+    color: "#000",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8
+};
+ $("#prabhaglist").change(function() {
+    var $endpoint = window.location.href // or localhost/interface
+            var road = $(this).val();
+           
+                $road= {
+                        
+                        'road': road}
+                    $.ajax({
+                            method: "GET",
+                            url: $endpoint,
+                            data: $road,
+                            success:function(data) {
+                                console.log(data)
+                                 road = JSON.parse(data.geojson);
+                                 building = JSON.parse(data.geojson1);
+                                road_name = road.features[0].properties.name;
+                                console.log(building)
+                               polylayer = L.geoJSON(road.features[0],{style: function(){
+    return { color: 'green' }
+  }}
+    
+                               );
+                               polylayer1  = L.geoJSON(building, {
+        pointToLayer: function (feature, latlng) {
+        return L.circleMarker(latlng, geojsonMarkerOptions)},
+        style:function(feature){
+    return { color: 'blue' }
+  },    
+        
+    
+        onEachFeature: onEachFeatureForPointBB,}
+    
+                               );
+                              
+                        }
+                });
+        })
+        function getBoundaryru(obj) {
+          
+          let boundary = obj.value;
+          if ($(obj).is(":checked")) {
+        if(boundary == '{road}'){
+            setView1('geonode:k_west_beat_22jan','name', road_name)
+    polylayer.addTo(mymap);
+    newLayerList.push(polylayer);
+        }
+        else if(boundary == '{buildings}'){
+            setView1('geonode:k_west_beat_22jan','name', road_name)
+    polylayer1.addTo(mymap);
+    newLayerList.push(polylayer1);
+        }}
+        else {
+            if (boundary == "{road}") {
+                removepolylayer(polylayer)
+            }
+            else if(boundary == '{buildings}'){
+                removepolylayer(polylayer1)
+            }
+        }
+    }
+    function removepolylayer(layer){
+    mymap.removeLayer(layer);
+    // mymap.removeControl(wms_legend);
+    // mymap.clearLayers();
+}
+function onEachFeatureForPointBB(feature, layer) {
+console.log('tool')
+let variable = feature.properties.validity;
+console.log(feature)
+var today = new Date();
+let time = today.toLocaleString();
+
+// alert(layer.properties.name+"="+feature);
+// layer.on({click:onClick })
+// if(${feature.properties.name} !== null){
+layer.bindPopup(`<div class = 'text-left'><label>Hello ! {{ request.user.username }}. </lable><table class="table-bordered table-striped">
+   <tr><td align ="left"><label class="required">{% trans "SAC Number" %}</label></td><td><input type="text" disabled name="sac" id="id_sac" value="${feature.properties.sac_number}" /></td></tr>
+   <tr><td align ="left"><label>{% trans "Region Name:" %}</label></td><td><input type="text" name="region" id="id_region" value="${feature.properties.region}" /></td></tr>
+   <tr class="blank_row"></tr>
+   
+   <tr><td align ="left"><label>{% trans "Building Name:" %}</label></td><td><input type="text" name="building_name" id="id_building_name" value="${feature.properties.building_name}" /></td></tr>
+   <tr class="blank_row"></tr>
+   <tr><td align ="left">{% trans "Building Type:" %}</td><td><input type="text" name="building_type" id="id_building_type" value="${feature.properties.building_type}" /></td></tr>
+   <tr class="blank_row"></tr>
+   <tr><td align ="left">{% trans "Wing Name:" %}</td><td><input type="text" name="wing_name" id="id_wing_name" value="${feature.properties.wing_name}" /></td></tr>
+   <tr class="blank_row"></tr>
+   <tr><td align ="left"><label>{% trans "Number of Flats:" %}</label></td><td><input type="number" name="num_flat" id="id_num_flat"  value="${feature.properties.num_flat}" /></td></tr>
+   <tr class="blank_row"></tr>
+   <tr><td align ="left">{% trans "Number of Shops:" %}</td><td><input type="number" name="num_shops" id="id_num_shops"  value="${feature.properties.num_shops}" /></td></tr>
+   <tr class="blank_row"></tr>
+  
+   
+   <tr><td align ="left">{% trans "Village:" %}</td><td><input type="text" name="village" id="id_village" value="${feature.properties.village}" /></td></tr>
+   <tr class="blank_row"></tr>
+   
+   <tr><td align ="left">{% trans "Billing Address:" %}</td><td><input type="text" name="address" id="id_address" value="${feature.properties.address}" /></td></tr>
+   <tr class="blank_row"></tr>
+   <tr><td align ="left">{% trans "Property Address:" %}</td><td><input type="text" name="address" id="id_address" value="${feature.properties.prop_add}" /></td></tr>
+   <tr class="blank_row"></tr>    
+   {% if request.user.role != "MO" and request.user|has_group:"wardEditor" or request.user|has_group:"prabhagEditor" %}
+   <tr><td align ="left">{% trans "Validity:" %}</td><td><input type="text" disabled name="validity" id="id_validity" value="${feature.properties.validity}" /></td></tr>
+   <tr class="blank_row"></tr>    
+   {% elif request.user.role == "MO" and request.user|has_group:"wardEditor" or request.user|has_group:"prabhagEditor" %}
+   <tr><td align ="left">{% trans "Validity:" %}</td><td><input type="text"  name="validity" id="id_validity" value="True" /></td></tr>
+   <tr class="blank_row"></tr>  
+   {% endif %}
+   <tr disaled><td align ="left">{% trans "Updated By:" %}</td><td> <input type="text" name="updated_by" required   id="id_updated_by" value="{{ request.user.username }}" /></td></tr>
+   <tr class="blank_row"></tr>
+   <tr disabled><td align ="left">{% trans "Update Time:" %}</td><td><input type="text" name="update_time" required   id="id_update_time" value="${time}" /></td></tr>
+   <tr class="blank_row"></tr>
+   <tr><td align ="left">{% trans "Device IP:" %}</td><td><input type="text" name="device_ip" disabled id="id_device_ip" value="" /></td></tr>
+   <tr class="blank_row"></tr>
+</table>
+
+
+
+</div>`
+
+
+)
+}
+    function removeWMS(unchecked_layer) {
+        console.log('remove')
+          newLayerList.forEach((layer, index) => {
+            if (layer.options.layers === unchecked_layer) {
+             
+              mymap.removeLayer(layer);
+              newLayerList.splice(index, 1);
+              if (wms_legend) {
+                mymap.removeControl(wms_legend);
+              }
+              addWMSLegend(layer);
+
+            }
+          });
+          
+        }
+      </script>
+      {% endblock extra_map_javascript %}

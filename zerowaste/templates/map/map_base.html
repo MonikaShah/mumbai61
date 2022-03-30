@@ -34,7 +34,7 @@
 <script src="{% static 'plugins/L.Control.Sidebar.js' %}"></script>
 <script src="{% static 'plugins/Leaflet.PolylineMeasure.js' %}"></script>
 <script src="{% static 'plugins/easy-button.js' %}"></script>
-<script src="{% static 'plugins/leaflet-providers.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-providers/1.13.0/leaflet-providers.js" integrity="sha512-pb9UiEEi2JIxkMloqYnqgONe9CTcp2BWWq1Hbz60l7f3R3VhZ57dEE58Ritf/HgBw3o/5Scf5gg0T9V+tf48fg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="{% static 'plugins/leaflet-opencage/src/js/L.Control.OpenCageSearch.js' %}"></script>
 <!-- <script src="{% static 'app.js' %}"></script> -->
 <!-- <link rel="stylesheet" type="leaflet.wms.js" href="{% static 'css/component.css' %}"  /> -->
@@ -148,6 +148,13 @@ circle{
         }
     );
 
+    var source = L.wms.source(
+        "https://geoserver2.communitygis.net/geoserver/wms", {
+            "format": "image/png",
+            "transparent": "true"
+        }
+    );
+
     mymap = L.map('mapdiv', {
         // center:[19.7515,75.7139],
         center: [19.1233, 72.7784],
@@ -158,12 +165,24 @@ circle{
         contextmenu: true,
         measureControl: false
     });
+    let tiles = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+    maxZoom: 18,
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+      'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    id: 'mapbox/streets-v11',
+    tileSize: 512,
+    zoomOffset: -1
+  }).addTo(mymap);
+
+    
+    mymap.invalidateSize();
+    mymap.getSize();
     mymap.messagebox.options.timeout = 5000;
     mymap.messagebox.setPosition("bottomright");
     lyrOSM = L.tileLayer.provider('OpenStreetMap.Mapnik');
     lyrOSM2 = L.tileLayer.provider('OpenStreetMap.Mapnik');
     lyrImagery = L.tileLayer.provider('Esri.WorldImagery');
-    mymap.addLayer(lyrOSM);
+    // mymap.addLayer(lyrOSM2);
     var miniMap = new L.Control.MiniMap(lyrOSM2, {
         toggleDisplay: true
     }).addTo(mymap);
