@@ -1,7 +1,7 @@
 # Create your views here.
 from django.shortcuts import render,redirect,HttpResponse,HttpResponseRedirect
 from .forms import GarbageSegForm,GrievanceForm,Ward61BuildingsOsm2Nov2021Form,WasteSegregationDetailsForm,NewUserForm,EmployeeDetailsForm,HumanResourceDataForm,MumbaiBuildingsWardPrabhagwise17JanForm,WasteSegregationDetailsRevised2march22Form
-from .models import Report,Rating,WasteSegregationDetails,BuildingsWardWise4March,BuildingUnder30Mtr,KWestBeat22Jan,WasteSegregationDetailsRevised2March22,HumanResourceData#CensusTable #,OsmBuildings29Oct21
+from .models import Report,Rating,WasteSegregationDetails,BuildingsWard9April22,BuildingUnder30Mtr,KWestBeat22Jan,WasteSegregationDetailsRevised2March22,HumanResourceData#CensusTable #,OsmBuildings29Oct21#BuildingsWardWise4March,
 from map.models import Ward61BuildingsOsm2Nov2021,MumbaiBuildingsWardPrabhagwise17Jan,MumbaiPrabhagBoundaries3Jan2022V2,DistinctGeomSacNoMumbai#,Ward61OsmBuildings,
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.core.files.storage import FileSystemStorage
@@ -835,7 +835,8 @@ def WasteSegregationDetailsRevisedView(request):
             if "prabhag" in requestvar:
                 selected_field1 = request.GET['prabhag']
                 print(selected_field1)
-                prabhag_list = list(BuildingsWardWise4March.objects.filter(prabhag_no=selected_field1).values('road_name').order_by('road_name').distinct())
+                # prabhag_list = list(BuildingsWardWise4March.objects.filter(prabhag_no=selected_field1).values('road_name').order_by('road_name').distinct())
+                prabhag_list = list(BuildingsWard9April22.objects.filter(prabhag_no=selected_field1).values('road_name').order_by('road_name').distinct())
                 sac_list = list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(prabhag_no=selected_field1).values('sac_number').order_by('sac_number'))
                 data = {'prabhag_list':prabhag_list,'sac_list':sac_list}
                 return JsonResponse(data, safe=False)
@@ -850,7 +851,8 @@ def WasteSegregationDetailsRevisedView(request):
             elif "road" in requestvar:
                 selected_field1 = request.GET['road']
                 print(selected_field1)
-                prabhag_list = list(BuildingsWardWise4March.objects.filter(road_name=selected_field1).values('building_name').order_by('building_name'))
+                # prabhag_list = list(BuildingsWardWise4March.objects.filter(road_name=selected_field1).values('building_name').order_by('building_name'))
+                prabhag_list = list(BuildingsWard9April22.objects.filter(road_name=selected_field1).values('building_name').order_by('building_name'))
 
         
                 return JsonResponse(prabhag_list, safe=False)

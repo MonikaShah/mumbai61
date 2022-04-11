@@ -391,13 +391,32 @@ class WasteSegregationDetailsRevised2March22(models.Model):
 
 
 
-class BuildingsWardWise4March(models.Model):
-    building_id = models.IntegerField()
+# class BuildingsWardWise4March(models.Model):
+#     building_id = models.IntegerField()
+#     ward_name = models.CharField(max_length=50, blank=True, null=True)
+#     ward_id = models.CharField(max_length=50, blank=True, null=True)
+#     prabhag_no = models.CharField(max_length=50, blank=True, null=True)
+#     building_name = models.CharField(max_length=250, blank=True, null=True)
+#     road_name = models.CharField(max_length=250, blank=True, null=True)
+#     name_jo = models.CharField(max_length=250, blank=True, null=True)
+#     section = models.CharField(max_length=230, blank=True, null=True)
+#     building_type = models.CharField(max_length=30, blank=True, null=True)
+#     dry = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
+#     wet = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
+#     cluster_name = models.CharField(max_length=270, blank=True, null=True)
+#     building_cluster = models.CharField(max_length=270, blank=True, null=True)
+#     no_of_house = models.IntegerField(blank=True, null=True)
+
+#     class Meta:
+#         managed = False
+#         db_table = 'buildings_ward_wise_4march'
+class BuildingsWard9April22(models.Model):
+    building_id = models.IntegerField(blank=True, null=True)
     ward_name = models.CharField(max_length=50, blank=True, null=True)
     ward_id = models.CharField(max_length=50, blank=True, null=True)
     prabhag_no = models.CharField(max_length=50, blank=True, null=True)
     building_name = models.CharField(max_length=250, blank=True, null=True)
-    road_name = models.CharField(max_length=250, blank=True, null=True)
+    road_segment = models.CharField(max_length=250, blank=True, null=True)
     name_jo = models.CharField(max_length=250, blank=True, null=True)
     section = models.CharField(max_length=230, blank=True, null=True)
     building_type = models.CharField(max_length=30, blank=True, null=True)
@@ -406,11 +425,15 @@ class BuildingsWardWise4March(models.Model):
     cluster_name = models.CharField(max_length=270, blank=True, null=True)
     building_cluster = models.CharField(max_length=270, blank=True, null=True)
     no_of_house = models.IntegerField(blank=True, null=True)
+    road_name = models.CharField(max_length=250, blank=True, null=True)
+    sac_no = models.CharField(max_length=250, blank=True, null=True)
+    lat = models.CharField(max_length=250, blank=True, null=True)
+    lng = models.CharField(max_length=250, blank=True, null=True)
+    road_name_alias = models.CharField(max_length=250, blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'buildings_ward_wise_4march'
-
+        db_table = 'buildings_ward_9april_22'
 class KWestBeat22Jan(models.Model):
     geom = models.MultiLineStringField(blank=True, null=True)
     fid = models.IntegerField(blank=True, null=True)

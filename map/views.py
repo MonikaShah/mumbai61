@@ -2,7 +2,7 @@ from django.shortcuts import render
 # from zerowaste.models import OsmBuildings29Oct21
 from django.core.serializers import serialize
 from .models import Ward61BuildingsOsm2Nov2021,MumbaiPrabhagBoundaries3Jan2022V2,MumbaiWardBoundary2Jan2022,DistinctGeomSacNoMumbai,MumbaiBuildingsWardPrabhagwise17Jan #,Ward61OsmBuildings,
-from zerowaste.models import BuildingsWardWise4March
+from zerowaste.models import BuildingsWard9April22#,BuildingsWardWise4March
 from django.http import JsonResponse
 from datetime import date
 from datetime import timedelta
