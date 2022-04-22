@@ -375,7 +375,7 @@ class WasteSegregationDetailsRevised2March22(models.Model):
     sac_no = models.CharField(max_length=254, blank=True, null=True)
     building_type = models.CharField(max_length=255, blank=True, null=True)
     building_cluster = models.CharField(choices=cluster,default='No',max_length=255, blank=True, null=True)
-    cluster_name = models.CharField(max_length=255, blank=True, null=True)
+    # cluster_name = models.CharField(max_length=255, blank=True, null=True)
     num_wings = models.CharField(max_length=255, blank=True, null=True)
     wing_name = models.CharField(max_length=255, blank=True, null=True)
     num_households_premises = models.CharField(max_length=255, blank=True, null=True)
@@ -433,7 +433,7 @@ class BuildingsWard9April22(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'buildings_ward_9april_22'
+        db_table = 'buildings_ward_8april_22'
 class KWestBeat22Jan(models.Model):
     geom = models.MultiLineStringField(blank=True, null=True)
     fid = models.IntegerField(blank=True, null=True)
