@@ -696,6 +696,9 @@ function setView1(layerName,val, selectedBoundary) {
 let wardwms;
 let prabhagwms_list;
 $("#wardlistwms").change(function() {
+  $("#prabhaglistwms option").each(function() {
+    $(this).remove();
+});
 	//  var $endpoint = window.location.href // or localhost/interface
   layer = 'Buildings_mumbai:Buildings_mumbai';
   wardwms = $(this).val();
