@@ -834,7 +834,8 @@ $("#prabhaglistwms").change(function() {
               else if (boundary == "{mumbai_buildings}")
               putWMSru("Buildings_mumbai:Buildings_mumbai");
               else if (boundary == "{DP}")
-              putWMSru("Buildings_mumbai:mumbai_city_3july2021");
+              putfrmgeo(DP);
+              // putWMSru("Buildings_mumbai:mumbai_city_3july2021");
 
           } else {
             if (boundary == "{wardKWest}") {
@@ -951,6 +952,19 @@ $("#prabhaglistwms").change(function() {
             var maximumzoom = 19;
             // var opac = 1.0;
             var zoom = 13;
+      
+          }
+
+          else if (obj == '{DP}'){
+            layer = 'DP_merged_10april22';
+            // var currentPos = [19.1022, 72.8752];
+            // var maximumzoom = 19;
+            // var opac = 1.0;
+            // var zoom = 13;
+            currentPos = [19.1467, 72.8283];
+            var maximumzoom = 20;
+            var opac = 0.3;
+            var zoom = 12;
       
           }
 
