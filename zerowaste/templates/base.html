@@ -118,9 +118,9 @@ input {
 
 <body>
     
-    <nav class="navbar navbar-expand-sm flex-column sticky top-0 align-items-stretch" style ="background-color:#43996e; z-index: 5000;">
+    <nav class="navbar navbar-expand-sm flex-column sticky top-0 align-items-stretch" style ="background-color:#43996e; z-index: 999; height: auto;">
         
-        <div class=" d-flex align-items-center" style="justify-content: space-evenly;">
+        <div class=" d-flex align-items-center" style="justify-content: space-evenly; z-index: auto;">
             <!-- <img class="header-left" src="{% static 'images/IDFC_FIRST_Bank_logo.jpg' %}" style="height: 80px; width: 180px;overflow: hidden;"> -->
             <!-- <img class="header-left" src="{% static 'images/logo.png' %}" style="height: 120px; width: 180px;overflow: hidden;"> -->
             <!-- <img class="header-center" src="{% static 'images/sms_logo.jpg' %}" style="height: 60px; width: 80px;overflow: hidden;">
@@ -129,7 +129,7 @@ input {
         <div>
             <!-- {{ Visitor_count }} -->
         </div>
-        <nav class ="nav-menu d-none d-lg-block">
+        <nav class ="nav-menu d-none d-lg-block z-index:auto">
             <ul class="navbar-nav">
                 {% if request.user.is_authenticated %}
                 <li class="nav-item active">
@@ -140,7 +140,7 @@ input {
                     <a href="{% url 'homepage' %}" class="nav-link text-white" >{% trans "Home" %}</a>
                 </li>
               
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown z-index:auto height:100%">
                     <a class="nav-link dropdown-toggle text-white" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                       {% trans "Maps" %}
                     </a>
@@ -150,7 +150,7 @@ input {
                       <li><a class="dropdown-item" href="{% url 'road_buffer' %}" target="blank">K-West Road-buffer</a></li>
                     </ul>
                 </li>  
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown z-index:auto">
                     <a class="nav-link dropdown-toggle text-white" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                       {% trans "Draw Map" %}
                     </a>
@@ -163,7 +163,7 @@ input {
                                
                 
                 
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown z-index:auto">
                     <a class="nav-link dropdown-toggle text-white" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                       {% trans "Forms" %}
                     </a>
@@ -181,7 +181,7 @@ input {
                 </li>
                 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-white" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle text-white" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" z-index="auto">
                       {% trans "Reports" %}
                     </a>
                   
@@ -192,7 +192,7 @@ input {
                 </li>
                 
                 
-                <li class="nav-item active">
+                <li class="nav-item active z-index=100%">
                     <a href="{% url 'grievance' %}" class="nav-link text-white" >{% trans "Grievance" %}</a>
                 </li>
                 <li class="nav-item active">
