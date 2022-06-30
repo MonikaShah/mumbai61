@@ -345,7 +345,7 @@
                   <label><input type="checkbox" style = "margin: 0 0 0 17px;" value="{mumbai_buildings}" id="mumbai_buildings" onclick="getBoundaryru(this)"><span> {% trans "Building points :Whole Mumbai" %}</span></label>
                 </div>
                 <div class="checkbox">
-                  <label><input type="checkbox" style = "margin: 0 0 0 17px;" value="{DP}" id="DP" onclick="getBoundaryru(this)"><span> {% trans "Development Plan :Whole Mumbai" %}</span></label>
+                  <label><input type="checkbox" style = "margin: 0 0 0 17px;" value="{DP}" id="DP" onclick="putDP()"><span> {% trans "Development Plan :Whole Mumbai" %}</span></label>
                 </div>
                 <hr><label for="" style="margin: 0 0 0 37px; font-weight: bolder;">Building Points: Selected Parts</label>
               <label for="" style="text-align: center; font-weight: bolder;">Ward wise</label>
@@ -367,6 +367,7 @@
         </div>
         <br>
 
+	  {% if request.user.is_authenticated %}
           <div class="multiselect">
             <div class="selectBox" onclick="showCheckboxes3('geo')">
               <button type="button" class="btn btn-outline-dark addMore" title = "More interactions are enable here  as a Pilot area"style="width: 90%;font-size:12px; " title="More interactions have been enable here  as a Pilot area"> {% trans "Focus: K-West Pilot" %}</button>
@@ -401,8 +402,9 @@
 
             </div>
           </div> 
-
            <br> 
+	  {% endif %}
+		  
           {% if request.user|has_group:"wardEditor" %}
           <div class="multiselect">
             <div class="selectBox" onclick="showCheckboxes3('ward')">
@@ -535,6 +537,29 @@
             </div>
 
           </div>
+		    
+          <!-- slums -->
+          <div class="multiselect">
+            <div class="selectBox" onclick="showSlumLayers()" >
+              <button  type="button" class="btn btn-outline-dark" style="width: 90%;font-size:12px; margin-top: 20px;">Slums</button>
+              <div class="overSelect"></div>
+            </div>
+            <div id="checkboxes9" style="display: none;">
+              <div class="checkbox">
+                <label for=""><input type="checkbox" style = "margin: 0 0 0 17px;"  onchange="getSlumBoundary()" value="slum_boundaries" name="" id="">{% trans "Slum Boundaries" %}</label>
+              </div>
+              <div class="checkbox">
+                <label for=""><input type="checkbox" style = "margin: 0 0 0 17px;" onchange="getSlumHouseHolds()" name="" id="">{% trans "Slum Households" %}</label>
+              </div>
+              <div class="checkbox">
+                <label for=""><input type="checkbox" style = "margin: 0 0 0 17px;" onchange="getSlumLanes()" name="" id="">{% trans "Slum Lanes" %}</label>
+              </div>
+            </div>
+          </div>
+
+	  <!-- pipelines -->
+          <button type="button" onclick="putPipe()" class="btn btn-outline-dark" style="width: 90%;font-size:12px; margin-top: 20px;">Pipeline</button>
+
 
         </form>
 
@@ -659,6 +684,129 @@ expanded = true;
                 });
 })
 
+	      
+// slums
+var shck4 = false;
+    function showSlumLayers(){
+      if(!shck4){
+        document.getElementById('checkboxes9').style.display = "block";
+        shck4 = true;
+      }
+      else{
+        document.getElementById('checkboxes9').style.display = 'none';
+        shck4=false;
+      }
+    }
+
+    var showSlum = false;
+    var slumLayer;
+    function getSlumBoundary(){
+      if(!showSlum){
+        mymap.setView([19.12560565499321,72.84072875976564], 15.5)
+        slumLayer = L.tileLayer.wms('https://geonode.communitygis.in/geoserver/geonode/wms',{
+          layers:'geonode:merged_slum_boundary_9june_poonam',
+          format: 'image/png',
+          transparent: 'true',
+        })
+
+        slumLayer.addTo(mymap)
+        showSlum = true
+      }else{
+        mymap.setView([19.1233, 72.7784], 12);
+        mymap.removeLayer(slumLayer)
+        showSlum = false
+      }
+    }
+
+    var showSlumHH = false;
+    var slumHHLayer;
+    function getSlumHouseHolds(){
+      if(!showSlumHH){
+        mymap.setView([19.136694758209327,72.83789634704591], 14)
+        slumHHLayer = L.tileLayer.wms('https://geonode.communitygis.in/geoserver/geonode/wms',{
+          layers:'geonode:merged_slum_HH_9june_poonam',
+          format: 'image/png',
+          transparent: 'true',
+        })
+
+        slumHHLayer.addTo(mymap)
+        showSlumHH = true
+      }else{
+        // mymap.setView([19.1233, 72.7784], 12);
+        mymap.removeLayer(slumHHLayer)
+        showSlumHH = false
+      }
+    }
+
+    var showSlumLanes = false;
+    var slumLanesLayer;
+    function getSlumLanes(){
+      if(!showSlumLanes){
+        mymap.setView([19.136694758209327,72.83789634704591], 14)
+        slumLanesLayer = L.tileLayer.wms('https://geonode.communitygis.in/geoserver/geonode/wms',{
+          layers:'geonode:merged_slum_details_9june_poonam',
+          format: 'image/png',
+          transparent: 'true',
+        })
+
+        slumLanesLayer.addTo(mymap)
+        showSlumLanes = true
+      }else{
+        // mymap.setView([19.1233, 72.7784], 12);
+        mymap.removeLayer(slumLanesLayer)
+        showSlumLanes = false
+      }
+    }
+
+    //DP
+    var showDP = false;
+    var DPLayer;
+    function putDP(){
+      if(!showDP){
+
+        fetch('https://geonode.communitygis.in/geoserver/geonode/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=geonode%3ADP_merged_1june22&outputFormat=application%2Fjson')
+        .then(result=>result.json())
+        .then((output)=>{
+          DPLayer = L.geoJSON(output,{
+            onEachFeature: function(feature, layer){
+              layer.bindPopup(`<div style="width:auto;">Name: ${feature.properties.NAME}<br>Ward Name: ${feature.properties.ward_name}<br>Ward: ${feature.properties.Ward}<br>S_No: ${feature.properties.sno}</div>`)
+            },
+            
+          })
+          DPLayer.addTo(mymap)
+
+        })
+
+
+        showDP = true;
+      }else{
+        showDP = false;
+        mymap.removeLayer(DPLayer);
+
+      }
+    }
+
+    //Pipeline
+    var showPipe = false
+    var Pipelayer;
+    function putPipe(){
+      if(!showPipe){
+        mymap.setView([19.13534920516574,72.81797826290132], 17.5)
+        Pipelayer = L.tileLayer.wms('https://geonode.communitygis.in/geoserver/geonode/wms',{
+          layers:'	geonode:pipeline',
+          format:'image/png',
+          transparent:'true'
+        })
+        Pipelayer.addTo(mymap)
+        showPipe = true;
+      }else{
+        mymap.setView([19.1233, 72.7784], 12);
+        mymap.removeLayer(Pipelayer)
+        showPipe = false
+      }
+    }
+	      
+	      
 function setView1(layerName,val, selectedBoundary) {
     if (area) {
         mymap.removeLayer(area);
