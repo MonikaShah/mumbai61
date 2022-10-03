@@ -6,6 +6,7 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
+from django.conf import settings
 from django.utils.translation import gettext as _
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from map.models import *
@@ -384,10 +385,15 @@ class WasteSegregationDetailsRevised2March22(models.Model):
     wet_waste = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     dry_waste = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     coll_date = models.DateField(blank=True, null=True)
-
+    # username = models.ForeignKey(User, on_delete=models.SET_NULL,null=True)
+    username =  models.CharField(max_length=50,null=True)
     class Meta:
         managed = True
         db_table = 'waste_segregation_details_revised_2march22'
+    def __str__(self):
+        # return "Prabhag -"+self.prabhag + " " +"Building Name -"+ self.building_name+ " "+ "Date -"+self.coll_date
+        return "Prabhag -"+str(self.prabhag) + " "+"Building Name -"+ self.building_name+self.coll_date.strftime("%b %d %Y")
+
 
 
 
@@ -489,3 +495,33 @@ class BuildingUnder30Mtr(models.Model):
     class Meta:
         managed = False
         db_table = 'building_under_30mtr'
+
+class MergedBuildings5Sept22(models.Model):
+    id=models.IntegerField(primary_key=True)
+    geom = models.MultiPointField(blank=True, null=True)
+    mcgm_usern = models.CharField(max_length=254, blank=True, null=True)
+    mcgm_updat = models.CharField(max_length=254, blank=True, null=True)
+    ward_name_field = models.CharField(db_column='ward_name_', max_length=254, blank=True, null=True)  # Field renamed because it ended with '_'.
+    ward_id_2 = models.CharField(max_length=254, blank=True, null=True)
+    prabhag_no = models.CharField(max_length=254, blank=True, null=True)
+    building_n = models.CharField(max_length=254, blank=True, null=True)
+    building_t = models.CharField(max_length=254, blank=True, null=True)
+    wing_name = models.CharField(max_length=254, blank=True, null=True)
+    num_flat = models.CharField(max_length=254, blank=True, null=True)
+    num_shops = models.CharField(max_length=254, blank=True, null=True)
+    num_floors = models.CharField(max_length=254, blank=True, null=True)
+    dry_waste = models.FloatField(blank=True, null=True)
+    wet_waste = models.FloatField(blank=True, null=True)
+    photo = models.CharField(max_length=80, blank=True, null=True)
+    wkt = models.CharField(max_length=254, blank=True, null=True)
+    building_i = models.CharField(max_length=254, blank=True, null=True)
+    sac_number = models.CharField(max_length=254, blank=True, null=True)
+    sac_type = models.CharField(max_length=254, blank=True, null=True)
+    district = models.CharField(max_length=254, blank=True, null=True)
+    prop_add = models.CharField(max_length=254, blank=True, null=True)
+    spot_id = models.BigIntegerField(blank=True, null=True)
+    road_name = models.CharField(max_length=80, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'Merged_buildings_5Sept22'

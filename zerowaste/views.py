@@ -821,7 +821,8 @@ def WasteSegregationDetailsRevisedView(request):
         # building = request.POST.get('building_name')
         # form.fields[''].choices = [building.building]
         print(request.method)
-
+        userName = request.user
+        print("username is ",userName)
         if is_ajax(request=request):
             requestvar = request.get_full_path()
             print(requestvar)
@@ -863,10 +864,12 @@ def WasteSegregationDetailsRevisedView(request):
             # regionName = form.cleaned_data['region']
             # print(form['region'].value())
             # print(form['building_cluster'].value())
+            
             if form.is_valid():
                 sacNo = form.cleaned_data['sac_no']
                 # print(regionName)
                 collDate = form.cleaned_data['coll_date']
+                # userName = form.cleaned_data['user_nm']
                 # if regionName =="none":
                 #     messages.warning(request, _(u'Please select Region'))
                 # if  WasteSegregationDetails.objects.filter(coll_date=collDate, region=regionName).exists():
@@ -877,7 +880,12 @@ def WasteSegregationDetailsRevisedView(request):
                     # messages.success(request, _(u'Your data is saved for {} dated {}').format(regionName,collDate))
                     # print(form)
                 #   messages.success(request,'Form is valid')
-                form.save()
+                # form.save()
+                a = form.save(commit=False)
+                a.username = request.user
+                print(a.username.username)
+                a.save()
+                # task_list.username = request.user.username
                 # print(instance)
                 # instance.save()
                 messages.success(request, _(u'Your data is saved for date {}').format(collDate))

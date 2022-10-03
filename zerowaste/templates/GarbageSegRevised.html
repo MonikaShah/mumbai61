@@ -56,7 +56,9 @@
         <form method="POST" id="regionForm" data-url="{% url 'ajax_load_buildings' %}"  class="form-group" style="text-align:left;">
         <!-- <form method="POST" id = "WSForm" data-url=""  class="form-group" style="text-align:left;"></form> -->
             {% csrf_token %}
+            
             {{ form.as_p }} 
+            
             <br>
         <centre><button type="submit" style="align-items: center; margin-left: 20%;" class="btn btn-primary">{% trans "Submit" %}</button></centre>
         
