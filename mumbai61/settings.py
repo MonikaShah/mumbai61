@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'django.contrib.gis',
     'map',
+    'report_builder',
     # 'plotly_dash',
     # 'django_plotly_dash.apps.DjangoPlotlyDashConfig',
 ]
@@ -78,6 +79,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
             ],
         },
     },
