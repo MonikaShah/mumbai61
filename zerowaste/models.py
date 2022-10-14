@@ -496,32 +496,85 @@ class BuildingUnder30Mtr(models.Model):
         managed = False
         db_table = 'building_under_30mtr'
 
-class MergedBuildings5Sept22(models.Model):
-    id=models.IntegerField(primary_key=True)
+# class MergedBuildings5Sept22(models.Model):
+#     id=models.IntegerField(primary_key=True)
+#     geom = models.MultiPointField(blank=True, null=True)
+#     mcgm_usern = models.CharField(max_length=254, blank=True, null=True)
+#     mcgm_updat = models.CharField(max_length=254, blank=True, null=True)
+#     ward_name_field = models.CharField(db_column='ward_name_', max_length=254, blank=True, null=True)  # Field renamed because it ended with '_'.
+#     ward_id_2 = models.CharField(max_length=254, blank=True, null=True)
+#     prabhag_no = models.CharField(max_length=254, blank=True, null=True)
+#     building_n = models.CharField(max_length=254, blank=True, null=True)
+#     building_t = models.CharField(max_length=254, blank=True, null=True)
+#     wing_name = models.CharField(max_length=254, blank=True, null=True)
+#     num_flat = models.CharField(max_length=254, blank=True, null=True)
+#     num_shops = models.CharField(max_length=254, blank=True, null=True)
+#     num_floors = models.CharField(max_length=254, blank=True, null=True)
+#     dry_waste = models.FloatField(blank=True, null=True)
+#     wet_waste = models.FloatField(blank=True, null=True)
+#     photo = models.CharField(max_length=80, blank=True, null=True)
+#     wkt = models.CharField(max_length=254, blank=True, null=True)
+#     building_i = models.CharField(max_length=254, blank=True, null=True)
+#     sac_number = models.CharField(max_length=254, blank=True, null=True)
+#     sac_type = models.CharField(max_length=254, blank=True, null=True)
+#     district = models.CharField(max_length=254, blank=True, null=True)
+#     prop_add = models.CharField(max_length=254, blank=True, null=True)
+#     spot_id = models.BigIntegerField(blank=True, null=True)
+#     road_name = models.CharField(max_length=80, blank=True, null=True)
+
+#     class Meta:
+#         managed = False
+#         db_table = 'Merged_buildings_5Sept22'
+
+# class P122Buildings10October22(models.Model):
+#     geom = models.MultiPointField(blank=True, null=True)
+#     fid = models.BigIntegerField(blank=True, null=True)
+#     sac_number = models.CharField(max_length=254, blank=True, null=True)
+#     wing_name = models.CharField(max_length=254, blank=True, null=True)
+#     num_flat = models.CharField(max_length=254, blank=True, null=True)
+#     num_shops = models.CharField(max_length=254, blank=True, null=True)
+#     num_floors = models.CharField(max_length=254, blank=True, null=True)
+#     building_n = models.CharField(max_length=254, blank=True, null=True)
+#     building_t = models.CharField(max_length=254, blank=True, null=True)
+#     prabhag_no = models.CharField(max_length=254, blank=True, null=True)
+#     ward_name_field = models.CharField(db_column='ward_name_', max_length=254, blank=True, null=True)  # Field renamed because it ended with '_'.
+#     prop_add = models.CharField(max_length=254, blank=True, null=True)
+#     cluster = models.CharField(max_length=20, blank=True, null=True)
+#     clust_nm = models.CharField(max_length=50, blank=True, null=True)
+#     population = models.BigIntegerField(blank=True, null=True)
+#     bin_photo = models.CharField(max_length=100, blank=True, null=True)
+#     username = models.CharField(max_length=50, blank=True, null=True)
+#     date_time = models.CharField(max_length=100, blank=True, null=True)
+#     email = models.CharField(max_length=50, blank=True, null=True)
+#     qfield_username = models.CharField(max_length=50, blank=True, null=True)
+
+#     class Meta:
+#         managed = False
+#         db_table = 'P122_buildings_10october22'
+
+
+class P122Buildings14October22(models.Model):
     geom = models.MultiPointField(blank=True, null=True)
-    mcgm_usern = models.CharField(max_length=254, blank=True, null=True)
-    mcgm_updat = models.CharField(max_length=254, blank=True, null=True)
-    ward_name_field = models.CharField(db_column='ward_name_', max_length=254, blank=True, null=True)  # Field renamed because it ended with '_'.
-    ward_id_2 = models.CharField(max_length=254, blank=True, null=True)
-    prabhag_no = models.CharField(max_length=254, blank=True, null=True)
-    building_n = models.CharField(max_length=254, blank=True, null=True)
-    building_t = models.CharField(max_length=254, blank=True, null=True)
+    fid = models.BigIntegerField(blank=True, null=True)
+    sac_number = models.CharField(max_length=254, blank=True, null=True)
     wing_name = models.CharField(max_length=254, blank=True, null=True)
     num_flat = models.CharField(max_length=254, blank=True, null=True)
     num_shops = models.CharField(max_length=254, blank=True, null=True)
     num_floors = models.CharField(max_length=254, blank=True, null=True)
-    dry_waste = models.FloatField(blank=True, null=True)
-    wet_waste = models.FloatField(blank=True, null=True)
-    photo = models.CharField(max_length=80, blank=True, null=True)
-    wkt = models.CharField(max_length=254, blank=True, null=True)
-    building_i = models.CharField(max_length=254, blank=True, null=True)
-    sac_number = models.CharField(max_length=254, blank=True, null=True)
-    sac_type = models.CharField(max_length=254, blank=True, null=True)
-    district = models.CharField(max_length=254, blank=True, null=True)
+    building_n = models.CharField(max_length=254, blank=True, null=True)
+    building_t = models.CharField(max_length=254, blank=True, null=True)
+    prabhag_no = models.CharField(max_length=254, blank=True, null=True)
+    ward_name_field = models.CharField(db_column='ward_name_', max_length=254, blank=True, null=True)  # Field renamed because it ended with '_'.
     prop_add = models.CharField(max_length=254, blank=True, null=True)
-    spot_id = models.BigIntegerField(blank=True, null=True)
-    road_name = models.CharField(max_length=80, blank=True, null=True)
+    cluster = models.CharField(max_length=20, blank=True, null=True)
+    clust_nm = models.CharField(max_length=50, blank=True, null=True)
+    population = models.BigIntegerField(blank=True, null=True)
+    bin_photo = models.CharField(max_length=100, blank=True, null=True)
+    username = models.CharField(max_length=50, blank=True, null=True)
+    date_time = models.CharField(max_length=100, blank=True, null=True)
+    email = models.CharField(max_length=50, blank=True, null=True)
+    qfield_username = models.CharField(max_length=50, blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'Merged_buildings_5Sept22'
+        db_table = 'p122_buildings_14october22'
