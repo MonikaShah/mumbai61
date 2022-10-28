@@ -375,7 +375,7 @@
               </div> -->
               
               <div class="checkbox" id="boundary">
-                <label><input type="checkbox" value="{wardKWest}" onchange="getBoundaryru(this)"><span> {% trans "K-WEST" %}</span></label>
+                <label><input type="checkbox" value="{wardKWest}" id="wardKWest" onchange="getBoundaryru(this)"><span> {% trans "K-WEST" %}</span></label>
                 <div>
                   <div id="kwestbuilding">
                     <div class="checkbox" style = "margin: 0 0 0 17px;">
@@ -387,7 +387,7 @@
                   </div>
               </div>
               <div class="checkbox">
-                <label><input type="checkbox"  value="{61bound}" onchange="getBoundaryru(this)"><span> {% trans "Prabhag 61" %}</span></label>
+                <label><input type="checkbox"  value="{bound61}" id ="bound61" onchange="getBoundaryru(this)"><span> {% trans "Prabhag 61" %}</span></label>
               </div>
               <div id="checkboxes4">
                 <div class="checkbox">
@@ -808,7 +808,8 @@ function setView1(layerName,val, selectedBoundary) {
     if (area) {
         mymap.removeLayer(area);
     }
-    let rootUrl = 'https://geoserver2.communitygis.net/geoserver/'+layerName.split(":")[0]+'/ows';
+    // let rootUrl = 'https://geoserver2.communitygis.net/geoserver/'+layerName.split(":")[0]+'/ows';
+    let rootUrl = 'https://geonode.communitygis.in/geoserver/wms'+layerName.split(":")[0]+'/ows';
 
     let options = {
         service: 'WFS',
@@ -848,15 +849,16 @@ $("#wardlistwms").change(function() {
 	//  var $endpoint = window.location.href // or localhost/interface
   layer = 'Buildings_mumbai:Buildings_mumbai';
   wardwms = $(this).val();
-   var wms_layer = L.tileLayer.wms('https://geoserver2.communitygis.net/geoserver/wms', {
-                layers: 'Buildings_mumbai:Buildings_mumbai',
+  //  var wms_layer = L.tileLayer.wms('https://geoserver2.communitygis.net/geoserver/wms', {
+   var wms_layer = L.tileLayer.wms('https://geonode.communitygis.in/geoserver/wms', {
+                layers: 'Buildings_mumbai',
                 format: 'image/png',
                 transparent: 'true',
                 cql_filter: `ward_id_2='${wardwms}'`,
               });
               wms_layer.addTo(mymap);
-popup_layer = "https://geoserver2.communitygis.net/geoserver/"+layer.split(":")[0]+"/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetFeatureInfo&LAYERS=" + wms_layer.options.layers + "&QUERY_LAYERS=" + wms_layer.options.layers;
-              removeWMS('Buildings_mumbai:Buildings_mumbai');
+popup_layer = "https://geonode.communitygis.in/geoserver"+layer.split(":")[0]+"/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetFeatureInfo&LAYERS=" + wms_layer.options.layers + "&QUERY_LAYERS=" + wms_layer.options.layers;
+              removeWMS('Buildings_mumbai');
 
               newLayerList.push(wms_layer);
               setView1('Buildings_mumbai:Buildings_mumbai','ward_id_2', wardwms);
@@ -928,12 +930,13 @@ $("#prabhaglistwms").change(function() {
               
             }
             else if (boundary == '{bwg_es}'){
-              
+              console.log(boundary);
               putfrmgeo(bwg_es);
             }
             else if (boundary == "{wardKWest}") {
-              
-              putWMSru("ward61:k_west_mumbai");
+              console.log(boundary);
+              // putWMSru("ward61:k_west_mumbai");
+              putfrmgeo(wardKWest);
               var checkboxes = document.getElementById("kwestbuilding");
 
               kwestbuilding.style.display = "block";
@@ -942,8 +945,10 @@ $("#prabhaglistwms").change(function() {
             }
 
 
-            else if (boundary == "{61bound}" )
-              putWMSru("ward61:ward61_boundary_1nov21");
+            else if (boundary == "{bound61}" ){
+              // putWMSru("ward61:ward61_boundary_1nov21");
+              putfrmgeo(bound61)
+            }
             else if (boundary == "{regions}")
               putWMSru("ward61:regions_6dec21");
 
@@ -957,7 +962,7 @@ $("#prabhaglistwms").change(function() {
             var wms_layer = L.tileLayer.wms('https://geoserver2.communitygis.net/geoserver/wms', {
                 layers: 'Buildings_mumbai:mumbai_roads_prabhag_wise_29jan',
                 format: 'image/png',
-                transparent: 'true',
+                transparenBuildings_mumbait: 'true',
                 cql_filter: `prabhag_no='${prabhag}'`,
 
               });
@@ -973,24 +978,35 @@ $("#prabhaglistwms").change(function() {
               displaypolygon(boundary);
             else if (boundary == "{kwest-buildings}")
               {  putWMSru("ward61:k-west_building");}
-              else if (boundary == "{mumbai_ward}")
-              putWMSru("Buildings_mumbai:mumbai_ward_boundary_2Jan2022");
-              else if (boundary == "{mumbai_prabhag}")
-              putWMSru("Buildings_mumbai:Corporate_Ward_Boundaries_8jan");
-              else if (boundary == "{mumbai_buildings}")
-              putWMSru("Buildings_mumbai:Buildings_mumbai");
+            else if (boundary == "{mumbai_ward}")
+              // putWMSru("Buildings_mumbai:mumbai_ward_boundary_2Jan2022");
+              putfrmgeo(mumbai_ward)
+            else if (boundary == "{mumbai_prabhag}"){
+              putfrmgeo(mumbai_prabhag)
+              // putWMSru("Buildings_mumbai:Corporate_Ward_Boundaries_8jan");
+            }
+            else if (boundary == "{mumbai_buildings}"){
+              
+              console.log("in function for buildings mumbai:");
+              putfrmgeo(mumbai_buildings);
+              console.log("executed");
+            }
               else if (boundary == "{DP}")
               putfrmgeo(DP);
               // putWMSru("Buildings_mumbai:mumbai_city_3july2021");
 
           } else {
+            console.log("REmove layer function "+boundary)
             if (boundary == "{wardKWest}") {
-              removeWMS("ward61:k_west_mumbai")
-              removeWMS("ward61:k-west_building")
-              removeWMS("kwest_corporator_ward_31st_dec");
+              // removeWMS("ward61:k_west_mumbai")
+              // removeWMS("ward61:k-west_building")
+              // removeWMS("kwest_corporator_ward_31st_dec");
+              removeWMS("k_west_mumbai")
               kwestbuilding.style.display = "none";
               expanded = false;
             }
+            else if(boundary == "{bound61}")
+              removeWMS("ward61_boundary_1nov21")
             else if(boundary =="{kwestbeat}")
                 removeWMS("geonode:k_west_beat_22jan")
             else if (boundary == "{bwg_city}")
@@ -1009,23 +1025,23 @@ $("#prabhaglistwms").change(function() {
               removeWMS("ward61:ward61_boundary_1nov21");
             else if (boundary == "{cop}")
               removeWMS("kwest_corporator_ward_31st_dec");
-              else if (boundary == "{mumbai_ward}")
-              removeWMS("Buildings_mumbai:mumbai_ward_boundary_2Jan2022");
-              else if (boundary == "{mumbai_prabhag}")
-              removeWMS("Buildings_mumbai:Corporate_Ward_Boundaries_8jan");
-              else if (boundary == "{mumbai_buildings}")
-              removeWMS("Buildings_mumbai:Buildings_mumbai");
+            // else if (boundary == "{mumbai_ward}")
+            //   removeWMS("Buildings_mumbai:mumbai_ward_boundary_2Jan2022");
+            // else if (boundary == "{mumbai_prabhag}")
+            //   removeWMS("Buildings_mumbai:Corporate_Ward_Boundaries_8jan");
+            // else if (boundary == "{mumbai_buildings}")
+            //   removeWMS("Buildings_mumbai:Buildings_mumbai");
 
-              else if (boundary == "{DP}")
+            else if (boundary == "{DP}")
               removeWMS("Buildings_mumbai:mumbai_city_3july2021");
             else if (boundary == "{buildings}") {
-  mymap.removeControl(legend);
+              mymap.removeControl(legend);
 
               removepolylayer(polylayer);
 
             }
             else if (boundary == "{buildings_up}") {
-  mymap.removeControl(legend);
+              mymap.removeControl(legend);
 
               removepolylayer(polylayer);
 
@@ -1036,14 +1052,24 @@ $("#prabhaglistwms").change(function() {
               removepolylayer(polylayer);
             else if (boundary == "{regions_noname}")
               removepolylayer(polylayer);
+            else if (boundary == "{mumbai_buildings}"){
+              removeWMS("Buildings_mumbai");
+              console.log("In remove wms")
+            }
+            else if (boundary == "{mumbai_ward}")
+              removeWMS("mumbai_ward_boundary_2Jan2022");
+            else if (boundary == "{mumbai_prabhag}")
+              removeWMS("Mumbai_Prabhag_Boundaries_3Jan2022V2");
           };
 
 
         }
         function removeWMS(unchecked_layer) {
+          console.log("removing layer :"+unchecked_layer.value)
           newLayerList.forEach((layer, index) => {
+            console.log(layer.options.layer)
             if (layer.options.layers === unchecked_layer) {
-             
+              console.log("in unchecked layer:"+unchecked_layer)
               mymap.removeLayer(layer);
               newLayerList.splice(index, 1);
               if (wms_legend) {
@@ -1064,7 +1090,7 @@ $("#prabhaglistwms").change(function() {
           // alert(layers.value)
           // alert(layers);
           var obj = layers.value;
-          console.log(obj);
+          console.log("obj in putfromgeo function is "+obj);
           if (obj == "{kwestbeat}") {
            
             layer = 'geonode:k_west_beat_22jan';
@@ -1089,10 +1115,11 @@ $("#prabhaglistwms").change(function() {
             var currentPos = [19.1337, 72.7954];
             var maximumzoom = 19;
             // var opac = 0.3;
-            var zoom = 13;
+            var zoom = 13;bwg_es
       
           }
           else if (obj == '{bwg_es}'){
+            console.log(obj);
             layer = 'BWG_ES_29Jan';
             var currentPos = [19.1022, 72.8752];
             var maximumzoom = 19;
@@ -1102,6 +1129,7 @@ $("#prabhaglistwms").change(function() {
           }
 
           else if (obj == '{DP}'){
+            // alert("in putfromgeo function for DP")
             layer = 'DP_merged_1june22';
             // var currentPos = [19.1022, 72.8752];
             // var maximumzoom = 19;
@@ -1111,6 +1139,61 @@ $("#prabhaglistwms").change(function() {
             var maximumzoom = 20;
             var opac = 0.3;
             var zoom = 12;
+      
+          }
+          else if (obj == '{mumbai_buildings}'){
+            layer = 'Buildings_mumbai';
+            // var currentPos = [19.1022, 72.8752];
+            // var maximumzoom = 19;
+            // var opac = 1.0;
+            // var zoom = 13;
+            currentPos = [19.1467, 72.8283];
+            var maximumzoom = 20;
+            var opac = 0.3;
+            var zoom = 12;
+      
+          }
+          else if (obj == '{mumbai_ward}'){
+            layer = 'mumbai_ward_boundary_2Jan2022';
+            // var currentPos = [19.1022, 72.8752];
+            // var maximumzoom = 19;
+            // var opac = 1.0;
+            // var zoom = 13;
+            currentPos = [19.1467, 72.8283];
+            var maximumzoom = 20;
+            var opac = 0.3;
+            var zoom = 12;
+      
+          }
+          else if (obj == '{mumbai_prabhag}'){
+            layer = 'Mumbai_Prabhag_Boundaries_3Jan2022V2';
+            // var currentPos = [19.1022, 72.8752];
+            // var maximumzoom = 19;
+            // var opac = 1.0;
+            // var zoom = 13;
+            currentPos = [19.1467, 72.8283];
+            var maximumzoom = 20;
+            var opac = 0.3;
+            var zoom = 12;
+      
+          }
+          else if (obj == '{wardKWest}'){
+            layer = 'k_west_mumbai';
+            
+            cucurrentPos = [19.1233, 72.7784];
+            var maximumzoom = 19;
+            var opac = 0.6;
+            var zoom = 13;
+      
+          }
+          // ward61_boundary_1nov21
+          else if (obj == '{bound61}'){
+            layer = 'ward61_boundary_1nov21';
+            
+            currentPos = [19.1463, 72.8332];
+            var maximumzoom = 20;
+            var opac = 0.5;
+            var zoom = 15;
       
           }
 
@@ -1155,6 +1238,7 @@ $("#prabhaglistwms").change(function() {
         // }
         function putWMSru(layer) {
           layer1 = layer;
+          console.log("in putWMSru for layer="+layer)
           if (layer == "ward61:k_west_mumbai") {
             layer = 'ward61:k_west_mumbai';
             currentPos = [19.1233, 72.7784];
