@@ -475,7 +475,8 @@ def Buildshow(request):
 #     return render(request, "map/map.html", context)
 
 def showwastesegregationdetails(request):
-    datas= WasteSegregationDetails.objects.all().order_by('-coll_date')
+    # datas= WasteSegregationDetails.objects.all().order_by('-coll_date')
+    datas= WasteSegregationDetailsRevised2March22.objects.all().order_by('-coll_date')
     context = {
         'datas':datas,
         # 'Visitor_count': recd_response
