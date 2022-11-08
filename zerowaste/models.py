@@ -6,6 +6,7 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
+from django.utils import timezone
 from django.conf import settings
 from django.utils.translation import gettext as _
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
@@ -387,12 +388,14 @@ class WasteSegregationDetailsRevised2March22(models.Model):
     coll_date = models.DateField(blank=True, null=True)
     # username = models.ForeignKey(User, on_delete=models.SET_NULL,null=True)
     username =  models.CharField(max_length=50,null=True)
+    date_time =  models.DateTimeField(auto_now_add=True)
     class Meta:
         managed = True
         db_table = 'waste_segregation_details_revised_2march22'
     def __str__(self):
         # return "Prabhag -"+self.prabhag + " " +"Building Name -"+ self.building_name+ " "+ "Date -"+self.coll_date
-        return "Prabhag -"+str(self.prabhag) + " "+"Building Name -"+ self.building_name+self.coll_date.strftime("%b %d %Y")
+        # return "Prabhag -"+str(self.prabhag) + " "+"Building Name -"+ self.building_name+self.coll_date.strftime("%b %d %Y")
+        return "Prabhag -"+str(self.prabhag) + " "+"Building Name -"+ self.building_name+self.coll_date.strftime("%b %d %Y %H %M %S")
 
 
 

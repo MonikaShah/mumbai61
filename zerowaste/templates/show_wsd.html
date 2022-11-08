@@ -77,6 +77,7 @@
                 <thead class="thead-dark">
                     <tr>
                         <th>{% trans "Date" %} </th>
+                        <th>{% trans "Time" %} </th>
                         <th>{% trans "Username" %} </th>
                         <th>{% trans "Ward Name" %}</th>
                         <th>{% trans "Prabhag Name" %}</th>
@@ -100,6 +101,7 @@
 
                     <tr id="somerow">
                         <td>{{i.coll_date}}</td>
+                        <td>{{i.date_time|time:"H:i:s"}}</td>
                         <td>{{i.username}}</td>
                         <td>{{i.ward_id}}</td>
                         <td>{{i.prabhag_id}}</td>
