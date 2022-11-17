@@ -343,6 +343,9 @@
                 <div class="checkbox">
                   <label><input type="checkbox" style = "margin: 0 0 0 17px;" value="{DP}" id="DP" onclick="putDP()"><span> {% trans "Development Plan :Whole Mumbai" %}</span></label>
                 </div>
+                <div class="checkbox">
+                  <label><input type="checkbox" style = "margin: 0 0 0 17px;" value="{mumbai_roads}" id="mumbai_roads" onclick="getBoundaryru(this)"><span> {% trans "Road Network :Whole Mumbai" %}</span></label>
+                </div>
                 <hr><label for="" style="margin: 0 0 0 37px; font-weight: bolder;">Building Points: Selected Parts</label>
               <label for="" style="text-align: center; font-weight: bolder;">Ward wise</label>
               <select class="custom-select" name="dist_select" id="wardlistwms"> 
@@ -931,6 +934,9 @@ $("#prabhaglistwms").change(function() {
               
               putfrmgeo(bwg_es);
             }
+            else if (boundary == '{mumbai_roads}') {
+              putfrmgeo(mumbai_roads);
+            }
             else if (boundary == "{wardKWest}") {
               
               putWMSru("ward61:k_west_mumbai");
@@ -1017,7 +1023,9 @@ $("#prabhaglistwms").change(function() {
               removeWMS("Buildings_mumbai:Buildings_mumbai");
 
               else if (boundary == "{DP}")
-              removeWMS("Buildings_mumbai:mumbai_city_3july2021");
+                removeWMS("Buildings_mumbai:mumbai_city_3july2021");
+              else if (boundary == "{mumbai_roads}")
+                removeWMS("mumbai_roads_prabhag_wise_29jan");
             else if (boundary == "{buildings}") {
   mymap.removeControl(legend);
 
@@ -1103,6 +1111,18 @@ $("#prabhaglistwms").change(function() {
 
           else if (obj == '{DP}'){
             layer = 'DP_merged_1june22';
+            // var currentPos = [19.1022, 72.8752];
+            // var maximumzoom = 19;
+            // var opac = 1.0;
+            // var zoom = 13;
+            currentPos = [19.1467, 72.8283];
+            var maximumzoom = 20;
+            var opac = 0.3;
+            var zoom = 12;
+      
+          }
+          else if (obj == '{mumbai_roads}'){
+            layer = 'mumbai_roads_prabhag_wise_29jan';
             // var currentPos = [19.1022, 72.8752];
             // var maximumzoom = 19;
             // var opac = 1.0;
