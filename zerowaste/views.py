@@ -1,7 +1,7 @@
 # Create your views here.
 from django.shortcuts import render,redirect,HttpResponse,HttpResponseRedirect
 from .forms import GarbageSegForm,GrievanceForm,Ward61BuildingsOsm2Nov2021Form,WasteSegregationDetailsForm,NewUserForm,EmployeeDetailsForm,HumanResourceDataForm,MumbaiBuildingsWardPrabhagwise17JanForm,WasteSegregationDetailsRevised2march22Form
-from .models import Report,Rating,WasteSegregationDetails,BuildingsWard9April22,BuildingUnder30Mtr,KWestBeat22Jan,WasteSegregationDetailsRevised2March22,HumanResourceData#CensusTable #,OsmBuildings29Oct21#BuildingsWardWise4March,
+from .models import Report,Rating,WasteSegregationDetails,BuildingsWard9April22,BuildingUnder30Mtr,KWestBeat22Jan,WasteSegregationDetailsRevised2March22,HumanResourceData,P122Buildings8Nov22#CensusTable #,OsmBuildings29Oct21#BuildingsWardWise4March,
 from map.models import Ward61BuildingsOsm2Nov2021,MumbaiBuildingsWardPrabhagwise17Jan,MumbaiPrabhagBoundaries3Jan2022V2,DistinctGeomSacNoMumbai#,Ward61OsmBuildings,
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.core.files.storage import FileSystemStorage
@@ -524,7 +524,13 @@ def WasteSegregationDetailsView(request):
         # return render(request,"GarbageSeg.html")
 def load_buildings(request):
     region = request.GET.get('region')
-    building_name = WasteSegregationDetails.objects.filter(region=region)
+    print("In load buildings"+request.POST.get)
+    prabhag_no=request.GET.get('prabhag')
+    if(prabhag_no=='122'):
+        building_name = P122Buildings8Nov22.objects.filter(prabhag_no=prabhag_no)
+    else:
+        building_name = WasteSegregationDetails.objects.filter(region=region)
+    print("Building name is "+building_name)
     return render(request, 'building_dropdown_list_options.html', {'building_name': building_name})
 
 def is_ajax(request):
@@ -736,6 +742,10 @@ def w61wcd(request):
     # plot_div3 = plot(fig3,output_type='div')
     return render(request,'w61wcd.html', context={'plot_div': plot_div, 'plot_div1':plot_div1,'plot_div2':plot_div2 })
 
+def dashboard2(request):
+    return render(request,'test-2/index.html')
+
+
 def Piecharts(request):
     return render(request,'piecharts.html')
     
@@ -827,36 +837,37 @@ def WasteSegregationDetailsRevisedView(request):
         if is_ajax(request=request):
             requestvar = request.get_full_path()
             print(requestvar)
-                # if(requestvar!=null):
-                # docinfo = []
-                # docinfo1 =[]
-                
-                # 
-
-                # if(requestvar.find('name1')):
+               
             if "prabhag" in requestvar:
                 selected_field1 = request.GET['prabhag']
-                print(selected_field1)
+                print("Prabhag select "+selected_field1)
                 # prabhag_list = list(BuildingsWardWise4March.objects.filter(prabhag_no=selected_field1).values('road_name').order_by('road_name').distinct())
-                prabhag_list = list(BuildingsWard9April22.objects.filter(prabhag_no=selected_field1).values('road_name').order_by('road_name').distinct())
-                sac_list = list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(prabhag_no=selected_field1).values('sac_number').order_by('sac_number'))
+                if(selected_field1=='122'):
+                    print("In s ward")
+                    prabhag_list = list(P122Buildings8Nov22.objects.filter(prabhag_no=selected_field1).values('building_n').order_by('building_n').distinct())
+                    sac_list = list(P122Buildings8Nov22.objects.filter(prabhag_no=selected_field1).values('sac_number').order_by('sac_number'))
+                else:
+                    prabhag_list = list(BuildingsWard9April22.objects.filter(prabhag_no=selected_field1).values('road_name').order_by('road_name').distinct())
+                    sac_list = list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(prabhag_no=selected_field1).values('sac_number').order_by('sac_number'))
                 data = {'prabhag_list':prabhag_list,'sac_list':sac_list}
                 return JsonResponse(data, safe=False)
             elif "ward" in requestvar:
                 selected_field1 = request.GET['ward']
                 print(selected_field1)
                 prabhag_list = list(MumbaiPrabhagBoundaries3Jan2022V2.objects.filter(ward_id=selected_field1).values('prabhag_no').order_by('prabhag_no'))
-
-
-        
+      
                 return JsonResponse(prabhag_list, safe=False)
             elif "road" in requestvar:
                 selected_field1 = request.GET['road']
                 print(selected_field1)
                 # prabhag_list = list(BuildingsWardWise4March.objects.filter(road_name=selected_field1).values('building_name').order_by('building_name'))
                 prabhag_list = list(BuildingsWard9April22.objects.filter(road_name=selected_field1).values('building_name').order_by('building_name'))
+                return JsonResponse(prabhag_list, safe=False)
 
-        
+            elif "building_name" in requestvar:
+                selected_field1 =request.GET['building_name']
+                print(selected_field1)
+                prabhag_list = list(BuildingsWard9April22.objects.filter(road_name=selected_field1).values('building_name').order_by('building_name'))
                 return JsonResponse(prabhag_list, safe=False)
         if request.method == 'POST':
             form = WasteSegregationDetailsRevised2march22Form(request.POST)

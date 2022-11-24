@@ -34,6 +34,7 @@ urlpatterns = [
     # path("showgroup/",views.group,name="showgroup"),
     path("w61wcd/",views.w61wcd, name="w61wcd"),
     path('dashboard_piecharts/',views.Piecharts, name="dashboard_piecharts"),
+    path('dashboard2/',views.dashboard2, name="dashboard2"),
     # path('tree_census_charts/',views.tree_census_charts, name="tree_census_charts"),
     path('garbage_seg_rev/', views.WasteSegregationDetailsRevisedView,name='garbage_seg_rev'),
     

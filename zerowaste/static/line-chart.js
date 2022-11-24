@@ -78,7 +78,7 @@ else{
     line_title = "Hazardous Waste";
    
     };
-  title_chart = "Ward wise Chart" + '('+line_title+')';
+  title_chart = "Prabhag wise Chart" + '('+line_title+')';
 
   var trace2 = {
     type: "scatter",

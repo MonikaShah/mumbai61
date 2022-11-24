@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% load static%}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+  crossorigin=""/>
+  <script src="script.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+  crossorigin=""></script>
+    <link rel="stylesheet" href="{% static 'css/style_dashboard2.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/slick-loader@1.1.20/slick-loader.min.css">
+    <script src="https://unpkg.com/slick-loader@1.1.20/slick-loader.min.js"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">
+    <title>Dashboard2</title>
+
+    <style>
+        .leaflet-tooltip.my-labels {
+background-color: transparent;
+border: transparent;
+box-shadow: none;
+font-size: 12px;
+}
+
+.leaflet-tooltip.my-labels-ward {
+background-color: transparent;
+border: transparent;
+box-shadow: none;
+font-size: 12px;
+}
+
+
+.info {
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+    </style>
+</head>
+<body>
+
+    <div class="nav">
+        <div class="sidebar">
+            <i class="fa fa-fw fa-bars icon"></i>
+        </div>
+        <ul>
+            <li><a href="#">
+                home
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </a></li>
+    
+            <li><a href="#">
+                about
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </a></li>
+    
+            <li><a href="#">
+                services
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </a></li>
+    
+            <li><a href="#">
+                team
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </a></li>
+    
+            <li><a href="#">
+                contact
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </a></li>
+        </ul>
+    
+    </div>
+
+    <div class="container">
+        
+        <div class="level-0">
+            <div  class="button-bar">
+                <div class="buttons">
+                    <button id = "drillDown" class="btns"> drill down</button>
+                    <button  id = "drillUp" class="btns">  drill up</button>
+                </div>
+                <div class="select">
+                    <form action="">
+                        <label for="year"></label>
+                        <select name="year" id="dropdownYear" style="border-radius: 15px; padding: 4px; text-align: center;">
+                            <option value="Year">Year</option>
+                            <option value="2020">2020</option>
+                            <option value="2021">2021</option>
+                            <option value="2022">2022</option>
+                        </select>
+
+                    <form action="">
+                        <label for="waste"></label>
+                        <select name="waste" id="dropdownWaste" style="border-radius: 15px; padding: 4px; text-align: center;">
+                            <option value="Type">Waste Type</option>
+                            <option value="Total">Total</option>
+                            <option value="Wet">Wet</option>
+                            <option value="Dry">Dry</option>
+                        </select>
+                </div>
+            </div>
+            <div id="map"></div>
+        </div>
+
+        <div class="level-0 data-visualization">
+            <div class="graph">
+                <canvas id="bar-chart" width="800" height="335"></canvas>
+            </div>
+            <div class="graph">
+                <canvas id="myChart" width="400" height="400"></canvas>
+            </div>
+        </div>
+    </div>
+     
+
+    <script src="{%static 'js/script_dashboard2.js'%}"></script>
+    <script src="script2.js"></script>
+    <script src="script3.js"></script>
+</body>
+
+{% endblock %}

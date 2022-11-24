@@ -581,3 +581,28 @@ class P122Buildings14October22(models.Model):
     class Meta:
         managed = False
         db_table = 'p122_buildings_14october22'
+
+class P122Buildings8Nov22(models.Model):
+    fid = models.CharField(max_length=100, blank=True, null=True)
+    sac_number = models.CharField(max_length=100, blank=True, null=True)
+    wing_name = models.CharField(max_length=100, blank=True, null=True)
+    num_flat = models.CharField(max_length=100, blank=True, null=True)
+    num_shops = models.CharField(max_length=100, blank=True, null=True)
+    num_floors = models.CharField(max_length=100, blank=True, null=True)
+    building_n = models.CharField(max_length=100, blank=True, null=True)
+    building_t = models.CharField(max_length=100, blank=True, null=True)
+    prabhag_no = models.CharField(max_length=100, blank=True, null=True)
+    ward_name_field = models.CharField(db_column='ward_name_', max_length=100, blank=True, null=True)  # Field renamed because it ended with '_'.
+    prop_add = models.CharField(max_length=100, blank=True, null=True)
+    cluster = models.CharField(max_length=100, blank=True, null=True)
+    clust_nm = models.CharField(max_length=100, blank=True, null=True)
+    population = models.CharField(max_length=100, blank=True, null=True)
+    bin_photo = models.CharField(max_length=100, blank=True, null=True)
+    username = models.CharField(max_length=100, blank=True, null=True)
+    date_time = models.CharField(max_length=100, blank=True, null=True)
+    email = models.CharField(max_length=100, blank=True, null=True)
+    qfield_username = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'p122_buildings_8Nov22'

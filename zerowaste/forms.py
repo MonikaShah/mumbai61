@@ -281,6 +281,7 @@ class HumanResourceDataForm(forms.ModelForm):
         
 class WasteSegregationDetailsRevised2march22Form(forms.ModelForm): 
     coll_date  = forms.DateField(label = _(u'Date'),widget=forms.TextInput(attrs={'type': 'date'}),initial=datetime.date.today)
+    # date_time  = forms.DateField(label = _(u'Time'))
     # # region = forms.ModelChoiceField(queryset = WasteSegregationDetails.objects.filter(region__isnull=False).values_list('region', flat=True).distinct('region'),empty_label="(Nothing)")
     # # region = forms.ModelChoiceField(label = _(u'Region Name'),queryset = WasteSegregationDetails.objects.all(),empty_label="(Choose Region)", to_field_name="region")
     # region = forms.ModelChoiceField(label = _(u'Region Name'),queryset =WasteSegregationDetails.objects.all(),to_field_name='region', required=False)
@@ -341,4 +342,4 @@ class WasteSegregationDetailsRevised2march22Form(forms.ModelForm):
             'dry_waste','coll_date',
             # 'username',
         )
-        exclude = ("building_type","building_cluster",'num_wings','num_households_premises','num_shops_premises','approx_population','username')
+        exclude = ("building_type","building_cluster",'num_wings','num_households_premises','num_shops_premises','approx_population','username','date_time')
