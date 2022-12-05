@@ -365,7 +365,51 @@
           </select><hr>
         </div>
         <br>
+        <!-- Focus S ward  -->
+        <div class="multiselect">
+          <div class="selectBox" onclick="showCheckboxes3('geo')">
+            <button type="button" class="btn btn-outline-dark addMore" title = "More interactions are enable here  as a Pilot area"style="width: 90%;font-size:12px; " title="More interactions have been enable here  as a Pilot area"> {% trans "Focus: S Ward" %}</button>
+            <div class="overSelect"></div>
+          </div>
+           <div id="checkboxes3">
+            <!-- <div class="checkbox" id="boundary">
+              <label><input type="checkbox" value="Mumbai Suburban" onchange="getBoundaryru(this)"><span> {% trans  "Mumbai Suburban Boundary" %}</span></label>
+            </div> -->
+            
+            <div class="checkbox" id="boundary">
+              <label><input type="checkbox" value="{wardS}" id ="wardS" onchange="getBoundaryru(this)"><span> {% trans "S Ward Boundary" %}</span></label>
+              <!-- <div>
+                <div id="kwestbuilding">
+                  <div class="checkbox" style = "margin: 0 0 0 17px;">
+                    <label><input type="checkbox" value="{copS}" id="copS" onchange="getBoundaryru(this)"><span> {% trans "Prabhag Boundaries" %}</span></label>
+                  </div>
+                  <div class="checkbox" style = "margin: 0 0 0 17px;">
+                    <label><input type="checkbox" value="{s-buildings}" id="s-buildings" onclick="getBoundaryru(this)"><span> {% trans "Building Points" %}</span></label>
+                  </div>
+                </div>
+            </div> -->
+            <div class="checkbox">
+              <label><input type="checkbox"  value="{122bound}" id = "bound122" onchange="getBoundaryru(this)"><span> {% trans "Prabhag 122" %}</span></label>
+            </div>
+            <div id="checkboxes4">
+              <div class="checkbox">
+                <label><input type="checkbox" value="{sbeat}"  id="kwestbeat"
+                    onchange="getBoundaryru(this)" disabled><span> {% trans "S-ward Sweep Beats" %}</span></label>
+              </div>
+            </div>
+            <div id="checkboxes4">
+              <div class="checkbox">
+                <label><input type="checkbox" value="{sroads}"  id="sroads"
+                    onchange="getBoundaryru(this)"><span> {% trans "S-ward Roads" %}</span></label>
+              </div>
+            </div>
+          </div>
+        </div> 
+         <br> 
+  
+    
 
+<!-- Focus Kwest  -->
 	  {% if request.user.is_authenticated %}
           <div class="multiselect">
             <div class="selectBox" onclick="showCheckboxes3('geo')">
@@ -946,7 +990,23 @@ $("#prabhaglistwms").change(function() {
               expanded = true;
 
             }
+            else if (boundary == "{wardS}") {
+              
+              
+              putfrmgeo(wardS);
+              // var checkboxes = document.getElementById("kwestbuilding");
 
+              // kwestbuilding.style.display = "block";
+              // expanded = true;
+
+            }
+            else if (boundary == "{122bound}") {  
+             
+              putfrmgeo(bound122);
+            }
+            else if (boundary == '{sroads}') {
+              putfrmgeo(sroads);
+            }
 
             else if (boundary == "{61bound}" )
               putWMSru("ward61:ward61_boundary_1nov21");
@@ -1015,25 +1075,32 @@ $("#prabhaglistwms").change(function() {
               removeWMS("ward61:ward61_boundary_1nov21");
             else if (boundary == "{cop}")
               removeWMS("kwest_corporator_ward_31st_dec");
-              else if (boundary == "{mumbai_ward}")
+            else if (boundary == "{mumbai_ward}")
               removeWMS("Buildings_mumbai:mumbai_ward_boundary_2Jan2022");
-              else if (boundary == "{mumbai_prabhag}")
+            else if (boundary == "{mumbai_prabhag}")
               removeWMS("Buildings_mumbai:Corporate_Ward_Boundaries_8jan");
-              else if (boundary == "{mumbai_buildings}")
+            else if (boundary == "{mumbai_buildings}")
               removeWMS("Buildings_mumbai:Buildings_mumbai");
 
-              else if (boundary == "{DP}")
+            else if (boundary == "{DP}")
                 removeWMS("Buildings_mumbai:mumbai_city_3july2021");
-              else if (boundary == "{mumbai_roads}")
+            else if (boundary == "{mumbai_roads}")
                 removeWMS("mumbai_roads_prabhag_wise_29jan");
+            else if (boundary == "{122bound}")
+                removeWMS("S_ward");
+            else if (boundary == "{wardS}")
+                removeWMS("S_ward");
+            else if (boundary == '{sroads}') {
+              removeWMS("mumbai_roads_prabhag_wise_29jan");
+            }
             else if (boundary == "{buildings}") {
-  mymap.removeControl(legend);
+              mymap.removeControl(legend);
 
               removepolylayer(polylayer);
 
             }
             else if (boundary == "{buildings_up}") {
-  mymap.removeControl(legend);
+              mymap.removeControl(legend);
 
               removepolylayer(polylayer);
 
@@ -1080,7 +1147,7 @@ $("#prabhaglistwms").change(function() {
             var maximumzoom = 19;
             // var opac = 0.6;
             var zoom = 13;
-
+            var cql =`INCLUDE`
           }
           else if (obj == '{bwg_city}'){
             layer = 'geonode:BWG_City_29Jan';
@@ -1089,7 +1156,7 @@ $("#prabhaglistwms").change(function() {
             // tranparent = true;
             // var opac = 0.7;
             var zoom = 12;
-            
+            var cql =`INCLUDE`
       
           }
           else if (obj == '{bwg_ws}'){
@@ -1098,7 +1165,7 @@ $("#prabhaglistwms").change(function() {
             var maximumzoom = 19;
             // var opac = 0.3;
             var zoom = 13;
-      
+            var cql =`INCLUDE`
           }
           else if (obj == '{bwg_es}'){
             layer = 'BWG_ES_29Jan';
@@ -1106,7 +1173,7 @@ $("#prabhaglistwms").change(function() {
             var maximumzoom = 19;
             // var opac = 1.0;
             var zoom = 13;
-      
+            var cql =`INCLUDE`
           }
 
           else if (obj == '{DP}'){
@@ -1119,20 +1186,67 @@ $("#prabhaglistwms").change(function() {
             var maximumzoom = 20;
             var opac = 0.3;
             var zoom = 12;
-      
+            var cql =`INCLUDE`
           }
-          else if (obj == '{mumbai_roads}'){
-            layer = 'mumbai_roads_prabhag_wise_29jan';
+          else if (obj == '{wardS}'){
+            
+            layer = 'S_ward';
             // var currentPos = [19.1022, 72.8752];
             // var maximumzoom = 19;
             // var opac = 1.0;
             // var zoom = 13;
+            currentPos = [19.134, 72.923];
+            var maximumzoom = 20;
+            var opac = 0.3;
+            var zoom = 13;
+            var cql =`INCLUDE`
+      
+          }
+          else if (obj == '{122bound}'){       
+            layer = 'S_ward';
+            currentPos = [19.134, 72.923];
+            var maximumzoom = 20;
+            var opac = 0.3;
+            var zoom = 13;   
+            var cql = `prabhag_no='122'`  
+      
+          }
+          else if (obj == '{mumbai_roads}'){
+            // alert("in S roads")
+            layer = 'mumbai_roads_prabhag_wise_29jan';
             currentPos = [19.1467, 72.8283];
             var maximumzoom = 20;
             var opac = 0.3;
             var zoom = 12;
+            var cql = `INCLUDE`
       
           }
+
+          else if (obj == '{sroads}'){
+            // alert("in S roads")
+            layer = 'mumbai_roads_prabhag_wise_29jan';
+            currentPos = [19.1622, 72.942];
+            var maximumzoom = 20;
+            var opac = 0.3;
+            var zoom = 15;
+            var cql = `ward_id='S'`
+      
+          }
+
+
+          // if (obj == '{122bound}'){
+          //   // alert("Came in cql")
+          //   var cql = `prabhag_no='122'`
+          // }
+          // else if (obj == '{mumbai_roads}'){
+          //   alert("Came in cql")
+          //   var cql = `ward_id='S'`
+          // }
+          // else
+          // {
+          //   // alert("came in else of cql")
+          // var cql =`INCLUDE`
+          // }
 
           var wms_layer1 = L.tileLayer.wms('https://geonode.communitygis.in/geoserver/wms', {
             layers: layer,
@@ -1142,11 +1256,15 @@ $("#prabhaglistwms").change(function() {
             transparent: true,
             currentPos:[19.1233, 72.7784],
             maxZoom: maximumzoom,
+            cql_filter:cql,
             // style: subteStyle(feature),
+           
 
           });
+          
+
           wms_layer1.addTo(mymap);
-          mymap.setView(currentPos, zoom);
+          mymap.setView(currentPos, zoom,cql);
           newLayerList.push(wms_layer1);
           popup_layer = "https://geonode.communitygis.in/geoserver/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetFeatureInfo&LAYERS=" + wms_layer1.options.layers + "&QUERY_LAYERS=" + wms_layer1.options.layers;
           if (wms_legend) {
