@@ -403,6 +403,12 @@
                     onchange="getBoundaryru(this)"><span> {% trans "S-ward Roads" %}</span></label>
               </div>
             </div>
+            <div id="checkboxes4">
+              <div class="checkbox">
+                <label><input type="checkbox" value="{sbuildings}"  id="sbuildings"
+                    onchange="getBoundaryru(this)"><span> {% trans "S-ward Buildings" %}</span></label>
+              </div>
+            </div>
           </div>
         </div> 
          <br> 
@@ -1007,6 +1013,9 @@ $("#prabhaglistwms").change(function() {
             else if (boundary == '{sroads}') {
               putfrmgeo(sroads);
             }
+            else if (boundary == '{sbuildings}') {
+              putfrmgeo(sbuildings);
+            }
 
             else if (boundary == "{61bound}" )
               putWMSru("ward61:ward61_boundary_1nov21");
@@ -1040,13 +1049,13 @@ $("#prabhaglistwms").change(function() {
             else if (boundary == "{kwest-buildings}")
               {  putWMSru("ward61:k-west_building");}
               else if (boundary == "{mumbai_ward}")
-              putWMSru("Buildings_mumbai:mumbai_ward_boundary_2Jan2022");
+                putWMSru("Buildings_mumbai:mumbai_ward_boundary_2Jan2022");
               else if (boundary == "{mumbai_prabhag}")
-              putWMSru("Buildings_mumbai:Corporate_Ward_Boundaries_8jan");
+                putWMSru("Buildings_mumbai:Corporate_Ward_Boundaries_8jan");
               else if (boundary == "{mumbai_buildings}")
-              putWMSru("Buildings_mumbai:Buildings_mumbai");
+                putWMSru("Buildings_mumbai:Buildings_mumbai");
               else if (boundary == "{DP}")
-              putfrmgeo(DP);
+                putfrmgeo(DP);
               // putWMSru("Buildings_mumbai:mumbai_city_3july2021");
 
           } else {
@@ -1091,7 +1100,10 @@ $("#prabhaglistwms").change(function() {
             else if (boundary == "{wardS}")
                 removeWMS("S_ward");
             else if (boundary == '{sroads}') {
-              removeWMS("mumbai_roads_prabhag_wise_29jan");
+              removeWMS("S_wardRoads");
+            }
+            else if (boundary == '{sbuildings}') {
+              removeWMS("Buildings_mumbai");
             }
             else if (boundary == "{buildings}") {
               mymap.removeControl(legend);
@@ -1224,12 +1236,24 @@ $("#prabhaglistwms").change(function() {
 
           else if (obj == '{sroads}'){
             // alert("in S roads")
-            layer = 'mumbai_roads_prabhag_wise_29jan';
-            currentPos = [19.1622, 72.942];
+            layer = 'S_wardRoads';
+            currentPos = [19.1371, 72.9298];
             var maximumzoom = 20;
             var opac = 0.3;
-            var zoom = 15;
-            var cql = `ward_id='S'`
+            var zoom = 13;
+            var cql= `INCLUDE`;
+            // var cql = `ward_id='S'`
+
+      
+          }
+          else if (obj == '{sbuildings}'){
+            // alert("in S roads")
+            layer = 'Buildings_mumbai';
+            currentPos = [19.1283, 72.9041];
+            var maximumzoom = 20;
+            var opac = 0.3;
+            var zoom = 14;
+            var cql = `ward_name_='S'`
       
           }
 
@@ -1293,6 +1317,7 @@ $("#prabhaglistwms").change(function() {
         // }
         function putWMSru(layer) {
           layer1 = layer;
+          console.log("Putwmsru- layer is "+layer);
           if (layer == "ward61:k_west_mumbai") {
             layer = 'ward61:k_west_mumbai';
             currentPos = [19.1233, 72.7784];
@@ -1339,18 +1364,30 @@ $("#prabhaglistwms").change(function() {
             var opac = 0.3;
             var zoom = 12;
           }
-else{
-  currentPos = [19.1467, 72.8283];
+          // else if (layer == "Buildings_mumbai:Buildings_mumbai"){
+          //   alert("s buildings")
+          //   layer = "Buildings_mumbai:Buildings_mumbai";
+          //   currentPos = [19.1467, 72.8283];
+          //   var maximumzoom = 20;
+          //   var opac = 1;
+          //   var zoom = 12;
+          //   var cql=`ward_name_='S'`;
+          // }
+        else{
+          // alert("in putwmsru else part")
+            currentPos = [19.1467, 72.8283];
             var maximumzoom = 20;
             var opac = 1;
             var zoom = 12;
-}
+            // var cql=`INCLUDE`;
+        }
           var wms_layer = L.tileLayer.wms('https://geoserver2.communitygis.net/geoserver/wms', {
             layers: layer,
             format: 'image/png',
             opacity: opac,
             transparent: true,
             maxZoom: maximumzoom,
+            // cql_filter:cql,
 
           });
           wms_layer.addTo(mymap);
@@ -1673,7 +1710,8 @@ legend.addTo(mymap);
           wms_legend = L.wmsLegend(lagendGraphic);
                   
         }
-        function addWMSLegendfromgeo(layer) {                  
+        function addWMSLegendfromgeo(layer) {     
+          // alert(layer)             
           lagendGraphic = "https://geonode.communitygis.in/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=" + layer + "&LEGEND_OPTIONS=forceLabels:on";
           wms_legend = L.wmsLegend(lagendGraphic);         
         }
