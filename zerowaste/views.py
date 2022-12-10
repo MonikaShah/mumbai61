@@ -8,6 +8,7 @@ from django.core.files.storage import FileSystemStorage
 from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 from django.core.serializers import serialize
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User,auth
 from django.contrib.auth.models import Group
@@ -31,6 +32,7 @@ from plotly.offline import plot
 
 import plotly.graph_objects as og
 import numpy
+# import geojson
 ###From Akshita's Dashboard##############
 # import pandas as pd
 # import json
@@ -608,10 +610,34 @@ def emp_detail(request):
         context= {
         'form': form}
         return render(request, 'EmployeeDetails.html',context)
-
+def is_ajax(request):
+        return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'   
+        
 def hrd_detail(request):
+    form = HumanResourceDataForm('S',request.POST or None)
+    if is_ajax(request):     
+        requestvar = request.get_full_path()
+        print("Current path "+requestvar)
+        if "name" in requestvar:
+            selected_field = request.GET['name']
+            print("true")
+            print(selected_field)
+            # docinfo1 = MumbaiPrabhagBoundaries3Jan2022V2.objects.filter(ward_id=selected_field).only('prabhag_no'); 
+            docinfo1 = list(MumbaiPrabhagBoundaries3Jan2022V2.objects.filter(ward_id=selected_field).values); 
+            # print(docinfo1)
+            jsondata2 =docinfo1[0]
+            geojson=serialize('geojson',docinfo1)
+            # print("geojson is:"+geojson)
+            data1 = {'geojson':geojson}
+
+            return JsonResponse(data1, safe=False)
+            # return geojson.dumps(jsondata2)     
+
+
+
     if request.method == "POST":
-        form = HumanResourceDataForm('K/W',request.POST or None)
+        # form = HumanResourceDataForm('S',request.POST or None)
+        form = HumanResourceDataForm(request.POST or None)
         print(request.POST)
         print ("Form valid- ",form.is_valid())
         print (form.errors)     
@@ -641,9 +667,10 @@ def hrd_detail(request):
             # return JsonResponse({"message": 'Got it inside invalid'})
     else:
         print(request.method)
-        ward_name = 'K/W'
-        print(ward_name)
-        form = HumanResourceDataForm(ward_name,request.POST or None)
+        ward_name = 'S'
+        # print(ward_name)
+        # form = HumanResourceDataForm(ward_name,request.POST or None)
+        form = HumanResourceDataForm(request.POST or None)
         context= {
         'form': form}
         return render(request, 'HRDDetails.html',context)

@@ -1,6 +1,7 @@
 {% extends 'base.html' %} {% load static%} {% block content %}
 {% load i18n %}{% load crispy_forms_tags %}
 
+
 <div class="container mb-5 text-center">
     {% if messages %}
     <ul class="messages">
@@ -40,4 +41,80 @@
 <script>
     // console.log("{{ data.zone_id_id }}")
 </script>
+{% endblock %}
+{% block extra_javascript %}
+<script>
+    $(function() {
+        var $docName = $('#id_ward').val();
+        console.log($docName)
+        
+        $("#id_ward").on('change', function() {
+            var val = $("#id_ward").val();
+
+            var $name = {
+                'name': $(this).val()
+            }
+            console.log("name is ",$name)
+            var $endpoint = window.location.href // or localhost/interface
+            $.ajax({
+                method: "GET",
+                url: $endpoint,
+                data:$name,
+                success: handleFormSuccess,
+                error: handleFormError,
+            })
+        })
+       
+         })
+
+        function handleFormSuccess(data) {
+            // console.log(data.district)
+            // data = json.loads(data)
+            console.log(data)
+            
+            if(data.hasOwnProperty("prabhag_no"))
+                console.log(data.prabhag_no)
+            else    
+                console.log("Nill")
+            // hasOwnProperty
+            console.log("success is"+data.prabhag_no);
+            // console.log("success is -"+feature.get('prabhag_no'));
+            $("#id_prabhag").val(data.prabhag_no);
+            // $("#id_first_attendants_name").val(data.attendant1);
+            // $("#id_second_attendants_name").val(data.attendant2);
+            // $("#id_supervisor_name").val(data.supervisor);
+           
+            // $("#id_pic").val(data.picture.url);
+        }
+        // function handleFormSuccess1(data) {
+            
+        //     console.log(data.picture);
+                   
+        //     // $("#id_picture").val(data.picture);
+        //     // $("#id_picture").val(data.picture);
+        //     icon_url = '{{ media_url}}' 
+        //     console.log('"'+icon_url+data.picture+'"');
+        //     // $('#id_picture').html('<img src='+icon_url+data.picture+ '" />');
+        //     $('#testimg').empty();
+        //     $('#testimg').attr('src',icon_url+data.picture);
+            
+        //      //$('#id_picture').html('Hi');
+        //     //  $('#id_picture').
+        //     // $("#id_picture").attr("src",data.picture);
+        //     // $('#id_picture').show();
+        // }
+
+        function handleFormError(jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR)
+            console.log(textStatus)
+            console.log(errorThrown)
+        }
+    //     // function handleFormError1(jqXHR, textStatus, errorThrown) {
+    //     //     console.log(jqXHR)
+    //     //     console.log(textStatus)
+    //     //     console.log(errorThrown)
+    //     // }
+    // })
+</script>
+
 {% endblock %}
