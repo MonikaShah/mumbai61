@@ -57,27 +57,41 @@
             console.log("name is ",$name)
             var $endpoint = window.location.href // or localhost/interface
             $.ajax({
-                method: "GET",
-                url: $endpoint,
+                type: "GET",
+                //url: $endpoint,
+                url: `{% url 'ajax_load_prabhag' %}`, 
                 data:$name,
-                success: handleFormSuccess,
+                //success: handleFormSuccess,
+                success: function(response){
+                    //console.log(`resp ${response.prabhag_n.forEach(e=>{console.log(e)})}`)
+                    var strs = "<option value='"+"'>"+"----"+"</option>"
+                    response.prabhag_n.forEach(e=>{
+                        //strs = strs+"<option value='"+e.prabhag_no+"'>"+e.prabhag_no+"</option>";
+                        console.log(e.prabhag_no)
+                    })
+                    response.prabhag_n.forEach(e=>{
+                        strs = strs+"<option value='"+e.prabhag_no+"'>"+e.prabhag_no+"</option>";
+                        //console.log(e.prabhag_no)
+                    })
+                    $('#id_prabhag').html(strs)
+                },
                 error: handleFormError,
             })
         })
        
-         })
+    })
 
         function handleFormSuccess(data) {
             // console.log(data.district)
             // data = json.loads(data)
             console.log(data)
-            
+            console.log(data.prabhag_no)
             if(data.hasOwnProperty("prabhag_no"))
                 console.log(data.prabhag_no)
             else    
                 console.log("Nill")
             // hasOwnProperty
-            console.log("success is"+data.prabhag_no);
+            // console.log("success is"+data.prabhag_no);
             // console.log("success is -"+feature.get('prabhag_no'));
             $("#id_prabhag").val(data.prabhag_no);
             // $("#id_first_attendants_name").val(data.attendant1);

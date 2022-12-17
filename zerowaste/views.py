@@ -610,6 +610,17 @@ def emp_detail(request):
         context= {
         'form': form}
         return render(request, 'EmployeeDetails.html',context)
+from django.core import serializers
+def load_prabhag(request):
+    ward_n = request.GET.get('name')
+    # print("ward in load prabhag is "+ ward_n)
+    #print()
+    prabhag_n = MumbaiPrabhagBoundaries3Jan2022V2.objects.values('prabhag_no').filter(ward_id=ward_n)
+    print(prabhag_n)
+    #prabhag_n=serializers.serialize('json',prabhag_n)
+    prabhag_n = list(prabhag_n)
+    return JsonResponse({"prabhag_n":prabhag_n})
+    #return render(request, 'prabhag_dropdown_list_options.html', {'prabhag_n':prabhag_n})
 def is_ajax(request):
         return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'   
         
@@ -622,11 +633,11 @@ def hrd_detail(request):
             selected_field = request.GET['name']
             print("true")
             print(selected_field)
-            # docinfo1 = MumbaiPrabhagBoundaries3Jan2022V2.objects.filter(ward_id=selected_field).only('prabhag_no'); 
-            docinfo1 = list(MumbaiPrabhagBoundaries3Jan2022V2.objects.filter(ward_id=selected_field).values); 
+            docinfo1 = MumbaiPrabhagBoundaries3Jan2022V2.objects.filter(ward_id=selected_field).only('prabhag_no'); 
+            # docinfo1 = list(MumbaiPrabhagBoundaries3Jan2022V2.objects.filter(ward_id=selected_field).values); 
             # print(docinfo1)
             jsondata2 =docinfo1[0]
-            geojson=serialize('geojson',docinfo1)
+            geojson=serialize('geojson',docinfo1,fields=('prabhag_no',))
             # print("geojson is:"+geojson)
             data1 = {'geojson':geojson}
 
