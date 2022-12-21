@@ -30,6 +30,7 @@ urlpatterns = [
     path("register/", views.register_request, name="register"),
     path("emp_detail/",views.emp_detail, name="emp_detail"),
     path("hrd_detail/",views.hrd_detail, name="hrd_detail"),
+    path('ajax/load-prabhag/', views.load_prabhag, name='ajax_load_prabhag'),
     path("resources/",views.resources, name="resources"),
     # path("showgroup/",views.group,name="showgroup"),
     path("w61wcd/",views.w61wcd, name="w61wcd"),
