@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 # from django.contrib.auth.models import User
 
-from .models import Report,Grievance,WasteSegregationDetails,EmployeeDetails,User,MumbaiBuildingsWardPrabhagwise17Jan,WasteSegregationDetailsRevised2March22,MumbaiWardBoundary2Jan2022,HumanResourceData#,MumbaiPrabhagBoundaries3Jan2022V2#,OsmBuildings29Oct21
+from .models import Report,Grievance,WasteSegregationDetails,EmployeeDetails,User,MumbaiBuildingsWardPrabhagwise17Jan,WasteSegregationDetailsRevised2March22,MumbaiWardBoundary2Jan2022,HumanResourceData,MumbaiPrabhagBoundaries3Jan2022V2#,OsmBuildings29Oct21
 from map.models import Ward61BuildingsOsm2Nov2021
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column, ButtonHolder
@@ -226,7 +226,8 @@ class NewUserForm(UserCreationForm):
 class EmployeeDetailsForm(forms.ModelForm): 
     # ward =forms.CharField(label = _(u'Admin Ward'),max_length=50)
     #adminward =forms.CharField(label = _(u'Admin Ward'),max_length=50)
-    prabhag = forms.CharField(label=_(u'Prabhag '),max_length=100,widget=forms.Select(choices=councillorWard))
+    # prabhag = forms.CharField(label=_(u'Prabhag '),max_length=100,widget=forms.Select(choices=councillorWard))
+    # prabhag = forms.CharField(label=_(u'Prabhag '),max_length=100)
     # region = forms.CharField(label = _(u'Region Name'),widget=forms.Select(choices=Regions))
     # emp_category =forms.CharField(label = _(u'Scavenger'),widget=forms.Select(choices=EmployeePost))
     # emp_name =forms.CharField(label = _(u'Employee Name'),max_length = 100)
@@ -249,16 +250,17 @@ class EmployeeDetailsForm(forms.ModelForm):
         model = EmployeeDetails
         fields = '__all__'
         # exclude =['emp_id']
-    def __init__(self, ward_name, *args, **kwargs):
+    # def __init__(self, ward_name, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         
         super(EmployeeDetailsForm, self).__init__(*args, **kwargs)
-        self.fields['ward'].widget.attrs['readonly'] = True
+        # self.fields['ward'].widget.attrs['readonly'] = True
         # self.fields['prabhag'].queryset = MumbaiWardBoundary2Jan2022.objects.filter(ward_name_field=ward_name)
     
 class HumanResourceDataForm(forms.ModelForm): 
     # ward =forms.CharField(label = _(u'Admin Ward'),max_length=50)
     #adminward =forms.CharField(label = _(u'Admin Ward'),max_length=50)
-    prabhag = forms.CharField(label=_(u'Prabhag '),max_length=100,widget=forms.Select(choices=councillorWard))
+    # prabhag = forms.CharField(label=_(u'Prabhag '),max_length=100,widget=forms.Select(choices=councillorWard))
     # region = forms.CharField(label = _(u'Region Name'),widget=forms.Select(choices=Regions))
     # emp_category =forms.CharField(label = _(u'Scavenger'),widget=forms.Select(choices=EmployeePost))
     # emp_name =forms.CharField(label = _(u'Employee Name'),max_length = 100)
@@ -271,13 +273,22 @@ class HumanResourceDataForm(forms.ModelForm):
         model = HumanResourceData
         fields = '__all__'
        
-    def __init__(self, ward_name, *args, **kwargs):
+    # def __init__(self, ward_name, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         
         super(HumanResourceDataForm, self).__init__(*args, **kwargs)
-        self.fields['ward'].widget.attrs['readonly'] = True
+        # self.fields['ward'].widget.attrs['readonly'] = True
+        # self.fields['ward'].queryset = MumbaiWardBoundary2Jan2022.objects.values('ward_name_field')
+        
+        if 'Ward' in self.data:
+            try:
+                ward_name = int(self.data.get('Ward'))
+                self.fields['prabhag'].queryset = MumbaiPrabhagBoundaries3Jan2022V2.objects.filter(ward_name=Ward).order_by('name')
+            except (ValueError, TypeError):
+                pass  # invalid input from the client; ignore and fallback to empty City queryset
+        # elif self.instance.pk:
+            # self.fields['city'].queryset = self.instance.country.city_set.order_by('name')
         # self.fields['prabhag'].queryset = MumbaiWardBoundary2Jan2022.objects.filter(ward_name_field=ward_name)
-    
-    
         
 class WasteSegregationDetailsRevised2march22Form(forms.ModelForm): 
     coll_date  = forms.DateField(label = _(u'Date'),widget=forms.TextInput(attrs={'type': 'date'}),initial=datetime.date.today)
