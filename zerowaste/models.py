@@ -283,7 +283,8 @@ class WasteSegregationDetails(models.Model):
 
 class EmployeeDetails(models.Model):
     # emp_id = models.AutoField(primary_key=True)
-    ward =models.CharField(max_length=50,default= 'K/W')
+    # ward =models.CharField(max_length=50,default= 'K/W')
+    ward =models.CharField(max_length=50)
     prabhag = models.CharField(max_length=100,blank=True, null=True)
     # prabhag = models.ForeignKey(MumbaiPrabhagBoundaries3Jan2022V2.objects.filter(ward_name__contains='K/W'))
     chowky = models.CharField(max_length=100)
@@ -302,11 +303,12 @@ class EmployeeDetails(models.Model):
 
 class HumanResourceData(models.Model):
     # emp_id = models.AutoField(primary_key=True)
-    # ward =models.CharField(max_length=50,default= 'S')
-    ward = models.ForeignKey(MumbaiWardBoundary2Jan2022,to_field='ward_id', on_delete=models.SET_NULL, null=True,default=0,blank=True)
-    prabhag = models.ForeignKey(MumbaiPrabhagBoundaries3Jan2022V2,to_field='prabhag_no', on_delete=models.SET_NULL, null=True,default=0,blank=True)
-    # ward =models.CharField(max_length=50)
-    # prabhag = models.CharField(max_length=100)
+    # ward =models.CharField(max_length=50,default='K/W')
+    # ward =models.CharField(MumbaiPrabhagBoundaries3Jan2022V2.objects.values('ward_id_field'))
+    # ward = models.ForeignKey(MumbaiWardBoundary2Jan2022,to_field='ward_id', on_delete=models.SET_NULL, null=True,default=0,blank=True)
+    # prabhag = models.ForeignKey(MumbaiPrabhagBoundaries3Jan2022V2,to_field='prabhag_no', on_delete=models.SET_NULL, null=True,default=0,blank=True)
+    ward =models.CharField(max_length=50)
+    prabhag = models.CharField(max_length=100)
     # prabhag = models.ForeignKey(MumbaiPrabhagBoundaries3Jan2022V2.objects.filter(ward_name__contains='S'),on_delete=models.SET_NULL)
     # chowky = models.CharField(max_length=100)
     road_name = models.CharField(max_length=100)

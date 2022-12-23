@@ -576,7 +576,8 @@ list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'gro
 
 def emp_detail(request):
     if request.method == "POST":
-        form = EmployeeDetailsForm('K/W',request.POST or None)
+        # form = EmployeeDetailsForm('K/W',request.POST or None)
+        form = EmployeeDetailsForm(request.POST or None)
         print(request.POST)
         print ("Form valid- ",form.is_valid())
         print (form.errors)     
@@ -598,23 +599,25 @@ def emp_detail(request):
             # return JsonResponse({"message": 'Got it inside valid'})
         else:
             err=form.errors
-            # messages.warning(request,form.errors.as_json)
+            messages.warning(request,form.errors.as_json)
             messages.warning(request, _(u'Please check your form'))
             return HttpResponseRedirect(request.path_info,{'err':err})
             # return JsonResponse({"message": 'Got it inside invalid'})
     else:
         print(request.method)
-        ward_name = 'K/W'
-        print(ward_name)
-        form = EmployeeDetailsForm(ward_name,request.POST or None)
+        # ward_name = 'K/W'
+        # print(ward_name)
+        # form = EmployeeDetailsForm(ward_name,request.POST or None)
+        form = EmployeeDetailsForm(request.POST or None)
         context= {
         'form': form}
         return render(request, 'EmployeeDetails.html',context)
-from django.core import serializers
+# from django.core import serializers
 def load_prabhag(request):
     ward_n = request.GET.get('name')
-    # print("ward in load prabhag is "+ ward_n)
+    print("ward in load prabhag is "+ ward_n)
     #print()
+    # prabhag_n = MumbaiPrabhagBoundaries3Jan2022V2.objects.values('prabhag_no').filter(ward_name=ward_n)
     prabhag_n = MumbaiPrabhagBoundaries3Jan2022V2.objects.values('prabhag_no').filter(ward_id=ward_n)
     print(prabhag_n)
     #prabhag_n=serializers.serialize('json',prabhag_n)
@@ -633,12 +636,12 @@ def hrd_detail(request):
             selected_field = request.GET['name']
             print("true")
             print(selected_field)
-            docinfo1 = MumbaiPrabhagBoundaries3Jan2022V2.objects.filter(ward_id=selected_field).only('prabhag_no'); 
+            docinfo1 = MumbaiPrabhagBoundaries3Jan2022V2.objects.filter(ward_name=selected_field).only('prabhag_no'); 
             # docinfo1 = list(MumbaiPrabhagBoundaries3Jan2022V2.objects.filter(ward_id=selected_field).values); 
             # print(docinfo1)
             jsondata2 =docinfo1[0]
             geojson=serialize('geojson',docinfo1,fields=('prabhag_no',))
-            # print("geojson is:"+geojson)
+            print("geojson is:"+geojson)
             data1 = {'geojson':geojson}
 
             return JsonResponse(data1, safe=False)
@@ -649,10 +652,12 @@ def hrd_detail(request):
     if request.method == "POST":
         # form = HumanResourceDataForm('S',request.POST or None)
         form = HumanResourceDataForm(request.POST or None)
+        print(form)
         print(request.POST)
         print ("Form valid- ",form.is_valid())
         print (form.errors)     
-        if form.is_valid():            
+        if form.is_valid():      
+            
             EmpName = form.cleaned_data['name_contact_person']
             EmpMobile =form.cleaned_data['mobile_contact_person']
             EmpPost =form.cleaned_data['designation']
@@ -671,16 +676,18 @@ def hrd_detail(request):
             # return JsonResponse({"message": 'Got it inside valid'})
         else:
             
-            # messages.warning(request,form.errors.as_json)
+            messages.warning(request,form.errors.as_json)
             messages.warning(request, _(u'Please check your form'))
             
             return HttpResponseRedirect(request.path_info)
             # return JsonResponse({"message": 'Got it inside invalid'})
     else:
         print(request.method)
-        ward_name = 'S'
+        # user_info.objects.values_list('name', flat=True).distinct()
+        # ward_name = 'S'
         # print(ward_name)
         # form = HumanResourceDataForm(ward_name,request.POST or None)
+        ward_list=list(MumbaiPrabhagBoundaries3Jan2022V2.objects.values('ward_name'))
         form = HumanResourceDataForm(request.POST or None)
         context= {
         'form': form}
