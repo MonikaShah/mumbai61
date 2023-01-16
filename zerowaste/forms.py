@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 # from django.contrib.auth.models import User
 
-from .models import Report,Grievance,WasteSegregationDetails,EmployeeDetails,User,MumbaiBuildingsWardPrabhagwise17Jan,WasteSegregationDetailsRevised2March22,MumbaiWardBoundary2Jan2022,HumanResourceData,MumbaiPrabhagBoundaries3Jan2022V2#,OsmBuildings29Oct21
+from .models import Report,Grievance,WasteSegregationDetails,EmployeeDetails,User,MumbaiBuildingsWardPrabhagwise17Jan,WasteSegregationDetailsRevised2March22,MumbaiWardBoundary2Jan2022,HumanResourceData,MumbaiPrabhagBoundaries3Jan2022V2,compost_data#,OsmBuildings29Oct21
 from map.models import Ward61BuildingsOsm2Nov2021
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column, ButtonHolder
@@ -354,3 +354,28 @@ class WasteSegregationDetailsRevised2march22Form(forms.ModelForm):
             # 'username',
         )
         exclude = ("building_type","building_cluster",'num_wings','num_households_premises','num_shops_premises','approx_population','username','date_time')
+
+
+class compostForm(forms.ModelForm): 
+    coll_date  = forms.DateField(label = _(u'Date'),widget=forms.TextInput(attrs={'type': 'date'}),initial=datetime.date.today)
+    def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+
+            # for field in self.Meta.required:
+            #     self.fields[field].required = True
+        
+    class Meta:
+        model = compost_data
+        fields = '__all__'
+        # required = (
+        #     'ward',
+        #     'prabhag',
+        #     'road_name',
+        #     'building_name',
+        #     # 'building_type',
+        #     # 'building_cluster',
+        #     'compost_weight',
+        #     'coll_date',
+        #     # 'username',
+        # )
+        exclude = ('id',)
