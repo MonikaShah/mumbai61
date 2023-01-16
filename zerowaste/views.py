@@ -1,6 +1,6 @@
 # Create your views here.
 from django.shortcuts import render,redirect,HttpResponse,HttpResponseRedirect
-from .forms import GarbageSegForm,GrievanceForm,Ward61BuildingsOsm2Nov2021Form,WasteSegregationDetailsForm,NewUserForm,EmployeeDetailsForm,HumanResourceDataForm,MumbaiBuildingsWardPrabhagwise17JanForm,WasteSegregationDetailsRevised2march22Form
+from .forms import GarbageSegForm,GrievanceForm,Ward61BuildingsOsm2Nov2021Form,WasteSegregationDetailsForm,NewUserForm,EmployeeDetailsForm,HumanResourceDataForm,MumbaiBuildingsWardPrabhagwise17JanForm,WasteSegregationDetailsRevised2march22Form,compostForm
 from .models import Report,Rating,WasteSegregationDetails,BuildingsWard9April22,BuildingUnder30Mtr,KWestBeat22Jan,WasteSegregationDetailsRevised2March22,HumanResourceData,P122Buildings8Nov22#CensusTable #,OsmBuildings29Oct21#BuildingsWardWise4March,
 from map.models import Ward61BuildingsOsm2Nov2021,MumbaiBuildingsWardPrabhagwise17Jan,MumbaiPrabhagBoundaries3Jan2022V2,DistinctGeomSacNoMumbai#,Ward61OsmBuildings,
 from django.contrib.staticfiles.storage import staticfiles_storage
@@ -872,6 +872,7 @@ def road_bufferView(request):
         prabhag_list = list(KWestBeat22Jan.objects.values('fid','name').exclude(name__isnull=True).distinct())
         print(prabhag_list)
         return render(request,'road_buf.html',{'prabhag_list':prabhag_list})
+
 def WasteSegregationDetailsRevisedView(request):
         form = WasteSegregationDetailsRevised2march22Form()
         # building = request.POST.get('building_name')
@@ -948,14 +949,38 @@ def WasteSegregationDetailsRevisedView(request):
                 messages.success(request, _(u'Your data is saved for date {}').format(collDate))
                 print(form)
                 return HttpResponseRedirect(request.path_info)
-            else:
-                # print(form['region'].value())
-                # print(form['building_cluster'].value())
-                form.errors.as_json()
-                messages.warning(request, _(u'Please check your form'))
+            
+            
                 # messages.warning(request,form.errors.as_json)
         else:
                 form = WasteSegregationDetailsRevised2march22Form()
                 print(form)
                 form.errors.as_json()
         return render(request, 'GarbageSegRevised.html', {'form': form})
+
+def compost_form(request):
+        form = compostForm()
+        if request.method == 'POST':
+            form = compostForm(request.POST)
+            if form.is_valid():
+                collDate = form.cleaned_data['coll_date']
+        # a.username = request.user
+                print(collDate)
+                form.save()
+        # task_list.username = request.user.username
+        # print(instance)
+        # instance.save()
+                messages.success(request, _(u'Your data is saved for date {}').format(collDate))
+                print(form)
+                return HttpResponseRedirect(request.path_info)
+            else:
+                # print(form['region'].value())
+                # print(form['building_cluster'].value())
+                form.errors.as_json()
+                messages.warning(request, _(u'Please check your form'))
+        else:
+            form = compostForm()
+            print(form)
+            form.errors.as_json()
+        return render(request, 'CompostForm.html', {'form': form})
+

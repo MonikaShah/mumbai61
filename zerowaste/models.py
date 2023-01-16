@@ -374,6 +374,9 @@ class HumanResourceData(models.Model):
 #         managed = False
 #         db_table = 'census_table'
 cluster = (('Yes','Yes'),('No','No'))
+
+qual = (('Good','Good'),('Average','Average'),('Poor','Poor'))
+
 class WasteSegregationDetailsRevised2March22(models.Model):
     ward = models.ForeignKey(MumbaiWardBoundary2Jan2022,to_field='ward_id', on_delete=models.SET_NULL, null=True,default=0,blank=True)
     prabhag = models.ForeignKey(MumbaiPrabhagBoundaries3Jan2022V2,to_field='prabhag_no', on_delete=models.SET_NULL, null=True,default=0,blank=True)
@@ -394,6 +397,9 @@ class WasteSegregationDetailsRevised2March22(models.Model):
     # username = models.ForeignKey(User, on_delete=models.SET_NULL,null=True)
     username =  models.CharField(max_length=50,null=True)
     date_time =  models.DateTimeField(auto_now_add=True)
+    # composting_status = models.CharField(choices=cluster,default='No',max_length=255, blank=True, null=True)
+    # compostin
+
     class Meta:
         managed = True
         db_table = 'waste_segregation_details_revised_2march22'
@@ -403,6 +409,23 @@ class WasteSegregationDetailsRevised2March22(models.Model):
         return "Prabhag -"+str(self.prabhag) + " "+"Building Name -"+ self.building_name+self.coll_date.strftime("%b %d %Y %H %M %S")
 
 
+
+class compost_data(models.Model):
+    ward = models.ForeignKey(MumbaiWardBoundary2Jan2022,to_field='ward_id', on_delete=models.SET_NULL, null=True,default=0,blank=True)
+    prabhag_no = models.CharField(max_length=254, blank=True, null=True)
+    sac_no = models.CharField(max_length=254, blank=True, null=True)
+    road_name = models.CharField(max_length=254, blank=True, null=True)   
+    building_name = models.CharField(max_length=255, blank=True, null=True)
+    compost_weight = models.DecimalField(max_digits=9, decimal_places=2, blank=True, null=True)
+    testing_done = models.CharField(choices=cluster,default='No',max_length=255, blank=True, null=True)
+    compost_quality = models.CharField(choices=qual, default='Average',max_length=255, blank=True,null=True)
+    coll_date = models.DateField(blank=True, null=True)
+    class Meta:
+        managed = True
+        db_table = 'compost_data'
+
+    def __str__(self):
+        return "Prabhag -"+str(self.prabhag_no) + " "+"Building Name -"+ self.building_name+" Date -"+self.coll_date
 
 
 # class BuildingsWardWise4March(models.Model):
