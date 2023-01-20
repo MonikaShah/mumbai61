@@ -1904,10 +1904,12 @@ function new_ajax(e){
                         "<tr><td><b>Region: </b></td><td>" + data.region + "</td></tr>"+
                         "<tr><td><b>Number of Flats: </b></td><td>" + data.num_flat + "</td></tr>"+
                         "<tr><td><b>Number of shops: </b></td><td>" + data.num_shops + "</td></tr>"+
-                        "<tr><td><b>Number of Wings></td><td>" + data.wing_name + "</td></tr>"+
+                        "<tr><td><b>Wing Name</td><td>" + data.wing_name + "</td></tr>"+
                             "<tr><td><b>Village: </b></td><td>" + data.village + "</td></tr>"+
-                        "<tr><td><b>Billing Address: </b></td><td>" + data.address + "</td></tr>"+
-                        "<tr><td><b>Property Address: </b></td><td>" + data.prop_add + "</td></tr>"+
+                        "<tr><td><b>Property Address: </b></td><td>" + data.address + "</td></tr>"+
+                        "<tr><td><b>Population: </b></td><td>" + data.population + "</td></tr>"+
+                        "<tr><td><b>Updated by: </b></td><td>" + data.updated_by + "</td></tr>"+
+                        "<tr><td><b>Update Date/Time: </b></td><td>" + data.update_time + "</td></tr>"+
                         // "<tr><td><b>MODIFY: </b></td><td><a href = '/buildedit/"+data.osm_id+"' style ='color:#FF0000;'>" + data.osm_id + "</a></td></tr>"+
                         // "<tr><td rowspan=2><a href = '/buildedit/"+data.osm_id+"' style ='color:#FF0000;'>" + data.osm_id + "</a></td></tr>"+
                         "{% if request.user|has_group:'Editor' %}"+
