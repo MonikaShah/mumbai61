@@ -425,6 +425,8 @@ class compost_data(models.Model):
     testing_done = models.CharField(choices=cluster,default='No',max_length=255, blank=True, null=True)
     compost_quality = models.CharField(choices=qual, default='Average',max_length=255, blank=True,null=True)
     coll_date = models.DateField(blank=True, null=True)
+    username =  models.CharField(max_length=50,null=True)
+    
     class Meta:
         managed = True
         db_table = 'compost_data'
