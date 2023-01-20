@@ -349,8 +349,9 @@ class WasteSegregationDetailsRevised2march22Form(forms.ModelForm):
             'building_name',
             # 'building_type',
             # 'building_cluster',
-            'wet_waste',
-            'dry_waste','coll_date',
+            # 'wet_waste',
+            # 'dry_waste',
+            'coll_date',
             # 'username',
         )
         exclude = ("building_type","building_cluster",'num_wings','num_households_premises','num_shops_premises','approx_population','username','date_time')
@@ -378,4 +379,4 @@ class compostForm(forms.ModelForm):
         #     'coll_date',
         #     # 'username',
         # )
-        exclude = ('id',)
+        exclude = ('id','username')
