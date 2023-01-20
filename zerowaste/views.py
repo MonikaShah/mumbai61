@@ -964,18 +964,19 @@ def compost_form(request):
             form = compostForm(request.POST)
             if form.is_valid():
                 collDate = form.cleaned_data['coll_date']
-        # a.username = request.user
-                print(collDate)
-                form.save()
-        # task_list.username = request.user.username
-        # print(instance)
-        # instance.save()
+                a = form.save(commit=False)
+                a.username = request.user
+                print(a.username.username)
+                a.save()
+                # task_list.username = request.user.username
+                # print(instance)
+                # instance.save()
                 messages.success(request, _(u'Your data is saved for date {}').format(collDate))
                 print(form)
                 return HttpResponseRedirect(request.path_info)
+                
             else:
-                # print(form['region'].value())
-                # print(form['building_cluster'].value())
+               
                 form.errors.as_json()
                 messages.warning(request, _(u'Please check your form'))
         else:
