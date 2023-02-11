@@ -1169,9 +1169,9 @@ $("#prabhaglistwms").change(function() {
             else if (boundary == "{wardN}")
                 removeWMS("mumbai_ward_boundary_2Jan2022");
             else if (boundary == "{Nwardprabhags}")
-                removeWMS("Mumbai_Prabhag_Boundaries_3Jan2022V2");
+                removeWMS("Nward_roads_11feb23");
             else if (boundary == '{Nroads}') {
-              removeWMS("mumbai_roads_prabhag_wise_29jan");
+              removeWMS("Nward_roads_11feb23");
             }
 
             else if (boundary == '{Nmor_routes}') {
@@ -1327,8 +1327,8 @@ $("#prabhaglistwms").change(function() {
           }
           
           else if (obj == '{Nroads}'){
-            // alert("I am in N ward")
-            layer = 'mumbai_roads_prabhag_wise_29jan';
+            alert("I am in N ward")
+            layer = 'Nward_roads_11feb23';
             // var currentPos = [19.1022, 72.8752];
             // var maximumzoom = 19;
             // var opac = 1.0;
@@ -1337,7 +1337,7 @@ $("#prabhaglistwms").change(function() {
             var maximumzoom = 20;
             var opac = 0.3;
             var zoom = 13;
-            var cql =`ward_id='N'`  
+            var cql =`INCLUDE`  
             
           }
           
