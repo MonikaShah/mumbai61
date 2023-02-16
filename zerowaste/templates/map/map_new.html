@@ -462,6 +462,53 @@
         </div> 
          <br> 
   
+         <!-- Focus N ward  -->
+        <div class="multiselect">
+          <div class="selectBox" onclick="showCheckboxes3('geo')">
+            <button type="button" class="btn btn-outline-dark addMore" title = "More interactions are enable here  as a Pilot area"style="width: 90%;font-size:12px; " title="More interactions have been enable here  as a Pilot area"> {% trans "Focus: N Ward" %}</button>
+            <div class="overSelect"></div>
+          </div>
+           <div id="checkboxes3">
+            <!-- <div class="checkbox" id="boundary">
+              <label><input type="checkbox" value="Mumbai Suburban" onchange="getBoundaryru(this)"><span> {% trans  "Mumbai Suburban Boundary" %}</span></label>
+            </div> -->
+            
+            <div class="checkbox" id="boundary">
+              <label><input type="checkbox" value="{wardN}" id ="wardN" onchange="getBoundaryru(this)"><span> {% trans "N Ward Boundary" %}</span></label>
+              <!-- <div>
+                <div id="kwestbuilding">
+                  <div class="checkbox" style = "margin: 0 0 0 17px;">
+                    <label><input type="checkbox" value="{copS}" id="copS" onchange="getBoundaryru(this)"><span> {% trans "Prabhag Boundaries" %}</span></label>
+                  </div>
+                  <div class="checkbox" style = "margin: 0 0 0 17px;">
+                    <label><input type="checkbox" value="{s-buildings}" id="s-buildings" onclick="getBoundaryru(this)"><span> {% trans "Building Points" %}</span></label>
+                  </div>
+                </div>
+            </div> -->
+            <div class="checkbox">
+              <label><input type="checkbox"  value="{132bound}" id = "bound132" onchange="getBoundaryru(this)"><span> {% trans "Prabhag 132" %}</span></label>
+            </div>
+            <div id="checkboxes4">
+              <div class="checkbox">
+                <label><input type="checkbox" value="{nbeat}"  id="nbeat"
+                    onchange="getBoundaryru(this)" disabled><span> {% trans "N-ward BMC Truck Routes" %}</span></label>
+              </div>
+            </div>
+            <div id="checkboxes4">
+              <div class="checkbox">
+                <label><input type="checkbox" value="{nroads}"  id="nroads"
+                    onchange="getBoundaryru(this)"><span> {% trans "N-ward Roads" %}</span></label>
+              </div>
+            </div>
+            <div id="checkboxes4">
+              <div class="checkbox">
+                <label><input type="checkbox" value="{nbuildings}"  id="nbuildings"
+                    onchange="getBoundaryru(this)"><span> {% trans "N-ward Buildings" %}</span></label>
+              </div>
+            </div>
+          </div>
+        </div> 
+         <br> 
     
 
 <!-- Focus Kwest  -->
@@ -1086,7 +1133,32 @@ $("#prabhaglistwms").change(function() {
             else if (boundary == '{sbuildings}') {
               putfrmgeo(sbuildings);
             }
+<<<<<<< HEAD
+
+            else if (boundary == "{wardN}") {
+              
+              
+              putfrmgeo(wardN);
+              // var checkboxes = document.getElementById("kwestbuilding");
+
+              // kwestbuilding.style.display = "block";
+              // expanded = true;
+
+            }
+            else if (boundary == "{132bound}") {  
+             
+              putfrmgeo(bound132);
+            }
+            else if (boundary == '{nroads}') {
+              putfrmgeo(nroads);
+            }
+            else if (boundary == '{nbuildings}') {
+              putfrmgeo(nbuildings);
+            }
+
+=======
             
+>>>>>>> e827dfbdf438d3586ff26efc83b7a8a6c422db6d
             else if (boundary == "{61bound}" )
               putWMSru("ward61:ward61_boundary_1nov21");
             else if (boundary == "{regions}")
@@ -1185,6 +1257,16 @@ $("#prabhaglistwms").change(function() {
               removeWMS("S_wardRoads");
             }
             else if (boundary == '{sbuildings}' || boundary =='{nbuildings}') {
+              removeWMS("Buildings_mumbai");
+            }
+            else if (boundary == "{132bound}")
+                removeWMS("N_ward");
+            else if (boundary == "{wardN}")
+                removeWMS("N_ward");
+            else if (boundary == '{nroads}') {
+              removeWMS("N_wardRoads");
+            }
+            else if (boundary == '{nbuildings}') {
               removeWMS("Buildings_mumbai");
             }
             else if (boundary == "{buildings}") {
@@ -1410,6 +1492,54 @@ $("#prabhaglistwms").change(function() {
       
           }
 
+
+          else if (obj == '{wardN}'){
+            
+            layer = 'N_ward';
+            // var currentPos = [19.1022, 72.8752];
+            // var maximumzoom = 19;
+            // var opac = 1.0;
+            // var zoom = 13;
+            currentPos = [19.089, 72.921];
+            var maximumzoom = 20;
+            var opac = 0.3;
+            var zoom = 13;
+            var cql =`INCLUDE`
+      
+          }
+          else if (obj == '{132bound}'){       
+            layer = 'N_ward';
+            currentPos = [19.089, 72.921];
+            var maximumzoom = 20;
+            var opac = 0.3;
+            var zoom = 13;   
+            var cql = `prabhag_no='132'`  
+      
+          }
+
+          else if (obj == '{nroads}'){
+            // alert("in S roads")
+            layer = 'N_wardRoads';
+            currentPos = [19.089, 72.921];
+            var maximumzoom = 20;
+            var opac = 0.3;
+            var zoom = 13;
+            var cql= `INCLUDE`;
+            // var cql = `ward_id='S'`
+
+      
+          }
+
+          else if (obj == '{nbuildings}'){
+            // alert("in S roads")
+            layer = 'Buildings_mumbai';
+            currentPos = [19.089, 72.921];
+            var maximumzoom = 20;
+            var opac = 0.3;
+            var zoom = 14;
+            var cql = `ward_name_='N'`
+      
+          }
 
           // if (obj == '{122bound}'){
           //   // alert("Came in cql")
