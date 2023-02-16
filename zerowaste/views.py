@@ -1194,7 +1194,7 @@ def WasteSegregationDetailsRevisedView(request):
 
 
 def compost_form(request):
-<<<<<<< HEAD
+
     form = compostForm()
     if request.method == "POST":
         form = compostForm(request.POST)
@@ -1209,7 +1209,7 @@ def compost_form(request):
             messages.success(
                 request, _("Your data is saved for date {}").format(collDate)
             )
-=======
+
         form = compostForm()
         if request.method == 'POST':
             form = compostForm(request.POST)
@@ -1230,16 +1230,21 @@ def compost_form(request):
                
                 form.errors.as_json()
                 messages.warning(request, _(u'Please check your form'))
+        # else:
+        #     form = compostForm()
+
+        #     print(form)
+        #     return HttpResponseRedirect(request.path_info)
         else:
             form = compostForm()
->>>>>>> e827dfbdf438d3586ff26efc83b7a8a6c422db6d
+
             print(form)
-            return HttpResponseRedirect(request.path_info)
-        else:
+            
             # print(form['region'].value())
             # print(form['building_cluster'].value())
             form.errors.as_json()
             messages.warning(request, _("Please check your form"))
+            return HttpResponseRedirect(request.path_info)
     else:
         form = compostForm()
         print(form)
