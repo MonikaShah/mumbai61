@@ -158,7 +158,7 @@
   background-color: rgb(131, 131, 241)78, 78, 80);
 }
 
-  #checkboxes8,#checkboxes9 {
+  #checkboxes8,#checkboxes9,#checkboxes10,#checkboxes10 {
     display: none;
     /* border: 1px #dadada solid; */
   }
@@ -166,7 +166,7 @@
   .legend{
     background-color: white;
   }
-  #checkboxes8 label,#checkboxes9 label {
+  #checkboxes8 label,#checkboxes9 label, #checkboxes10 label,#checkboxes11 {
     display: block;
     text-decoration-color: blue;
     text-align: left;
@@ -371,7 +371,7 @@
             <button type="button" class="btn btn-outline-dark addMore" title = "More interactions are enable here  as a Pilot area"style="width: 90%;font-size:12px; " title="More interactions have been enable here  as a Pilot area"> {% trans "Focus: N Ward" %}</button>
             <div class="overSelect"></div>
           </div>
-           <div id="checkboxes9">
+           <div id="checkboxes10">
             <!-- <div class="checkbox" id="boundary">
               <label><input type="checkbox" value="Mumbai Suburban" onchange="getBoundaryru(this)"><span> {% trans  "Mumbai Suburban Boundary" %}</span></label>
             </div> -->
@@ -416,11 +416,11 @@
   
         <!-- Focus S ward  -->
         <div class="multiselect">
-          <div class="selectBox" onclick="showCheckboxes3('geo')">
+          <div class="selectBox" onclick="showCheckboxes3('geoS')">
             <button type="button" class="btn btn-outline-dark addMore" title = "More interactions are enable here  as a Pilot area"style="width: 90%;font-size:12px; " title="More interactions have been enable here  as a Pilot area"> {% trans "Focus: S Ward" %}</button>
             <div class="overSelect"></div>
           </div>
-           <div id="checkboxes3">
+           <div id="checkboxes11">
             <!-- <div class="checkbox" id="boundary">
               <label><input type="checkbox" value="Mumbai Suburban" onchange="getBoundaryru(this)"><span> {% trans  "Mumbai Suburban Boundary" %}</span></label>
             </div> -->
@@ -462,55 +462,7 @@
         </div> 
          <br> 
   
-         <!-- Focus N ward  -->
-        <div class="multiselect">
-          <div class="selectBox" onclick="showCheckboxes3('geo')">
-            <button type="button" class="btn btn-outline-dark addMore" title = "More interactions are enable here  as a Pilot area"style="width: 90%;font-size:12px; " title="More interactions have been enable here  as a Pilot area"> {% trans "Focus: N Ward" %}</button>
-            <div class="overSelect"></div>
-          </div>
-           <div id="checkboxes3">
-            <!-- <div class="checkbox" id="boundary">
-              <label><input type="checkbox" value="Mumbai Suburban" onchange="getBoundaryru(this)"><span> {% trans  "Mumbai Suburban Boundary" %}</span></label>
-            </div> -->
-            
-            <div class="checkbox" id="boundary">
-              <label><input type="checkbox" value="{wardN}" id ="wardN" onchange="getBoundaryru(this)"><span> {% trans "N Ward Boundary" %}</span></label>
-              <!-- <div>
-                <div id="kwestbuilding">
-                  <div class="checkbox" style = "margin: 0 0 0 17px;">
-                    <label><input type="checkbox" value="{copS}" id="copS" onchange="getBoundaryru(this)"><span> {% trans "Prabhag Boundaries" %}</span></label>
-                  </div>
-                  <div class="checkbox" style = "margin: 0 0 0 17px;">
-                    <label><input type="checkbox" value="{s-buildings}" id="s-buildings" onclick="getBoundaryru(this)"><span> {% trans "Building Points" %}</span></label>
-                  </div>
-                </div>
-            </div> -->
-            <div class="checkbox">
-              <label><input type="checkbox"  value="{132bound}" id = "bound132" onchange="getBoundaryru(this)"><span> {% trans "Prabhag 132" %}</span></label>
-            </div>
-            <div id="checkboxes4">
-              <div class="checkbox">
-                <label><input type="checkbox" value="{nbeat}"  id="nbeat"
-                    onchange="getBoundaryru(this)" disabled><span> {% trans "N-ward BMC Truck Routes" %}</span></label>
-              </div>
-            </div>
-            <div id="checkboxes4">
-              <div class="checkbox">
-                <label><input type="checkbox" value="{nroads}"  id="nroads"
-                    onchange="getBoundaryru(this)"><span> {% trans "N-ward Roads" %}</span></label>
-              </div>
-            </div>
-            <div id="checkboxes4">
-              <div class="checkbox">
-                <label><input type="checkbox" value="{nbuildings}"  id="nbuildings"
-                    onchange="getBoundaryru(this)"><span> {% trans "N-ward Buildings" %}</span></label>
-              </div>
-            </div>
-          </div>
-        </div> 
-         <br> 
-    
-
+         
 <!-- Focus Kwest  -->
 	  {% if request.user.is_authenticated %}
           <div class="multiselect">
@@ -661,8 +613,9 @@
                           </div>                       -->
 
               </div>
-	      <br>
+              <br>
               {% endif %}
+	          
               
               <div class="multiselect">
                 <div class="selectBox" onclick="showCheckboxes3('bwg')">
@@ -749,7 +702,11 @@
 
           }
           if (th == 'geoN') {
-            checkboxes = document.getElementById("checkboxes9");
+            checkboxes = document.getElementById("checkboxes10");
+
+          }
+          if (th == 'geoS') {
+            checkboxes = document.getElementById("checkboxes11");
 
           }
           else if (th == 'prabhag') {
@@ -1133,7 +1090,6 @@ $("#prabhaglistwms").change(function() {
             else if (boundary == '{sbuildings}') {
               putfrmgeo(sbuildings);
             }
-<<<<<<< HEAD
 
             else if (boundary == "{wardN}") {
               
@@ -1156,9 +1112,6 @@ $("#prabhaglistwms").change(function() {
               putfrmgeo(nbuildings);
             }
 
-=======
-            
->>>>>>> e827dfbdf438d3586ff26efc83b7a8a6c422db6d
             else if (boundary == "{61bound}" )
               putWMSru("ward61:ward61_boundary_1nov21");
             else if (boundary == "{regions}")
