@@ -1,0 +1,8 @@
+total_waste_key,total_waste_value,dry_waste_key,dry_waste_value,wet_waste_key,wet_waste_value,weight_key,weight_value
+500,#003f5c,0.16,#b30000,0.19,#003f5c,0.29,#a073de
+6000,#2f4b7c,0.44,#7c1158,0.25,#2f4b7c,0.28,#F94A29
+250,#665191,3,#4421af,12,#665191,0.27,#39479e
+1000,#a05195,16,#1a53ff,32,#a05195,0.25,#c04680
+2000,#d45087,29,#0d88e6,66,#d45087,0.24,#FD8D3C
+4500,#f95d6a,47,#00b7c7,88,#f95d6a,0.23,#e0aaec
+100,#ff7c43,66,#5ad45a,209,#ff7c43,0.22,#f4e8a4

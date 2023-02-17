@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+{% load static %} {% block content%}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SWK</title>
+    <link rel="stylesheet" href="{% static 'css/dashboard2_1/style.css' %}" />
+    <link
+      rel="stylesheet"
+      href="{% static 'css/dashboard2_1/yearpicker.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://releases.jquery.com/git/ui/jquery-ui-git.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+      integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+      crossorigin=""
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+     
+        
+      </style>
+  </head>
+  <body>
+    <div class="flex-container">
+      <div id="map"></div>
+      <div>
+        <label>Select Timeperiod </label>
+        <div class="custom-select" style="width: 200px">
+          <select id="time_period">
+            <option value="none" selected>None</option>
+            <option value="rainy">Rainy</option>
+            <option value="winter">Winter</option>
+            <option value="autum">Autum</option>
+            <option value="summer">Summer</option>
+            <!-- <option value="week">Week Wise</option>
+                      <option value="custom_date">Custom Date</option> -->
+          </select>
+        </div>
+        <br />
+
+        <label>Select Year</label><br />
+        <input type="text" class="form-control" id="year" readonly="readonly" />
+        <br />
+        <br />
+        <!-- 
+            <label>Select Year</label>
+            <div class="custom-select" style="width:200px;">
+                <select id="year">
+                 
+                  <option value="2017">2017</option>
+                  <option value="2018">2018</option>
+                  <option value="2019">2019</option>
+                  <option value="2020" selected>2020</option>
+                  <option value="2021">2021</option>
+                  <option value="2022">2022</option>
+                  <option value="2023">2023</option>
+
+                </select>
+            </div>
+            
+            <br> 
+        -->
+
+        <div class="custom-select" style="width: 200px" id="month_data">
+          <label>Select Month</label><br />
+          <select id="month">
+            <option value="01">Jan</option>
+            <option value="02">Feb</option>
+            <option value="03">Mar</option>
+            <option value="04">Apr</option>
+            <option value="05">May</option>
+            <option value="06">Jun</option>
+            <option value="07">Jul</option>
+            <option value="08">Aug</option>
+            <option value="09" selected>Sep</option>
+            <option value="10">Oct</option>
+            <option value="11">Nov</option>
+            <option value="12">Dec</option>
+          </select>
+        </div>
+        <br />
+        <div class="custom-select" style="width: 200px">
+          <label>Select Type of Data </label>
+          <select id="waste_type">
+            <option value="dryWaste">Dry waste</option>
+            <option value="wetWaste">Wet waste</option>
+            <option value="totalWaste">Total waste</option>
+            <option value="weight" selected>Weight</option>
+          </select>
+        </div>
+        <br />
+        <!-- <div>
+                    <label for="fileInput">Select a file</label>
+                    <input type="file" id="fileInput" name="fileInput" accept=".csv" > <br><br>
+        
+               </div> -->
+        <br />
+
+        <div>
+          <label for="fileInput">Enter delay in seconds</label><br />
+          <input type="number" id="delay" name="delay" value="1" /> <br /><br />
+        </div>
+        <br />
+
+        <!-- Slider -->
+        <div class="slidecontainer">
+          <input
+            type="range"
+            min="1"
+            max="31"
+            value="01"
+            default="1"
+            class="slider"
+            id="myRange"
+          />
+          <p>Day: <span id="demo"></span></p>
+        </div>
+        <div>
+          <input
+            type="button"
+            name="auto"
+            id="au"
+            value="start"
+            onclick="fun()"
+          />
+        </div>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"
+    ></script>
+    <script
+      src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+      integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+      crossorigin=""
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    <script src="https://releases.jquery.com/git/ui/jquery-ui-git.js"></script>
+    <script src="{% static 'js/dashboard2_1/yearpicker.js' %}"></script>
+    <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
+    <script>
+      Papa.parse('{% static "js/dashboard2_1/color_update.csv" %}', {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
+        complete: function (results) {
+          res = results;
+          // getcall();
+          // makemap(sliderInput, inputdate);
+          // console.log(arMap);
+        },
+      });
+    </script>
+    <script
+      src="{% static 'js/dashboard2_1/maintest1.js' %}"
+      type="module"
+    ></script>
+  </body>
+</html>
+
+{% endblock%}
