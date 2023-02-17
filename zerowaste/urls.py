@@ -36,6 +36,7 @@ urlpatterns = [
     path("w61wcd/",views.w61wcd, name="w61wcd"),
     path('dashboard_piecharts/',views.Piecharts, name="dashboard_piecharts"),
     path('dashboard2/',views.dashboard2, name="dashboard2"),
+    path('dashboard2_1/',views.dashboard2_1, name="dashboard2_1"),
     # path('tree_census_charts/',views.tree_census_charts, name="tree_census_charts"),
     path('garbage_seg_rev/', views.WasteSegregationDetailsRevisedView,name='garbage_seg_rev'),
     path('compost_form/', views.compost_form,name='compost_form'),
