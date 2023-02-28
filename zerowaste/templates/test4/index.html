@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+      crossorigin=""
+    />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+      integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+
+    <script
+      src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+      integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+      crossorigin=""
+    ></script>
+    <link
+      rel="stylesheet"
+      href="{% static 'css/dashboard2_2/style_dashboard2.css' %} "
+    />
+    <link
+      rel="stylesheet"
+      href="{% static 'css/dashboard2_2/yearpicker.css' %}"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script
+      src="https://kit.fontawesome.com/yourcode.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://unpkg.com/slick-loader@1.1.20/slick-loader.min.css"
+    />
+    <script src="https://unpkg.com/slick-loader@1.1.20/slick-loader.min.js"></script>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.4.2/css/all.css"
+      integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.6.3.js"
+      integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+      crossorigin="anonymous"
+    ></script>
+    <title>Dashboard2</title>
+
+    <style>
+      .leaflet-tooltip.my-labels {
+        background-color: transparent;
+        border: transparent;
+        box-shadow: none;
+        font-size: 12px;
+      }
+
+      .leaflet-tooltip.my-labels-ward {
+        background-color: transparent;
+        border: transparent;
+        box-shadow: none;
+        font-size: 12px;
+      }
+
+      .info {
+        padding: 6px 8px;
+        font: 14px/16px Arial, Helvetica, sans-serif;
+        background: white;
+        background: rgba(255, 255, 255, 0.8);
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="nav">
+      <div class="sidebar">
+        <i class="fa fa-fw fa-bars icon"></i>
+      </div>
+      <ul>
+        <li>
+          <a href="#">
+            home
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </a>
+        </li>
+
+        <li>
+          <a href="#">
+            about
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </a>
+        </li>
+
+        <li>
+          <a href="#">
+            services
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </a>
+        </li>
+
+        <li>
+          <a href="#">
+            team
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </a>
+        </li>
+
+        <li>
+          <a href="#">
+            contact
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="container">
+      <div class="level-0">
+        <div class="button-bar">
+          <div class="buttons">
+            <button id="drillDown" class="btns">drill down</button>
+            <button id="drillUp" class="btns">drill up</button>
+          </div>
+        </div>
+        <div id="map"></div>
+      </div>
+
+      <div class="level-1">
+        <div>
+          <label>Select Timeperiod </label>
+          <div class="custom-select" style="width: 200px">
+            <select id="time_period">
+              <option value="none" selected>None</option>
+              <option value="rainy">Rainy</option>
+              <option value="winter">Winter</option>
+              <option value="autum">Autum</option>
+              <option value="summer">Summer</option>
+              <!-- <option value="week">Week Wise</option>
+                          <option value="custom_date">Custom Date</option> -->
+            </select>
+          </div>
+          <br />
+          <label>Select Year</label><br />
+          <input
+            type="text"
+            class="form-control"
+            id="year"
+            readonly="readonly"
+          />
+          <br />
+          <div class="custom-select" style="width: 200px" id="month_data">
+            <label>Select Month</label><br />
+            <select id="month">
+              <option value="01">Jan</option>
+              <option value="02">Feb</option>
+              <option value="03">Mar</option>
+              <option value="04">Apr</option>
+              <option value="05">May</option>
+              <option value="06">Jun</option>
+              <option value="07">Jul</option>
+              <option value="08">Aug</option>
+              <option value="09" selected>Sep</option>
+              <option value="10">Oct</option>
+              <option value="11">Nov</option>
+              <option value="12">Dec</option>
+            </select>
+          </div>
+          <br />
+          <div class="custom-select" style="width: 200px">
+            <label>Select Type of Data </label>
+            <select id="waste_type">
+              <option value="dryWaste">Dry waste</option>
+              <option value="wetWaste">Wet waste</option>
+              <option value="totalWaste">Total waste</option>
+              <option value="weight" selected>Weight</option>
+            </select>
+          </div>
+          <br />
+          <div>
+            <label for="fileInput">Select delay</label><br />
+            <select id="delay" name="delay">
+              <option value="0.5">0.5</option>
+              <option value="1" selected>1</option>
+              <option value="1.25">1.25</option>
+              <option value="1.5">1.5</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+          </div>
+          <br />
+          <!-- Slider -->
+          <div class="slidecontainer">
+            <input
+              type="range"
+              min="1"
+              max="31"
+              value="01"
+              default="1"
+              class="slider"
+              id="myRange"
+            />
+            <p>Day: <span id="demo"></span></p>
+          </div>
+          <div>
+            <input
+              type="button"
+              name="auto"
+              id="au"
+              value="start"
+              onclick="fun()"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <script src="{%static 'js/script_dashboard2.js'%}"></script> -->
+    <!-- <script src="script.js" type="module"></script> -->
+
+    <script src="{% static 'js/dashboard2_2/yearpicker.js' %}"></script>
+    <script
+      type="module"
+      src="{% static 'js/dashboard2_2/script_dashboard2.js' %}"
+    ></script>
+  </body>
+</html>
