@@ -458,6 +458,13 @@
                     onchange="getBoundaryru(this)"><span> {% trans "S-ward Buildings" %}</span></label>
               </div>
             </div>
+            <div id="checkboxes4">
+              <div class="checkbox">
+                <label><input type="checkbox" value="{scompost}"  id="scompost"
+                    onchange="getBoundaryru(this)"><span> {% trans "S-ward Compost Facility" %}</span></label>
+              </div>
+            </div>
+
           </div>
         </div> 
          <br> 
@@ -1090,7 +1097,9 @@ $("#prabhaglistwms").change(function() {
             else if (boundary == '{sbuildings}') {
               putfrmgeo(sbuildings);
             }
-
+            else if (boundary == '{scompost}') {
+              putfrmgeo(scompost);
+            }
             else if (boundary == "{wardN}") {
               
               
@@ -1211,6 +1220,9 @@ $("#prabhaglistwms").change(function() {
             }
             else if (boundary == '{sbuildings}' || boundary =='{nbuildings}') {
               removeWMS("Buildings_mumbai");
+            }
+            else if (boundary == '{scompost}') {
+              removeWMS("compost_facility_24feb23");
             }
             else if (boundary == "{132bound}")
                 removeWMS("N_ward");
@@ -1442,6 +1454,16 @@ $("#prabhaglistwms").change(function() {
             var opac = 0.3;
             var zoom = 14;
             var cql = `ward_name_='S'`
+      
+          }
+          else if (obj == '{scompost}'){
+            // alert("in S compost")
+            layer = 'compost_facility_24feb23';
+            currentPos = [19.1283, 72.9041];
+            var maximumzoom = 20;
+            var opac = 0.3;
+            var zoom = 14;
+            var cql = `include`
       
           }
 
@@ -1985,18 +2007,32 @@ function Identify(e) {
     
     var URL = popup_layer + '&BBOX=' + BBOX + '&FEATURE_COUNT=1&HEIGHT=' + HEIGHT + '&WIDTH=' + WIDTH + '&INFO_FORMAT=application%2Fjson&TILED=false&CRS=EPSG%3A3857&I=' + X + '&J=' + Y;
     //send GetFeatureInfo as asynchronous HTTP request using jQuery $.ajax
-  console.log("cl;lick",popup_layer,layer1)
+  console.log("click",popup_layer,layer1)
     $.ajax({
         url: URL,
         dataType: "json",
         type: "GET",
         success: function(data) {
+          // alert("success",data.features.tst_done)
           if (data.features.length !== 0) { // at least one feature returned in response
                 var feature = data.features[0]; // first feature from response
                 // Set up popup for clicked feature and open it
+                // alert(feature)
                 var popup = new L.Popup({
                     maxWidth: 300
                 });
+                if (feature.properties.tst_done) {
+                    alert("in compost popup");
+                    content = "<table class = 'popupclass'style ='border: 1px solid white' ><tr style ='border: 1px solid white'><td colspan=6><b>Compost Facility Info</b></td><td></td></tr>" +
+                        "<tr style ='border: 1px solid white'><td colspan=3><b>Ward Name: </b></td><td style ='text-align:left;'>" + feature.properties.ward_nm + "</td></tr>"+
+                        "<tr style ='border: 1px solid white'><td colspan=3><b>Prabhag : </b></td><td>" + feature.properties.prabhag_no + "</td></tr>"+
+                        "<tr style ='border: 1px solid white'><td colspan=3><b>Building Name: </b></td><td>" + feature.properties.building_nm + "</td></tr>"+
+                        "<tr style ='border: 1px solid white'><td colspan=3><b>Status: </b></td><td>" + feature.properties.status + "</td></tr>"+
+                        "<tr style ='border: 1px solid white'><td colspan=3><b>Type: </b></td><td>" + feature.properties.type + "</td></tr>"+"</table>";
+                    popup.setContent(content);
+                    popup.setLatLng(e.latlng);
+                    mymap.openPopup(popup);
+                    }
                 if (feature.properties.daily_wast) {
                     // alert("in region");
                     content = "<table class = 'popupclass'style ='border: 1px solid white' ><tr style ='border: 1px solid white'><td colspan=6><b>Bulk Waste Generator Info</b></td><td></td></tr>" +
@@ -2030,6 +2066,7 @@ function Identify(e) {
                     popup.setLatLng(e.latlng);
                     mymap.openPopup(popup);
                     }
+               
                 else if (feature.properties.building_t) {
 
                  
@@ -2110,7 +2147,9 @@ function new_ajax(e){
                     // popup.setLatLng(e.latlng);
                     // mymap.openPopup(popup);
                     // return content;
-                    }
+                }
+                
+               
                 if (data.building_type) {
                     
 
