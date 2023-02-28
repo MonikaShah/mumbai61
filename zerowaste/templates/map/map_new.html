@@ -1691,10 +1691,11 @@ let time = today.toLocaleString();
         {% csrf_token %}
         <table class="table-bordered table-striped">
             <tr><td align ="left"><label class="required">{% trans "SAC Number" %}</label></td><td><input type="text" disabled name="sac" id="id_sac" value="${feature.properties.sac_number}" /></td></tr>
-            <tr><td align ="left"><label>{% trans "Region Name:" %}</label></td><td><input type="text" name="region" id="id_region" value="${feature.properties.region}" /></td></tr>
             <tr class="blank_row"></tr>
-            
             <tr><td align ="left"><label>{% trans "Building Name:" %}</label></td><td><input type="text" name="building_name" id="id_building_name" value="${feature.properties.building_name}" /></td></tr>
+            <tr><td align ="left"><label>{% trans "Region Name:" %}</label></td><td><input type="text" name="region" id="id_region" value="${feature.properties.region}" /></td></tr>
+            <tr><td align ="left"><label>{% trans "Road Name:" %}</label></td><td><input type="text" name="region" id="id_region" value="${feature.properties.road}" /></td></tr>
+            
             <tr class="blank_row"></tr>
             <tr><td align ="left">{% trans "Building Type:" %}</td><td><input type="text" name="building_type" id="id_building_type" value="${feature.properties.building_type}" /></td></tr>
             <tr class="blank_row"></tr>
