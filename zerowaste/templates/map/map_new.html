@@ -1703,15 +1703,14 @@ let time = today.toLocaleString();
             <tr><td align ="left"><label>{% trans "Number of Flats:" %}</label></td><td><input type="number" name="num_flat" id="id_num_flat"  value="${feature.properties.num_flat}" /></td></tr>
             <tr class="blank_row"></tr>
             <tr><td align ="left">{% trans "Number of Shops:" %}</td><td><input type="number" name="num_shops" id="id_num_shops"  value="${feature.properties.num_shops}" /></td></tr>
+            <tr disaled><td align ="left">{% trans "Population:" %}</td><td> <input type="text" name="updated_by" required   id="id_updated_by" value="{{ request.user.population }}" /></td></tr>
             <tr class="blank_row"></tr>
-           
+            <tr class="blank_row"></tr>    
             
             <tr><td align ="left">{% trans "Village:" %}</td><td><input type="text" name="village" id="id_village" value="${feature.properties.village}" /></td></tr>
             <tr class="blank_row"></tr>
             
-            <tr><td align ="left">{% trans "Billing Address:" %}</td><td><input type="text" name="address" id="id_address" value="${feature.properties.address}" /></td></tr>
-            <tr class="blank_row"></tr>
-            <tr><td align ="left">{% trans "Property Address:" %}</td><td><input type="text" name="address" id="id_address" value="${feature.properties.prop_add}" /></td></tr>
+            <tr><td align ="left">{% trans "Property Address:" %}</td><td><input type="text" name="address" id="id_address" value="${feature.properties.address}" /></td></tr>
             <tr class="blank_row"></tr>    
             {% if request.user.role != "MO" and request.user|has_group:"wardEditor" or request.user|has_group:"prabhagEditor" %}
             <tr><td align ="left">{% trans "Validity:" %}</td><td><input type="text" disabled name="validity" id="id_validity" value="${feature.properties.validity}" /></td></tr>
@@ -1720,7 +1719,7 @@ let time = today.toLocaleString();
             <tr><td align ="left">{% trans "Validity:" %}</td><td><input type="text"  name="validity" id="id_validity" value="True" /></td></tr>
             <tr class="blank_row"></tr>  
             {% endif %}
-            <tr disaled><td align ="left">{% trans "Updated By:" %}</td><td> <input type="text" name="updated_by" required   id="id_updated_by" value="{{ request.user.username }}" /></td></tr>
+            <tr disaled><td align ="left">{% trans "Updated By(username):" %}</td><td> <input type="text" name="updated_by" required   id="id_updated_by" value="{{ request.user.username }}" /></td></tr>
             <tr class="blank_row"></tr>
             <tr disabled><td align ="left">{% trans "Update Time:" %}</td><td><input type="text" name="update_time" required   id="id_update_time" value="${time}" /></td></tr>
             <tr class="blank_row"></tr>
