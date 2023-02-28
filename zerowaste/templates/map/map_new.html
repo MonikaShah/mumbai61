@@ -460,8 +460,13 @@
             </div>
             <div id="checkboxes4">
               <div class="checkbox">
+                <label><input type="checkbox" value="{s122buildings}"  id="s122buildings"
+                    onchange="getBoundaryru(this)"><span> {% trans "Prabhag 122: Buildings" %}</span></label>
+              </div>
+            <div id="checkboxes4">
+              <div class="checkbox">
                 <label><input type="checkbox" value="{scompost}"  id="scompost"
-                    onchange="getBoundaryru(this)"><span> {% trans "S-ward Compost Facility" %}</span></label>
+                    onchange="getBoundaryru(this)"><span> {% trans "Prabhag 122:  Compost Facility" %}</span></label>
               </div>
             </div>
 
@@ -1097,6 +1102,9 @@ $("#prabhaglistwms").change(function() {
             else if (boundary == '{sbuildings}') {
               putfrmgeo(sbuildings);
             }
+            else if (boundary == '{s122buildings}') {
+              putfrmgeo(s122buildings);
+            }
             else if (boundary == '{scompost}') {
               putfrmgeo(scompost);
             }
@@ -1218,7 +1226,7 @@ $("#prabhaglistwms").change(function() {
             else if (boundary == '{sroads}') {
               removeWMS("S_wardRoads");
             }
-            else if (boundary == '{sbuildings}' || boundary =='{nbuildings}') {
+            else if (boundary == '{sbuildings}' || boundary =='{nbuildings}' ||boundary =='{s122buildings}') {
               removeWMS("Buildings_mumbai");
             }
             else if (boundary == '{scompost}') {
@@ -1454,6 +1462,16 @@ $("#prabhaglistwms").change(function() {
             var opac = 0.3;
             var zoom = 14;
             var cql = `ward_name_='S'`
+      
+          }
+          else if (obj == '{s122buildings}'){
+            // alert("in S roads")
+            layer = 'Buildings_mumbai';
+            currentPos = [19.1283, 72.9041];
+            var maximumzoom = 20;
+            var opac = 0.3;
+            var zoom = 14;
+            var cql = `prabhag_no='122'`
       
           }
           else if (obj == '{scompost}'){
