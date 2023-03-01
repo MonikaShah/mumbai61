@@ -426,7 +426,7 @@ def Buildupdate(request, id):
 
         print(data) 
         form = MumbaiBuildingsWardPrabhagwise17JanForm(request.POST, instance=data)  
-        print(form)
+        # print(form)
         
     # if form.is_valid(): 
     #     print("success") 
@@ -441,14 +441,18 @@ def Buildupdate(request, id):
     # }
     
         if form.is_valid(): 
-            print("success") 
+            print("success")
+            print("Form is ",form) 
             messages.success(request,"Record Updated")          
-            form.save()          
+            if form.save():
+                print ("Data saved in db")
+            else:
+                print("error in saving to DB")
         else:
             print("fail")
             messages.error(request,"Sorry! Record not updated. Try Again")
     
-    print(Ward61BuildingsOsm2Nov2021Form.errors)
+    print(MumbaiBuildingsWardPrabhagwise17JanForm.errors)
     
     return redirect("/map/") 
     

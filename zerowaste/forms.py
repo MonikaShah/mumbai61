@@ -142,6 +142,12 @@ class MumbaiBuildingsWardPrabhagwise17JanForm(forms.ModelForm):
     num_floors = forms.IntegerField(label = _(u'Number of Floors'),required=False)
     wing_name = forms.CharField(label = _(u'Wing Name'),required=False)
     region = forms.CharField(label = _(u'Region'),required=False)
+    road = forms.CharField(label =_(u'road name'),required=True)
+    population = forms.IntegerField(label =_(u'population'),required=True)
+    is_bwg = forms.CharField(label =_(u'Is BWG'),required=False)
+    bwg_type = forms.CharField(label =_(u'BWG Type'),required=False)
+    is_compost = forms.CharField(label =_(u'Is Composting'),required=False)
+    compost_type = forms.CharField(label =_(u'Coposting Type'),required=False)
     village = forms.CharField(label = _(u'Village'),required=False)
 
     validity = forms.CharField(label = _(u'Validity'),required=False)

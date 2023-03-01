@@ -1696,7 +1696,11 @@ let time = today.toLocaleString();
             <tr><td align ="left"><label>{% trans "Road Name:" %}</label></td><td><input type="text" name="road" id="id_road" value="${feature.properties.road}" /></td></tr>
             <tr><td align ="left"><label>{% trans "Region Name:" %}</label></td><td><input type="text" name="region" id="id_region" value="${feature.properties.region}" /></td></tr>
             
-            <tr class="blank_row"></tr>
+            <tr class="blank_row"></tr><tr><td align ="left"><label>{% trans "Is BWG:" %}</label></td><td><input type="text" name="is_bwg" id="id_is_bwg" value="${feature.properties.is_bwg}" /></td></tr>
+            <tr class="blank_row"></tr><tr><td align ="left"><label>{% trans "BWG type:" %}</label></td><td><input type="text" name="bwg_type" id="id_bwg_type" value="${feature.properties.bwg_type}" /></td></tr>
+            <tr class="blank_row"></tr><tr><td align ="left"><label>{% trans "Is Composting:" %}</label></td><td><input type="text" name="is_compost" id="id_is_compost" value="${feature.properties.is_compost}" /></td></tr>
+            <tr class="blank_row"></tr><tr><td align ="left"><label>{% trans "Composting Type:" %}</label></td><td><input type="text" name="compost_type" id="id_compost_type" value="${feature.properties.compost_type}" /></td></tr>
+
             <tr><td align ="left">{% trans "Building Type:" %}</td><td><input type="text" name="building_type" id="id_building_type" value="${feature.properties.building_type}" /></td></tr>
             <tr class="blank_row"></tr>
             <tr><td align ="left">{% trans "Wing Name:" %}</td><td><input type="text" name="wing_name" id="id_wing_name" value="${feature.properties.wing_name}" /></td></tr>
