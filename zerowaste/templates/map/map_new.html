@@ -1693,8 +1693,8 @@ let time = today.toLocaleString();
             <tr><td align ="left"><label class="required">{% trans "SAC Number" %}</label></td><td><input type="text" disabled name="sac" id="id_sac" value="${feature.properties.sac_number}" /></td></tr>
             <tr class="blank_row"></tr>
             <tr><td align ="left"><label>{% trans "Building Name:" %}</label></td><td><input type="text" name="building_name" id="id_building_name" value="${feature.properties.building_name}" /></td></tr>
-            <tr><td align ="left"><label>{% trans "Region Name:" %}</label></td><td><input type="text" name="region" id="id_region" value="${feature.properties.region}" /></td></tr>
-            <tr><td align ="left"><label>{% trans "Road Name:" %}</label></td><td><input type="text" name="region" id="id_region" value="${feature.properties.road}" /></td></tr>
+            <tr><td align ="left"><label>{% trans "Road Name:" %}</label></td><td><input type="text" name="road" id="id_road" value="${feature.properties.region}" /></td></tr>
+            <tr><td align ="left"><label>{% trans "Region Name:" %}</label></td><td><input type="text" name="region" id="id_region" value="${feature.properties.road}" /></td></tr>
             
             <tr class="blank_row"></tr>
             <tr><td align ="left">{% trans "Building Type:" %}</td><td><input type="text" name="building_type" id="id_building_type" value="${feature.properties.building_type}" /></td></tr>
@@ -1704,7 +1704,7 @@ let time = today.toLocaleString();
             <tr><td align ="left"><label>{% trans "Number of Flats:" %}</label></td><td><input type="number" name="num_flat" id="id_num_flat"  value="${feature.properties.num_flat}" /></td></tr>
             <tr class="blank_row"></tr>
             <tr><td align ="left">{% trans "Number of Shops:" %}</td><td><input type="number" name="num_shops" id="id_num_shops"  value="${feature.properties.num_shops}" /></td></tr>
-            <tr disaled><td align ="left">{% trans "Population:" %}</td><td> <input type="text" name="updated_by" required   id="id_updated_by" value="{{ request.user.population }}" /></td></tr>
+            <tr disaled><td align ="left">{% trans "Population:" %}</td><td> <input type="text" name="population" required   id="id_population" value="{{ request.user.population }}" /></td></tr>
             <tr class="blank_row"></tr>
             <tr class="blank_row"></tr>    
             
