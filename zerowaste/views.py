@@ -798,6 +798,9 @@ def dashboard2(request):
 def dashboard2_1(request):
     return render(request,'test3/index.html')
 
+def dashboard2_2(request):
+    return render(request,'test4/index.html')
+
 def Piecharts(request):
     return render(request,'piecharts.html')
     
