@@ -201,7 +201,13 @@
     text-align: left;
     margin: 10px;
   }
-
+  .required:after {
+    content:" *";
+    color: rgb(251, 4, 4);
+    /* size:"6px"; */
+    font-size:x-large;
+    
+  }
   
   /* Popup container - can be anything you want */
   .popup {
@@ -757,37 +763,37 @@
    if(polylayer != undefined){
      console.log(polylayer,"poly")
      removeWMS('Buildings_mumbai:mumbai_roads_prabhag_wise_29jan');
-   removepolylayer(polylayer);
-    document.getElementById("{buildings}").checked = false;
+     removepolylayer(polylayer);
+     document.getElementById("{buildings}").checked = false;
     // console.log(document.getElementById("{roads}").checked)
-  document.getElementById("roads").checked = false;
-  }
-	 $name1= {
-            
+     document.getElementById("roads").checked = false;
+   }
+	 $name1= {       
 			'name1': prabhag}
  		 $.ajax({
                 method: "GET",
                 url: $endpoint,
                 data: $name1,
                 success:function(data) {
-                  console.log(data)
+                  
                   building_list = data.building_list;
+                  // alert("building_list is ",building_list)
                   if(data.length > 2){
                     buildings = JSON.parse(data.geojson);
-          buildings_up = JSON.parse(data.geojson1)
+                    buildings_up = JSON.parse(data.geojson1)
                   }
-					else{
-            buildings = JSON.parse(data.geojson);
-buildings_up = [];
-          }
+                  else{
+                    buildings = JSON.parse(data.geojson);
+                    buildings_up = [];
+                  }
           // prabhag= data.prabhag;
 //           var checkboxes = document.getElementById("ward_checklist");
 
-          ward_checklist.style.display = "block";
-expanded = true;
-          // displaypolygon('{buildings}');
-				}
-  		});
+                  ward_checklist.style.display = "block";
+                  expanded = true;
+                  // displaypolygon('{buildings}');
+                }
+  		      });
       var sac_no = document.getElementById('search_building');
         sac_no.setAttribute("list", "browsers2");
 
@@ -977,7 +983,7 @@ $("#wardlistwms").change(function() {
                 cql_filter: `ward_id_2='${wardwms}'`,
               });
               wms_layer.addTo(mymap);
-popup_layer = "https://geoserver2.communitygis.net/geoserver/"+layer.split(":")[0]+"/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetFeatureInfo&LAYERS=" + wms_layer.options.layers + "&QUERY_LAYERS=" + wms_layer.options.layers;
+              popup_layer = "https://geoserver2.communitygis.net/geoserver/"+layer.split(":")[0]+"/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetFeatureInfo&LAYERS=" + wms_layer.options.layers + "&QUERY_LAYERS=" + wms_layer.options.layers;
               removeWMS('Buildings_mumbai:Buildings_mumbai');
 
               newLayerList.push(wms_layer);
@@ -1461,7 +1467,8 @@ $("#prabhaglistwms").change(function() {
             var maximumzoom = 20;
             var opac = 0.3;
             var zoom = 14;
-            var cql = `ward_name_='S'`
+            var cql = `ward_name_='S'`;
+            style: "bldgStyle";
       
           }
           else if (obj == '{s122buildings}'){
@@ -1677,6 +1684,33 @@ $("#prabhaglistwms").change(function() {
 
           addWMSLegend(layer);
         }
+
+        function bldgStyle(feature){
+          alert("called")
+          if(feature.properties.is_bwg=='Yes'){
+              alert("In stle")
+              return {
+              fillColor: 'black',
+              weight: 3,
+              opacity: 1,
+              color: 'white',
+              fillOpacity: 0.9
+              };
+          }
+          else{
+            alert("In else stle")
+              return {
+              fillColor: getColor(feature.properties.is_bwg),
+              weight: 3,
+              opacity: 1,
+              color: 'black',
+              fillOpacity: 0.9
+              };
+          }
+    
+        }
+
+
         function onEachFeatureForPointBB(feature, layer) {
 
          let variable = feature.properties.validity;
@@ -1690,10 +1724,11 @@ let time = today.toLocaleString();
     layer.bindPopup(`<div class = 'text-left'><label>Hello ! {{ request.user.username }}. </lable><form method="POST" class="post-form" action="/buildupdate/${feature.properties.sac_number}" style="margin-top: 20px; width:400px">
         {% csrf_token %}
         <table class="table-bordered table-striped">
-            <tr><td align ="left"><label class="required">{% trans "SAC Number" %}</label></td><td><input type="text" disabled name="sac" id="id_sac" value="${feature.properties.sac_number}" /></td></tr>
+            <tr><td align ="left"><label class="required">{% trans "SAC Number" %}</label></td>
+              <td><input type="text" disabled name="sac" id="id_sac" disabled value="${feature.properties.sac_number}" /></td></tr>
             <tr class="blank_row"></tr>
-            <tr><td align ="left"><label>{% trans "Building Name:" %}</label></td><td><input type="text" name="building_name" id="id_building_name" value="${feature.properties.building_name}" /></td></tr>
-            <tr><td align ="left"><label>{% trans "Road Name:" %}</label></td><td><input type="text" name="road" id="id_road" value="${feature.properties.road}" /></td></tr>
+            <tr><td align ="left"><label class="required">{% trans "Building Name:" %}</label></td><td><input type="text" name="building_name" id="id_building_name" value="${feature.properties.building_name}" /></td></tr>
+            <tr><td align ="left"><label class="required">{% trans "Road Name:" %}</label></td><td><input type="text" name="road" id="id_road" value="${feature.properties.road}" /></td></tr>
             <tr><td align ="left"><label>{% trans "Region Name:" %}</label></td><td><input type="text" name="region" id="id_region" value="${feature.properties.region}" /></td></tr>
             
             <tr class="blank_row"></tr><tr><td align ="left"><label>{% trans "Is BWG:" %}</label></td><td><input type="text" name="is_bwg" id="id_is_bwg" value="${feature.properties.is_bwg}" /></td></tr>
@@ -1708,7 +1743,7 @@ let time = today.toLocaleString();
             <tr><td align ="left"><label>{% trans "Number of Flats:" %}</label></td><td><input type="number" name="num_flat" id="id_num_flat"  value="${feature.properties.num_flat}" /></td></tr>
             <tr class="blank_row"></tr>
             <tr><td align ="left">{% trans "Number of Shops:" %}</td><td><input type="number" name="num_shops" id="id_num_shops"  value="${feature.properties.num_shops}" /></td></tr>
-            <tr disaled><td align ="left">{% trans "Population:" %}</td><td> <input type="text" name="population" required   id="id_population" value="${feature.properties.population}" /></td></tr>
+            <tr><td align ="left"><label class="required">{% trans "Population:" %}</td><td> <input type="text" name="population" required   id="id_population" value="${feature.properties.population}" /></td></tr>
             <tr class="blank_row"></tr>
             <tr class="blank_row"></tr>    
             
@@ -1758,8 +1793,9 @@ let time = today.toLocaleString();
             </div>
         </div>
         {% endif %}
+        
         <tr ><td colspan =2 ><a href='/garbage_seg_rev/' class="btn btn-success">Add Waste Segregation Details</a></td></tr></div>`
-    // <tr ><td colspan =2 ><a href='/garbage_seg/' class="btn btn-success">Add Waste Segregation Details</a></td></tr></div>`
+    // <tr ><td colspan =2 ><a href='/garbage_seg/${feature.properties.sac_number}' class="btn btn-success">Add Waste Segregation Details</a></td></tr></div>`
 //       <table border =2><tr class="bg-primary"><td colspan=2>Building Information</td></tr>
 //       <tr><td><b>SAC No.: </b></td><td> ${feature.properties.sac_number} </td></tr>
 //                         <tr><td><b>Building Name: </b></td><td>${feature.properties.building_name} </td></tr>
@@ -1806,7 +1842,7 @@ function validate(id){
         type: "GET",
         success: function(data) {
           $('#validate').removeClass('btn-danger');
-$('#validate').addClass('btn-success');
+          $('#validate').addClass('btn-success');
         }
       })
 
@@ -1821,11 +1857,13 @@ var geojsonMarkerOptions = {
     fillOpacity: 0.8
 };
 function displaypolygon(poly_layer){
+  // alert(poly_layer)
   legend = L.control({position: 'bottomright'});
   let building_data;
   let building_data_up;
   if(poly_layer == '{buildings}' ){
-building_data = buildings.features;
+  building_data = buildings.features;
+  // alert(building_data)
 
   }
   else if(poly_layer=='{buildings_up}'){
@@ -1833,6 +1871,7 @@ building_data = buildings.features;
   }
 
   if(building_data !=undefined){
+    
     polylayer = L.geoJSON(building_data, {
         pointToLayer: function (feature, latlng) {
         return L.circleMarker(latlng, geojsonMarkerOptions)},
@@ -1947,7 +1986,7 @@ legend.addTo(mymap);
         switch(feature.properties.building_type){
             case 'residence':return {color:"#000",fillColor:"red"
         };
-            case 'RESIDENTIAL':return {color:"#000",fillColor:"red"};
+            case 'RESIDENTIAL':return {color:"#000",fillColor:"red",baseSize:10};
             case 'apartments':return {color:"#000",fillColor:"red"};
             // case 'yes':return {color:"#c83daa"};
             case 'commercial':return {color:"#000",fillColor:"#55e232"};
@@ -2199,6 +2238,10 @@ function new_ajax(e){
                         "<tr><td><b>Building Name: </b></td><td>" + data.building_name + "</td></tr>"+
                         "<tr><td><b>Description: </b></td><td>"+data.building_type + "</td></tr>"+
                         "<tr><td><b>Region: </b></td><td>" + data.region + "</td></tr>"+
+                        "<tr><td><b>Bwg : </b></td><td>" + data.is_bwg + "</td></tr>"+
+                        "<tr><td><b>Bwg Type: </b></td><td>" + data.bwg_type + "</td></tr>"+
+                        "<tr><td><b>Composting: </b></td><td>" + data.is_compost + "</td></tr>"+
+                        "<tr><td><b>Composting Type : </b></td><td>" + data.compost_type + "</td></tr>"+
                         "<tr><td><b>Number of Flats: </b></td><td>" + data.num_flat + "</td></tr>"+
                         "<tr><td><b>Number of shops: </b></td><td>" + data.num_shops + "</td></tr>"+
                         "<tr><td><b>Wing Name</td><td>" + data.wing_name + "</td></tr>"+
