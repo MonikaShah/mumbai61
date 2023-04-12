@@ -424,9 +424,9 @@ def Buildupdate(request, id):
         if request.user.role == "MO":
             MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(sac_number=id).update(validity=True)
 
-        print(data) 
+        print("data is ",data) 
         form = MumbaiBuildingsWardPrabhagwise17JanForm(request.POST, instance=data)  
-        # print(form)
+        # print("instance " ,form)
         
     # if form.is_valid(): 
     #     print("success") 
@@ -442,10 +442,14 @@ def Buildupdate(request, id):
     
         if form.is_valid(): 
             print("success")
-            print("Form is ",form) 
+            # print("Form is ",form) 
             messages.success(request,"Record Updated")          
             if form.save():
                 print ("Data saved in db")
+                for key, value in request.POST.items():
+                    print('Key: %s' % (key) ) 
+                    print('Value- %s' % (value) )
+                # return redirect('/buildupdate/'+id)
             else:
                 print("error in saving to DB")
         else:

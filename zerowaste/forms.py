@@ -149,7 +149,7 @@ class MumbaiBuildingsWardPrabhagwise17JanForm(forms.ModelForm):
     is_compost = forms.CharField(label =_(u'Is Composting'),required=False)
     compost_type = forms.CharField(label =_(u'Coposting Type'),required=False)
     village = forms.CharField(label = _(u'Village'),required=False)
-
+    remark = forms.CharField(label = _(u'Remark'),required=False)
     validity = forms.CharField(label = _(u'Validity'),required=False)
     updated_by = forms.CharField(label = _(u'Updated By'))
     update_time = forms.CharField(label = _(u'Update Time'))

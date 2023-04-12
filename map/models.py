@@ -127,6 +127,7 @@ class MumbaiBuildingsWardPrabhagwise17Jan(models.Model):
     updated_by = models.CharField(max_length=254, blank=True, null=True)
     device_ip = models.CharField(max_length=254, blank=True, null=True)
     update_time = models.CharField(max_length=254, blank=True, null=True)
+    remark = models.CharField(max_length=254, blank=True, null=True)
 
     class Meta:
         managed = False
