@@ -474,6 +474,10 @@
               <label><input type="checkbox" value="{s122buildings}"  id="s122buildings"
                   onchange="getBoundaryru(this)"><span> {% trans "Prabhag 122: Buildings" %}</span></label>
             </div>
+            <div class="checkbox" style = "padding-left:2em">
+              <label><input type="checkbox" value="{s122routes}"  id="s122routes"
+                  onchange="getBoundaryru(this)"><span> {% trans "Prabhag 122:Waste PickUp Routes "%}</span></label>
+            </div>
             
             <!-- <div class="checkbox" style = "padding-left:2em">
               <label><input type="checkbox" value="{s122buildingslege}"  id="s122buildingslege"
@@ -1150,6 +1154,9 @@ $("#prabhaglistwms").change(function() {
             else if (boundary == '{s122buildings}') {
               putfrmgeo(s122buildings);
             }
+            else if (boundary == '{s122routes}') {
+              putfrmgeo(s122routes);
+            }
             else if (boundary == '{s122buildingslege}') {
               displaypolygon(s122buildingslege);
               // putfrmgeo(s122buildings-lege);
@@ -1290,6 +1297,9 @@ $("#prabhaglistwms").change(function() {
             }
             else if (boundary == '{scompost}') {
               removeWMS("compost_facility_24feb23");
+            }
+            else if (boundary == '{s122routes}') {
+              removeWMS("p122_garbages_routes_20april23");
             }
             else if (boundary == '{s122roads}') {
               removeWMS("mumbai_roads_prabhag_wise_29jan");
@@ -1543,6 +1553,16 @@ $("#prabhaglistwms").change(function() {
           else if (obj == '{s122buildings}'){
             // alert("in S roads")
             layer = 'Buildings_mumbai';
+            currentPos = [19.1283, 72.9041];
+            var maximumzoom = 20;
+            var opac = 0.3;
+            var zoom = 14;
+            var cql = `prabhag_no='122'`
+      
+          }
+          else if (obj == '{s122routes}'){
+            alert("in S routes")
+            layer = 'p122_garbage_routes_20april23';
             currentPos = [19.1283, 72.9041];
             var maximumzoom = 20;
             var opac = 0.3;
