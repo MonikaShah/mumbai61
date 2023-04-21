@@ -2207,7 +2207,7 @@ function Identify(e) {
         dataType: "json",
         type: "GET",
         success: function(data) {
-          // alert("success",data.features.tst_done)
+          alert("success",data.features.length)
           if (data.features.length !== 0) { // at least one feature returned in response
                 var feature = data.features[0]; // first feature from response
                 // Set up popup for clicked feature and open it
@@ -2215,14 +2215,14 @@ function Identify(e) {
                 var popup = new L.Popup({
                     maxWidth: 300
                 });
-                if (feature.properties.tst_done) {
+                if (feature.properties.bldg_nm) {
                     alert("in compost popup");
-                    content = "<table class = 'popupclass'style ='border: 1px solid white' ><tr style ='border: 1px solid white'><td colspan=6><b>Compost Facility Info</b></td><td></td></tr>" +
-                        "<tr style ='border: 1px solid white'><td colspan=3><b>Ward Name: </b></td><td style ='text-align:left;'>" + feature.properties.ward_nm + "</td></tr>"+
-                        "<tr style ='border: 1px solid white'><td colspan=3><b>Prabhag : </b></td><td>" + feature.properties.prabhag_no + "</td></tr>"+
-                        "<tr style ='border: 1px solid white'><td colspan=3><b>Building Name: </b></td><td>" + feature.properties.building_nm + "</td></tr>"+
-                        "<tr style ='border: 1px solid white'><td colspan=3><b>Status: </b></td><td>" + feature.properties.status + "</td></tr>"+
-                        "<tr style ='border: 1px solid white'><td colspan=3><b>Type: </b></td><td>" + feature.properties.type + "</td></tr>"+"</table>";
+                    content = "<table class = 'popupclass'style ='border: 1px solid white' ><tr style ='border: 1px solid white'><td colspan=6><b>Compost Facility Information</b></td><td></td></tr>" +
+                        "<tr style ='border: 1px solid white'><td><b>Ward Name: </b></td><td style ='text-align:left;'>" + feature.properties.ward_nm + "</td></tr>"+
+                        "<tr style ='border: 1px solid white'><td><b>Prabhag : </b></td><td>" + feature.properties.prabhag_no + "</td></tr>"+
+                        "<tr style ='border: 1px solid white'><td><b>Building Name: </b></td><td>" + feature.properties.bldg_nm + "</td></tr>"+
+                        "<tr style ='border: 1px solid white'><td><b>Status: </b></td><td>" + feature.properties.status + "</td></tr>"+
+                        "<tr style ='border: 1px solid white'><td><b>Type: </b></td><td>" + feature.properties.type + "</td></tr>"+"</table>";
                     popup.setContent(content);
                     popup.setLatLng(e.latlng);
                     mymap.openPopup(popup);
