@@ -2207,7 +2207,7 @@ function Identify(e) {
         dataType: "json",
         type: "GET",
         success: function(data) {
-          alert("success",data.features.length)
+          // alert("success",data.features.length)
           if (data.features.length !== 0) { // at least one feature returned in response
                 var feature = data.features[0]; // first feature from response
                 // Set up popup for clicked feature and open it
@@ -2216,7 +2216,7 @@ function Identify(e) {
                     maxWidth: 300
                 });
                 if (feature.properties.bldg_nm) {
-                    alert("in compost popup");
+                    // alert("in compost popup");
                     content = "<table class = 'popupclass'style ='border: 1px solid white' ><tr style ='border: 1px solid white'><td colspan=6><b>Compost Facility Information</b></td><td></td></tr>" +
                         "<tr style ='border: 1px solid white'><td><b>Ward Name: </b></td><td style ='text-align:left;'>" + feature.properties.ward_nm + "</td></tr>"+
                         "<tr style ='border: 1px solid white'><td><b>Prabhag : </b></td><td>" + feature.properties.prabhag_no + "</td></tr>"+
