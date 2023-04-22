@@ -456,7 +456,10 @@
                 <label><input type="checkbox" value="{sroads}"  id="sroads"
                     onchange="getBoundaryru(this)"><span> {% trans "S-ward Roads" %}</span></label>
               </div>
-            
+              <div class="checkbox">
+                <label><input type="checkbox" value="{shbt}"  id="shbt"
+                    onchange="getBoundaryru(this)"><span> {% trans "S Wards:HBT Clinics "%}</span></label>
+              </div>
             
               <div class="checkbox">
                 <label><input type="checkbox" value="{sbuildings}"  id="sbuildings"
@@ -499,6 +502,8 @@
               <label><input type="checkbox" value="{scompost}"  id="scompost"
                   onchange="getBoundaryru(this)"><span> {% trans "Prabhag 122:  Compost Facility" %}</span></label>
             </div>
+
+            
 
             <div class="checkbox" style = "padding-left:2em">
               <label><input type="checkbox" value="{s122toilet}"  id="s122toilet"
@@ -1169,6 +1174,10 @@ $("#prabhaglistwms").change(function() {
             //  alert(boundary);
              putfrmgeo(s122slums);
            }
+           else if (boundary == "{shbt}") {  
+            //  alert(boundary);
+             putfrmgeo(shbt);
+           }
             else if (boundary == '{scompost}') {
               putfrmgeo(scompost);
             }
@@ -1307,6 +1316,9 @@ $("#prabhaglistwms").change(function() {
             else if (boundary == '{s122slums}') {
               removeWMS("Asha_yearners_14apr23_merged");
             }
+            else if (boundary == '{shbt}') {
+              removeWMS("suraj");
+            }
             else if (boundary == "{132bound}")
                 removeWMS("N_ward");
             else if (boundary == "{wardN}")
@@ -1415,6 +1427,20 @@ $("#prabhaglistwms").change(function() {
           else if (obj == '{wardS}'){
             
             layer = 'S_ward';
+            // var currentPos = [19.1022, 72.8752];
+            // var maximumzoom = 19;
+            // var opac = 1.0;
+            // var zoom = 13;
+            currentPos = [19.134, 72.923];
+            var maximumzoom = 20;
+            var opac = 0.3;
+            var zoom = 13;
+            var cql =`INCLUDE`
+      
+          }
+          else if (obj == '{shbt}'){
+            alert("hbt")
+            layer = 'suraj';
             // var currentPos = [19.1022, 72.8752];
             // var maximumzoom = 19;
             // var opac = 1.0;
@@ -2215,6 +2241,34 @@ function Identify(e) {
                 var popup = new L.Popup({
                     maxWidth: 300
                 });
+                if (feature.properties.address) {
+                    // alert("in route popup");
+                    content = "<table class = 'popupclass'style ='border: 1px solid white' ><tr style ='border: 1px solid white'><td colspan=6><b> BMC Route Information</b></td><td></td></tr>" +
+                        "<tr style ='border: 1px solid white'><td><b>HBT Name: </b></td><td style ='text-align:left;'>" + feature.properties.name + "</td></tr>"+
+                        "<tr style ='border: 1px solid white'><td><b>Ward Name : </b></td><td>" + feature.properties.ward_nm + "</td></tr>"+
+                        "<tr style ='border: 1px solid white'><td><b>Address: </b></td><td>" + feature.properties.address + "</td></tr>"+
+                        "<tr style ='border: 1px solid white'><td><b>Uploaded By: </b></td><td>" + feature.properties.Username + "</td></tr>"+
+                        "<tr style ='border: 1px solid white'><td><b>Date of capture: </b></td><td>" + feature.properties.date + "</td></tr>"+
+                        "<tr style ='border: 1px solid white'><td><b>Photo: </b></td><td><img class = 'popupimage' src='../media/field_images/".concat(feature.properties.photo)+".jpeg"+"' alt='image not found - '>" + "</td></tr>"+"</table>";
+                    popup.setContent(content);
+                    popup.setLatLng(e.latlng);
+                    mymap.openPopup(popup);
+                    }
+               
+                if (feature.properties.route_nm) {
+                    // alert("in route popup");
+                    content = "<table class = 'popupclass'style ='border: 1px solid white' ><tr style ='border: 1px solid white'><td colspan=6><b> BMC Route Information</b></td><td></td></tr>" +
+                        "<tr style ='border: 1px solid white'><td><b>Route Name: </b></td><td style ='text-align:left;'>" + feature.properties.route_nm + "</td></tr>"+
+                        "<tr style ='border: 1px solid white'><td><b>Prabhag : </b></td><td>" + feature.properties.prabhag_no + "</td></tr>"+
+                        "<tr style ='border: 1px solid white'><td><b>Road Name: </b></td><td>" + feature.properties.road_nm + "</td></tr>"+
+                        "<tr style ='border: 1px solid white'><td><b>Uploaded By: </b></td><td>" + feature.properties.qfield_un + "</td></tr>"+
+                        "<tr style ='border: 1px solid white'><td><b>Date of capture: </b></td><td>" + feature.properties.date + "</td></tr>"+
+                        "<tr style ='border: 1px solid white'><td><b>Image Name: </b></td><td>" + feature.properties.photo + "</td></tr>"+
+                        "<tr style ='border: 1px solid white'><td><b>Photo: </b></td><td><img class = 'popupimage' src='../media/field_images/".concat(feature.properties.photo)+".jpeg"+"' alt='image not found - '>" + "</td></tr>"+"</table>";
+                    popup.setContent(content);
+                    popup.setLatLng(e.latlng);
+                    mymap.openPopup(popup);
+                    }
                 if (feature.properties.bldg_nm) {
                     // alert("in compost popup");
                     content = "<table class = 'popupclass'style ='border: 1px solid white' ><tr style ='border: 1px solid white'><td colspan=6><b>Compost Facility Information</b></td><td></td></tr>" +
