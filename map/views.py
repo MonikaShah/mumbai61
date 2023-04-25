@@ -60,7 +60,8 @@ def Map(request):
          return JsonResponse(prabhag_list, safe=False)
       else:
          selected_field1 = request.GET['name']
-         docinfo1 = list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(sac_number=selected_field1).values('sac_number','prop_add','building_type','building_name','village','num_flat','region','num_shops','wing_name','prabhag_no','ward_name_field','updated_by','update_time','device_ip','address','validity'))
+         print("sac number selected is ",selected_field1)
+         docinfo1 = list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(sac_number=selected_field1).values('sac_number','prop_add','is_bwg','bwg_type','is_compost','compost_type','building_type','building_name','village','num_flat','region','num_shops','wing_name','prabhag_no','ward_name_field','updated_by','update_time','device_ip','address','validity'))
          jsondata2 =docinfo1[0]
          return JsonResponse(docinfo1[0])
       # elif "name" in requestvar:
