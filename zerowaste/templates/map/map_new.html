@@ -2046,6 +2046,13 @@ function displaypolygon(poly_layer){
 
   if(building_data !=undefined){
     
+    var redcounter = 0;
+    var greencounter = 0;
+    var yellowcounter = 0;
+    var orangecounter = 0;
+    var greycounter = 0;
+    totalcount = 0;
+  
     polylayer = L.geoJSON(building_data, {
         pointToLayer: function (feature, latlng) {
         return L.circleMarker(latlng, geojsonMarkerOptions)},
@@ -2053,38 +2060,29 @@ function displaypolygon(poly_layer){
           if(feature.properties.validity == true){
             if(feature.properties.building_name != null & feature.properties.num_flat != null & feature.properties.address !=null &feature.properties.prop_add != null & feature.properties.building_type != null & feature.properties.wing_name !=null & feature.properties.num_shops != null & feature.properties.village != null){
               // if(feature.properties.building_name != null & feature.properties.uodated_by != null & feature.properties.address !=null &feature.properties.prop_add != null  ){
-              return {color:"#000",fillColor:"green"};
+                greencounter++;
+                return {color:"#000",fillColor:"green"};
             }
             else  if(feature.properties.building_name != null){
+              yellowcounter++;
               return {color:"#000",fillColor:"yellow"};
             }
             }
             else if(feature.properties.validity == false){
-              if(feature.properties.building_name != null){
+              if(feature.properties.building_name != null& feature.properties.num_flat !=null& feature.properties.population !=null& feature.properties.region !=null & feature.properties.road_nm !=null & feature.properties.building_type !=null){
+                greycounter++;
                 return {color:"#000",fillColor:"grey"};
               }
               else if(feature.properties.building_name == null){
+                redcounter++;
                 return {color:"#000",fillColor:"red"};
               }
+              else{
+                orangecounter++
+                return {color:"#000",fillColor:"orange"};
+              }
             }
-
-        // switch(feature.properties.validity){
-          
-        //     case false :
-        //       switch(feature.properties.building_name){ case null:return {color:"#000",fillColor:"red"};}
-        //     case true:
-              
-        
-        // default:return {color:"#000",fillColor:"green"};
-        //     // case 'apartments':return {color:"#000",fillColor:"red"};
-        //     // // case 'yes':return {color:"#c83daa"};
-        //     // case 'commercial':return {color:"#000",fillColor:"#55e232"};
-        //     // case 'COMMERCIAL':return {color:"#000",fillColor:"#55e232"};
-        //     // case 'office':return {color:"#000",fillColor:"#7d3fe9"};
-        //     // case 'yes':return {color:"#000",fillColor:"#c83daa"};
-        //     // case 'school':return {color:"#000",fillColor:"#efe115"};
-        //     }
-        },    
+          },    
         
     
         onEachFeature: onEachFeatureForPointBB,
@@ -2102,11 +2100,11 @@ function displaypolygon(poly_layer){
       legend.onAdd = function(mymap) {
         var div = L.DomUtil.create("div", "legend");
         div.innerHTML += "<h4>Color codes</h4>";
-        div.innerHTML += '<i style="background: green"></i><span>Complete and authorized data.</span><br>';
-        div.innerHTML += '<i style="background: yellow"></i><span>Incomplete and authorized data.</span><br>';
-        div.innerHTML += '<i style="background: orange"></i><span>Partial and unauthorized data.</span><br>';
-        div.innerHTML += '<i style="background: grey"></i><span>Building name available and unauthorized data.</span><br>';
-        div.innerHTML += '<i style="background: red"></i><span>Building name is null and unauthorized data.</span><br>';
+        div.innerHTML += '<i style="background: green"></i><span>Complete and authorized data.</span>('+greencounter+')<br>';
+        div.innerHTML += '<i style="background: yellow"></i><span>Incomplete and authorized data.</span>('+yellowcounter+')<br>';
+        div.innerHTML += '<i style="background: orange"></i><span>Partial and unauthorized data.</span>('+orangecounter+')<br>';
+        div.innerHTML += '<i style="background: grey"></i><span>Building name available and unauthorized data.</span>('+greycounter+')<br>';
+        div.innerHTML += '<i style="background: red"></i><span>Building name is null and unauthorized data.</span>('+redcounter+')<br>';
         let btn = document.createElement("button");
         btn.innerHTML = "View as table";
         btn.id = "formBtn";
@@ -2203,13 +2201,13 @@ function displaypolygon(poly_layer){
 }
 function addWMSLegend(layer) {
         
-  lagendGraphic = "https://geoserver2.communitygis.net/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=" + layer + "&LEGEND_OPTIONS=forceLabels:on";
+  lagendGraphic = "https://geoserver2.communitygis.net/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=" + layer + "&LEGEND_OPTIONS=forceLabels:on&legend_options=countMatched:true";
   wms_legend = L.wmsLegend(lagendGraphic);
           
 }
 function addWMSLegendfromgeo(layer) {     
   // alert(layer)             
-  lagendGraphic = "https://geonode.communitygis.in/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=" + layer + "&LEGEND_OPTIONS=forceLabels:on";
+  lagendGraphic = "https://geonode.communitygis.in/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=" + layer + "&LEGEND_OPTIONS=forceLabels:on&legend_options=countMatched:true";
   wms_legend = L.wmsLegend(lagendGraphic);         
 }
 function NonameBuildingFilter(feature) {
