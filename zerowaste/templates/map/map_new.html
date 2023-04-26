@@ -1448,7 +1448,7 @@ $("#prabhaglistwms").change(function() {
       
           }
           else if (obj == '{shbt}'){
-            alert("hbt")
+            // alert("hbt")
             layer = 'suraj';
             // var currentPos = [19.1022, 72.8752];
             // var maximumzoom = 19;
@@ -2051,6 +2051,7 @@ function displaypolygon(poly_layer){
     var yellowcounter = 0;
     var orangecounter = 0;
     var greycounter = 0;
+    var bluecounter = 0;
     totalcount = 0;
   
     polylayer = L.geoJSON(building_data, {
@@ -2061,27 +2062,48 @@ function displaypolygon(poly_layer){
             if(feature.properties.building_name != null & feature.properties.num_flat != null & feature.properties.address !=null &feature.properties.prop_add != null & feature.properties.building_type != null & feature.properties.wing_name !=null & feature.properties.num_shops != null & feature.properties.village != null){
               // if(feature.properties.building_name != null & feature.properties.uodated_by != null & feature.properties.address !=null &feature.properties.prop_add != null  ){
                 greencounter++;
+                
                 return {color:"#000",fillColor:"green"};
             }
             else  if(feature.properties.building_name != null){
               yellowcounter++;
               return {color:"#000",fillColor:"yellow"};
             }
+            totalcount++
             }
-            else if(feature.properties.validity == false){
-              if(feature.properties.building_name != null& feature.properties.num_flat !=null& feature.properties.population !=null& feature.properties.region !=null & feature.properties.road_nm !=null & feature.properties.building_type !=null){
+            // else if(feature.properties.validity == false){
+            else{
+              if((feature.properties.building_name !=null)&(feature.properties.is_bwg ==null || feature.properties.is_compost ==null )){
                 greycounter++;
+                totalcount++
                 return {color:"#000",fillColor:"grey"};
               }
-              else if(feature.properties.building_name == null){
+              else if(feature.properties.building_name ==null){
                 redcounter++;
+                totalcount++
                 return {color:"#000",fillColor:"red"};
               }
-              else{
+              else if((feature.properties.building_name !=null)&(feature.properties.num_flat ==null|| feature.properties.population ==null|| feature.properties.region ==null || feature.properties.road_nm ==null || feature.properties.building_type ==null )){
                 orangecounter++
+                totalcount++
                 return {color:"#000",fillColor:"orange"};
               }
+              // else{
+              //   bluecounter++
+              //   totalcount++
+              //   return {color:"#000",fillColor:"blue"};
+              // }
+              
+
             }
+        //     else if ((feature.properties.validity == false)||(feature.properties.validity == true)){
+        //       if(proporties.features.region ==null){
+        //         bluecounter++
+        //         return {color:"#000",fillColor:"blue"};
+
+        //       }   
+        // }          
+            
           },    
         
     
@@ -2099,12 +2121,14 @@ function displaypolygon(poly_layer){
     legend = L.control({position: 'bottomright'});
       legend.onAdd = function(mymap) {
         var div = L.DomUtil.create("div", "legend");
-        div.innerHTML += "<h4>Color codes</h4>";
+        div.innerHTML += "<h4>Color codes for ("+totalcount+")</h4>";
         div.innerHTML += '<i style="background: green"></i><span>Complete and authorized data.</span>('+greencounter+')<br>';
-        div.innerHTML += '<i style="background: yellow"></i><span>Incomplete and authorized data.</span>('+yellowcounter+')<br>';
-        div.innerHTML += '<i style="background: orange"></i><span>Partial and unauthorized data.</span>('+orangecounter+')<br>';
-        div.innerHTML += '<i style="background: grey"></i><span>Building name available and unauthorized data.</span>('+greycounter+')<br>';
+        div.innerHTML += '<i style="background: yellow"></i><span>Incomplete and authorized data.</span>('+yellowcounter+')<br><hr><br>';
+        div.innerHTML += '<i style="background: orange"></i><span>Only Building Name and unauthorized data.</span>('+orangecounter+')<br>';
+        div.innerHTML += '<i style="background: grey"></i><span>Building Name present and BWG /compost data unavailable and unauthorized data.</span>('+greycounter+')<br>';
         div.innerHTML += '<i style="background: red"></i><span>Building name is null and unauthorized data.</span>('+redcounter+')<br>';
+        // div.innerHTML += '<i style="background: blue"></i><span>Region name is null</span>('+bluecounter+')<br>';
+        
         let btn = document.createElement("button");
         btn.innerHTML = "View as table";
         btn.id = "formBtn";
@@ -2277,6 +2301,7 @@ function Identify(e) {
                         "<tr style ='border: 1px solid white'><td><b>Address: </b></td><td>" + feature.properties.address + "</td></tr>"+
                         "<tr style ='border: 1px solid white'><td><b>Uploaded By: </b></td><td>" + feature.properties.Username + "</td></tr>"+
                         "<tr style ='border: 1px solid white'><td><b>Date of capture: </b></td><td>" + feature.properties.date + "</td></tr>"+
+                        "<tr style ='border: 1px solid white'><td><b>Photo Path: </b></td><td>" + feature.properties.photo + "</td></tr>"+
                         "<tr style ='border: 1px solid white'><td><b>Photo: </b></td><td><img class = 'popupimage' src='../media/field_images/".concat(feature.properties.photo)+".jpeg"+"' alt='image not found - '>" + "</td></tr>"+"</table>";
                     popup.setContent(content);
                     popup.setLatLng(e.latlng);
