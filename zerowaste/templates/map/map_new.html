@@ -2302,7 +2302,7 @@ function Identify(e) {
                         "<tr style ='border: 1px solid white'><td><b>Uploaded By: </b></td><td>" + feature.properties.Username + "</td></tr>"+
                         "<tr style ='border: 1px solid white'><td><b>Date of capture: </b></td><td>" + feature.properties.date + "</td></tr>"+
                         "<tr style ='border: 1px solid white'><td><b>Photo Path: </b></td><td>" + feature.properties.photo + "</td></tr>"+
-                        "<tr style ='border: 1px solid white'><td><b>Photo: </b></td><td><img class = 'popupimage' src='../media/field_images/".concat(feature.properties.photo)+".original.jpg"+"' alt='image not found - '>" + "</td></tr>"+"</table>";
+                        "<tr style ='border: 1px solid white'><td><b>Photo: </b></td><td><img class = 'popupimage' src='../media/original_images/".concat(feature.properties.photo)+"' alt='image not found - '>" + "</td></tr>"+"</table>";
                     popup.setContent(content);
                     popup.setLatLng(e.latlng);
                     mymap.openPopup(popup);
