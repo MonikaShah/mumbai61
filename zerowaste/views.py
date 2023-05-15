@@ -1,7 +1,7 @@
 # Create your views here.
 from django.shortcuts import render,redirect,HttpResponse,HttpResponseRedirect
-from .forms import GarbageSegForm,GrievanceForm,Ward61BuildingsOsm2Nov2021Form,WasteSegregationDetailsForm,NewUserForm,EmployeeDetailsForm,HumanResourceDataForm,MumbaiBuildingsWardPrabhagwise17JanForm,WasteSegregationDetailsRevised2march22Form,compostForm
-from .models import Report,Rating,WasteSegregationDetails,BuildingsWard9April22,BuildingUnder30Mtr,KWestBeat22Jan,WasteSegregationDetailsRevised2March22,HumanResourceData,P122Buildings8Nov22#CensusTable #,OsmBuildings29Oct21#BuildingsWardWise4March,
+from .forms import GarbageSegForm,GrievanceForm,Ward61BuildingsOsm2Nov2021Form,WasteSegregationDetailsForm,NewUserForm,EmployeeDetailsForm,HumanResourceDataForm,MumbaiBuildingsWardPrabhagwise17JanForm,WasteSegregationDetailsRevised2march22Form,compostForm,dataForm
+from .models import Report,Rating,WasteSegregationDetails,BuildingsWard9April22,BuildingUnder30Mtr,KWestBeat22Jan,WasteSegregationDetailsRevised2March22,HumanResourceData,P122Buildings8Nov22, data_form #CensusTable #,OsmBuildings29Oct21#BuildingsWardWise4March,
 from map.models import Ward61BuildingsOsm2Nov2021,MumbaiBuildingsWardPrabhagwise17Jan,MumbaiPrabhagBoundaries3Jan2022V2,DistinctGeomSacNoMumbai#,Ward61OsmBuildings,
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.core.files.storage import FileSystemStorage
@@ -47,7 +47,7 @@ import numpy
 # import dash_html_components as html
 # from dash.dependencies import Input, Output, State
 
-#######################################################
+
 def HomePage(request):
     return render(request,"HomePage.html")
 
@@ -93,6 +93,10 @@ def logout_request(request):
     messages.info(request, _(u"Logged out successfully!"))
     return render(request,"HomePage.html")
 
+def reset_pass(request):
+    # logout(request)
+    # messages.info(request, _(u"Logged out successfully!"))
+    return render(request,"password_reset_form.html")
 
 def GarbageSeg(request):
         form = GarbageSegForm()
@@ -999,3 +1003,56 @@ def compost_form(request):
             form.errors.as_json()
         return render(request, 'CompostForm.html', {'form': form})
 
+def student_registration(req):
+    for key, value in req.POST.items():
+                print('Key: %s' % (key) ) 
+                print('Value %s' % (value) )
+    user = req.user
+    # mail = req.email
+    username = user.username
+    emailid = user.email
+    print(username,emailid)
+    # request_dict = vars(req)
+    # print(request_dict)
+    # print(req)
+    # age = .['age']
+    if req.method == 'POST':
+            emailF = emailid
+            studentName = req.POST['sname']
+            age = req.POST['age']
+            websiteUsername = username
+            collegeName = req.POST['cname']
+            sponsered = req.POST['sponsered']
+            sponsBy = req.POST['sponsBy']
+            ownDevice = req.POST['ownDevice']
+            date = req.POST['datE']  
+            # grad_year = req.POST['grad_year']
+            #grad_stream = req.POST['grad_stream']
+            # branch_name= req.POST['branch_name']
+            # village_name = req.POST['village_name']
+            # taluka_name = req.POST['taluka_name']
+            # river_name = req.POST['river_name']
+            # dist_river_village = req.POST['dist_river_village']
+            # field_work_map = req.POST['rating1']
+            # digitisation = req.POST['rating2']
+            # trip_data_capture = req.POST['rating3']
+            # coding = req.POST['rating4']
+
+            # form = dataForm(req.POST)
+            totalData = data_form(emailF=emailF,studentName=studentName,age=age,collegeName=collegeName,websiteUsername=websiteUsername,sponsered=sponsered,sponsBy=sponsBy,ownDevice=ownDevice,date=date)
+
+            # totalData = data_form(emailF=emailF,studentName=studentName,age=age,collegeName=collegeName,websiteUsername=websiteUsername,sponsered=sponsered,sponsBy=sponsBy,ownDevice=ownDevice,date=date,grad_year=grad_year,grad_stream=grad_stream,branch_name=branch_name,village_name=village_name,taluka_name=taluka_name,river_name=river_name,dist_river_village=dist_river_village,field_work_map=field_work_map,digitisation=digitisation,trip_data_capture=trip_data_capture,coding=coding)
+            # print(studentName)
+            if  data_form.objects.filter(emailF=emailF).exists():
+                    messages.warning(req, _(u'Student with this "Email" has already been registered. '))        
+                    return render(req, 'HomePage.html')
+            elif  data_form.objects.filter(websiteUsername=websiteUsername).exists():
+                messages.warning(req,"Username already exists.")
+                # return HttpResponseRedirect(req.path_info)
+                return render(req, 'HomePage.html')
+            else:
+                totalData.save()
+                messages.info(req,"Student succesfully registered.")
+                return render(req, 'HomePage.html')
+                
+    return render(req, 'student_registration_form.html')

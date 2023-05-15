@@ -12,6 +12,7 @@ from django.utils.translation import gettext as _
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from map.models import *
 from django.core.validators import MinLengthValidator, int_list_validator
+
 # from django.contrib.gis.db import models
 class CustomAccountManager(BaseUserManager):
     def create_superuser(self, username, password, **other_fields):
@@ -641,3 +642,26 @@ class P122Buildings8Nov22(models.Model):
     class Meta:
         managed = False
         db_table = 'p122_buildings_8Nov22'
+
+#student registration model
+class data_form(models.Model):
+
+    # id = models.IntegerField(primary_key=True) -- It throws an error because postgresql has an property that it generates id automatically, make primary key false
+    emailF = models.CharField(max_length=100)
+    studentName = models.CharField(max_length=100)
+    age = models.CharField(max_length=3)
+    collegeName = models.CharField(max_length=100)
+    websiteUsername = models.CharField(max_length=100)
+    sponsered = models.CharField(max_length=3)
+    sponsBy = models.CharField(max_length=100)
+    ownDevice = models.CharField(max_length=3)
+    date = models.CharField(max_length=20)
+    # grad_year= models.CharField(max_length=20)
+    # grad_stream= models.CharField(max_length=20)
+
+    class Meta:
+        managed = True
+        db_table = 'student_registration'
+
+    def __str__(self):
+        return self.websiteUsername+"- of - "+self.collegeName+" -Institute"
