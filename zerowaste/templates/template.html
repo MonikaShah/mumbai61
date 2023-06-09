@@ -1,0 +1,10 @@
+{% load static %}
+{% load i18n %}
+
+<ul>
+    {% for file in files %}
+        <li>
+            <a href="{% static folder_path|add:'/'|add:file %}">{{ file|slice:'0:-4' }}</a>
+        </li>
+    {% endfor %}
+</ul>

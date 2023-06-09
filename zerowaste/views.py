@@ -32,6 +32,12 @@ from plotly.offline import plot
 
 import plotly.graph_objects as og
 import numpy
+
+from django.shortcuts import render
+from wagtail.documents.models import Document
+import os
+
+
 # import geojson
 ###From Akshita's Dashboard##############
 # import pandas as pd
@@ -47,6 +53,22 @@ import numpy
 # import dash_html_components as html
 # from dash.dependencies import Input, Output, State
 
+def document_list(request):
+    documents = Document.objects.all()
+    return render(request, 'document_list.html', {'documents': documents})
+
+def static_files_view(request):
+    static_folder = 'zerowaste/static/'
+    folder_path = 'resources'
+    files = os.listdir(static_folder)
+    folder_full_path = os.path.join(static_folder, folder_path)
+    files = os.listdir(folder_full_path)
+    
+    context = {
+        'files': files,
+        'folder_path': folder_path
+    }
+    return render(request, 'template.html', context)
 
 def HomePage(request):
     return render(request,"HomePage.html")

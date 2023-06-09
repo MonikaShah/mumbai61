@@ -1,5 +1,6 @@
 from django.urls import path,include
 from . import views
+from .views import document_list, static_files_view
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -49,7 +50,10 @@ urlpatterns = [
     path('garbage_seg_rev/', views.WasteSegregationDetailsRevisedView,name='garbage_seg_rev'),
     path('compost_form/', views.compost_form,name='compost_form'),
     # path('documents/<int:document_id>/<path:document_filename>/', custom_serve, name='wagtaildocs_serve'),
-    path('student_registration/',views.student_registration, name='student_registration')
+    path('student_registration/',views.student_registration, name='student_registration'),
+    path('document-list/', document_list, name='document_list'),
+    path('static_files_view/', static_files_view, name='static_files_view'),
+    path('document_list/', document_list, name='document_list'),
 ]
 
 

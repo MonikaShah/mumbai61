@@ -1,0 +1,7 @@
+
+
+<h1>Document List</h1>
+
+{% for document in documents %}
+  <a href="{{ document.url }}">{{ document.title }}</a><br>
+{% endfor %}
