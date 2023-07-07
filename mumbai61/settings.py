@@ -32,7 +32,7 @@ SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [config("ALLOWED_HOST_1"), config("ALLOWED_HOST_2")]
+ALLOWED_HOSTS = [config("ALLOWED_HOST_1")]
 
 # set GDAL path
 # GDAL_LIBRARY_PATH = r"C:\OSGeo4W\bin\gdal306"
@@ -47,13 +47,31 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    
     "zerowaste",
     "crispy_forms",
     "django.contrib.gis",
+    "home",
     "map",
     "report_builder",
     # 'plotly_dash',
     # 'django_plotly_dash.apps.DjangoPlotlyDashConfig',
+    'wagtail.contrib.forms',
+    'wagtail.contrib.redirects',
+    'wagtail.embeds',
+    'wagtail.sites',
+    'wagtail.users',
+    'wagtail.snippets',
+    'wagtail.documents',
+    'wagtail.images',
+    'wagtail.search',
+    'wagtail.admin',
+    'wagtail',
+
+    'modelcluster',
+    'taggit',
+
+
 ]
 # PLOTLY_COMPONENTS = [
 
@@ -73,6 +91,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'wagtail.contrib.redirects.middleware.RedirectMiddleware',
+
 ]
 
 ROOT_URLCONF = "mumbai61.urls"
@@ -152,3 +172,8 @@ STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "zerowaste/static")
 
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
+
+WAGTAIL_SITE_NAME = 'Mumbai zerowaste'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'zerowaste/media')
+MEDIA_URL = '/media/'
+

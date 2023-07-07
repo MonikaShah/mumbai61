@@ -19,16 +19,27 @@ from django.conf import settings
 from django.conf.urls.static import static
 #deprecated next line
 # from django.conf.urls import url
+from wagtail.admin import urls as wagtailadmin_urls
+from wagtail import urls as wagtail_urls
+from wagtail.documents import urls as wagtaildocs_urls
+
+
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('zerowaste.urls')),
     path('map/',include('map.urls')),
+    path('home/', include('home.urls')),
     # path('map/',include('map.urls')),
     # path('i18n/', include('django.conf.urls.i18n')),
     re_path(r'^i18n/', include('django.conf.urls.i18n')),
     # deprecated
     # url(r'^report_builder/', include('report_builder.urls'))
-   re_path(r'^report_builder/', include('report_builder.urls'))
+    re_path(r'^report_builder/', include('report_builder.urls')),
+    path('cms/', include(wagtailadmin_urls)),
+    path('documents/', include(wagtaildocs_urls)),
+    path('pages/', include(wagtail_urls)),
+    
+    
 ]
