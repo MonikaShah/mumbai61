@@ -1,0 +1,275 @@
+{% extends 'home/base.html' %}
+
+{% block main_content %}
+<section class="container-lg" style="background-color: #f1f1f1;">
+    <div class="row justify-content-around text-center text-white mt-5">
+        <div class="col-sm-8">
+            <br><br>
+            <h3 style="color: black;">Student Status Graph</h3><br>
+        </div>
+        <div class="col-sm-6">
+            <div class="row">
+                <div class="col-12 col-md-8">
+                    <select class="form-control" id="student-filter">
+                        <option selected disabled>Select</option>
+                        <option>Individual Student's Task</option>
+                    </select>
+                </div>
+                <div class="col-12 col-md-4 mt-2 mt-md-0">
+                    <button class="btn btn-primary d-none" id="filter-button">Filter</button>
+                    <button class="btn btn-secondary d-none" id="clear-button">Clear</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 d-none" id="individual-student-section">
+            <div class="row">
+                <div class="col-12 col-md-8">
+                    <select name="username" id="id_name" class="form-control">
+                        <option value="" selected disabled>Select Username</option>
+                        {% for username in usernames %}
+                        <option value="{{ username }}">{{ username }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-12 col-md-4 mt-2 mt-md-0">
+                    <button class="btn btn-primary" id="filter-button-2">Filter</button>
+                    <button class="btn btn-secondary d-none" id="clear-button-2">Clear</button>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <br>
+    <div class="row justify-content-around mt-1">
+        <div class="col-sm-6">
+            <canvas id="graph-student-chart-line" width="400" height="300"></canvas>
+        </div>
+        <div class="col-sm-6">
+            <canvas id="graph-student-chart-pie" width="400" height="300"></canvas>
+        </div>
+    </div>
+</section>
+
+<style>
+    .chart-labels {
+        font-weight: bold;
+        font-size: 16px;
+    }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.bundle.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var graphStudentChartLine = document.getElementById('graph-student-chart-line');
+        var graphStudentChartPie = document.getElementById('graph-student-chart-pie');
+        var studentFilter = document.getElementById('student-filter');
+        var usernameDropdown = document.getElementById('id_name');
+        var filterButton = document.getElementById('filter-button');
+        var filterButton2 = document.getElementById('filter-button-2');
+        var clearButton = document.getElementById('clear-button-2');
+        var chartLine = null;
+        var chartPie = null;
+
+        function updateGraph() {
+            var selectedUsername = usernameDropdown.value;
+
+            if (selectedUsername) {
+                fetch(`/home/get_tasks/${selectedUsername}/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        var tasks = data.tasks.sort((a, b) => a.id - b.id); // Sort tasks by ID
+                        var labels = tasks.map(task => task.task_name);
+                        var status = tasks.map(task => parseFloat(task.task_status.replace('%', '')));
+
+                        
+
+                        chartLine = new Chart(graphStudentChartLine, {
+                            type: 'line',
+                            data: {
+                                labels: labels,
+                                datasets: [{
+                                    label: 'Task Status',
+                                    data: status,
+                                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                    borderColor: 'rgba(54, 162, 235, 1)',
+                                    borderWidth: 5
+                                }]
+                            },
+                            options: {
+                                // Chart options
+                                scales: {
+                                    xAxes: [{
+                                        scaleLabel: {
+                                            display: true,
+                                            labelString: 'Tasks Name',
+                                            fontColor: 'black',
+                                            fontSize: 20,
+                                            fontStyle: 'bold'
+                                        },
+                                        ticks: {
+                                            fontColor: 'black',
+                                            fontSize: 14,
+                                            fontStyle: 'bold'
+                                        }
+                                    }],
+                                    yAxes: [{
+                                        scaleLabel: {
+                                            display: true,
+                                            labelString: 'Status',
+                                            fontColor: 'black',
+                                            fontSize: 20,
+                                            fontStyle: 'bold'
+                                        },
+                                        ticks: {
+                                            beginAtZero: true,
+                                            min: 0,
+                                            max: 100,
+                                            stepSize: 10,
+                                            callback: function(value, index, values) {
+                                                return value + '%';
+                                            },
+                                            fontColor: 'black',
+                                            fontSize: 16,
+                                            fontStyle: 'bold'
+                                        }
+                                    }]
+                                },
+                                legend: {
+                                    labels: {
+                                        font: {
+                                            weight: 'bold',
+                                            size: 14
+                                        }
+                                    }
+                                },
+                                tooltips: {
+                                    callbacks: {
+                                        title: function(tooltipItem, data) {
+                                            // Remove the task label
+                                            return '';
+                                        },
+                                        label: function(tooltipItem, data) {
+                                            var taskIndex = tooltipItem.index;
+                                            var status = data.datasets[0].data[taskIndex] + '%';
+                                            return 'Task Status: ' + status;
+                                        }
+                                    },
+                                    titleFontWeight: 'bold',
+                                    bodyFontWeight: 'bold'
+                                }
+                            }
+                        });
+
+                        
+                        clearButton.classList.remove('d-none');
+
+                        
+
+                        chartPie = new Chart(graphStudentChartPie, {
+                            type: 'pie',
+                            data: {
+                                labels: labels,
+                                datasets: [{
+                                    label: 'Task Status',
+                                    data: status,
+                                    backgroundColor: [
+                                        'rgba(255, 99, 132, 0.2)',
+                                        'rgba(54, 162, 235, 0.2)',
+                                        'rgba(255, 206, 86, 0.2)',
+                                        'rgba(75, 192, 192, 0.2)',
+                                        'rgba(153, 102, 255, 0.2)',
+                                        'rgba(255, 159, 64, 0.2)'
+                                    ],
+                                    borderColor: [
+                                        'rgba(255, 99, 132, 1)',
+                                        'rgba(54, 162, 235, 1)',
+                                        'rgba(255, 206, 86, 1)',
+                                        'rgba(75, 192, 192, 1)',
+                                        'rgba(153, 102, 255, 1)',
+                                        'rgba(255, 159, 64, 1)'
+                                    ],
+                                    borderWidth: 4
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                scales: {
+                                    y: {
+                                        beginAtZero: true
+                                    }
+                                },
+                                plugins: {
+                                    tooltip: {
+                                        callbacks: {
+                                            label: function(context) {
+                                                var label = context.label || '';
+                                                var value = context.raw || '';
+                                
+                                                return [
+                                                    'Task Name: ' + label,
+                                                    'Task Status: ' + value + '%'
+                                                ];
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    })
+                    .catch(error => {
+                        console.log('Error:', error);
+                    });
+            }
+        }
+
+        
+
+        function clearGraph() {
+            if (chartLine) {
+                chartLine.destroy();
+                chartLine = null;
+            }
+
+            if (chartPie) {
+                chartPie.destroy();
+                chartPie = null;
+            }
+
+            usernameDropdown.selectedIndex = 0;
+            nameLabelSection.classList.add('d-none');
+            clearButton.classList.add('d-none');
+        }
+
+        studentFilter.addEventListener('change', function() {
+            var selectedValue = studentFilter.value;
+
+            if (selectedValue === 'Individual Student\'s Task') {
+                document.getElementById('individual-student-section').classList.remove('d-none');
+                document.getElementById('filter-button').classList.add('d-none');
+                document.getElementById('clear-button').classList.add('d-none');
+            } else {
+                document.getElementById('individual-student-section').classList.add('d-none');
+                document.getElementById('filter-button').classList.remove('d-none');
+                document.getElementById('clear-button').classList.remove('d-none');
+            }
+        });
+
+        filterButton.addEventListener('click', function() {
+            updateGraph();
+        });
+
+        filterButton2.addEventListener('click', function() {
+            updateGraph();
+        });
+
+        clearButton.addEventListener('click', function() {
+            clearGraph();
+        });
+
+        // Initial load
+        updateGraph();
+    });
+</script>
+{% endblock %}
