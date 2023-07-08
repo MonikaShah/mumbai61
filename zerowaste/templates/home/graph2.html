@@ -1,0 +1,147 @@
+{% extends 'home/base.html' %}
+
+{% block main_content %}
+<section class="container" style="background-color: #f1f1f1;">
+    <div class="row justify-content-around text-center text-white mt-5">
+        <div class="col-sm-8">
+            <br><br>
+            <h3 style="color: black;">Bar Graph of all tasks</h3><br>
+        </div>
+        
+    </div><br>
+    <div class="col-9 col-md-3 mt-2 mt-md-0">
+        <a href="{% url 'graph'  %}" class="btn btn-primary">Back</a>
+    </div>
+    <div class="row justify-content-around mt-1">
+        <div class="col-sm-8">
+            <canvas id="graph-student-chart" width="900" height="600"></canvas>
+        </div>
+    </div>
+</section>
+
+<style>
+    .chart-labels {
+        font-weight: bold;
+        font-size: 16px;
+    }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var labels = {{ labels|safe }};
+        var statusPercentages = {{ status_percentages|safe }};
+        
+        var ctx = document.getElementById('graph-student-chart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Task Status',
+                    data: statusPercentages,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 3
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%';
+                            },
+                            font:{
+                                weight:'bold'
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+
+{% endblock main_content %}
+
+{% comment %} 
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var labels = {{ labels|safe }};
+        var statusPercentages = {{ status_percentages|safe }};
+        
+        var ctx = document.getElementById('graph-student-chart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Task Status',
+                    data: statusPercentages,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Name',
+                            fontColor: 'black',
+                            fontSize: 20,
+                            fontStyle: 'bold'
+                        },
+                        ticks: {
+                            fontColor: 'black',
+                            fontSize: 16,
+                            fontStyle: 'bold'
+                        }
+                    }],
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Status',
+                            fontColor: 'black',
+                            fontSize: 20,
+                            fontStyle: 'bold'
+                        },
+                        ticks: {
+                            beginAtZero: true,
+                            min: 0,
+                            max: 100,
+                            stepSize: 10,
+                            callback: function(value, index, values) {
+                                return value + '%';
+                            },
+                            fontColor: 'black',
+                            fontSize: 16,
+                            fontStyle: 'bold'
+                        }
+                    }]
+                },
+                legend: {
+                    labels: {
+                        font: {
+                            weight: 'bold',
+                            size: 14
+                        }
+                    }
+                },
+                tooltips: {
+                    enabled: false,
+                    titleFontWeight: 'bold',
+                    bodyFontWeight: 'bold'
+                }
+            }
+        });
+    });
+</script>
+
+{% endblock main_content %}
+ {% endcomment %}

@@ -14,12 +14,14 @@ from django.http import JsonResponse
 from django.core import serializers
 import json
 from datetime import datetime
+from django.db.models import Count
+
 
 # Create your views here.
 
 def home(request):
-    tasks = tasks_zerowaste.objects.all()
-    return render(request, 'home/home.html', {'tasks': tasks})
+    usernames = tasks_zerowaste.objects.values_list('zerowaste_user__username', flat=True).distinct()
+    return render(request, 'home/home.html', {'usernames': usernames})
 
 def tasks_by_username(request, username):
     
@@ -165,8 +167,7 @@ def register(request):
     return render(request, 'home/register.html')
 
 def graph(request):
-    usernames = tasks_zerowaste.objects.values_list('username', flat=True)
-
+    usernames = tasks_zerowaste.objects.values_list('username', flat=True).distinct()
     return render(request, 'home/graph.html', {'usernames': usernames})
 
 def get_tasks(request, username):
@@ -176,15 +177,17 @@ def get_tasks(request, username):
     return JsonResponse({'tasks': list(tasks)})
 
 def graph2(request):
-    student_data = student.objects.all()
-    names = [data.name for data in student_data]
-    status = [int(data.status.strip('%')) for data in student_data]
+    task_data = tasks_zerowaste.objects.values('task_name', 'task_status').annotate(task_count=Count('id'))
 
+    # Prepare the data for the chart
+    labels = [task['task_name'] for task in task_data]
+    status_percentages = [float(task['task_status'].strip('%')) for task in task_data]
+
+    # Pass the data to the template
     context = {
-        'names': names,
-        'status': status,
+        'labels': labels,
+        'status_percentages': status_percentages,
     }
-
     return render(request, 'home/graph2.html', context)
 
 
