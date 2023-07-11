@@ -13,16 +13,14 @@
     </div>
     <div class="row justify-content-center mt-5">
         <div class="col-sm-3">
-            <select id="username-dropdown" class="form-select form-select-sm custom-dropdown">
-                <option value="" selected disabled>Select Username</option>
-                {% for task in tasks %}
-                    <option value="{{ task.username }}">{{ task.username }}</option>
-                {% endfor %}
-            </select>
+          <select id="username-dropdown" class="form-select form-select-sm custom-dropdown">
+            <option value="" selected disabled>Select Username</option>
+            {% for username in usernames %}
+                <option value="{{ username }}">{{ username }}</option>
+            {% endfor %}
+        </select>
         </div>
-        <div class="col-sm-2">
-            <button class="btn btn-primary" onclick="fetchTasksByUsername()">Retrieve</button>
-        </div>
+        
         <div class="col-sm-4 offset-md-1">
             <div class="row">
                 <div class="col-sm-8 offset-sm-4">
@@ -65,75 +63,83 @@
 <script>
   var selectedStatuses = {};
 
-  function fetchTasksByUsername() {
-    var dropdown = document.getElementById("username-dropdown");
-    var selectedUsername = dropdown.options[dropdown.selectedIndex].value;
-  
-    if (selectedUsername) {
-      // Clear the existing table rows
-      var tableBody = document.getElementById("task-table-body");
-      tableBody.innerHTML = "";
-  
-      // Send an AJAX request to retrieve tasks for the selected username
-      var xhr = new XMLHttpRequest();
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-          if (xhr.status === 200) {
-            var tasks = JSON.parse(xhr.responseText);
-            
-            // Sort tasks by ID
-            tasks.sort(function(a, b) {
-              return a.id - b.id;
-            });
-  
-            tasks.forEach(task => {
-              var row = document.createElement("tr");
-              row.innerHTML = `
-                <td>${task.id}</td>
-                <td>${task.task_name}</td>
-                <td>${task.task_start_date}</td>
-                <td>
-                  {% if user.is_authenticated %}
-                  <select class="form-select form-select-sm" id="status-select-${task.id}">
-                    <option value="0%" ${task.task_status === '0%' ? 'selected' : ''}>0%</option>
-                    <option value="25%" ${task.task_status === '25%' ? 'selected' : ''}>25%</option>
-                    <option value="50%" ${task.task_status === '50%' ? 'selected' : ''}>50%</option>
-                    <option value="75%" ${task.task_status === '75%' ? 'selected' : ''}>75%</option>
-                    <option value="100%" ${task.task_status === '100%' ? 'selected' : ''}>100%</option>
-                  </select>
-                  {% else %}
-                  ${task.task_status}
-                  {% endif %}
-                </td>
-                <td>
-                  {% if user.is_authenticated %}
-                  <input type="date" id="completion-date-${task.id}" class="form-control form-control-sm" value="${task.task_completion_date || ''}">
-                  {% else %}
-                  ${task.task_completion_date}
-                  {% endif %}
-                </td>
-                {% if user.is_authenticated %}
-                <td class="text-start ps-5">
-                  <button type="submit" class="btn btn-primary btn-sm me-2" onclick="updateStatus(${task.id}, '${selectedUsername}')">Update</button>
-                  <button class="btn btn-danger btn-sm" onclick="deleteTask(${task.id}, '${selectedUsername}')">Delete</button>
-                </td>
-                {% endif %}
-              `;
-  
-              // Store the selected status in the global object
-              selectedStatuses[task.id] = task.task_status;
-  
-              tableBody.appendChild(row);
-            });
-          } else {
-            console.error("Error: " + xhr.status);
-          }
+    function fetchTasksByUsername() {
+        var dropdown = document.getElementById("username-dropdown");
+        var selectedUsername = dropdown.options[dropdown.selectedIndex].value;
+
+        if (selectedUsername) {
+            // Clear the existing table rows
+            var tableBody = document.getElementById("task-table-body");
+            tableBody.innerHTML = "";
+
+            // Send an AJAX request to retrieve tasks for the selected username
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        var tasks = JSON.parse(xhr.responseText);
+
+                        // Sort tasks by ID
+                        tasks.sort(function (a, b) {
+                            return a.id - b.id;
+                        });
+
+                        tasks.forEach(task => {
+                            var row = document.createElement("tr");
+                            row.innerHTML = `
+                                <td>${task.id}</td>
+                                <td>${task.task_name}</td>
+                                <td>${task.task_start_date}</td>
+                                <td>
+                                    {% if user.is_authenticated %}
+                                    <select class="form-select form-select-sm" id="status-select-${task.id}">
+                                        <option value="0%" ${task.task_status === '0%' ? 'selected' : ''}>0%</option>
+                                        <option value="25%" ${task.task_status === '25%' ? 'selected' : ''}>25%</option>
+                                        <option value="50%" ${task.task_status === '50%' ? 'selected' : ''}>50%</option>
+                                        <option value="75%" ${task.task_status === '75%' ? 'selected' : ''}>75%</option>
+                                        <option value="100%" ${task.task_status === '100%' ? 'selected' : ''}>100%</option>
+                                    </select>
+                                    {% else %}
+                                    ${task.task_status}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if user.is_authenticated %}
+                                    <input type="date" id="completion-date-${task.id}" class="form-control form-control-sm" value="${task.task_completion_date || ''}">
+                                    {% else %}
+                                    ${task.task_completion_date}
+                                    {% endif %}
+                                </td>
+                                {% if user.is_authenticated %}
+                                <td class="text-start ps-5">
+                                    <button type="submit" class="btn btn-primary btn-sm me-2" onclick="updateStatus(${task.id}, '${selectedUsername}')">Update</button>
+                                    <button class="btn btn-danger btn-sm" onclick="deleteTask(${task.id}, '${selectedUsername}')">Delete</button>
+                                </td>
+                                {% endif %}
+                            `;
+
+                            // Store the selected status in the global object
+                            selectedStatuses[task.id] = task.task_status;
+
+                            tableBody.appendChild(row);
+                        });
+                    } else {
+                        console.error("Error: " + xhr.status);
+                    }
+                }
+            };
+            xhr.open("GET", "/home/tasks_by_username/" + encodeURIComponent(selectedUsername), true);
+            xhr.send();
+        } else {
+            // Clear the table if no username is selected
+            var tableBody = document.getElementById("task-table-body");
+            tableBody.innerHTML = "";
         }
-      };
-      xhr.open("GET", "/home/tasks_by_username/" + encodeURIComponent(selectedUsername), true);
-      xhr.send();
     }
-  }
+
+    // Add the event listener to the username dropdown
+    var usernameDropdown = document.getElementById("username-dropdown");
+    usernameDropdown.addEventListener("change", fetchTasksByUsername);
 
   function updateStatus(taskId, selectedUsername) {
     var selectElement = document.getElementById("status-select-" + taskId);
