@@ -5,16 +5,28 @@
     <div class="row justify-content-around text-center text-white mt-5">
         <div class="col-sm-8">
             <br><br>
-            <h3 style="color: black;">Bar Graph of all tasks</h3><br>
+            <h3 style="color: black;">Graph of all tasks</h3><br>
         </div>
-        
+    </div><br>
+    <div class="col-12 col-md-8">
+        <div class="input-group">
+            <select name="task_name" id="id_task_name" class="form-control">
+                <option value="" selected disabled>Select Task Name</option>
+                {% for task_name in task_names %}
+                <option value="{{ task_name }}">{{ task_name }}</option>
+                {% endfor %}
+            </select>
+            <div class="input-group-append">
+                <button id="clear-button" class="btn btn-secondary d-none">Clear</button>
+            </div>
+        </div>
     </div><br>
     <div class="col-9 col-md-3 mt-2 mt-md-0">
         <a href="{% url 'graph'  %}" class="btn btn-primary">Back</a>
     </div>
     <div class="row justify-content-around mt-1">
-        <div class="col-sm-8">
-            <canvas id="graph-student-chart" width="900" height="600"></canvas>
+        <div class="col-sm-9">
+            <canvas id="graph-student-chart" width="600" height="400"></canvas>
         </div>
     </div>
 </section>
@@ -29,17 +41,18 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        var labels = {{ labels|safe }};
-        var statusPercentages = {{ status_percentages|safe }};
+        // Initial bar graph data
+        var initialLabels = {{ labels|safe }};
+        var initialStatusPercentages = {{ status_percentages|safe }};
         
         var ctx = document.getElementById('graph-student-chart').getContext('2d');
         var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: labels,
+                labels: initialLabels,
                 datasets: [{
                     label: 'Task Status',
-                    data: statusPercentages,
+                    data: initialStatusPercentages,
                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
                     borderColor: 'rgba(54, 162, 235, 1)',
                     borderWidth: 3
@@ -62,86 +75,116 @@
                 }
             }
         });
-    });
-</script>
 
-{% endblock main_content %}
-
-{% comment %} 
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var labels = {{ labels|safe }};
-        var statusPercentages = {{ status_percentages|safe }};
-        
-        var ctx = document.getElementById('graph-student-chart').getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Task Status',
-                    data: statusPercentages,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    xAxes: [{
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'Name',
-                            fontColor: 'black',
-                            fontSize: 20,
-                            fontStyle: 'bold'
-                        },
-                        ticks: {
-                            fontColor: 'black',
-                            fontSize: 16,
-                            fontStyle: 'bold'
-                        }
-                    }],
-                    yAxes: [{
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'Status',
-                            fontColor: 'black',
-                            fontSize: 20,
-                            fontStyle: 'bold'
-                        },
-                        ticks: {
-                            beginAtZero: true,
-                            min: 0,
-                            max: 100,
-                            stepSize: 10,
-                            callback: function(value, index, values) {
-                                return value + '%';
-                            },
-                            fontColor: 'black',
-                            fontSize: 16,
-                            fontStyle: 'bold'
-                        }
-                    }]
-                },
-                legend: {
-                    labels: {
-                        font: {
-                            weight: 'bold',
-                            size: 14
-                        }
-                    }
-                },
-                tooltips: {
-                    enabled: false,
-                    titleFontWeight: 'bold',
-                    bodyFontWeight: 'bold'
+        // Event listener for task name selection
+        var taskNameDropdown = document.getElementById('id_task_name');
+        taskNameDropdown.addEventListener('change', function() {
+            var selectedTaskName = this.value;
+            
+            // Show/hide the clear button based on selection
+            var clearButton = document.getElementById('clear-button');
+            if (selectedTaskName !== "") {
+                clearButton.classList.remove('d-none');
+            } else {
+                clearButton.classList.add('d-none');
+            }
+            
+            // Hide the previous bar graph
+            myChart.destroy();
+            
+            // Fetch data for selected task name
+            var labels = {{ labels|safe }};
+            var statusPercentages = {{ status_percentages|safe }};
+            
+            // Filter data for selected task name
+            var filteredLabels = [];
+            var filteredStatusPercentages = [];
+            for (var i = 0; i < labels.length; i++) {
+                if (labels[i] === selectedTaskName) {
+                    filteredLabels.push(labels[i]);
+                    filteredStatusPercentages.push(statusPercentages[i]);
                 }
             }
+            
+            
+
+            // Create and display the new bar graph
+            var ctx = document.getElementById('graph-student-chart').getContext('2d');
+            myChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: filteredLabels,
+                    datasets: [{
+                        label: 'Task Status',
+                        data: filteredStatusPercentages,
+                        backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 3
+                    }]
+                },
+                options: {
+                    scales: {
+                        
+                    }
+                }
+            });
+        });
+
+        // Event listener for clear button
+        var clearButton = document.getElementById('clear-button');
+        clearButton.addEventListener('click', function() {
+            // Clear the selected value and reset the chart
+            taskNameDropdown.value = "";
+            clearButton.classList.add('d-none');
+            myChart.destroy();
+            
+            // Create and display the initial bar graph
+            var ctx = document.getElementById('graph-student-chart').getContext('2d');
+            myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: initialLabels,
+                    datasets: [{
+                        label: 'Task Status',
+                        data: initialStatusPercentages,
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 3
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                },
+                                font:{
+                                    weight:'bold'
+                                }
+                            }
+                        }
+                    }
+                }
+            });
         });
     });
 </script>
 
 {% endblock main_content %}
- {% endcomment %}

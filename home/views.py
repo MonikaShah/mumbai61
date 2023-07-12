@@ -186,10 +186,16 @@ def graph2(request):
     labels = [task['task_name'] for task in task_data]
     status_percentages = [float(task['task_status'].strip('%')) for task in task_data]
 
-    # Pass the data to the template
+    # Fetch task names and usernames
+    task_names = tasks_zerowaste.objects.values_list('task_name', flat=True).distinct()
+    usernames = tasks_zerowaste.objects.values_list('username', flat=True).distinct()
+
+    # Pass the data, task names, and usernames to the template
     context = {
         'labels': labels,
         'status_percentages': status_percentages,
+        'task_names': task_names,
+        'usernames': usernames,
     }
     return render(request, 'home/graph2.html', context)
 
