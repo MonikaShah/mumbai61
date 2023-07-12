@@ -180,23 +180,40 @@ def get_tasks(request, username):
 
 @login_required
 def graph2(request):
-    task_data = tasks_zerowaste.objects.values('task_name', 'task_status').annotate(task_count=Count('id'))
+    all_tasks = tasks_zerowaste.objects.all()
 
-    # Prepare the data for the chart
-    labels = [task['task_name'] for task in task_data]
-    status_percentages = [float(task['task_status'].strip('%')) for task in task_data]
+    # Prepare the task data for the chart
+    task_data = []
+    task_names = set()  # Use a set to store unique task names
+    for task in all_tasks:
+        task_data.append({
+            'task_name': task.task_name,
+            'task_status': task.task_status,
+            'username': task.username
+        })
+        task_names.add(task.task_name)
 
-    # Fetch task names and usernames
-    task_names = tasks_zerowaste.objects.values_list('task_name', flat=True).distinct()
-    usernames = tasks_zerowaste.objects.values_list('username', flat=True).distinct()
+    # Pass the task data and task names to the template
+    context = {'task_data': task_data, 'task_names': task_names}
+    return render(request, 'home/graph3.html', context)
 
-    # Pass the data, task names, and usernames to the template
-    context = {
-        'labels': labels,
-        'status_percentages': status_percentages,
-        'task_names': task_names,
-        'usernames': usernames,
-    }
-    return render(request, 'home/graph2.html', context)
+
+# def graph3(request):
+#     all_tasks = tasks_zerowaste.objects.all()
+
+#     # Prepare the task data for the chart
+#     task_data = []
+#     task_names = set()  # Use a set to store unique task names
+#     for task in all_tasks:
+#         task_data.append({
+#             'task_name': task.task_name,
+#             'task_status': task.task_status,
+#             'username': task.username
+#         })
+#         task_names.add(task.task_name)
+
+#     # Pass the task data and task names to the template
+#     context = {'task_data': task_data, 'task_names': task_names}
+#     return render(request, 'home/graph3.html', context)
 
 
