@@ -9,17 +9,18 @@
         </div>
     </div>
     <br>
-    <div class="row justify-content-around mt-1">
-        <div class="col-12 col-md-8">
+    <div class="col-12 col-md-8">
+        <div class="input-group">
             <select name="username" id="id_name" class="form-control">
                 <option value="" selected disabled>Select Username</option>
                 {% for username in usernames %}
-                    <option value="{{ username }}">{{ username }}</option>
+                    <option value="{{ username }}" {% if username == selected_username %}selected{% endif %}>{{ username }}</option>
                 {% endfor %}
             </select>
-        </div>
-        <div class="col-9 col-md-3 mt-2 mt-md-0">
-            <a href="{% url 'graph2'  %}" class="btn btn-primary">Bar Graph for all tasks</a>
+            <div class="input-group-append">
+                <button id="generate-button" class="btn btn-primary">Generate</button>
+                <a href="{% url 'graph2'  %}" class="btn btn-primary button-spacing">Bar Graph for all tasks</a>
+            </div>
         </div>
     </div>
     
@@ -39,6 +40,10 @@
         font-weight: bold;
         font-size: 16px;
     }
+
+    .button-spacing {
+        margin-left: 100px; 
+    }
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
@@ -51,6 +56,12 @@
         var clearButton = document.getElementById('clear-button-2');
         var chartLine = null;
         var chartPie = null;
+        var generateButton = document.getElementById('generate-button');
+
+        generateButton.addEventListener('click', function() {
+            updateGraph();
+        });
+        
 
         function updateGraph() {
             var selectedUsername = usernameDropdown.value;

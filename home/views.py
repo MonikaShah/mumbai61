@@ -108,6 +108,7 @@ def user_logout(request):
     logout(request)
     return redirect('user_login')
 
+@login_required
 def tasks(request):
     if request.method == 'POST':
         task_name = request.POST.get('task_name')
@@ -137,7 +138,6 @@ def tasks(request):
 
     usernames = AuthUser.objects.values_list('username', flat=True)
     return render(request, 'home/tasks.html', {'usernames': usernames})
-
 def get_student_name():
     # Retrieve the student name from the student_data table, assuming you have a specific student in mind
     # Modify this logic based on how you want to retrieve the student name
@@ -166,9 +166,11 @@ def register(request):
     
     return render(request, 'home/register.html')
 
+@login_required
 def graph(request):
     usernames = tasks_zerowaste.objects.values_list('username', flat=True).distinct()
-    return render(request, 'home/graph.html', {'usernames': usernames})
+    selected_username = request.GET.get('username', '')
+    return render(request, 'home/graph.html', {'usernames': usernames, 'selected_username': selected_username})
 
 def get_tasks(request, username):
     selected_username = request.GET.get('username')
@@ -176,6 +178,7 @@ def get_tasks(request, username):
     
     return JsonResponse({'tasks': list(tasks)})
 
+@login_required
 def graph2(request):
     task_data = tasks_zerowaste.objects.values('task_name', 'task_status').annotate(task_count=Count('id'))
 
