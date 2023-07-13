@@ -15,6 +15,7 @@ urlpatterns = [
     path('delete_task/<int:task_id>/', views.delete_task, name='delete_task'),
     path('graph/', views.graph, name='graph'),
     path('graph2/', views.graph2, name='graph2'),
+    # path('graph3/', views.graph3, name='graph3'),
     path('get_tasks/<str:username>/', views.get_tasks, name='get_tasks'),
  
 ]
