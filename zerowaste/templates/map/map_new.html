@@ -2394,6 +2394,7 @@ function new_ajax(e){
                 url: $endpoint,
                 data: $name,
                 success: function(data) {
+                  
                   if (data.region) {
                     // alert("in region");
                     content = "<table class = 'popupclass' ><tr><td><b>Region Info</b></td><td></td></tr>" +
@@ -2419,7 +2420,8 @@ function new_ajax(e){
                     content = "<table class = 'popupclass' ><tr><td><b>Buildings Info</b></td><td></td></tr>" +
                         "<tr><td><b>SAC No.: </b></td><td>" + data.sac_number + "</td></tr>"+
                         "<tr><td><b>Building Name: </b></td><td>" + data.building_name + "</td></tr>"+
-                        "<tr><td><b>Description: </b></td><td>"+buil_type + "</td></tr>"+
+                        "<tr><td><b>Description: </b></td><td>"+data.building_type + "</td></tr>"+
+                        "<tr><td><b>Road: </b></td><td>"+data.road + "</td></tr>"+
                         "<tr><td><b>Region: </b></td><td>" + data.region + "</td></tr>"+
                         "<tr><td><b>Bwg : </b></td><td>" + data.is_bwg + "</td></tr>"+
                         "<tr><td><b>Bwg Type: </b></td><td>" + data.bwg_type + "</td></tr>"+
@@ -2430,7 +2432,7 @@ function new_ajax(e){
                         "<tr><td><b>Wing Name</td><td>" + data.wing_name + "</td></tr>"+
                             "<tr><td><b>Village: </b></td><td>" + data.village + "</td></tr>"+
                         "<tr><td><b>Property Address: </b></td><td>" + data.address + "</td></tr>"+
-                        "<tr><td><b>Population: </b></td><td>" + data.population + "</td></tr>"+
+                        "<tr><td><b>Population: </b></td><td>" +  data.population + "</td></tr>"+
                         "<tr><td><b>Remarks: </b></td><td>" + data.remarks + "</td></tr>"+
                         "<tr><td><b>Updated by: </b></td><td>" + data.updated_by + "</td></tr>"+
                         "<tr><td><b>Update Date/Time: </b></td><td>" + data.update_time + "</td></tr>"+
