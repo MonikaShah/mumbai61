@@ -500,25 +500,29 @@
             
             <div class="checkbox" style = "padding-left:2em">
               <label><input type="checkbox" value="{scompost}"  id="scompost"
-                  onchange="getBoundaryru(this)"><span> {% trans "Prabhag 122: Buildings doing composting" %}</span></label>
+                  onchange="getBoundaryru(this)"><span> {% trans "Buildings doing composting" %}</span></label>
             </div>
             <div class="checkbox" style = "padding-left:2em">
               <label><input type="checkbox" value="{s122plastic}"  id="s122plastic"
-                  onchange="getBoundaryru(this)"><span> {% trans "Prabhag 122: Buildings segregating Plastics "%}</span></label>
+                  onchange="getBoundaryru(this)"><span> {% trans "Buildings segregating Plastics "%}</span></label>
+            </div>
+            <div class="checkbox" style = "padding-left:2em">
+              <label><input type="checkbox" value="{s122dumping}"  id="s122dumping"
+                  onchange="getBoundaryru(this)"><span> {% trans "Dumping Points "%}</span></label>
             </div>
 
             <div class="checkbox" style = "padding-left:2em">
-              <label><input type="checkbox"  value="{s122gardens}" id = "s122gardens" onchange="getBoundaryru(this)"><span> {% trans "Prabhag 122 Gardens" %}</span></label>
+              <label><input type="checkbox"  value="{s122gardens}" id = "s122gardens" onchange="getBoundaryru(this)"><span> {% trans "Gardens" %}</span></label>
             </div>
 
             <div class="checkbox" style = "padding-left:2em">
               <label><input type="checkbox" value="{s122toilet}"  id="s122toilet"
-                  onchange="getBoundaryru(this) " disabled><span> {% trans "Prabhag 122:  Public Toilets (in progress)" %}</span></label>
+                  onchange="getBoundaryru(this) " disabled><span> {% trans "Public Toilets (in progress)" %}</span></label>
             </div>
 
             <div class="checkbox" style = "padding-left:2em">
               <label><input type="checkbox" value="{s122car}"  id="s122car"
-                  onchange="getBoundaryru(this)" disabled><span> {% trans "Prabhag 122:  Car Parking (in progress)" %}</span></label>
+                  onchange="getBoundaryru(this)" disabled><span> {% trans "Car Parking (in progress)" %}</span></label>
             </div>
             
 
@@ -1195,6 +1199,10 @@ $("#prabhaglistwms").change(function() {
               // alert("reached plastic")
               putfrmgeo(s122plastic)
             }
+            else if (boundary == '{s122dumping}'){
+              // alert("reached plastic")
+              putfrmgeo(s122dumping)
+            }
             else if (boundary == "{wardN}") {
               
               
@@ -1323,6 +1331,9 @@ $("#prabhaglistwms").change(function() {
             }
             else if (boundary == '{s122plastic}') {
               removeWMS("ward_122_building_collecting_plastic_13oct21");
+            }
+            else if (boundary == '{s122dumping}') {
+              removeWMS("p122_dumpingPoints_21aug231");
             }
             else if (boundary == '{s122routes}') {
               removeWMS("p122_garbages_routes_20april23");
@@ -1641,6 +1652,16 @@ $("#prabhaglistwms").change(function() {
           else if (obj == '{s122plastic}'){
             // alert("in S plastic ")
             layer = 'ward_122_building_collecting_plastic_13oct21';
+            currentPos = [19.1283, 72.9041];
+            var maximumzoom = 20;
+            var opac = 0.3;
+            var zoom = 15;
+            var cql = `include`
+      
+          }
+          else if (obj == '{s122dumping}'){
+            // alert("in S plastic ")
+            layer = 'p122_dumpingPoints_21aug231';
             currentPos = [19.1283, 72.9041];
             var maximumzoom = 20;
             var opac = 0.3;
@@ -2304,7 +2325,17 @@ function Identify(e) {
                 var popup = new L.Popup({
                     maxWidth: 300
                 });
-                if (feature.properties.Area) {
+                if (feature.properties.name && feature.properties.photo && !feature.properties.Username) {
+                    // alert("in route popup");
+                    content = "<table class = 'popupclass'style ='border: 1px solid white' ><tr style ='border: 1px solid white'><td colspan=6><b> Dumping point Information</b></td><td></td></tr>" +
+                        "<tr style ='border: 1px solid white'><td><b>Near : </b></td><td style ='text-align:left;'>" + feature.properties.name + "</td></tr>"+
+                        // "<tr style ='border: 1px solid white'><td><b>Area of Garden : </b></td><td>" + feature.properties.Area + "(sq. meters)</td></tr>"+
+                        "</table>";
+                    popup.setContent(content);
+                    popup.setLatLng(e.latlng);
+                    mymap.openPopup(popup);
+                    }
+                    if (feature.properties.Area) {
                     // alert("in route popup");
                     content = "<table class = 'popupclass'style ='border: 1px solid white' ><tr style ='border: 1px solid white'><td colspan=6><b> Garden Information</b></td><td></td></tr>" +
                         "<tr style ='border: 1px solid white'><td><b>Garden Name: </b></td><td style ='text-align:left;'>" + feature.properties.name + "</td></tr>"+
@@ -2314,8 +2345,27 @@ function Identify(e) {
                     popup.setLatLng(e.latlng);
                     mymap.openPopup(popup);
                     }
-               
-                if (feature.properties.photo) {
+                    if (feature.properties.plastic_wa) {
+                    // alert("in route popup");
+                    content = "<table class = 'popupclass'style ='border: 1px solid white' ><tr style ='border: 1px solid white'><td colspan=6><b> Plastic Segregating Buildings Info</b></td><td></td></tr>" +
+                        "<tr style ='border: 1px solid white'><td><b>Buildings Name : </b></td><td style ='text-align:left;'>" + feature.properties.plastic_wa + "</td></tr>"+
+                        "<tr style ='border: 1px solid white'><td><b>Approx weight of plastic collected : </b></td><td>" + feature.properties.descriptio + "(kgs)</td></tr>"+
+                        "</table>";
+                    popup.setContent(content);
+                    popup.setLatLng(e.latlng);
+                    mymap.openPopup(popup);
+                    }
+                    if (feature.properties.Area) {
+                    // alert("in route popup");
+                    content = "<table class = 'popupclass'style ='border: 1px solid white' ><tr style ='border: 1px solid white'><td colspan=6><b> Garden Information</b></td><td></td></tr>" +
+                        "<tr style ='border: 1px solid white'><td><b>Garden Name: </b></td><td style ='text-align:left;'>" + feature.properties.name + "</td></tr>"+
+                        "<tr style ='border: 1px solid white'><td><b>Area of Garden : </b></td><td>" + feature.properties.Area + "(sq. meters)</td></tr>"+
+                        "</table>";
+                    popup.setContent(content);
+                    popup.setLatLng(e.latlng);
+                    mymap.openPopup(popup);
+                    }
+                if (feature.properties.photo && feature.properties.Username) {
                     // alert("in route popup");
                     content = "<table class = 'popupclass'style ='border: 1px solid white' ><tr style ='border: 1px solid white'><td colspan=6><b>HBT Clinic Information</b></td><td></td></tr>" +
                         "<tr style ='border: 1px solid white'><td><b>HBT Name: </b></td><td style ='text-align:left;'>" + feature.properties.name + "</td></tr>"+
