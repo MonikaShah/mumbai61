@@ -500,7 +500,11 @@
             
             <div class="checkbox" style = "padding-left:2em">
               <label><input type="checkbox" value="{scompost}"  id="scompost"
-                  onchange="getBoundaryru(this)"><span> {% trans "Prabhag 122:  Compost Facility" %}</span></label>
+                  onchange="getBoundaryru(this)"><span> {% trans "Prabhag 122: Buildings doing composting" %}</span></label>
+            </div>
+            <div class="checkbox" style = "padding-left:2em">
+              <label><input type="checkbox" value="{s122plastic}"  id="s122plastic"
+                  onchange="getBoundaryru(this)"><span> {% trans "Prabhag 122: Buildings segregating Plastics "%}</span></label>
             </div>
 
             <div class="checkbox" style = "padding-left:2em">
@@ -1187,6 +1191,10 @@ $("#prabhaglistwms").change(function() {
             else if (boundary == '{scompost}') {
               putfrmgeo(scompost);
             }
+            else if (boundary == '{s122plastic}'){
+              // alert("reached plastic")
+              putfrmgeo(s122plastic)
+            }
             else if (boundary == "{wardN}") {
               
               
@@ -1312,6 +1320,9 @@ $("#prabhaglistwms").change(function() {
             }
             else if (boundary == '{scompost}') {
               removeWMS("compost_facility_24feb23");
+            }
+            else if (boundary == '{s122plastic}') {
+              removeWMS("ward_122_building_collecting_plastic_13oct21");
             }
             else if (boundary == '{s122routes}') {
               removeWMS("p122_garbages_routes_20april23");
@@ -1622,7 +1633,18 @@ $("#prabhaglistwms").change(function() {
             currentPos = [19.1283, 72.9041];
             var maximumzoom = 20;
             var opac = 0.3;
-            var zoom = 14;
+            var zoom = 15;
+            var cql = `include`
+      
+          }
+          
+          else if (obj == '{s122plastic}'){
+            // alert("in S plastic ")
+            layer = 'ward_122_building_collecting_plastic_13oct21';
+            currentPos = [19.1283, 72.9041];
+            var maximumzoom = 20;
+            var opac = 0.3;
+            var zoom = 15;
             var cql = `include`
       
           }
