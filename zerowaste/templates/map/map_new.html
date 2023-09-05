@@ -3,6 +3,7 @@
 {% block extra_map_css %}
 {% load i18n %}
 
+
 <!-- import psycopg2 -->
 <style>
   .border {
@@ -1947,6 +1948,8 @@ $("#prabhaglistwms").change(function() {
             <tr class="blank_row"></tr>
             <tr><td align ="left">{% trans "Wing Name:" %}</td><td><input type="text" name="wing_name" id="id_wing_name" value="${feature.properties.wing_name}" /></td></tr>
             <tr class="blank_row"></tr>
+            <tr class="blank_row"></tr>
+            <tr><td align ="left">{% trans "Number of Floors:" %}</td><td><input type="number" name="num_floors" id="id_num_floors"  value="${feature.properties.num_floors}" /></td></tr>
             <tr><td align ="left"><label>{% trans "Number of Flats:" %}</label></td><td><input type="number" name="num_flat" id="id_num_flat"  value="${feature.properties.num_flat}" /></td></tr>
             <tr class="blank_row"></tr>
             <tr><td align ="left">{% trans "Number of Shops:" %}</td><td><input type="number" name="num_shops" id="id_num_shops"  value="${feature.properties.num_shops}" /></td></tr>
@@ -2327,9 +2330,10 @@ function Identify(e) {
                 });
                 if (feature.properties.name && feature.properties.photo && !feature.properties.Username) {
                     // alert("in route popup");
+                    // alert(HttpRequest.get_full_path())
                     content = "<table class = 'popupclass'style ='border: 1px solid white' ><tr style ='border: 1px solid white'><td colspan=6><b> Dumping point Information</b></td><td></td></tr>" +
                         "<tr style ='border: 1px solid white'><td><b>Near : </b></td><td style ='text-align:left;'>" + feature.properties.name + "</td></tr>"+
-                        // "<tr style ='border: 1px solid white'><td><b>Area of Garden : </b></td><td>" + feature.properties.Area + "(sq. meters)</td></tr>"+
+                        "<tr style ='border: 1px solid white'><td><b>Photo: </b></td><td><img class = 'popupimage' src= '../media/original_images/image_UF4LVSB.png' alt='image not found - '>" +  feature.properties.photo+"</td></tr>"+
                         "</table>";
                     popup.setContent(content);
                     popup.setLatLng(e.latlng);
