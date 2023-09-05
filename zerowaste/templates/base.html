@@ -202,15 +202,18 @@ input {
                 <li class="nav-item active z-index=100%">
                     <a href="{% url 'grievance' %}" class="nav-link text-white" >{% trans "Grievance" %}</a>
                 </li>
-                <li class="nav-item active">
+                <!-- <li class="nav-item active">
                     <a href="{% url 'dashboard' %}" class="nav-link text-white" >{% trans "Dashboard" %}</a>
-                </li>
+                </li> -->
                 <li class="nav-item dropdown z-index:auto height:100%">
                     <a class="nav-link dropdown-toggle text-white" href="#" role="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false">
-                      {% trans "Dashboard 2.x" %}
+                      {% trans "Dashboard " %}
                     </a>
                   
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                        <li class="nav-item active">
+                            <a href="{% url 'dashboard' %}" class="nav-link dropdown-item" >{% trans "Dashboard (v1)" %}</a>
+                        </li>
                         <!-- <li class="nav-item active">
                             <a href="{% url 'dashboard2' %}" class="nav-link dropdown-item" >{% trans "Dashboard 2" %}</a>
                         </li> -->
@@ -218,7 +221,10 @@ input {
                             <a href="{% url 'dashboard2_1' %}" class="nav-link dropdown-item" >{% trans "Dashboard 2.1" %}</a>
                         </li> -->
                         <li class="nav-item active">
-                            <a href="{% url 'dashboard2_2' %}" class="nav-link dropdown-item" >{% trans "Dashboard (v 2.2)" %}</a>
+                            <a href="{% url 'dashboard2_2' %}" class="nav-link dropdown-item" >{% trans "Dashboard (v2.2)" %}</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a href="https://friendly-chebakia-d02d68.netlify.app/" target="blank"class="nav-link dropdown-item" >{% trans "Dashboard (v3)" %}</a>
                         </li>
                     </ul>
                 </li> 
