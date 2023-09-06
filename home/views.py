@@ -16,7 +16,32 @@ import json
 from datetime import datetime
 from django.db.models import Count
 
+# # //For django rest api's
+# from django.contrib.auth.models import User, Group
+# from rest_framework import viewsets
+# from rest_framework import permissions
+# from home.serializers import UserSerializer, GroupSerializer
 
+# class UserViewSet(viewsets.ModelViewSet):
+#     """
+#     API endpoint that allows users to be viewed or edited.
+#     """
+#     queryset = User.objects.all().order_by('-date_joined')
+#     serializer_class = UserSerializer
+#     permission_classes = [permissions.IsAuthenticated]
+
+
+# class GroupViewSet(viewsets.ModelViewSet):
+#     """
+#     API endpoint that allows groups to be viewed or edited.
+#     """
+#     queryset = Group.objects.all()
+#     serializer_class = GroupSerializer
+#     permission_classes = [permissions.IsAuthenticated]
+
+#     # //// Django api fetch over
+
+    
 # Create your views here.
 
 def home(request):
@@ -106,7 +131,8 @@ def user_login(request):
 
 def user_logout(request):
     logout(request)
-    return redirect('user_login')
+    # return redirect('user_login')
+    return render(request,'HomePage.html')
 
 @login_required
 def tasks(request):
