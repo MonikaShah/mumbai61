@@ -159,7 +159,7 @@
   background-color: rgb(131, 131, 241);
 }
 
-  #checkboxes8,#checkboxes9,#checkboxes10,#checkboxes11 {
+  #checkboxes8,#checkboxes9,#checkboxes10,#checkboxes11,#checkboxes12 {
     display: none;
     /* border: 1px #dadada solid; */
   }
@@ -167,7 +167,7 @@
   .legend{
     background-color: white;
   }
-  #checkboxes8 label,#checkboxes9 label, #checkboxes10 label,#checkboxes11 label {
+  #checkboxes8 label,#checkboxes9 label, #checkboxes10 label,#checkboxes11 label,#checkbox12 label {
     display: block;
     text-decoration-color: blue;
     text-align: left;
@@ -423,16 +423,46 @@
           </div>
         </div> 
          <br> 
-  
-        <!-- Focus S ward  -->
+        <!--Focus case StudiesPrabhag 122-->
+        
+        <div class="multiselect">
+          <div class="selectBox" onclick="showCheckboxes3('geoCS')">
+            <button type="button" class="btn btn-outline-dark addMore" title = "More interactions are enable here" style="width: 90%;font-size:12px; " title="More interactions have been enabled here."> {% trans "Prabhag122: Case Studies" %}</button>
+            <div class="overSelect"></div>
+          </div>
+           <div id="checkboxes12">
+
+             <div class="checkbox">
+              <label><input type="checkbox" value="{segdone}" id ="segdone" 
+                onchange="getBoundaryru(this)">
+                <span> {% trans "Building Wise Segregation Activity" %}</span></label>
+              </div>
+            
+            
+              <div class="checkbox">
+              <label><input type="checkbox"  value="{segquality}" id = "segquality" onchange="getBoundaryru(this)"><span> {% trans "Building Wise Segregation Quality" %}</span></label>
+              </div>
+
+              <div class="checkbox">
+                <label><input type="checkbox" value="{segcons}" id ="segcons" onchange="getBoundaryru(this)">
+                  <span> {% trans "Building Wise consistency in segregation" %}</span></label>
+                </div>
+              
+              
+                <div class="checkbox">
+                <label><input type="checkbox"  value="{segfreq}" id = "segfreq" onchange="getBoundaryru(this)"><span> {% trans "waste pick up frequncy" %}</span></label>
+                </div>
+            </div>
+          </div>
+            <br>
+    <!-- Focus S ward  -->
         <div class="multiselect">
           <div class="selectBox" onclick="showCheckboxes3('geoS')">
             <button type="button" class="btn btn-outline-dark addMore" title = "More interactions are enable here  as a Pilot area"style="width: 90%;font-size:12px; " title="More interactions have been enable here  as a Pilot area"> {% trans "Focus: S Ward" %}</button>
             <div class="overSelect"></div>
           </div>
-           <div id="checkboxes11">
-            
-            
+        
+          <div id="checkboxes11">
             <div class="checkbox" id="boundary">
               <label><input type="checkbox" value="{wardS}" id ="wardS" onchange="getBoundaryru(this)"><span> {% trans "S Ward Boundary" %}</span></label>
               <!-- <div>
@@ -467,6 +497,12 @@
                     onchange="getBoundaryru(this)"><span> {% trans "S-ward Buildings" %}</span></label>
               </div>
               <label><b> <font color ='green'>Prabhag 122 Pilot</font></b>  
+                <!-- Adding Case studeies for Prabhag 122 -->
+                <!-- <div class="selectBox" onclick="showCheckboxes3('geoS')">
+                  <button type="button" class="btn btn-outline-dark  btn-sm" title = "C"style="width: 50%;font-size:12px; " title="More ase studies based on several Parameters"> {% trans "Case Studies" %}</button>
+                  <div class="overSelect"></div>
+                </div>
+                 <div id="checkboxes11"> -->
             <div class="checkbox" style = "padding-left:2em">
               <label><input type="checkbox"  value="{122bound}" id = "bound122" onchange="getBoundaryru(this)"><span> {% trans "Prabhag 122" %}</span></label>
             </div>
@@ -528,6 +564,7 @@
             
 
           </div>
+        </div>
         </div>
          <br> 
   
@@ -766,19 +803,29 @@
         $('#prabhag').html('Prabhag '+prabhag +' landmarks')
         $('#ward').html('Ward '+ward +' landmarks')
         
+        // define wms_layer1
         
+                
         function showCheckboxes3(th) {
           let checkboxes;
           if (th == 'geo') {
             checkboxes = document.getElementById("checkboxes3");
 
           }
+          if (th == 'geoCS') {
+            // alert(th)
+            checkboxes = document.getElementById("checkboxes12");
+            checkboxes.style.display="block";
+          }
           if (th == 'geoN') {
             checkboxes = document.getElementById("checkboxes10");
+            
 
           }
           if (th == 'geoS') {
+            // alert(th)
             checkboxes = document.getElementById("checkboxes11");
+            // alert(checkboxes.style.display);
 
           }
           else if (th == 'prabhag') {
@@ -798,6 +845,7 @@
 
           }
           if (!expanded) {
+            
             checkboxes.style.display = "block";
             expanded = true;
           } else {
@@ -811,7 +859,7 @@
 
           var $endpoint = window.location.href // or localhost/interface
           prabhag = $(this).val();
-          // alert("prabhag is"+prabhag)
+          alert("prabhag is"+prabhag)
         
 
           if(polylayer != undefined){
@@ -1204,6 +1252,24 @@ $("#prabhaglistwms").change(function() {
               // alert("reached plastic")
               putfrmgeo(s122dumping)
             }
+            else if ((boundary == '{segdone}')){
+              // alert("reached plastic")
+              putfrmgeo(segdone)
+              // const newStyle = 'seg_done'; // Replace with the desired style name
+              // changeStyle(newStyle,wms_layer1);
+            }
+            else if (boundary == '{segquality}') {
+              // alert("reached plastic")
+              putfrmgeo(segquality)
+            }
+            else if (boundary == '{segfreq}'){
+              // alert("reached plastic")
+              putfrmgeo(segfreq)
+            }
+            else if (boundary == '{segcons}'){
+              // alert("reached plastic")
+              putfrmgeo(segcons)
+            }
             else if (boundary == "{wardN}") {
               
               
@@ -1399,15 +1465,16 @@ $("#prabhaglistwms").change(function() {
           
         }
         function removepolylayer(layer){
-    mymap.removeLayer(layer);
-    // mymap.removeControl(wms_legend);
-    // mymap.clearLayers();
-}
+            mymap.removeLayer(layer);
+            // mymap.removeControl(wms_legend);
+            // mymap.clearLayers();
+        }
         function putfrmgeo(layers) {
           // alert(layers.value)
           // alert(layers);
           var obj = layers.value;
           console.log(obj);
+          var sld = '';
           if (obj == "{kwestbeat}") {
            
             layer = 'geonode:k_west_beat_22jan';
@@ -1572,6 +1639,50 @@ $("#prabhaglistwms").change(function() {
             var opac = 0.3;
             var zoom = 15;   
             var cql = `INCLUDE`  
+      
+          }
+          else if (obj == '{segdone}'){       
+            layer = 'P122_builiings_updatedSegreagation_columns_22';
+            // alert(layer)
+            currentPos = [19.1196, 72.9043];
+            var maximumzoom = 20;
+            var opac = 0.3;
+            var zoom = 15;   
+            var cql = `INCLUDE`;
+            sld = "seg_done";
+      
+          }
+          else if (obj == '{segquality}'){       
+            layer = 'P122_builiings_updatedSegreagation_columns_22';
+            // alert(layer)
+            currentPos = [19.1196, 72.9043];
+            var maximumzoom = 20;
+            var opac = 0.3;
+            var zoom = 15;   
+            var cql = `INCLUDE`;
+            sld = "seg_quality_v1";
+      
+          }
+          else if (obj == '{segcons}'){       
+            layer = 'P122_builiings_updatedSegreagation_columns_22';
+            // alert(layer)
+            currentPos = [19.1196, 72.9043];
+            var maximumzoom = 20;
+            var opac = 0.3;
+            var zoom = 15;   
+            var cql = `INCLUDE`;
+            sld = "consistancy_v1";
+      
+          }
+          else if (obj == '{segfreq}'){       
+            layer = 'P122_builiings_updatedSegreagation_columns_22';
+            // alert(layer)
+            currentPos = [19.1196, 72.9043];
+            var maximumzoom = 20;
+            var opac = 0.3;
+            var zoom = 15;   
+            var cql = `INCLUDE`;
+            sld = "frequency_v1";
       
           }
           else if (obj == '{mumbai_roads}'){
@@ -1762,8 +1873,10 @@ $("#prabhaglistwms").change(function() {
           //   // alert("came in else of cql")
           // var cql =`INCLUDE`
           // }
+            // alert("sld chosen is ",sld);
 
-          var wms_layer1 = L.tileLayer.wms('https://geonode.communitygis.in/geoserver/wms', {
+            
+            wms_layer1 = L.tileLayer.wms('https://geonode.communitygis.in/geoserver/wms', {
             layers: layer,
             format: 'image/png',
             
@@ -1773,6 +1886,7 @@ $("#prabhaglistwms").change(function() {
             maxZoom: maximumzoom,
             cql_filter:cql,
             // style: subteStyle(feature),
+            styles: sld,
            
 
           });
@@ -1785,27 +1899,11 @@ $("#prabhaglistwms").change(function() {
           if (wms_legend) {
             mymap.removeControl(wms_legend);
           }
-          addWMSLegendfromgeo(layer);
-          // alert(layer);
+          addWMSLegendfromgeo(layer,sld);
+                          
         }
-        // Set up styles for subway lines
-        // function subteStyle(feature) {
-        //   var colorToUse;
-        //   var line = feature.properties.daily_wast;
-        //   alert("in style");
-        //   if (line >= "500") colorToUse = "#46C7FA";
-        //   // else if (line === "LINEA B") colorToUse = "#E81D1A";
-        //   // else if (line === "LINEA C") colorToUse = "#4161BA";
-        //   // else if (line === "LINEA D") colorToUse = "#599C65";
-        //   // else if (line === "LINEA E") colorToUse = "#65018A";
-        //   // else if (line === "LINEA H") colorToUse = "#FAF739";
-        //   else colorToUse = "#000000";
-                    
-        //   return {
-        //     "color": colorToUse,
-        //     "weight": 5
-        //   };
-        // }
+
+       
         function putWMSru(layer) {
           layer1 = layer;
           console.log("Putwmsru- layer is "+layer);
@@ -1886,6 +1984,11 @@ $("#prabhaglistwms").change(function() {
           newLayerList.push(wms_layer);
           popup_layer = "https://geoserver2.communitygis.net/geoserver/"+layer.split(":")[0]+"/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetFeatureInfo&LAYERS=" + wms_layer.options.layers + "&QUERY_LAYERS=" + wms_layer.options.layers;
          
+
+          // const legendContainer = document.createElement('div');
+          // legendContainer.id = 'legend-container';
+          // mymap.getContainer().appendChild(legendContainer);
+
           if (wms_legend) {
             mymap.removeControl(wms_legend);
           }
@@ -2271,15 +2374,19 @@ function displaypolygon(poly_layer){
   }
 }
 function addWMSLegend(layer) {
-        
-  lagendGraphic = "https://geoserver2.communitygis.net/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=" + layer + "&LEGEND_OPTIONS=forceLabels:on&legend_options=countMatched:true";
-  wms_legend = L.wmsLegend(lagendGraphic);
+  
+    lagendGraphic = "https://geoserver2.communitygis.net/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=" + layer + "&LEGEND_OPTIONS=forceLabels:on&legend_options=countMatched:true";
+    wms_legend = L.wmsLegend(lagendGraphic);
+    
+  
           
 }
-function addWMSLegendfromgeo(layer) {     
-  // alert(layer)             
-  lagendGraphic = "https://geonode.communitygis.in/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=" + layer + "&LEGEND_OPTIONS=forceLabels:on&legend_options=countMatched:true";
-  wms_legend = L.wmsLegend(lagendGraphic);         
+
+function addWMSLegendfromgeo(layer,style) {     
+  // alert(style)             
+  lagendGraphic = "https://geonode.communitygis.in/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=" + layer + "&STYLE="+style+"&LEGEND_OPTIONS=forceLabels:on&legend_options=countMatched:true";
+  wms_legend = L.wmsLegend(lagendGraphic);        
+  // lagendGraphic.addTo(mymap) ;
 }
 function NonameBuildingFilter(feature) {
 // alert(layer.properties.name+"="+feature);
@@ -2371,6 +2478,7 @@ function Identify(e) {
                     mymap.openPopup(popup);
                     }
                 if (feature.properties.photo && feature.properties.Username) {
+                  var ext = ".jpeg";
                     // alert("in route popup");
                     content = "<table class = 'popupclass'style ='border: 1px solid white' ><tr style ='border: 1px solid white'><td colspan=6><b>HBT Clinic Information</b></td><td></td></tr>" +
                         "<tr style ='border: 1px solid white'><td><b>HBT Name: </b></td><td style ='text-align:left;'>" + feature.properties.name + "</td></tr>"+
@@ -2379,7 +2487,7 @@ function Identify(e) {
                         "<tr style ='border: 1px solid white'><td><b>Uploaded By: </b></td><td>" + feature.properties.Username + "</td></tr>"+
                         "<tr style ='border: 1px solid white'><td><b>Date of capture: </b></td><td>" + feature.properties.date + "</td></tr>"+
                         "<tr style ='border: 1px solid white'><td><b>Photo Path: </b></td><td>" + feature.properties.photo + "</td></tr>"+
-                        "<tr style ='border: 1px solid white'><td><b>Photo: </b></td><td><img class = 'popupimage' src='../media/original_images/".concat(feature.properties.photo)+"' alt='image not found - '>" + "</td></tr>"+"</table>";
+                        "<tr style ='border: 1px solid white'><td><b>Photo: </b></td><td><img class = 'popupimage' src='../media/original_images/".concat(feature.properties.photo)+ext+"' alt='image not found  '>" + "</td></tr>"+"</table>";
                     popup.setContent(content);
                     popup.setLatLng(e.latlng);
                     mymap.openPopup(popup);
