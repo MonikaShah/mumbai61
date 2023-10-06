@@ -3,8 +3,9 @@ from rest_framework import routers
 from . import  views
 
 router = routers.DefaultRouter()
-router.register(r'nowasteapi', views.BuildingView)
-# . router.register(r'bubblepopulation', views.populationView)
+router.register(r'', views.BuildingView)
+router.register(r'wardapi', views.WardView)
+
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
