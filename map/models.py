@@ -130,7 +130,7 @@ class MumbaiBuildingsWardPrabhagwise17Jan(models.Model):
     remark = models.CharField(max_length=254, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'mumbai_buildings_ward_prabhagwise_17jan'
 
 

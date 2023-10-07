@@ -15,6 +15,8 @@ from decouple import config
 import mimetypes
 
 mimetypes.add_type("text/css", ".css", True)
+mimetypes.add_type("application/javascript", ".jsx", True)
+
 
 
 
@@ -54,6 +56,7 @@ INSTALLED_APPS = [
     "django.contrib.gis",
     "home",
     "map",
+    "nowastes_dashboard3",
     "report_builder",
     # 'plotly_dash',
     # 'django_plotly_dash.apps.DjangoPlotlyDashConfig',
@@ -71,9 +74,16 @@ INSTALLED_APPS = [
 
     'modelcluster',
     'taggit',
+    'rest_framework',
+    # 'nowaste-api',
+    'nowasteapi',
 
 
 ]
+# REST_FRAMEWORK = {
+#     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+#     'PAGE_SIZE': 10
+# }
 # PLOTLY_COMPONENTS = [
 
 #     'dash_core_components',
@@ -101,7 +111,7 @@ ROOT_URLCONF = "mumbai61.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, "nowastes_dashboard3/build")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -171,6 +181,10 @@ LANGUAGES = [("en", "English"), ("hi", "Hindi"), ("mr", "Marathi")]
 
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "zerowaste/static")
+
+
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "nowastes_dashboard3/build/static")]
+
 
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 

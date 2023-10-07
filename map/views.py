@@ -61,7 +61,7 @@ def Map(request):
       else:
          selected_field1 = request.GET['name']
          print("sac number selected is ",selected_field1)
-         docinfo1 = list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(sac_number=selected_field1).values('sac_number','prop_add','is_bwg','bwg_type','is_compost','compost_type','building_type','building_name','village','road','num_flat','population','region','num_shops','wing_name','prabhag_no','ward_name_field','updated_by','update_time','device_ip','address','validity'))
+         docinfo1 = list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(sac_number=selected_field1).values('sac_number','prop_add','is_bwg','bwg_type','is_compost','compost_type','building_type','building_name','village','road','num_floors','num_flat','population','region','num_shops','wing_name','prabhag_no','ward_name_field','updated_by','update_time','device_ip','address','validity'))
          # docinfo1 = MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(sac_number=selected_field1).values('sac_number','prop_add','is_bwg','bwg_type','is_compost','compost_type','building_type','building_name','village','num_flat','region','num_shops','wing_name','prabhag_no','ward_name_field','updated_by','update_time','device_ip','address','validity')
          jsondata2 =docinfo1[0]
          # jsondata2 =docinfo1.first()

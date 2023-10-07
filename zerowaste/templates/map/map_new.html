@@ -1457,7 +1457,7 @@ $("#prabhaglistwms").change(function() {
               removeWMS("ward_122_building_collecting_plastic_13oct21");
             }
             else if (boundary == '{s122dumping}') {
-              removeWMS("p122_dumpingPoints_21aug231");
+              removeWMS("p122_dumpingpoint");
             }
             else if (boundary == '{s122routes}') {
               removeWMS("p122_garbages_routes_20april23");
@@ -1882,7 +1882,7 @@ $("#prabhaglistwms").change(function() {
           }
           else if (obj == '{s122dumping}'){
             // alert("in S plastic ")
-            layer = 'p122_dumpingPoints_21aug231';
+            layer = 'p122_dumpingpoint';
             currentPos = [19.1283, 72.9041];
             var maximumzoom = 20;
             var opac = 0.3;
@@ -2530,7 +2530,7 @@ function Identify(e) {
                     // alert(HttpRequest.get_full_path())
                     content = "<table class = 'popupclass'style ='border: 1px solid white' ><tr style ='border: 1px solid white'><td colspan=6><b> Dumping point Information</b></td><td></td></tr>" +
                         "<tr style ='border: 1px solid white'><td><b>Near : </b></td><td style ='text-align:left;'>" + feature.properties.name + "</td></tr>"+
-                        "<tr style ='border: 1px solid white'><td><b>Photo: </b></td><td><img class = 'popupimage' src= '../media/original_images/image_UF4LVSB.png' alt='image not found - '>" +  feature.properties.photo+"</td></tr>"+
+                        "<tr style ='border: 1px solid white'><td><b>Photo: </b></td><td><img class = 'popupimage' src= '../media/original_images/"+feature.properties.photo +"' alt='image not found - '>" +  feature.properties.photo+"</td></tr>"+
                         "</table>";
                     popup.setContent(content);
                     popup.setLatLng(e.latlng);
