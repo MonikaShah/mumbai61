@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load l10n %}
+{% load i18n %}
+
+{% block content %} 
+<style>
+    /* ... Your existing styles ... */
+
+    .scrollable-container {
+        height: 500px;
+        /* Set the desired height for the scrollable container */
+        overflow: auto;
+        /* Enable scrolling */
+    }
+</style>
+
+<!-- Your existing code -->
+
+<div class="container mt-5 scrollable-container">
+    <!-- Content goes here -->
+    <h1>{% trans "List of  Videos" %}</h1>
+    <hr>
+    
+    <ol class="list-group" type="1">
+
+        {% for link in links %}
+        <li class="list-group-item">{{ forloop.counter }}
+            <a href="{{ link.url }}">
+                {{ link.title }}
+            </a>
+        </li>
+        {% endfor %}
+    </ol>
+</div>
+
+
+{% endblock %}

@@ -1,7 +1,7 @@
 # Create your views here.
 from django.shortcuts import render,redirect,HttpResponse,HttpResponseRedirect
 from .forms import GarbageSegForm,GrievanceForm,Ward61BuildingsOsm2Nov2021Form,WasteSegregationDetailsForm,NewUserForm,EmployeeDetailsForm,HumanResourceDataForm,MumbaiBuildingsWardPrabhagwise17JanForm,WasteSegregationDetailsRevised2march22Form,compostForm,dataForm
-from .models import Report,Rating,WasteSegregationDetails,BuildingsWard9April22,BuildingUnder30Mtr,KWestBeat22Jan,WasteSegregationDetailsRevised2March22,HumanResourceData,P122Buildings8Nov22, data_form #CensusTable #,OsmBuildings29Oct21#BuildingsWardWise4March,
+from .models import Report,Rating,WasteSegregationDetails,BuildingsWard9April22,BuildingUnder30Mtr,KWestBeat22Jan,WasteSegregationDetailsRevised2March22,HumanResourceData,P122Buildings8Nov22, data_form,links #CensusTable #,OsmBuildings29Oct21#BuildingsWardWise4March,
 from map.models import Ward61BuildingsOsm2Nov2021,MumbaiBuildingsWardPrabhagwise17Jan,MumbaiPrabhagBoundaries3Jan2022V2,DistinctGeomSacNoMumbai#,Ward61OsmBuildings,
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.core.files.storage import FileSystemStorage
@@ -526,7 +526,7 @@ def WasteSegregationDetailsView(request):
         # print(request.method)
         if request.method == 'POST':
             form = WasteSegregationDetailsForm(request.POST)
-            # region = form.cleaned_data['region']
+            ## region = form.cleaned_data['region']
             # print(region)
             # regionName = form.cleaned_data['region']
             # print(form['region'].value())
@@ -957,7 +957,7 @@ def WasteSegregationDetailsRevisedView(request):
                 return JsonResponse(prabhag_list, safe=False)
         if request.method == 'POST':
             form = WasteSegregationDetailsRevised2march22Form(request.POST)
-            # region = form.cleaned_data['region']
+            ## region = form.cleaned_data['region']
             # print(region)
             # regionName = form.cleaned_data['region']
             # print(form['region'].value())
@@ -1078,3 +1078,23 @@ def student_registration(req):
                 return render(req, 'HomePage.html')
                 
     return render(req, 'student_registration_form.html')
+
+
+def static_files_view(request):
+    # static_folder = 'dashboard/static/'
+    # folder_path = 'doc'
+    # files = os.listdir(static_folder)
+    # folder_full_path = os.path.join(static_folder, folder_path)
+    # files = os.listdir(folder_full_path)
+    # documents=Document.objects.all()
+    # images = Image.objects.all()
+    link=links.objects.all()
+    context = {
+        # 'files': files,
+        # 'folder_path': folder_path,
+        # 'documents':documents,
+        # 'images': images,
+        'links': link,
+        
+    }
+    return render(request, 'videos.html', context)

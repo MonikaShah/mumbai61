@@ -232,20 +232,6 @@ class Rating(models.Model):
     awareness = models.IntegerField(null=True)
     role = models.CharField(max_length=10)
 
-# class OsmBuildings29Oct21(models.Model):
-#     geom = models.TextField(blank=True, null=True)  # This field type is a guess.
-#     fid = models.IntegerField(blank=False, null=False)
-#     osm_id = models.IntegerField(blank=True, null=True)
-#     addrstreet = models.CharField(max_length=200, blank=True, null=True)
-#     building = models.CharField(max_length=80, blank=True, null=True,default = "TestBuilding")
-#     name = models.CharField(max_length=80, blank=True, null=True, default = "TestName")
-#     num_flats = models.IntegerField(blank=True, null=True, default =1)
-#     wings = models.IntegerField(blank=True, null=True,default=1)
-#     region = models.CharField(max_length=50, blank=True, null=True,default = "TestRegion")
-
-#     class Meta:
-#         managed = False
-#         db_table = 'osm_buildings_29oct21'
 
 class WasteSegregationDetails(models.Model):
     track_id = models.IntegerField(blank=True, null=True)
@@ -664,3 +650,13 @@ class data_form(models.Model):
 
     def __str__(self):
         return self.websiteUsername+"- of - "+self.collegeName+" -Institute"
+    
+
+class links(models.Model):
+    title = models.CharField(max_length=100, blank=True, null=True)
+    url = models.CharField(max_length=100)
+    class Meta:
+        managed = True
+        db_table = 'dashboard_links' 
+    def __str__(self):
+        return self.title
