@@ -889,7 +889,7 @@
 
           var $endpoint = window.location.href // or localhost/interface
           prabhag = $(this).val();
-          alert("prabhag is"+prabhag)
+          // alert("prabhag is"+prabhag)
         
 
           if(polylayer != undefined){
@@ -1354,17 +1354,19 @@ $("#prabhaglistwms").change(function() {
             else if (boundary == "{buildings_only}")
               putWMSru("ward61:osm_buildings_29oct21");
             else if (boundary == "{roads}"){
-            var wms_layer = L.tileLayer.wms('https://geoserver2.communitygis.net/geoserver/wms', {
-                layers: 'Buildings_mumbai:mumbai_roads_prabhag_wise_29jan',
+            var wms_layer = L.tileLayer.wms('https://geonode.communitygis.in/geoserver/geonode/wms', {
+                layers: 'mumbai_roads_prabhag_wise_29jan',
                 format: 'image/png',
                 transparent: 'true',
                 cql_filter: `prabhag_no='${prabhag}'`,
+                styles:'mumbai_roads_prabhagwise20oct23',
 
               });
               wms_layer.addTo(mymap);
               newLayerList.push(wms_layer);
-              addWMSLegend('Buildings_mumbai:mumbai_roads_prabhag_wise_29jan');
-              setView1('Buildings_mumbai:Buildings_mumbai','prabhag_no', prabhag);}
+              addWMSLegendfromgeo('mumbai_roads_prabhag_wise_29jan','mumbai_roads_prabhagwise20oct23');
+              setView1('Buildings_mumbai:Buildings_mumbai','prabhag_no', prabhag);
+            }
             else if(boundary == '{cop}')
               putWMSru("kwest_corporator_ward_31st_dec");
             else if (boundary == "{buildings_noname}")
@@ -1497,7 +1499,7 @@ $("#prabhaglistwms").change(function() {
 
             }
             else if (boundary == "{roads}")
-              removeWMS('Buildings_mumbai:mumbai_roads_prabhag_wise_29jan');
+              removeWMS('mumbai_roads_prabhag_wise_29jan');
             else if (boundary == "{buildings_noname}")
               removepolylayer(polylayer);
             else if (boundary == "{regions_noname}")
