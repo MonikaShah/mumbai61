@@ -159,7 +159,7 @@
   background-color: rgb(131, 131, 241);
 }
 
-  #checkboxes8,#checkboxes9,#checkboxes10,#checkboxes11,#checkboxes12{
+  #checkboxes8,#checkboxes9,#checkboxes10,#checkboxes11,#checkboxes12,#checkboxes13{
     display: none;
     /* border: 1px #dadada solid; */
   }
@@ -167,7 +167,7 @@
   .legend{
     background-color: white;
   }
-  #checkboxes8 label,#checkboxes9 label, #checkboxes10 label,#checkboxes11 label,#checkboxes12 label {
+  #checkboxes8 label,#checkboxes9 label, #checkboxes10 label,#checkboxes11 label,#checkboxes12 label,#checkboxes13 label {
     display: block;
     text-decoration-color: blue;
     text-align: left;
@@ -423,6 +423,63 @@
           </div>
         </div> 
          <br> 
+        <!--------------- Focus L ward--------------------->
+        <div class="multiselect">
+          <div class="selectBox" onclick="showCheckboxes3('geoL')">
+            <button type="button" class="btn btn-outline-dark addMore" title = "More interactions are enable here  as a Pilot area"style="width: 90%;font-size:12px; " title="L ward"> {% trans "Focus: L Ward" %}</button>
+            <div class="overSelect"></div>
+          </div>
+           <div id="checkboxes13">
+            <!-- <div class="checkbox" id="boundary">
+              <label><input type="checkbox" value="Mumbai Suburban" onchange="getBoundaryru(this)"><span> {% trans  "Mumbai Suburban Boundary" %}</span></label>
+            </div> -->
+            
+            <div class="checkbox" id="boundary">
+              <label><input type="checkbox" value="{wardL}" id ="wardL" onchange="getBoundaryru(this)"><span> {% trans "L Ward Boundary" %}</span></label>
+              
+            <div class="checkbox">
+              <label><input type="checkbox"  value="{Lwardprabhags}" id = "Lwardprabhags" onchange="getBoundaryru(this)"><span> {% trans "Prabhags" %}</span></label>
+            </div>
+           
+            <div id="checkboxes4">
+              <div class="checkbox">
+                <label><input type="checkbox" value="{Lroads}"  id="Lroads"
+                    onchange="getBoundaryru(this)"><span> {% trans "L-ward Roads" %}</span></label>
+              </div>
+            </div>
+            
+              
+            <!-- <div id="checkboxes4">
+              <div class="checkbox">
+                <label><input type="checkbox" value="{Nmor_routes}"  id="Nmor_routes"
+                    onchange="getBoundaryru(this)"><span> {% trans "N-ward Morning Routes" %}</span></label>
+              </div>
+            </div> -->
+            <div id="checkboxes4">
+              <div class="checkbox">
+                <label><input type="checkbox" value="{lbuildings}"  id="lbuildings"
+                    onchange="getBoundaryru(this)"><span> {% trans "L-ward Buildings" %}</span></label>
+              </div>
+            </div>
+            <label><b> <font color ='green'>Prabhag 156</font></b>  
+              <div class="checkbox" style = "padding-left:2em">
+                <label><input type="checkbox"  value="{156bound}" id = "bound156" onchange="getBoundaryru(this)"><span> {% trans "Prabhag 156 Boundary" %}</span></label>
+              </div>
+              <div class="checkbox" style = "padding-left:2em">
+                <label><input type="checkbox" value="{l156buildings}"  id="l156buildings"
+                    onchange="getBoundaryru(this)"><span> {% trans "Prabhag 156: Buildings" %}</span></label>
+              </div>
+              <div class="checkbox" style = "padding-left:2em">
+                <label><input type="checkbox"  value="{157bound}" id = "bound157" onchange="getBoundaryru(this)"><span> {% trans "Prabhag 157 Boundary" %}</span></label>
+              </div>
+              <div class="checkbox" style = "padding-left:2em">
+                <label><input type="checkbox" value="{l157buildings}"  id="l157buildings"
+                    onchange="getBoundaryru(this)"><span> {% trans "Prabhag 157: Buildings" %}</span></label>
+              </div>
+          </div>
+        </div> 
+         <br> 
+         
         <!--Focus case StudiesPrabhag 122-->
         
         <div class="multiselect">
@@ -533,7 +590,7 @@
                 </div>
                  <div id="checkboxes11"> -->
             <div class="checkbox" style = "padding-left:2em">
-              <label><input type="checkbox"  value="{122bound}" id = "bound122" onchange="getBoundaryru(this)"><span> {% trans "Prabhag 122" %}</span></label>
+              <label><input type="checkbox"  value="{122bound}" id = "bound122" onchange="getBoundaryru(this)"><span> {% trans "Boundary" %}</span></label>
             </div>
             <div class="checkbox" style = "padding-left:2em">
               <label><input type="checkbox"  value="{122regions}" id = "regions122" onchange="getBoundaryru(this)"><span> {% trans "Prabhag 122 regions" %}</span></label>
@@ -590,8 +647,25 @@
               <label><input type="checkbox" value="{s122car}"  id="s122car"
                   onchange="getBoundaryru(this)" disabled><span> {% trans "Car Parking (in progress)" %}</span></label>
             </div>
-            
-
+            <label><b> <font color ='green'>Prabhag 121</font></b>  
+              <div class="checkbox" style = "padding-left:2em">
+                <label><input type="checkbox"  value="{121bound}" id = "bound121" onchange="getBoundaryru(this)"><span> {% trans "Prabhag Boundary" %}</span></label>
+              </div>
+              <div class="checkbox" style = "padding-left:4em">
+                <label><input type="checkbox"  value="{iitb121bound}" id = "iitbbound121" onchange="getBoundaryru(this)"><span> {% trans "IIT-B Boundary" %}</span></label>
+              </div>
+              <div class="checkbox" style = "padding-left:2em">
+                <label><input type="checkbox" value="{s121buildings}"  id="s121buildings"
+                    onchange="getBoundaryru(this)"><span> {% trans "Prabhag Buildings" %}</span></label>
+              </div>
+              <div class="checkbox" style = "padding-left:4em">
+                <label><input type="checkbox" value="{s121iitbbuildings}"  id="s121iitbbuildings"
+                    onchange="getBoundaryru(this)"><span> {% trans "IIT-B Buildings" %}</span></label>
+              </div>
+              <div class="checkbox" style = "padding-left:2em">
+                <label><input type="checkbox" value="{s121roads}"  id="s121roads"
+                    onchange="getBoundaryru(this)"><span> {% trans "Roads" %}</span></label>
+              </div>
           </div>
         </div>
         </div>
@@ -824,7 +898,7 @@
         var areaLayerList=[];
         var markerClusters = L.markerClusterGroup({"chunkedLoading": true});
         let buildings_up = [];
-        let buildings = {{ geojson|safe }};
+        //let buildings = {{ geojson|safe }};
         let ward= '{{ward}}';
         let prabhag = '{{prabhag}}';
         // console.log(prabhag)
@@ -844,6 +918,12 @@
           if (th == 'geoCS') {
             // alert(th)
             checkboxes = document.getElementById("checkboxes12");
+            
+            
+          }
+          if (th == 'geoL') {
+            // alert(th)
+            checkboxes = document.getElementById("checkboxes13");
             
             
           }
@@ -1214,6 +1294,10 @@ $("#prabhaglistwms").change(function() {
               // expanded = true;
 
             }
+            else if (boundary == '{wardL}'){
+              putfrmgeo(wardL);
+            
+             }
             else if (boundary == '{wardN}'){
               putfrmgeo(wardN);
             
@@ -1222,19 +1306,62 @@ $("#prabhaglistwms").change(function() {
               putfrmgeo(Nwardprabhags);
             
              }
+             else if (boundary == '{Lwardprabhags}'){
+              putfrmgeo(Lwardprabhags);
+            
+             }
              else if (boundary == '{Nroads}') {
               putfrmgeo(Nroads);
             }
+            else if (boundary == '{Lroads}') {
+              putfrmgeo(Lroads);
+            }
+            else if (boundary == '{lbuildings}') {
+              putfrmgeo(lbuildings);
+            }
+            else if (boundary == "{156bound}") {  
+             
+             putfrmgeo(bound156);
+           }
+           else if (boundary == '{l156buildings}') {
+             putfrmgeo(l156buildings);
+           }
+           else if (boundary == "{157bound}") {  
+             
+             putfrmgeo(bound157);
+           }
+           else if (boundary == '{l157buildings}') {
+             putfrmgeo(l157buildings);
+           }
             else if (boundary == '{Nmor_routes}') {
               putfrmgeo(Nmor_routes);
             }
             else if (boundary == '{nbuildings}') {
               putfrmgeo(nbuildings);
             }
+            else if (boundary == "{iitb121bound}") {  
+             
+             putfrmgeo(iitbbound121);
+           }
+           else if (boundary == '{s121iitbbuildings}') {
+              putfrmgeo(s121iitbbuildings);
+            }
+            else if (boundary == "{121bound}") {  
+             
+             putfrmgeo(bound121);
+           }
             else if (boundary == "{122bound}") {  
              
               putfrmgeo(bound122);
             }
+            else if (boundary == '{s121buildings}') {
+              putfrmgeo(s121buildings);
+            }
+            else if (boundary == "{s121roads}") {  
+            //  alert(boundary);
+             putfrmgeo(s121roads);
+            }
+
             else if (boundary == "{122regions}") {  
             //  alert(boundary);
              putfrmgeo(regions122);
@@ -1353,13 +1480,15 @@ $("#prabhaglistwms").change(function() {
               displaypolygon(boundary);
             else if (boundary == "{buildings_only}")
               putWMSru("ward61:osm_buildings_29oct21");
-            else if (boundary == "{roads}"){
+            else if (boundary == '{roads}'){
+             
             var wms_layer = L.tileLayer.wms('https://geonode.communitygis.in/geoserver/geonode/wms', {
                 layers: 'mumbai_roads_prabhag_wise_29jan',
                 format: 'image/png',
                 transparent: 'true',
                 cql_filter: `prabhag_no='${prabhag}'`,
                 styles:'mumbai_roads_prabhagwise20oct23',
+                
 
               });
               wms_layer.addTo(mymap);
@@ -1425,8 +1554,25 @@ $("#prabhaglistwms").change(function() {
             
             else if (boundary == "{wardN}")
                 removeWMS("mumbai_ward_boundary_2Jan2022");
+            else if (boundary == "{wardL}")
+                removeWMS("mumbai_ward_boundary_2Jan2022");
+            else if (boundary == "{Lwardprabhags}")
+                removeWMS("Mumbai_Prabhag_Boundaries_3Jan2022V2");
+            else if (boundary == '{Lroads}') {
+              removeWMS("mumbai_roads_prabhag_wise_29jan");
+            }
+            else if (boundary == "{156bound}")
+                removeWMS("Mumbai_Prabhag_Boundaries_3Jan2022V2");
+            else if (boundary == "{157bound}")
+                removeWMS("Mumbai_Prabhag_Boundaries_3Jan2022V2");
+            else if (boundary == "{l156buildings}")
+                removeWMS("Buildings_mumbai");
+            else if (boundary == "{l157buildings}")
+                removeWMS("Buildings_mumbai");
+            else if (boundary == "{122bound}")
+                removeWMS("S_ward");
             else if (boundary == "{Nwardprabhags}")
-                removeWMS("Nward_roads_11feb23");
+                removeWMS("Mumbai_Prabhag_Boundaries_3Jan2022V2");
             else if (boundary == '{Nroads}') {
               removeWMS("Nward_roads_11feb23");
             }
@@ -1434,6 +1580,15 @@ $("#prabhaglistwms").change(function() {
             else if (boundary == '{Nmor_routes}') {
               removeWMS("Nward_morningRoutes_8feb23");
             }
+            else if (boundary == '{s121roads}') {
+              removeWMS("mumbai_roads_prabhag_wise_29jan");
+            }
+            else if (boundary == "{iitb121bound}")
+                removeWMS("IITB_BOUNDARY");
+            else if (boundary == "{s121iitbbuildings}")
+                removeWMS("geonode:buildings_2oct21");
+            else if (boundary == "{121bound}")
+                removeWMS("S_ward");
             else if (boundary == "{122bound}")
                 removeWMS("S_ward");
             else if(boundary =="{122regions}")
@@ -1449,7 +1604,7 @@ $("#prabhaglistwms").change(function() {
             else if (boundary == '{Rsegdone}' || boundary =='{Rsegquality}' ||boundary =='{Rsegfreq}' ||boundary =='{Rsegcons}') {
               removeWMS("updated_regions_P122_23Sept23");
             }
-            else if (boundary == '{sbuildings}' || boundary =='{nbuildings}' ||boundary =='{s122buildings}') {
+            else if (boundary == '{sbuildings}' || boundary =='{nbuildings}' ||boundary =='{s122buildings}' ||boundary =='{s121buildings}') {
               removeWMS("Buildings_mumbai");
             }
             else if (boundary == '{scompost}') {
@@ -1531,6 +1686,7 @@ $("#prabhaglistwms").change(function() {
         function putfrmgeo(layers) {
           // alert(layers.value)
           // alert(layers);
+          layer1 = layers;
           var obj = layers.value;
           console.log(obj);
           var sld = '';
@@ -1543,6 +1699,16 @@ $("#prabhaglistwms").change(function() {
             var zoom = 13;
             var cql =`INCLUDE`
           }
+        //   if (obj == "{roads}") {
+           
+        //    layer = 'mumbai_roads_prabhag_wise_29jan';
+        //    var currentPos = [19.1211, 72.8155];
+        //    var maximumzoom = 19;
+        //    // var opac = 0.6;
+        //    var zoom = 13;
+        //    var cql =`prabhag_no='${prabhag}'`,
+        //    sld ='mumbai_roads_prabhagwise20oct23',
+        //  }
           else if (obj == '{bwg_city}'){
             layer = 'geonode:BWG_City_29Jan';
             var currentPos = [18.9944, 72.8043];
@@ -1608,6 +1774,86 @@ $("#prabhaglistwms").change(function() {
             var opac = 0.3;
             var zoom = 13;
             var cql =`INCLUDE`
+      
+          }
+          else if (obj == '{wardL}'){
+            // alert("I am in L ward")
+            layer = 'mumbai_ward_boundary_2Jan2022';
+            // var currentPos = [19., 72.8752];
+            // var maximumzoom = 19;
+            // var opac = 1.0;
+            // var zoom = 13;
+            currentPos = [19.098, 72.886];
+            var maximumzoom = 20;
+            var opac = 0.3;
+            var zoom = 13;
+            var cql =`ward_name_='L'`
+      
+          }
+          else if (obj == '{Lwardprabhags}'){
+            // alert("I am in N ward")
+            layer = 'Mumbai_Prabhag_Boundaries_3Jan2022V2';
+            // var currentPos = [19.1022, 72.8752];
+            // var maximumzoom = 19;
+            // var opac = 1.0;
+            // var zoom = 13;
+            currentPos = [19.098, 72.886];
+            var maximumzoom = 20;
+            var opac = 0.3;
+            var zoom = 13;
+            var cql =`Ward_Name='L'`  
+            
+          }
+          else if (obj == '{Lroads}'){
+            // alert("I am in N ward")
+            layer = 'mumbai_roads_prabhag_wise_29jan';
+            // var currentPos = [19.1022, 72.8752];
+            // var maximumzoom = 19;
+            // var opac = 1.0;
+            // var zoom = 13;
+            currentPos = [19.084, 72.927];
+            var maximumzoom = 20;
+            var opac = 0.3;
+            var zoom = 13;
+            var cql =`ward_id='L'`  
+            
+          }
+          else if (obj == '{156bound}'){       
+            layer = 'Mumbai_Prabhag_Boundaries_3Jan2022V2';
+            currentPos = [19.1236, 72.891];
+            var maximumzoom = 20;
+            var opac = 0.3;
+            var zoom = 15;   
+            var cql = `prabhag_no='156'`  
+      
+          }
+          else if (obj == '{157bound}'){       
+            layer = 'Mumbai_Prabhag_Boundaries_3Jan2022V2';
+            currentPos = [19.1236, 72.891];
+            var maximumzoom = 20;
+            var opac = 0.3;
+            var zoom = 15;   
+            var cql = `prabhag_no='157'`  
+      
+          }
+          else if (obj == '{l156buildings}'){
+            // alert("in S roads")
+            layer = 'Buildings_mumbai';
+            currentPos = [19.1236, 72.891];
+            var maximumzoom = 20;
+            var opac = 0.3;
+            var zoom = 15;
+            var cql = `prabhag_no='156'`
+      
+          }
+          else if (obj == '{l157buildings}'){
+            // alert("in S roads")
+            layer = 'Buildings_mumbai';
+            currentPos = [19.1236, 72.891];
+            var maximumzoom = 20;
+            var opac = 0.3;
+            var zoom = 15;
+            var cql = `prabhag_no='157'`
       
           }
           else if (obj == '{wardN}'){
@@ -1680,7 +1926,24 @@ $("#prabhaglistwms").change(function() {
             var cql = `ward_name_='N'`
       
           }
-
+          else if (obj == '{iitb121bound}'){       
+            layer = 'IITB_BOUNDARY';
+            currentPos = [19.134, 72.9025];
+            var maximumzoom = 20;
+            var opac = 0.3;
+            var zoom = 15;   
+            var cql = `include`  
+      
+          }
+          else if (obj == '{121bound}'){       
+            layer = 'S_ward';
+            currentPos = [19.134, 72.923];
+            var maximumzoom = 20;
+            var opac = 0.3;
+            var zoom = 15;   
+            var cql = `prabhag_no='121'`  
+      
+          }
           else if (obj == '{122bound}'){       
             layer = 'S_ward';
             currentPos = [19.134, 72.923];
@@ -1830,13 +2093,43 @@ $("#prabhaglistwms").change(function() {
             style: "bldgStyle";
       
           }
+          else if (obj == '{s121buildings}'){
+            // alert("in S 121 buildings");
+            layer = 'Buildings_mumbai';
+            currentPos = [19.1296, 72.9001];
+            var maximumzoom = 20;
+            var opac = 0.3;
+            var zoom = 15;
+            var cql = `prabhag_no='121'`
+      
+          }
+          else if (obj == '{s121iitbbuildings}'){
+            // alert("in S 121 IITb buildings");
+            layer = 'geonode:buildings_2oct21';
+            currentPos = [19.1296, 72.9001];
+            var maximumzoom = 20;
+            var opac = 0.3;
+            var zoom = 15;
+            var cql = `include`
+      
+          }
+          else if (obj == '{s121roads}'){
+            // alert("in 122 roads")
+            layer = 'mumbai_roads_prabhag_wise_29jan';
+            currentPos =  [19.1296, 72.9001];
+            var maximumzoom = 20;
+            var opac = 0.3;
+            var zoom = 15;
+            var cql = `prabhag_no='121'`
+      
+          }
           else if (obj == '{s122buildings}'){
             // alert("in S roads")
             layer = 'Buildings_mumbai';
             currentPos = [19.1283, 72.9041];
             var maximumzoom = 20;
             var opac = 0.3;
-            var zoom = 14;
+            var zoom = 15;
             var cql = `prabhag_no='122'`
       
           }
@@ -1898,7 +2191,7 @@ $("#prabhaglistwms").change(function() {
             currentPos =  [19.1283, 72.9041];
             var maximumzoom = 20;
             var opac = 0.3;
-            var zoom = 14;
+            var zoom = 15;
             var cql = `prabhag_no='122'`
       
           }
@@ -2583,7 +2876,16 @@ function Identify(e) {
                     popup.setLatLng(e.latlng);
                     mymap.openPopup(popup);
                     }
-               
+                  if (feature.descriptio) {
+                    alert("in iitb buildings");
+                    content = "<table class = 'popupclass' ><tr><td><b>IIT-B buildings Info</b></td><td></td></tr>" +
+                        "<tr><td><b>Name: </b></td><td>" + feature.name + "</td></tr>";
+                        "<tr><td><b>Descriptiom: </b></td><td>" + feature.descriptio + "</td></tr>"+"</table>";
+                    // popup.setContent(content);
+                    // popup.setLatLng(e.latlng);
+                    // mymap.openPopup(popup);
+                    // return content;
+                  }
                 if (feature.properties.route_nm) {
                     // alert("in route popup");
                     content = "<table class = 'popupclass'style ='border: 1px solid white' ><tr style ='border: 1px solid white'><td colspan=6><b> BMC Route Information</b></td><td></td></tr>" +
@@ -2675,6 +2977,16 @@ function new_ajax(e){
                     // alert("in region");
                     content = "<table class = 'popupclass' ><tr><td><b>Region Info</b></td><td></td></tr>" +
                         "<tr><td><b>Region Name: </b></td><td>" + data.region + "</td></tr>"+"</table>";
+                    // popup.setContent(content);
+                    // popup.setLatLng(e.latlng);
+                    // mymap.openPopup(popup);
+                    // return content;
+                  }
+                  if (data.descriptio) {
+                    alert("in iitb buildings");
+                    content = "<table class = 'popupclass' ><tr><td><b>IIT-B buildings Info</b></td><td></td></tr>" +
+                        "<tr><td><b>Name: </b></td><td>" + data.name + "</td></tr>";
+                        "<tr><td><b>Descriptipm: </b></td><td>" + data.descriptio + "</td></tr>"+"</table>";
                     // popup.setContent(content);
                     // popup.setLatLng(e.latlng);
                     // mymap.openPopup(popup);
