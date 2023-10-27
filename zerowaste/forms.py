@@ -2,11 +2,11 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 # from django.contrib.auth.models import User
 
-from .models import Report,Grievance,WasteSegregationDetails,EmployeeDetails,User,MumbaiBuildingsWardPrabhagwise17Jan,WasteSegregationDetailsRevised2March22,MumbaiWardBoundary2Jan2022,HumanResourceData,MumbaiPrabhagBoundaries3Jan2022V2,compost_data,data_form
+from .models import Report,Grievance,WasteSegregationDetails,EmployeeDetails,User,MumbaiBuildingsWardPrabhagwise17Jan,WasteSegregationDetailsRevised2March22,MumbaiWardBoundary2Jan2022,HumanResourceData,MumbaiPrabhagBoundaries3Jan2022V2,compost_data,data_form,document_up
 #,OsmBuildings29Oct21
 from map.models import Ward61BuildingsOsm2Nov2021
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Row, Column, ButtonHolder
+# from crispy_forms.helper import FormHelper
+# from crispy_forms.layout import Layout, Submit, Row, Column, ButtonHolder
 import datetime,re
 # from phonenumber_field.formfields import PhoneNumberField
 from django.contrib.gis import forms
@@ -17,6 +17,15 @@ from datetime import timedelta
 # import numpy as np
 import xlrd
 import csv
+
+ 
+# from datetimepicker.widgets import DateTimePicker
+# from django.contrib.auth.forms import UserCreationForm
+# import random
+# import string
+from django.forms import Textarea
+# from .models import document_up
+
 
 councillorWard = [
     ('61','61'),
@@ -168,8 +177,7 @@ class MumbaiBuildingsWardPrabhagwise17JanForm(forms.ModelForm):
 
 class WasteSegregationDetailsForm(forms.ModelForm): 
     coll_date  = forms.DateField(label = _(u'Date'),widget=forms.TextInput(attrs={'type': 'date'}),initial=datetime.date.today)
-    # region = forms.ModelChoiceField(queryset = WasteSegregationDetails.objects.filter(region__isnull=False).values_list('region', flat=True).distinct('region'),empty_label="(Nothing)")
-    # region = forms.ModelChoiceField(label = _(u'Region Name'),queryset = WasteSegregationDetails.objects.all(),empty_label="(Choose Region)", to_field_name="region")
+   
     region = forms.ModelChoiceField(label = _(u'Region Name'),queryset =WasteSegregationDetails.objects.all(),to_field_name='region', required=False)
     # building_cluster = forms.CharField(label = _(u'Building Name'),building_choices,widget=forms.Select())
     building_name = forms.ModelChoiceField(label = _(u'Building Name'),queryset = WasteSegregationDetails.objects.all(),widget=forms.Select(attrs={'class': 'form-control'}))
@@ -235,7 +243,7 @@ class EmployeeDetailsForm(forms.ModelForm):
     #adminward =forms.CharField(label = _(u'Admin Ward'),max_length=50)
     # prabhag = forms.CharField(label=_(u'Prabhag '),max_length=100,widget=forms.Select(choices=councillorWard))
     # prabhag = forms.CharField(label=_(u'Prabhag '),max_length=100)
-    # region = forms.CharField(label = _(u'Region Name'),widget=forms.Select(choices=Regions))
+    
     # emp_category =forms.CharField(label = _(u'Scavenger'),widget=forms.Select(choices=EmployeePost))
     # emp_name =forms.CharField(label = _(u'Employee Name'),max_length = 100)
     # emp_mobile =forms.IntegerField(label = _(u'Employee Mobile No.'))
@@ -268,7 +276,7 @@ class HumanResourceDataForm(forms.ModelForm):
     # ward =forms.CharField(label = _(u'Admin Ward'),max_length=50)
     #adminward =forms.CharField(label = _(u'Admin Ward'),max_length=50)
     # prabhag = forms.CharField(label=_(u'Prabhag '),max_length=100,widget=forms.Select(choices=councillorWard))
-    # region = forms.CharField(label = _(u'Region Name'),widget=forms.Select(choices=Regions))
+    
     # emp_category =forms.CharField(label = _(u'Scavenger'),widget=forms.Select(choices=EmployeePost))
     # emp_name =forms.CharField(label = _(u'Employee Name'),max_length = 100)
     # emp_mobile =forms.IntegerField(label = _(u'Employee Mobile No.'))
@@ -302,7 +310,7 @@ class WasteSegregationDetailsRevised2march22Form(forms.ModelForm):
     # date_time  = forms.DateField(label = _(u'Time'))
     # # region = forms.ModelChoiceField(queryset = WasteSegregationDetails.objects.filter(region__isnull=False).values_list('region', flat=True).distinct('region'),empty_label="(Nothing)")
     # # region = forms.ModelChoiceField(label = _(u'Region Name'),queryset = WasteSegregationDetails.objects.all(),empty_label="(Choose Region)", to_field_name="region")
-    # region = forms.ModelChoiceField(label = _(u'Region Name'),queryset =WasteSegregationDetails.objects.all(),to_field_name='region', required=False)
+    
     # # building_cluster = forms.CharField(label = _(u'Building Name'),building_choices,widget=forms.Select())
     # building_name = forms.ModelChoiceField(label = _(u'Building Name'),queryset = WasteSegregationDetails.objects.all(),widget=forms.Select(attrs={'class': 'form-control'}))
 
@@ -393,3 +401,16 @@ class dataForm(forms.ModelForm):
     class Meta:
         model = data_form
         fields = '__all__' 
+
+#upload and list documents images and videos
+
+
+class DocumentForm(forms.ModelForm):
+    class Meta:
+        model = document_up
+        fields = ('grp','title', 'Document',)
+# class ImageForm(forms.ModelForm):
+#     class Meta:
+#         model = image_up
+#         fields = ('title', 'image',)
+

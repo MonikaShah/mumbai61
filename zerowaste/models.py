@@ -660,3 +660,20 @@ class links(models.Model):
         db_table = 'dashboard_links' 
     def __str__(self):
         return self.title
+    
+grpChoice = (('ESG','ESG'),('SWM','SWM'),('BMC','BMC'),('Startups','Startups'))    
+class image_up(models.Model):
+    
+    # diet=models.OneToOneField(dietrecallmodel, on_delete=models.CASCADE)
+    title=models.CharField( max_length=150,null=True)
+    image = models.ImageField( upload_to='images/%Y/%m/%d')
+    
+class document_up(models.Model):
+    grp =models.TextField(choices=grpChoice,default='SWM',null=True)
+    title=models.CharField( max_length=150,null=True)
+    Document = models.FileField(upload_to='documents/%Y/%m/%d')
+    class Meta:
+        managed =True
+        db_table = 'resources_document'
+    def __str__(self):
+        return self.title

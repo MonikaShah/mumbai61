@@ -1,7 +1,7 @@
 # Create your views here.
 from django.shortcuts import render,redirect,HttpResponse,HttpResponseRedirect
-from .forms import GarbageSegForm,GrievanceForm,Ward61BuildingsOsm2Nov2021Form,WasteSegregationDetailsForm,NewUserForm,EmployeeDetailsForm,HumanResourceDataForm,MumbaiBuildingsWardPrabhagwise17JanForm,WasteSegregationDetailsRevised2march22Form,compostForm,dataForm
-from .models import Report,Rating,WasteSegregationDetails,BuildingsWard9April22,BuildingUnder30Mtr,KWestBeat22Jan,WasteSegregationDetailsRevised2March22,HumanResourceData,P122Buildings8Nov22, data_form,links #CensusTable #,OsmBuildings29Oct21#BuildingsWardWise4March,
+from .forms import GarbageSegForm,GrievanceForm,Ward61BuildingsOsm2Nov2021Form,WasteSegregationDetailsForm,NewUserForm,EmployeeDetailsForm,HumanResourceDataForm,MumbaiBuildingsWardPrabhagwise17JanForm,WasteSegregationDetailsRevised2march22Form,compostForm,dataForm,DocumentForm
+from .models import Report,Rating,WasteSegregationDetails,BuildingsWard9April22,BuildingUnder30Mtr,KWestBeat22Jan,WasteSegregationDetailsRevised2March22,HumanResourceData,P122Buildings8Nov22, data_form,links,document_up #CensusTable #,OsmBuildings29Oct21#BuildingsWardWise4March
 from map.models import Ward61BuildingsOsm2Nov2021,MumbaiBuildingsWardPrabhagwise17Jan,MumbaiPrabhagBoundaries3Jan2022V2,DistinctGeomSacNoMumbai#,Ward61OsmBuildings,
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.core.files.storage import FileSystemStorage
@@ -325,9 +325,9 @@ def Grievance(request):
             print(request.POST)
             form.save()
             
-
-            con = get_connection('django.core.mail.backends.console.EmailBackend')
             con = get_connection('django.core.mail.backends.smtp.EmailBackend')
+            
+            
             to_emails = ['jituviju@gmail.com', 'monikapatira@gmail.com']
             # to_emails.append(supervisor_email_curr)
 
@@ -729,9 +729,18 @@ def hrd_detail(request):
 
 
 def resources(request):
-    return render(request,'Resources.html')
+    document = document_up.objects.all()
+    # print(documents)
+    # image = image_up_sch.objects.all()
+    # video = video_sch.objects.all()
+    return render(request,'Resources.html',{'document': document})
 
-
+def resources_orig(request):
+    document = document_up.objects.all()
+    # print(documents)
+    # image = image_up_sch.objects.all()
+    # video = video_sch.objects.all()
+    return render(request,'Resources_orig26oct23.html')
 
 def base(request):
     # ward_region = WasteSegregationDetails.objects.values('re').annotate(Sum('wet_waste_before_segregation') , Sum('dry_waste_before_segregation'), Sum('hazardous_waste')  )
@@ -1098,3 +1107,19 @@ def static_files_view(request):
         
     }
     return render(request, 'videos.html', context)
+
+def list_articles(request):
+    if request.method == 'POST':
+        form = DocumentForm(request.POST,request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.info(request,"Article is uploaded.")
+            # return redirect('/resources/')
+    else:
+        form = DocumentForm() # A empty, unbound form
+
+    # Load documents for the list page
+    # documents = Document.objects.all()
+
+    # Render list page with the documents and the form
+    return render(request,'list_articles.html',{'form': form})

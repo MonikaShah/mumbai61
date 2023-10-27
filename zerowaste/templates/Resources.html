@@ -2,200 +2,281 @@
 {% load static %}
 {% load l10n %}
 {% load i18n %}
-
-{% block content %} 
-<div class="container mb-7" style="text-align: justify;">
-    <br>
-    <h3>{% trans "Resources" %}</h3>
-    <hr>
-    <br>
-    <h4><ol>
-        <li>
-            <a href ="{% static 'resources/PWM-EPR_in_India.pdf'%}">PWM-Plastic Waste Management in India</a>
-        </li>
-        <li>
-            <a href ="{% static 'resources/NITI_Ayog_Handbook_Plastic_WM_10112021.pdf'%}">NITI Ayog Handbook</a>
-        </li>
-        <li>
-            <a href ="{% static 'resources/CircularEconomy_urban_organic_waste_2021_Article.pdf'%}">CircularEconomy urban organic waste 2021 Article</a>
-        </li>
-        <li>
-            <a href = 'https://saahaszerowaste.com/extended-producer-responsibility-2-2/extended-producer-responsibility-2/'>Extended Producer Responsibility</a>
-        </li>
-        <li>
-            <a href = 'https://www.downtoearth.org.in/blog/waste/draft-plastic-waste-management-rules-2021-addressing-the-bigger-problem-75939'>Draft Plastic Waste Management Rules, 2021</a>
-        </li>
-        <li>
-            <a href = 'https://www.thebetterindia.com/263419/maharashtra-startup-convert-kitchen-waste-to-biogas-buy-setup-features/amp/'>Startup Converts Your Kitchen Waste Into Electricity & Cuts LPG Needs By 1/4</a>
-        </li>
-        <li>
-            <a href = 'https://www.bhaskar.com/db-original/news/punes-suraj-markets-bamboo-tooth-brushes-and-coffee-mugs-across-the-country-with-an-annual-turnover-of-1-million-129176068.html'>Bamboo toothbrush and Coffee mugs</a>
-        </li>
-        <li>
-            <a href = 'https://www.thebetterindia.com/180745/bengaluru-woman-innovation-waste-segregation-minutes-recycling-india/'>23-YO Bengaluru Woman Invents Machine That Segregates Waste Within Minutes!</a>
-        </li>
-        <li>
-            <a href = 'https://www.business-standard.com/article/current-affairs/what-india-must-do-to-implement-ban-on-single-use-plastics-effectively-121061700235_1.html'>India's ban on single-use plastics runs into challenges, pitches new rules </a>
-        </li>
-        <li>
-            <a href = 'https://www.nama-facility.org/content-approach/'>German Funding for Circular Economy in India</a>
-        </li>
-        <li>
-            <a href = 'https://www.sciencedirect.com/science/article/pii/S0921344917302835?via%3Dihub '>Conceptualizing the circular economy: An analysis of 114 definitions</a>
-        </li>
-        <li>
-            <a href = 'https://www.aiilsg.org/index.html'>Research Studies - AIILSG</a>
-        </li>
-        <li>
-            <a href = "{% static 'resources/Feasibility_study_of_cluster.pdf' %}">Feasibility study of cluster</a>
-        </li>
-        <li>
-            <a href = "{% static 'resources/ALM manual.pdf' %}">Advanced Locality Management Manual</a>
-        </li>
-        <li>
-            <a href = 'https://www.annualreviews.org/doi/abs/10.1146/annurev-environ-030620-042304'>Advancements in and Integration of Water, Sanitation, and Solid Waste for Low- and Middle-Income Countries</a>
-        </li>
-        <li>
-            <a href = 'https://www.thebetterindia.com/274270/eco-friendly-society-in-bengaluru-grows-food-forest-sells-compost/'>Society growing its own Food at Zero Cost</a>
-        </li>
-        <li>
-            <a href = 'https://www.youtube.com/watch?v=1-tS7JH4Jyw'>How Indore is becoming Garbage Free</a>
-        </li>
-        <li>
-            <a href = 'https://www.niua.org/csc/assessment-overview.html'>Missions aligned with SGD's</a>
-        </li>
-        <li>
-            <a href = '
-            https://urban-industrial.in/csc/our_work/national_level/climate_smart_cities_assessment_framework/index_eng.html'>Climate smart cities assessment framework</a>
-        </li>
-        <li>
-            <a href = 'https://www.niua.org/csc/'>ClimateSmart Cities 2.0</a>
-        </li>
-        <li>
-            <a href = "{% static 'resources/NITI_Ayog_Handbook_Plastic_WM_10112021.pdf'%}">ClimateSmart Cities 2.0 Framework</a>
-        </li>
-        <li>
-            <a href = 'https://youtube.com/playlist?list=PLmiRlMn-WmosMDvj48-SyCohoatP05XFq'>The Cleanest Cities Of India</a>
-        </li>
-        <li>
-            <a href = 'https://timesofindia.indiatimes.com/home/education/news/ugc-mandates-environmental-studies-at-ug-level/articleshow/69524882.cms'>UGC mandates Environmental Studies at UG level</a>
-        </li>
-        <li>
-            <a href = 'https://us19.campaign-archive.com/home/?u=a28233a0271a4c5b8a6ea47f9&id=46ca10eb1b'>Newsletter Archive CRDF Connect</a>
-        </li>
-        <li>
-            <a href = 'https://www.dec.ny.gov/chemical/52706.html'>Solid Waste Facilities Forms</a>
-        </li>
-        <li>
-            <a href = "{% static 'resources/Generation of Waste.pdf'%}">Loksabha Answer on Waste Management :2019</a>
-        </li>
-        <li>
-            <a href = 'https://indianexpress.com/article/opinion/columns/imagining-india-at-100-where-health-is-recognised-as-being-critical-for-human-capital-8090399/'>Inagining India at 100: Where Health is recognised as being critical for Human capital</a>
-        </li>
-        <li>
-            <a href = 'https://indianexpress.com/article/india/over-35-5-kids-stunted-govt-releases-target-to-curb-malnutrition-8055777/'>Over 35.5% kids stunted, govt releases target to curb malnutrition</a>
-        </li>
-        <li>
-            <a href = 'https://www.sciencedirect.com/science/article/pii/S2238785421009972'>Bio-based material from fruit waste of orange peel for industrial applications</a>
-        </li>
-        <li>
-            <a href = 'https://indianexpress.com/article/opinion/columns/india-epi-2022-environment-survey-confuses-stifles-honest-discussion-climate-change-7966021/'>India at bottom in EPI 2022 but environment survey confuses and stifles honest discussion on climate change</a>
-        </li>
-        <li>
-            <a href = 'https://indianexpress.com/article/cities/mumbai/some-consider-me-untouchable-mock-me-sanitation-workers-share-stories-of-apathy-and-discrimination-8170880/'>Story of apathy and discrimination</a>
-        </li>
-        <li>
-            <a href = 'https://iopscience.iop.org/article/10.1088/1757-899X/809/1/012020'>Cancer Medicine from waste</a>
-        </li>
-        <li>
-            <a href = "{% static 'resources/ijerph-19-13973.pdf'%}">Impact on Public Health Nutrition Services Due to COVID-19
-                Pandemic in India</a>
-        </li>
-        <li>
-            <a href = "{% static 'resources/Air Quality.jpeg'%}">Air Quality</a>
-        </li>
-        <li>
-            <a href = "https://www.dw.com/en/microplastics-an-invisible-danger/video-63609313">Microplastics - An invisible danger</a>
-        </li>
-        <li>
-            <a href = "https://indianexpress.com/article/idea-exchange/atmospheric-scientist-professor-iit-kanpur-strengthen-pollution-regulators-get-more-staff-train-them-in-tech-and-back-up-with-stringent-norms-8253520/">Atmospheric scientist, Professor, IIT Kanpur:What is the air pollution status across Indian cities?</a>
-        </li>
-        <li>
-            <a href = "https://indianexpress.com/article/world/climate-change/greenwashing-concerns-legitimate-regulation-and-standards-needed-says-renew-power-ceo-8277627/">Green Washing</a>
-        </li>
-        <li>
-            <a href = "https://economictimes.indiatimes.com/industry/banking/finance/banking/financial-system-should-collaborate-together-on-sustainability-initiatives-deepak-parekh/articleshow/95667503.cms">Industry Honchos Urging use of  Science for Sustainability</a>
-        </li>
-        <li>
-            <!-- <a href = "https://www.hindustantimes.com/cities/mumbai-news/mmr-goes-green-sees-rise-in-green-buildings-this-year-101669142965139.html"> ESG  becoming  important even in real estate </a> -->
-            <a href = "https://indiacsr.in/importance-of-esg-investing-in-real-estate-in-2023/"> ESG  becoming  important even in real estate </a>
-        </li>
-        <li>
-            <a href = "https://ctb.ku.edu/en/table-of-contents/assessment/assessing-community-needs-and-resources/geographic-information-systems/main">Geographic Information Systems: Tools for Community Mapping</a>
-        </li>
-        <li>
-            <a href = "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3056049/">The Benefits of Using Geographic Information Systems as a Community Assessment Tool</a>
-        </li>
-        <li>
-            <a href = "https://www.tandfonline.com/doi/full/10.1080/10852350802498367">GIS Applications for Community-Based Research and Action: Mapping Change in a Community-Building Initiative</a>
-        </li>
-        <li>
-            <a href = "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6339605/">Community-engaged development of a GIS-based healthfulness index to shape health equity solutions</a>
-        </li>
-        <li>
-            <a href = "https://botpopuli.net/digital-justice-is-a-matter-of-environmental-justice-or-at-least-it-should-be/">Digital Justice is a Matter of Environmental Justice. Or at least, it Should be</a>
-        </li>
-        <li>
-            <a href = "https://youtu.be/X1l3P7p2FHQ"> Decentralized waste water treatment System (DEWATS) Alappuzha </a>
-        </li>
-        <li>
-            <a href = "https://www.hindustantimes.com/cities/mumbai-news/mahas-first-integrated-hazardous-waste-plant-gets-nod-101674327716867.html">Maha’s first integrated hazardous waste plant gets nod
-            </a>
-        </li>
-        <li>
-            <a href = "https://www.downtoearth.org.in/news/waste/absence-of-guidelines-leaves-organic-waste-management-at-the-mercy-of-entrepreneurs-65691">Absence of guidelines leaves organic waste management at the mercy of entrepreneurs</a>
-        </li>
-        <li>
-            <a href = "https://www.hindustantimes.com/cities/mumbai-news/tmc-stops-dumping-in-diva-furious-greens-seek-damages-101675194043490.html">TMC stops dumping in Diva, furious greens seek damages
-            </a>
-        </li>
-        <li>
-            <a href = "https://economictimes.indiatimes.com/markets/stocks/news/sebi-proposes-framework-on-esg-disclosures-ratings/articleshow/98135483.cms">Sebi proposes framework on ESG disclosures, ratings</a>
-        </li>
-        <li>
-            <a href = "https://timesofindia.indiatimes.com/city/mumbai/illegal-water-extraction-from-private-well-mumbai-police-can-file-case/articleshow/98241727.cms">Illegal water extraction from private well? Mumbai Police can file case - </a>
-        </li>
-        <li>
-            <a href = "https://timesofindia.indiatimes.com/city/mumbai/place-builders-project-details-on-civic-website-directs-maharashtra-govt/articleshow/98241886.cms">Place builders' project details on civic website, directs Maharashtra govt - </a>
-        </li>
-        <li>
-            <a href = "https://timesofindia.indiatimes.com/city/mumbai/inquiry-into-rs-10000-crore-tanker-water-business-in-mumbai/articleshow/98978230.cms">Big holes in the system that affect lives of the citizens. 
-                can information with maps throw necessary light?</a>
-        </li>
-        <li>
-            <a href = "https://www.icij.org/investigations/deforestation-inc/companies-making-false-green-claims-in-europe-face-punishment-under-proposed-new-rule/?utm_source=ICIJ&utm_campaign=520d384ab9-20230405_WeeklyEmail&utm_medium=email&utm_term=0_992ecfdbb2-520d384ab9-82337329">Companies making false ‘green’ claims in Europe face punishment under proposed new rule</a>
-        </li>
-        <li>
-            <a href = "https://twitter.com/WaghreAbhijit/status/1658140563596795904?t=0wlQtq1V-y53yqTiAi7LTA&s=08">Nashik, Peth, Amdongra village where only ST population lives and women risking their lives to fetch the water from well</a>
-        </li>
-        <li>
-            <a href = "{% static 'resources/Praja Newsletter_Solid Waste Management Mumbai_May 2023-1.pdf'%}">Need to establish an effective
-                Decentralised Waste Management System
-                to ensure Zero waste sent to Landfills in Mumbai</a>
-        </li>
-
-        <li>
-            <a href = "https://timesofindia.indiatimes.com/india/why-sanitary-pad-waste-is-a-bloody-big-problem/articleshow/104077495.cms?utm_source=whatsapp&utm_medium=social&utm_campaign=AmpArticleshowicon">Why sanitary pad waste is a bloody big problem </a>
-        </li>
-
-        <li>
-            <a href = "{% static 'resources/wastepickers_day.jpeg'%}">Waste Picker's Day (22 October)</a>
-        </li>
-        <li>
-            <a href = "{% static 'resources/Burning trash_choking air.pdf'%}">Burning trash choking air : No monitoring</a>
-        </li>
-
+{% block content %}
+{% load crispy_forms_tags %}
+{% load wagtailcore_tags %}
+{% load has_group %}
+<style>
+        body {
+            background: aliceblue;
+        }
         
-    </ol>
-</h4><br><br><br><br><br><br>
+        form span {
+            color: red;
+            font-size: 15px;
+        }
+        /*         
+        h1 {
+            background-color: #066f95;
+            padding: 20px 20px 20px 20px;
+            border-radius: 10px;
+            text-align: center;
+            color: white;
+            font-weight: bolder;
+            padding-bottom: 10px;
+        } */
+        
+        .button {
+            width: 20%;
+            display: inline-block;
+            padding: 15px 25px;
+            font-size: 24px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            outline: none;
+            color: #fff;
+            background-color: #066f95;
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px #999;
+        }
+        
+        .button:hover {
+            background-color: #568088
+        }
+        
+        #map {
+            width: 1000px;
+            height: 600px;
+        }
+        
+        .button:active {
+            background-color: #55a5b5;
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);
+        }
+        
+        h2 {
+            padding-bottom: 10px;
+            padding-top: 10px;
+            color: #066f95;
+            text-decoration: underline;
+            font-weight: 400;
+            text-align: center;
+        }
+        
+        h3 {
+            padding-top: 20px;
+        }
+        
+        label {
+            font-weight: bold;
+            font-size: 20px;
+            color: black;
+        }
+        
+        #calculate {
+            cursor: pointer;
+            text-align: center;
+            width: 200px;
+            padding: 5px;
+            margin: 10px;
+            margin-left: auto;
+            margin-right: auto;
+            border: 1px solid #999;
+            border-radius: 10px;
+            background: rgb(245, 243, 243);
+            background: -moz-linear-gradient(top, #FFD119, #E6B800);
+            font-weight: bold;
+            height: 28px;
+        }
+        
+        #calculate:hover {
+            background: -webkit-gradient(linear, left top, left bottom, from(#E6B800), to(#FFD119));
+            background: -moz-linear-gradient(top, #E6B800, #FFD119);
+            margin-top: 13px;
+            height: 25px;
+        }
+        
+        #calculate:active {
+            background: #403300;
+            padding-top: 10px;
+            height: 20px;
+        }
+        
+        /* input,
+        select {
+            width: 100%;
+            color: rgb(39, 22, 22);
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 4px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        } */
+        #customers {
+        font-family: Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+        }
+
+        #customers td, #customers th {
+        border: 1px solid #ddd;
+        padding: 8px;
+        }
+
+        #customers tr:nth-child(even){background-color: #f2f2f2;}
+
+        #customers tr:hover {background-color: #ddd;}
+
+        #customers th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: #04AA6D;
+        color: white;
+        }
+    </style>
+  
+</head>
+
+<link rel="stylesheet" href="/static/css/select2.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+<div style="width:100%;text-align: justify;min-height: 100vh;margin-left: 20px;margin-top: 20px;"><label>Select Resources:</label>
+    <select id="lang">
+            <option>Choose Resources</option>
+            <option value="articles">Articles</option>
+            <option value="images">Images</option>
+            <option value="videos">Videos</option>
+	     <option value="links">Other Links</option>
+        </select>
+<!-- </div>
+<div > -->
+    <div class="articles box" style="border: 10px #04AA6D;" >
+        <form action="">
+            <h2> Uploaded Articles related to Solid Waste Maangement </h2>
+            {% if document %}
+            <ul style="list-style-type: none;">
+               
+                <table id="customers">
+                    <tr><th>Group</th><th>Title</th><th colspan="2">Action</th></tr>
+                    {% for doc in document %}
+                    <tr>   
+                    <td>{{doc.grp}}</td>  
+                    <td>{{doc.title}} </td>
+                    <td><a href="{{ doc.Document.url }}" download>Download</a> </td>
+                    <td><a href="{{ doc.Document.url }}"target="_blank" >View</a> </td>
+                    </tr>
+                    {% endfor %}
+            </table>
+                       
+             
+            </ul>
+            {% else %}
+            <p>No documents.</p>    
+            {% endif %}
+            {% if request.user|has_group:"superusergroup" %}
+            <div class="myform" style="align-items: right;">
+               <a href="/list_articles/" class="btn btn-info">Upload Articles</a>
+            </div>
+            {% endif %}
+        </form>
+    
+    </div>
+</div>
+<div class="images box">
+    <form action="">
+        <h2> Uploaded Images   </h2>
+        {% if image %}
+        <ul style="list-style-type: none;">
+            <table>
+                <tr><th>Group</th><th>Image Title</th><th colspan="2">Action</th></tr>
+
+           
+            {% for img in image %}
+                
+            <tr>   
+                    <td></td>  
+                <td>{{img.title}} </td>
+                <td><a href="{{ img.image.url}}" download>Download</a> </td>
+                <td><a href="{{ img.image.url}}" >View</a> </td>
+                </tr>
+                          
+    
+            {% endfor %}
+        </table>
+        </ul>
+        {% else %}
+        <p>No Images.</p>
+        {% endif %}
+        {% if request.user|has_group:"superusergroup" %}
+        <div class="myform" style="align-items: right;">
+            <a href="/image_school/" class="btn btn-info">Upload Images</a>
+        </div>
+        {% endif %}
+    </form>
+
+</div>
+<div class="videos box">
+    <form action="">
+        <h2> Uploaded Videos </h2>
+        {% if video %}
+   <ul style="list-style-type: none;">
+    <table>
+        <tr><th>Group</th><th>Video Title</th><th colspan="2">Action</th></tr>
+ 
+        {% for vid in video %}
+        
+        <tr>   
+        <td></td>
+        <td>{{vid.title}} </td>
+        <td><a href="{{ vid.video.url }}" download>Download</a> </td>
+        <td><a href="{{ vid.video.url }}"target="_blank" >View</a> </td>
+        </tr>
+                  
+
+    {% endfor %}
+    </table>
+      
+      </ul>
+   {% else %}
+   <p>No Videos.</p>
+   {% endif %}
+    </form>
+    {% if request.user|has_group:"superusergroup" %}
+    <div class="myform" style="align-items: right;">
+        <a href="/video_school/" class="btn btn-info">Upload Videos</a>
+     </div>
+     {% endif %}
+</div>
+
+<div class="links box">
+       <div>
+        <h2> Other Links  </h2>
+        <a href="/other_links/">Check other Links</a>
+       </div>
+
+</div>
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script>
+      
+        $(document).ready(function() {
+            $("#lang").change(function() {
+                $(this).find("option:selected").each(function() {
+                    var optionValue = $(this).attr("value");
+                    if (optionValue) {
+                        $(".box").not("." + optionValue).hide();
+                        $("." + optionValue).show();
+                    } else {
+                        $(".box").hide();
+                    }
+                });
+            }).change();
+        });
+</script><br><br><br>
 {% endblock %}
+

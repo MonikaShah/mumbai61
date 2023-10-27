@@ -1,4 +1,4 @@
-from django.urls import path,include
+from django.urls import path,include,re_path
 from . import views
 from .views import document_list, static_files_view
 from django.conf import settings
@@ -39,6 +39,7 @@ urlpatterns = [
     path("hrd_detail/",views.hrd_detail, name="hrd_detail"),
     path('ajax/load-prabhag/', views.load_prabhag, name='ajax_load_prabhag'),
     path("resources/",views.resources, name="resources"),
+    path("resources_orig/",views.resources_orig, name="resources_orig"),
     path("video/",views.static_files_view, name="video"),
     
     # path("showgroup/",views.group,name="showgroup"),
@@ -56,6 +57,8 @@ urlpatterns = [
     path('document-list/', document_list, name='document_list'),
     path('static_files_view/', static_files_view, name='static_files_view'),
     path('document_list/', document_list, name='document_list'),
+
+    re_path(r'^list_articles/', views.list_articles, name='list_articles'),
 ]
 
 
