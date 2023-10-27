@@ -1,0 +1,55 @@
+{% extends 'base.html' %} {% load static%} 
+{% block content %} {% load crispy_forms_tags %}
+{% block extra_css %}
+{% load l10n %}
+   
+    <style>
+        .myform {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            /* height:auto; */
+            
+        }
+        
+        /* h1 {
+            text-align: center;
+            color: black;
+        } */
+        /* .form-row {
+        margin: 50px;
+    } */
+    </style>
+{% endblock %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{message}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+</ul>
+
+
+{% endif %} 
+<div >
+    <h1 class='text-center mt-5'>Upload Articles</h1>
+    <hr>
+    <form class = "myform" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <table>
+            {% localize on %} {{ form.as_table }} {% endlocalize %}</table>
+
+             <button type="submit" class="btn btn-primary">Upload</button>
+    </form><br><br><br><br><br><br>
+
+</div>
+
+{% endblock %}
+    
