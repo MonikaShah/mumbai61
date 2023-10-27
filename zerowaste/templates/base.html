@@ -260,8 +260,10 @@ input {
                     </a>
                   
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                      <li><a class="dropdown-item" href="{% url 'resources' %}" target="blank">Related Articles/Documents Links</a></li>
-                      <li><a class="dropdown-item" href="" target="blank" style="pointer-events: none;"><a href = "{% url 'video' %}" target="blank">Demo Videos</a></a></li>
+                        <!-- <li><a class="dropdown-item" href="{% url 'resources' %}" target="blank">Related Articles/Documents</a></li> -->
+                      <li><a class="dropdown-item" href="{% url 'resources_orig' %}" target="blank">Related Articles/Documents</a></li>
+                      <li><a class="dropdown-item" href="" target="blank" style="pointer-events: none;"><a href = "{% url 'video' %}" target="blank">Videos</a></a></li>
+                      
                     </ul>
                 </li>  
                 
@@ -309,7 +311,7 @@ input {
 
     <!-- #hero -->
     
-    <main>
+    <main class="d-flex flex-column h-100">
         {% block content%}
         
         {% endblock%}
@@ -323,7 +325,7 @@ input {
     
    <!-- <footer class="text-center text-white " style="background-color: #21081a;bottom: 0px;"> -->
        <!-- <footer class="text-center text-white fixed-bottom" style="background-color: #21081a;bottom: 0px;"> -->
-  <footer class="text-center h-20 bottom-0 text-white" style="background-color:#853d28; bottom: 0px; height: auto;">
+  <footer class="text-center h-20 bottom-0 text-white" style="background-color:#853d28; bottom: 0px; height: auto; margin-top: auto;">
        
    <div class="h-full p-2" style="background-color: rgba(0, 0, 0, 0.2);">
         <!-- <img class="logo" style="margin-top: 5px; height: 80px; width: 120px;" src="{% static 'images/Logo-Unit_SWK.jpg' %}" alt="My image"> -->
