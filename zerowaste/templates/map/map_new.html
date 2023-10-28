@@ -2823,26 +2823,8 @@ function Identify(e) {
                 var popup = new L.Popup({
                     maxWidth: 300
                 });
-                if (feature.properties.building_t) {
-                  $name= {         
-                  'name': feature.properties.sac_number}
-                    new_ajax(e);
-                        
-            // Set up popup for clicked feature and open it
-                }
-                // if (feature.properties.slum_area){
-                //     alert("Slum"+layer1.value);
-                //     content = "<table class = 'popupclass'style ='border: 1px solid white' ><tr style ='border: 1px solid white'><td colspan=6><b> Slum Information</b></td><td></td></tr>" +
-                //       "<tr style ='border: 1px solid white'><td><b>Ward Name: </b></td><td style ='text-align:left;'>" + feature.properties.ward_nm + "</td></tr>"+
-                //       "<tr style ='border: 1px solid white'><td><b>Slum Area </b></td><td style ='text-align:left;'>" + feature.properties.slum_area + "</td></tr>"+
-                      
-                //         // "<tr style ='border: 1px solid white'><td><b>Area of Garden : </b></td><td>" + feature.properties.Area + "(sq. meters)</td></tr>"+
-                //         "</table>";
-                //     popup.setContent(content);
-                //     popup.setLatLng(e.latlng);
-                //     mymap.openPopup(popup);
-                //     }
-                if ((feature.properties.seg_done) && ((layer1.value == '{Rsegdone}')  || (layer1.value == '{Rsegquality}') || (layer1.value == '{Rsegcons}') || (layer1.value == '{Rsegfreq}'))){
+                
+                if ((feature.properties.seg_done) && ((layer1.value == '{Rsegdone}')  || (layer1.value == '{Rsegquality}') || (layer1.value == '{Rsegcons}') || (layer1.value == '{Rsegfreq}')||(layer1.value != '{segdone}')  || (layer1.value != '{segquality}') || (layer1.value != '{segcons}') || (layer1.value != '{segfreq}') || (layer1.value != '{description}'))){
                     // alert("in R seg popup"+layer1.value);
                     content = "<table class = 'popupclass'style ='border: 1px solid white' ><tr style ='border: 1px solid white'><td colspan=6><b> Segregation Information</b></td><td></td></tr>" +
                       "<tr style ='border: 1px solid white'><td><b>Region Name: </b></td><td style ='text-align:left;'>" + feature.properties.region + "</td></tr>"+
@@ -3002,6 +2984,15 @@ function Identify(e) {
                     popup.setLatLng(e.latlng);
                     mymap.openPopup(popup);
                 }
+                if((feature.properties.building_t) && ((layer1.value=='{s122buildings}') ||(layer1.value=='{sbuildings}')||(layer1.value=='{nbuildings}') || (layer1.value=='{l156buildings}' || layer1.value=='{l157buildings}')|| layer1.value=='{s121iitbbuildings}') || (layer1.value =='{s122buildings}') ){
+                  alert("in building info"+layer1.value)
+                  $name= {         
+                  'name': feature.properties.sac_number}
+                    new_ajax(e);
+                        
+            // Set up popup for clicked feature and open it
+                }
+                
             
                 
           }
