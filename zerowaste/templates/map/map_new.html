@@ -1055,6 +1055,7 @@ var shck4 = false;
         mymap.removeLayer(slumLayer)
         showSlum = false
       }
+     
     }
 
     var showSlumHH = false;
@@ -1603,7 +1604,7 @@ $("#prabhaglistwms").change(function() {
               removeWMS("P122_builiings_updatedSegreagation_columns_22");
             }
             else if (boundary == '{Rsegdone}' || boundary =='{Rsegquality}' ||boundary =='{Rsegfreq}' ||boundary =='{Rsegcons}') {
-              removeWMS("updated_regions_P122_23Sept23");
+              removeWMS("updated_regions_p122_28oct23");
             }
             else if (boundary == '{sbuildings}' || boundary =='{nbuildings}' ||boundary =='{s122buildings}' ||boundary =='{s121buildings}') {
               removeWMS("Buildings_mumbai");
@@ -2020,7 +2021,7 @@ $("#prabhaglistwms").change(function() {
       
           }
           else if (obj =='{Rsegdone}'){
-            layer = 'updated_regions_P122_23Sept23';
+            layer = 'updated_regions_p122_28oct23';
             // alert(layer)
             currentPos = [19.1196, 72.9043];
             var maximumzoom = 20;
@@ -2030,7 +2031,7 @@ $("#prabhaglistwms").change(function() {
             sld = "region_segdone"
             }
           else if (obj =='{Rsegquality}'){
-            layer = 'updated_regions_P122_23Sept23';
+            layer = 'updated_regions_p122_28oct23';
             // alert(layer)
             currentPos = [19.1196, 72.9043];
             var maximumzoom = 20;
@@ -2040,7 +2041,7 @@ $("#prabhaglistwms").change(function() {
             sld = "region_segquality"
           }
           else if (obj =='{Rsegcons}'){
-            layer = 'updated_regions_P122_23Sept23';
+            layer = 'updated_regions_p122_28oct23';
             // alert(layer)
             currentPos = [19.1196, 72.9043];
             var maximumzoom = 20;
@@ -2050,7 +2051,7 @@ $("#prabhaglistwms").change(function() {
             sld = "region_consistency"
             }
           else if(obj =='{Rsegfreq}'){
-            layer = 'updated_regions_P122_23Sept23';
+            layer = 'updated_regions_p122_28oct23';
             // alert(layer)
             currentPos = [19.1196, 72.9043];
             var maximumzoom = 20;
@@ -2814,6 +2815,7 @@ function Identify(e) {
         type: "GET",
         success: function(data) {
           // alert("success",data.features.length)
+          // alert(layer1.value);
           if (data.features.length !== 0) { // at least one feature returned in response
                 var feature = data.features[0]; // first feature from response
                 // Set up popup for clicked feature and open it
@@ -2821,6 +2823,57 @@ function Identify(e) {
                 var popup = new L.Popup({
                     maxWidth: 300
                 });
+                if (feature.properties.building_t) {
+                  $name= {         
+                  'name': feature.properties.sac_number}
+                    new_ajax(e);
+                        
+            // Set up popup for clicked feature and open it
+                }
+                // if (feature.properties.slum_area){
+                //     alert("Slum"+layer1.value);
+                //     content = "<table class = 'popupclass'style ='border: 1px solid white' ><tr style ='border: 1px solid white'><td colspan=6><b> Slum Information</b></td><td></td></tr>" +
+                //       "<tr style ='border: 1px solid white'><td><b>Ward Name: </b></td><td style ='text-align:left;'>" + feature.properties.ward_nm + "</td></tr>"+
+                //       "<tr style ='border: 1px solid white'><td><b>Slum Area </b></td><td style ='text-align:left;'>" + feature.properties.slum_area + "</td></tr>"+
+                      
+                //         // "<tr style ='border: 1px solid white'><td><b>Area of Garden : </b></td><td>" + feature.properties.Area + "(sq. meters)</td></tr>"+
+                //         "</table>";
+                //     popup.setContent(content);
+                //     popup.setLatLng(e.latlng);
+                //     mymap.openPopup(popup);
+                //     }
+                if ((feature.properties.seg_done) && ((layer1.value == '{Rsegdone}')  || (layer1.value == '{Rsegquality}') || (layer1.value == '{Rsegcons}') || (layer1.value == '{Rsegfreq}'))){
+                    // alert("in R seg popup"+layer1.value);
+                    content = "<table class = 'popupclass'style ='border: 1px solid white' ><tr style ='border: 1px solid white'><td colspan=6><b> Segregation Information</b></td><td></td></tr>" +
+                      "<tr style ='border: 1px solid white'><td><b>Region Name: </b></td><td style ='text-align:left;'>" + feature.properties.region + "</td></tr>"+
+                      "<tr style ='border: 1px solid white'><td><b>Population (approx): </b></td><td style ='text-align:left;'>" + feature.properties.population + "</td></tr>"+
+                      "<tr style ='border: 1px solid white'><td><b>Is Segregation Done: </b></td><td style ='text-align:left;'>" + feature.properties.seg_done + "</td></tr>"+  
+                      "<tr style ='border: 1px solid white'><td><b>Consistency of segregation: </b></td><td style ='text-align:left;'>" + feature.properties.consistenc + "</td></tr>"+  
+                      "<tr style ='border: 1px solid white'><td><b>Frequency of Waste Pickup : </b></td><td style ='text-align:left;'>" + feature.properties.frequency + "</td></tr>"+
+                      "<tr style ='border: 1px solid white'><td><b>Quality of Segregated Waste: </b></td><td style ='text-align:left;'>" + feature.properties.seg_qualit + "</td></tr>"+
+                      
+                        // "<tr style ='border: 1px solid white'><td><b>Area of Garden : </b></td><td>" + feature.properties.Area + "(sq. meters)</td></tr>"+
+                        "</table>";
+                    popup.setContent(content);
+                    popup.setLatLng(e.latlng);
+                    mymap.openPopup(popup);
+                    }
+                    if ((feature.properties.seg_done) && ((layer1.value == '{segdone}')  || (layer1.value == '{segquality}') || (layer1.value == '{segcons}') || (layer1.value == '{segfreq}') || (layer1.value == '{description}') )){
+                    // alert("in seg popup"+layer1.value);
+                    content = "<table class = 'popupclass'style ='border: 1px solid white' ><tr style ='border: 1px solid white'><td colspan=6><b> Segregation Information</b></td><td></td></tr>" +
+                      "<tr style ='border: 1px solid white'><td><b>Building Name: </b></td><td style ='text-align:left;'>" + feature.properties.building_n + "</td></tr>"+
+                      "<tr style ='border: 1px solid white'><td><b>Population (approx): </b></td><td style ='text-align:left;'>" + feature.properties.population + "</td></tr>"+
+                      "<tr style ='border: 1px solid white'><td><b>Is Segregation Done: </b></td><td style ='text-align:left;'>" + feature.properties.seg_done + "</td></tr>"+  
+                      "<tr style ='border: 1px solid white'><td><b>Consistency of segregation: </b></td><td style ='text-align:left;'>" + feature.properties.consistenc + "</td></tr>"+  
+                      "<tr style ='border: 1px solid white'><td><b>Frequency of Waste Pickup : </b></td><td style ='text-align:left;'>" + feature.properties.frequency + "</td></tr>"+
+                      "<tr style ='border: 1px solid white'><td><b>Quality of Segregated Waste: </b></td><td style ='text-align:left;'>" + feature.properties.seg_qualit + "</td></tr>"+
+                      "<tr style ='border: 1px solid white'><td><b>Building Area: </b></td><td style ='text-align:left;'>" + feature.properties.descriptio + "</td></tr>"+
+                        // "<tr style ='border: 1px solid white'><td><b>Area of Garden : </b></td><td>" + feature.properties.Area + "(sq. meters)</td></tr>"+
+                        "</table>";
+                    popup.setContent(content);
+                    popup.setLatLng(e.latlng);
+                    mymap.openPopup(popup);
+                    }
                 if (feature.properties.name && feature.properties.photo && !feature.properties.Username) {
                     // alert("in route popup");
                     // alert(HttpRequest.get_full_path())
@@ -2938,22 +2991,19 @@ function Identify(e) {
                   popup.setLatLng(e.latlng);
                   mymap.openPopup(popup);
                 }
-                if (feature.properties.region) {
-                // alert("in region");
+                if (feature.properties.region_nm && layer1.value == '{122regions}') {
+                
+                  alert("in region");
                   content = "<table class = 'popupclass' ><tr><td><b>Region Info</b></td><td></td></tr>" +
-                    "<tr><td><b>Region Name: </b></td><td>" + feature.properties.region + "</td></tr>"+"</table>";
+                    "<tr style ='border: 1px solid white'><td><b>Ward: </b></td><td>" + feature.properties.ward_nm + "</td></tr>"+
+                    "<tr style ='border: 1px solid white'><td><b>Prabhag: </b></td><td>" + feature.properties.prabhag_no + "</td></tr>"+
+                    "<tr style ='border: 1px solid white'><td><b>Region Name: </b></td><td>" + feature.properties.region_nm + "</td></tr>"+"</table>";
                     popup.setContent(content);
                     popup.setLatLng(e.latlng);
                     mymap.openPopup(popup);
                 }
             
-                else if (feature.properties.building_t) {
-                  $name= {         
-                  'name': feature.properties.sac_number}
-                    new_ajax(e);
-                        
-            // Set up popup for clicked feature and open it
-                }
+                
           }
         }
       
