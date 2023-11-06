@@ -1,6 +1,6 @@
 # Create your views here.
 from django.shortcuts import render,redirect,HttpResponse,HttpResponseRedirect
-from .forms import GarbageSegForm,GrievanceForm,Ward61BuildingsOsm2Nov2021Form,WasteSegregationDetailsForm,NewUserForm,EmployeeDetailsForm,HumanResourceDataForm,MumbaiBuildingsWardPrabhagwise17JanForm,WasteSegregationDetailsRevised2march22Form,compostForm,dataForm,DocumentForm
+from .forms import GarbageSegForm,GrievanceForm,Ward61BuildingsOsm2Nov2021Form,WasteSegregationDetailsForm,NewUserForm,EmployeeDetailsForm,HumanResourceDataForm,MumbaiBuildingsWardPrabhagwise17JanForm,WasteSegregationDetailsRevised2march22Form,compostForm,dataForm,DocumentForm,reportForm
 from .models import Report,Rating,WasteSegregationDetails,BuildingsWard9April22,BuildingUnder30Mtr,KWestBeat22Jan,WasteSegregationDetailsRevised2March22,HumanResourceData,P122Buildings8Nov22, data_form,links,document_up #CensusTable #,OsmBuildings29Oct21#BuildingsWardWise4March
 from map.models import Ward61BuildingsOsm2Nov2021,MumbaiBuildingsWardPrabhagwise17Jan,MumbaiPrabhagBoundaries3Jan2022V2,DistinctGeomSacNoMumbai#,Ward61OsmBuildings,
 from django.contrib.staticfiles.storage import staticfiles_storage
@@ -18,6 +18,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail,get_connection
+from django.conf import settings
 # from django.contrib import messages
 import datetime
 import pandas as pd
@@ -36,8 +37,10 @@ import numpy
 from django.shortcuts import render
 from wagtail.documents.models import Document
 import os
-
-
+from email.mime.image import MIMEImage
+from django.core.mail import EmailMultiAlternatives
+from django.core.files.storage import default_storage
+from django.core.files import File
 # import geojson
 ###From Akshita's Dashboard##############
 # import pandas as pd
@@ -269,58 +272,29 @@ def Graphs(request):
     return render(request,'graphs.html')
 
 def Grievance(request):
-
-    # url = staticfiles_storage.path('hostel.csv')
-    # url2 = staticfiles_storage.path('hotel_supervisors.csv')
-    form = GrievanceForm(request.POST or None)
-    if request.method == 'POST':
+    form = GrievanceForm(request.POST,request.FILES)
+    media_url=settings.MEDIA_URL
+    if request.method == 'POST' and 'myfile' not in request.FILES and 'upload' not in request.FILES :
         form = GrievanceForm(request.POST or None)
-        myfile = request.FILES['myfile']
-        fs = FileSystemStorage()
-        filename = fs.save(myfile.name, myfile)
         
-        uploaded_file_url = fs.url(filename)
- 
         if form.is_valid():
-            # latitude = request.POST.get('latitude')
-            # longitude = request.POST.get('longitude')
             cd = form.cleaned_data
-
             name = form.cleaned_data['name']
             mobile = form.cleaned_data['mobile']
-            # selectzones = form.cleaned_data['selectzones']
-            
-            # selectlanes = form.cleaned_data['selectlanes']
             grievance = form.cleaned_data['grievance']
-            # grievance_no = form.cleaned_data['grievance_no']
-            # console.log(grievance_no)
+            
             audio_src = form.cleaned_data['audio_src']
             img_src = form.cleaned_data['img_src']
-            upload = request.FILES['upload']
-
-            fss = FileSystemStorage()
-            file = fss.save(upload.name, upload)
-            file_url = fss.url(file)
-
            
             print("Grievance is "+cd['grievance'])
             print("email is "+ cd['email'])
-            from_email = form.cleaned_data['email']
+            from_email_actual = form.cleaned_data['email']
+            
+            from_email = settings.EMAIL_HOST_USER
             grievance_no = datetime.datetime.now()
             grievance_no = str(grievance_no)
-            message_mail = 'Senders Name -  '+ name + "\n" + 'Senders Mobile - '+ str(mobile) + "\n" + 'Senders Email Id - ' +from_email + "\n" +'Grievance Number - ' + grievance_no +"\n"+ 'Grievance Received - '+ grievance
-            # message_mail = 'Senders Name -  '+ name + "\n" + 'Senders Mobile - '+ str(mobile) + "\n" + 'Senders Email Id - ' +from_email + "\n"  + 'Grievance for Zone -' +selectzones + "\n" + 'Grievance of lane - ' +selectlanes + "\n"+ 'Grievance Number - '+grievance_no +"\n"+ 'Grievance Received - '+ grievance
-            # message_mail = 'Senders Name -  '+ name + "\n" + 'Senders Mobile - '+ str(mobile) + "\n" + 'Senders Email Id - ' +from_email + "\n" 
-            # + 'Is collecting food waste once a day enough? - '+ fw_once + "\n"
-            # + 'Would you like to collect food waste twice a day enough? - '+ str(fw_twice) + "\n"
-            # + 'Do you have container for food waste? - '+ str(fw_container) + "\n"
-            # + 'Do you have container for dry waste? - '+ str(dw_container) + "\n"
-            # + 'Do you have container for menstrual waste? - '+ str(mw_container) + "\n"
-            # + 'Do you have container for e-waste waste? - '+ str(ew_container) + "\n"
-            # + 'Feedback Received - '+ feedback
-
-            # print(latitude)
-            # print(request.POST.get('lat'))
+            message_mail = 'Senders Name -  '+ name + "\n" + 'Senders Mobile - '+ str(mobile) + "\n" + 'Senders Email Id - ' +from_email_actual + "\n" +'Grievance Number - ' + grievance_no +"\n"+ 'Grievance Received - '+ grievance
+            
             print(from_email)
             print(request.POST)
             form.save()
@@ -328,17 +302,70 @@ def Grievance(request):
             con = get_connection('django.core.mail.backends.smtp.EmailBackend')
             
             
-            to_emails = ['jituviju@gmail.com', 'monikapatira@gmail.com']
+            to_emails = ['monika.shah2003@gmail.com']
             # to_emails.append(supervisor_email_curr)
 
             print(to_emails)
 
-            if(send_mail('Grievance received for mumbai61.nowastes.in', message_mail,from_email,to_emails,fail_silently=False,)):
+            if(send_mail('Grievance received for mumbai.nowastes.in', message_mail,from_email,to_emails,fail_silently=False,)):
+            
+            # if(send_mail('Feedback (SWK)', message_mail,from_email,['monikapatira@gmail.com'],fail_silently=False,)):
+                print("message sent")
+    if request.method == 'POST' and 'myfile' in request.FILES and 'upload' in request.FILES :
+        form = GrievanceForm(request.POST,request.FILES)
+        myfile = request.FILES['myfile']
+        
+        fs = FileSystemStorage()
+        filename = fs.save(myfile.name, myfile)
+        uploaded_file_url = fs.url(filename)
+ 
+        if form.is_valid():
+            cd = form.cleaned_data
+            name = form.cleaned_data['name']
+            mobile = form.cleaned_data['mobile']
+            grievance = form.cleaned_data['grievance']
+            
+            audio_src = form.cleaned_data['audio_src']
+            img_src = form.cleaned_data['img_src']
+           
+            upload = request.FILES['upload']
+            fss = FileSystemStorage()
+            file = fss.save(upload.name, upload)
+            file_url = fss.url(file)
+
+           
+            print("Grievance is "+cd['grievance'])
+            print("email is "+ cd['email'])
+            # from_email = form.cleaned_data['email']
+            from_email = settings.EMAIL_HOST_USER
+            grievance_no = datetime.datetime.now()
+            grievance_no = str(grievance_no)
+            message_mail = 'Senders Name -  '+ name + "\n" + 'Senders Mobile - '+ str(mobile) + "\n" + 'Senders Email Id - ' +from_email + "\n" +'Grievance Number - ' + grievance_no +"\n"+ 'Grievance Received - '+ grievance 
+            image_path =  filename       
+            # print(from_email)
+            # print(request.POST)
+            # message_mail.mixed_subtype = 'related'
+            # message_mail.attach_alternative(body_html, "text/html")
+            # with default_storage.open(image_path, 'rb') as image_file:
+            #     message_mail.attach(image_path, image_file.read(), 'image/png')  # Adjust content type as needed
+            
+            message_mail.attach(myfile.name, myfile.read(), myfile.content_type)          
+            form.save()
+            
+            con = get_connection('django.core.mail.backends.smtp.EmailBackend')
+            
+            
+            to_emails = ['monika.shah2003@gmail.com']
+            # to_emails.append(supervisor_email_curr)
+
+            print(to_emails)
+
+            if(send_mail('Grievance received for mumbai.nowastes.in', message_mail,from_email,to_emails,fail_silently=False,)):
             
             # if(send_mail('Feedback (SWK)', message_mail,from_email,['monikapatira@gmail.com'],fail_silently=False,)):
                 print("message sent")
             else :
-                console.log(message_mail)
+                print(message_mail)
                 print("Failure")
 
             messages.success(request, _(u'Your grievance is saved and email is sent. Your Greivance no. is {}' ).format(grievance_no))
@@ -1123,3 +1150,35 @@ def list_articles(request):
 
     # Render list page with the documents and the form
     return render(request,'list_articles.html',{'form': form})
+
+def plr_map(request):
+    return render(request, 'map/plr_map.html')
+
+def plr_report(request):
+  
+        form = reportForm()
+        if request.method == 'POST':
+            form = reportForm(request.POST)
+            if form.is_valid():
+                collDate = form.cleaned_data['date']
+                a = form.save(commit=False)
+                a.username = request.user
+                print(a.username.username)
+                a.save()
+                # task_list.username = request.user.username
+                # print(instance)
+                # instance.save()
+                messages.success(request, _(u'Your data is saved for date {}').format(collDate))
+                print(form)
+                return HttpResponseRedirect(request.path_info)
+                
+            else:
+               
+                form.errors.as_json()
+                messages.warning(request, _(u'Please check your form'))
+        else:
+            form = reportForm()
+            print(form)
+            form.errors.as_json()
+        return render(request, 'report_nuisance.html', {'form': form})
+    

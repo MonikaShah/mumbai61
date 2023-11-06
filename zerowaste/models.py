@@ -207,7 +207,7 @@ class Grievance(models.Model):
     audio_src = models.CharField(max_length=100,null=True, default=None, blank=True)
     # img_src =  models.CharField(max_length=100)
     img_src =  models.CharField(max_length=100,null=True, default=None, blank=True)
-    grievance = models.TextField(blank=False, null=False, default='Testing')
+    grievance = models.TextField(blank=True, null=False, default='Testing')
     # grievance = models.TextField(null=True, default=None, blank=True),
     uploaded_at = models.DateTimeField(auto_now_add=True)
     grievance_no = models.CharField(max_length=100,null=True, default=None, blank=True)
@@ -215,6 +215,8 @@ class Grievance(models.Model):
     class Meta:
         managed = True
         db_table = 'grievance'
+    def __str__(self):
+        return self.email
 
 class Rating(models.Model):
     name = models.CharField(max_length=100)
@@ -677,3 +679,14 @@ class document_up(models.Model):
         db_table = 'resources_document'
     def __str__(self):
         return self.title
+    
+class ReportData(models.Model):
+    name = models.CharField(max_length=50, blank=True, null=True)
+    mobile = models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True)
+    report = models.CharField(max_length=100, blank=True, null=True)
+    date = models.DateField(max_length=50, blank=True, null=True)
+    # id = models.DecimalField(primary_key=True, max_digits=65535, decimal_places=65535)
+
+    class Meta:
+        managed = False
+        db_table = 'report_data'

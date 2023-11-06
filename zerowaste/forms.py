@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 # from django.contrib.auth.models import User
 
-from .models import Report,Grievance,WasteSegregationDetails,EmployeeDetails,User,MumbaiBuildingsWardPrabhagwise17Jan,WasteSegregationDetailsRevised2March22,MumbaiWardBoundary2Jan2022,HumanResourceData,MumbaiPrabhagBoundaries3Jan2022V2,compost_data,data_form,document_up
+from .models import Report,Grievance,WasteSegregationDetails,EmployeeDetails,User,MumbaiBuildingsWardPrabhagwise17Jan,WasteSegregationDetailsRevised2March22,MumbaiWardBoundary2Jan2022,HumanResourceData,MumbaiPrabhagBoundaries3Jan2022V2,compost_data,data_form,document_up,ReportData
 #,OsmBuildings29Oct21
 from map.models import Ward61BuildingsOsm2Nov2021
 # from crispy_forms.helper import FormHelper
@@ -70,6 +70,13 @@ EmployeePost = [
     ('Sweeper','Sweeper'),
     
 ]
+Phenomena =[
+     ('',''),
+     ('Sewage being thrown into the lake','Sewage being thrown into the lake'),
+     ('Solid waste being dumped in','Solid waste being dumped in'),
+     ('Commercial entity throwing in something','Commercial entity throwing in something'),
+     ('Fishing without license','Fishing without license'),
+]
 
 class GarbageSegForm(forms.ModelForm):
     
@@ -101,7 +108,6 @@ class GrievanceForm(forms.ModelForm):
     img_src = forms.CharField(widget=forms.HiddenInput(),required=False)
     # grievance_no = forms.CharField(widget=forms.HiddenInput())
   
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         
@@ -413,4 +419,31 @@ class DocumentForm(forms.ModelForm):
 #     class Meta:
 #         model = image_up
 #         fields = ('title', 'image',)
+
+
+class reportForm(forms.ModelForm): 
+   
+     date = forms.DateField(label = _(u'Date'),widget=forms.TextInput(attrs={'type': 'date'}),initial=datetime.date.today)
+     report = forms.CharField(label = _(u'Choose Phenomena'),widget=forms.Select(choices=Phenomena))
+     class Meta:
+        model = ReportData
+        fields = '__all__'
+        # required = (
+        #     'ward',
+        #     'prabhag',
+        #     'road_name',
+        #     'building_name',
+        #     # 'building_type',
+        #     # 'building_cluster',
+        #     'compost_weight',
+        #     'coll_date',
+        #     # 'username',
+        # )
+        exclude = ('id','username')
+     def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+
+            # for field in self.Meta.required:
+            #     self.fields[field].required = True
+        
 

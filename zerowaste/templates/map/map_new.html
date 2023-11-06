@@ -423,7 +423,8 @@
           </div>
         </div> 
          <br> 
-        <!--------------- Focus L ward--------------------->
+        <!--------------- Focus Powai Lake Neighbours L ward--------------------->
+        {% if request.user.is_authenticated%}
         <div class="multiselect">
           <div class="selectBox" onclick="showCheckboxes3('geoL')">
             <button type="button" class="btn btn-outline-dark addMore" title = "More interactions are enable here  as a Pilot area"style="width: 90%;font-size:12px; " title="L ward"> {% trans "Focus: L Ward" %}</button>
@@ -480,7 +481,7 @@
           </div>
         </div> 
          <br> 
-         
+         {% endif %}
         <!--Focus case StudiesPrabhag 122-->
         
         <div class="multiselect">

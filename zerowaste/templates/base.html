@@ -146,6 +146,9 @@ input {
                     </a>
                   
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        {% if request.user.is_authenticated %}
+                        <li><a class="dropdown-item" href="{% url 'plr_map' %}" target="blank">Powai Lake Neighbours</a></li>  
+                        {% endif %}
                       <li><a class="dropdown-item" href="{% url 'map' %}" target="blank">Map interface</a></li>
                       <li><a class="dropdown-item" href="{% url 'road_buffer' %}" target="blank">K-West Road-buffer</a></li>
                     </ul>

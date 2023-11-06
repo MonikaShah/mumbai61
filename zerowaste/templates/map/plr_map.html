@@ -1,0 +1,474 @@
+{% extends 'map/map_base.html' %}
+{% load static%}{% load has_group %}
+{% block extra_map_css %}
+{% load i18n %}
+<!-- import psycopg2 -->
+<style>
+    .border {
+      padding: 6px 8px;
+      border-style: groove;
+      border-radius: 5px;
+      margin: 20px;
+    }
+  
+    .info {
+      padding: 6px 8px;
+      font: 14px/16px Arial, Helvetica, sans-serif;
+      background: rgba(255, 255, 255, 0.8);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      border-radius: 5px;
+    }
+  
+    .info h4 {
+      margin: 0 0 5px;
+      color: #777;
+    }
+  
+    /* .table{
+    border-collapse: collapse;
+    padding: 50px;
+    font-weight: bold;
+  
+    
+    /* background:rgba(191, 149, 233, 0.473); */
+  
+    /* } */
+  
+  
+    /* table{
+      width: 350px;
+    } */
+    th {
+      border-bottom: 1px solid #ddd;
+      border-collapse: collapse;
+      width: 150px !important;
+      
+    }
+  
+    td {
+      border-bottom: 1px solid #ddd;
+      border-collapse: collapse;
+      width: 250px !important;
+      /* padding: 2px 3px; */
+      /* text-align: center; */
+    }
+    table{
+      border-bottom: 1px solid #ddd;
+      border-collapse: collapse;
+      width: 450px !important;
+      /* padding: 2px 3px; */
+      /* text-align: center; */
+    }
+  
+    th {
+      font-weight: bold;
+    }
+  
+    .legend {
+      line-height: 18px;
+      color: #555;
+    }
+  
+    .legend i {
+  
+      width: 18px;
+      height: 18px;
+      float: left;
+      margin-right: 8px;
+      opacity: 0.7;
+    }
+  
+    .legendwet {
+      line-height: 18px;
+      color: #555;
+    }
+  
+    .legendwet i {
+      width: 18px;
+      height: 18px;
+      float: left;
+      margin-right: 8px;
+      opacity: 0.7;
+    }
+  
+    /* css to customize Leaflet default styles  */
+    .leaflet-popup-content-wrapper {
+      width: 500px;
+      background: rgba(0, 0, 0, 0.9);
+      color: #ffffff;
+    }
+  
+    .leaflet-popup-content {
+      font-weight: bold;
+    }
+  
+    /* css for table tbinfo*/
+    #tbinfo {
+      font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+      border-collapse: collapse;
+      font-weight: bolder;
+    }
+  
+    #tbinfo td,
+    #tbinfo th {
+      border: 3px solid #ddd;
+      /* padding: 8px; */
+    }
+  
+    #tbinfo tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+  
+    #tbinfo tr:hover {
+      background-color: rgb(194, 92, 92);
+    }
+  
+    #tbinfo th {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      text-align: left;
+      background-color: #4CAF50;
+      color: white;
+    }
+  
+    #checkboxes,#checkboxes1 {
+      display: none;
+      /* border: 1px #dadada solid; */
+    }
+  
+    #datepick {
+      display: none;
+      /* border: 1px #dadada solid; */
+    }
+  #side-bar{
+    min-height: min-content;
+    max-height: 100%;
+    margin: 0;
+    overflow-y: scroll;
+  }
+#checkboxes label {
+    display: block;
+    text-decoration-color: blue;
+    text-align: left;
+    margin: 10px;
+  }
+#formBtn{
+  background-color: rgb(131, 131, 241);
+}
+
+  #pln_whole,#sewage,#wetwaste,#borewell, #infrastructure {
+    display: none;
+    /* border: 1px #dadada solid; */
+  }
+
+  .legend{
+    background-color: white;
+  }
+  
+#pln_whole label,#sewage label, #wetwaste label,#borewell label,#infrastructure label select {
+      display: block;
+      text-align: left;
+      margin: 10px;
+    }
+
+  
+    
+.required:after {
+      content:" *";
+      color: rgb(251, 4, 4);
+      /* size:"6px"; */
+      font-size:x-large;
+      
+    }
+    
+    /* Popup container - can be anything you want */
+    .popup {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      left: 50%;
+      margin-right: -5px;
+      border-width: 5px;
+    }
+  
+    /* The actual popup */
+    .popup .popuptext {
+      visibility: hidden;
+      width: 260px;
+      background-color: #555;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 8px 0;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%;
+      left: 50%;
+      margin-left: -80px;
+    }
+  
+    /* Popup arrow */
+    .popup .popuptext::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: #555 transparent transparent transparent;
+    }
+  
+    /* Toggle this class - hide and show the popup */
+    .popup .show {
+      visibility: visible;
+      -webkit-animation: fadeIn 1s;
+      animation: fadeIn 1s;
+    }
+  
+    /* Add animation (fade in the popup) */
+    @-webkit-keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+  
+      to {
+        opacity: 1;
+      }
+    }
+  
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+  
+      to {
+        opacity: 1;
+      }
+    }
+  
+    .form-control {
+      width: 160px;
+    }
+  
+    .circle {
+      /* background-color: red; */
+      border-radius: 50%;
+    }
+    .tab4 {
+              tab-size: 8;
+          }
+  </style>
+  
+  {% endblock extra_map_css%}
+  
+  {% block map_content%}
+  <!-- {% block sidebar %}
+  {% endblock %} -->
+  {% if messages %}
+  <div>
+  <ul class="messages">
+      {% for message in messages %}
+  
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+          {{message}}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+      </div>
+  
+      {% endfor %}
+  </ul>
+  </div>
+  {% endif %}
+
+<div id="side-bar" style="background-color:  rgba(255, 255, 255);">
+  <!-- side-bar container -->
+
+  <div class="mobileShow">
+
+    <div style="text-align: center">
+      <button style="display: inline-block ;position: relative; background: #000; opacity: 0.60;" id="closebutton"
+        name="closebutton" class="btn btn-secondary"><span class="fa fa-bars"></span></button>
+    </div>
+
+  </div><!--mobile show closses-->
+
+  <div><!--Outer div inside Mobile Show-->
+    <div class="text-center border"><!--Inner Div -->
+
+
+      <form id="projectList" style="width: 100%">
+          <div class="multiselect">
+
+            <div class="selectBox" onclick="showCheckboxes3('pln')">
+                <button type="button" class="btn btn-outline-dark" style="width: 90%;font-size:12px; "> {% trans "Powai Lake & it's Neighbours" %}</button>
+                <div class="overSelect"></div>
+            </div>
+
+         
+            <div id="pln_whole"><br>
+                <div class="checkbox">
+                  <label><input type="checkbox"  value="{mumbai_buildings}" id="mumbai_buildings" onclick="getBoundaryru(this)"><span> {% trans "Lake Boundary" %}</span></label>
+                </div>
+                <div class="checkbox">
+                  <label><input type="checkbox"  value="{mumbai_buildings}" id="mumbai_buildings" onclick="getBoundaryru(this)"><span> {% trans "Historical Lake " %}</span></label>
+                </div>
+                <div class="checkbox">
+                  <label><input type="checkbox" value="{mumbai_ward}" id="mumbai_ward" onchange="getBoundaryru(this)"><span> {% trans "Ward Boundaries" %}</span></label>
+                  </div>
+                <div class="checkbox">
+                  <label><input type="checkbox" value="{DP}" id="DP" onclick="putDP()"><span> {% trans "Prabhag Boundary" %}</span></label>
+                  </div>
+            </div><br>
+            <!-- Powai Lake neighbour over -->
+            
+            <div class="selectBox" onclick="showCheckboxes3('infra')">
+                <button type="button" class="btn btn-outline-dark" style="width: 90%;font-size:12px; "> {% trans "Infrastructure" %}</button>
+                <div class="overSelect"></div>
+            </div>
+            
+            <div id="infrastructure"><br>
+                <div class="checkbox">
+                  <label><input type="checkbox"  value="{mumbai_ward}" id="mumbai_ward" onchange="getBoundaryru(this)"><span> {% trans "Building Points" %}</span></label>
+                </div>
+                <div class="checkbox">
+                  <label><input type="checkbox" value="{mumbai_prabhag}" id="mumbai_prabhag" onchange="getBoundaryru(this)"><span> {% trans "Road Network" %}</span></label>
+                </div>
+                
+                <div class="checkbox">
+                  <label><input type="checkbox" value="{DP}" id="DP" onclick="putDP()"><span> {% trans "Development Plan" %}</span></label>
+                </div>
+                <div class="checkbox">
+                  <label><input type="checkbox"  value="{mumbai_buildings}" id="mumbai_buildings" onclick="getBoundaryru(this)"><span> {% trans "Schools and Colleges" %}</span></label>
+                </div>
+                <div class="checkbox">
+                  <label><input type="checkbox" value="{mumbai_prabhag}" id="mumbai_prabhag" onchange="getBoundaryru(this)"><span> {% trans "Public Toilets" %}</span></label>
+                </div>
+                <div class="checkbox">
+                  <label><input type="checkbox" value="{mumbai_prabhag}" id="mumbai_prabhag" onchange="getBoundaryru(this)" disabled><span> {% trans "Debris Truck unload points" %}</span></label>
+                </div>
+            </div>
+                <!-- Infrastructure over  -->
+
+                <div class="selectBox" onclick="showCheckboxes3('sewage')"><br>
+              <button type="button" class="btn btn-outline-dark" style="width: 90%;font-size:12px; "> {% trans "Sewage Details" %}</button>
+              <div class="overSelect"></div>
+            </div><!--sewage div closes-->
+            <div id="sewage"><br>
+              <div class="checkbox">
+                <label><input type="checkbox"  value="{mumbai_buildings}" id="mumbai_buildings" onclick="getBoundaryru(this)" disabled><span> {% trans "Inlets" %}</span></label>
+              </div>
+              <div class="checkbox">
+                <label><input type="checkbox"  value="{mumbai_buildings}" id="mumbai_buildings" onclick="getBoundaryru(this)" disabled><span> {% trans "Old Inlets" %}</span></label>
+              </div>
+              <div class="checkbox">
+                <label><input type="checkbox"  value="{mumbai_buildings}" id="mumbai_buildings" onclick="getBoundaryru(this)" disabled><span> {% trans "Closed Inlets" %}</span></label>
+              </div>
+              <div class="checkbox">
+                <label><input type="checkbox"  value="{mumbai_buildings}" id="mumbai_buildings" onclick="getBoundaryru(this)" disabled><span> {% trans "water channels for sewage" %}</span></label>
+              </div>
+              <div class="checkbox">
+                <label><input type="checkbox"  value="{mumbai_buildings}" id="mumbai_buildings" onclick="getBoundaryru(this)" disabled><span> {% trans "Sewage Treatment Plants in Societies" %}</span></label>
+              </div>
+            </div><!--sewage div id closes-->
+            <div class="selectBox" onclick="showCheckboxes3('borewell')"><br>
+              <button type="button" class="btn btn-outline-dark" style="width: 90%;font-size:12px; "> {% trans "Borewell" %}</button>
+              <div class="overSelect"></div>
+             </div><!--selectbox div closes-->
+            <!-- <div id="borewell"><br> -->
+              <!-- <div class="checkbox">
+                <label><input type="checkbox"  value="{mumbai_buildings}" id="mumbai_buildings" onclick="getBoundaryru(this)" disabled><span> {% trans "Inlets" %}</span></label>
+              </div>
+              <div class="checkbox">
+                <label><input type="checkbox"  value="{mumbai_buildings}" id="mumbai_buildings" onclick="getBoundaryru(this)" disabled><span> {% trans "Old Inlets" %}</span></label>
+              </div>
+              <div class="checkbox">
+                <label><input type="checkbox"  value="{mumbai_buildings}" id="mumbai_buildings" onclick="getBoundaryru(this)" disabled><span> {% trans "Closed Inlets" %}</span></label>
+              </div> -->
+            <!--borewell div id closes-->  
+            <div class="selectBox" onclick="showCheckboxes3('wb')"><br>
+              <button type="button" class="btn btn-outline-dark" style="width: 90%;font-size:12px; "> {% trans "Water Bodies" %}</button>
+              <div class="overSelect"></div>
+            </div>
+            <div class="selectBox" onclick="showCheckboxes3('fn')"><br>
+              <button type="button" class="btn btn-outline-dark" style="width: 90%;font-size:12px; "> {% trans "Firshermen Nets" %}</button>
+              <div class="overSelect"></div>
+            </div>
+            <div class="selectBox" onclick="showCheckboxes3('wa')"><br>
+              <button type="button" class="btn btn-outline-dark" style="width: 90%;font-size:12px; "> {% trans "Water Analysis" %}</button>
+              <div class="overSelect"></div>
+            </div>
+            <div class="selectBox" onclick="showCheckboxes3('ww')"><br>
+              <button type="button" class="btn btn-outline-dark" style="width: 90%;font-size:12px; "> {% trans "Wet Waste Generator" %}</button>
+              <div class="overSelect"></div>
+            </div><br>
+            <div id="wetwaste">
+              <div class="checkbox">
+                <label><input type="checkbox"  value="{mumbai_buildings}" id="mumbai_buildings" onclick="getBoundaryru(this)" disabled><span> {% trans "Food Stall /canteens" %}</span></label>
+              </div>
+              <div class="checkbox">
+                <label><input type="checkbox"  value="{mumbai_buildings}" id="mumbai_buildings" onclick="getBoundaryru(this)" disabled><span> {% trans "Hotels" %}</span></label>
+              </div>
+              <div class="checkbox">
+                <label><input type="checkbox"  value="{mumbai_buildings}" id="mumbai_buildings" onclick="getBoundaryru(this)" disabled><span> {% trans "Commercial Outlets" %}</span></label>
+              </div>
+            </div><!--wetwaste div closed-->
+
+            
+          </div><!--multiselect div closes-->
+      <br>
+      
+    </div><!--Inner Div Closses-->
+        
+    </form>
+    <form method="post">
+      {% csrf_token %}
+    <input type="button" name='mybtn1' style="align-items: center;" class="btn btn-primary" onclick="location.href='{% url 'plr_report' %}'" 
+value="Report"></input>
+<br/>
+    </div><!--Outer div closses-->
+  </div><!--sidebar div closses-->
+
+        
+{% endblock map_content%}
+
+
+{% block extra_map_javascript%}
+  <script src="{% static 'tilelayer-leaflet.js' %}"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://d3js.org/d3.v4.js"></script>
+  
+  <script>
+      let expanded = false;
+      function showCheckboxes3(th) {
+          
+            let checkboxes;
+            if (th == 'pln') {
+              checkboxes = document.getElementById("pln_whole");
+            }
+            if (th == 'sewage') {
+              checkboxes = document.getElementById("sewage");
+            }
+            if (th == 'ww') {
+              checkboxes = document.getElementById("wetwaste");
+            }
+            if (th == 'infra') {
+              checkboxes = document.getElementById("infrastructure");
+            }
+            if(!expanded){
+              checkboxes.style.display = "block";
+              expanded = true;
+            } else {
+              checkboxes.style.display = "none";
+              expanded = false;
+            }
+
+          }
+          
+  </script>
+{% endblock extra_map_javascript%}
