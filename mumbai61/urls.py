@@ -45,7 +45,7 @@ urlpatterns = [
     path('', include('zerowaste.urls')),
     path('map/',include('map.urls')),
     path('home/', include('home.urls')),
-    path('nowastes_dashboard3/', include('nowastes_dashboard3.urls')),
+   # path('nowastes_dashboard3/', include('nowastes_dashboard3.urls')),
     # path('map/',include('map.urls')),
     # path('i18n/', include('django.conf.urls.i18n')),
     re_path(r'^i18n/', include('django.conf.urls.i18n')),
