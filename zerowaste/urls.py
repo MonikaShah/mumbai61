@@ -59,9 +59,11 @@ urlpatterns = [
     path('document_list/', document_list, name='document_list'),
 
     re_path(r'^list_articles/', views.list_articles, name='list_articles'),
+    path('plr_map',views.plr_map, name='plr_map'),
+    path('plr_report',views.plr_report, name='plr_report'),
 ]
 
 
 
 # if settings.DEBUG:
-#     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 
