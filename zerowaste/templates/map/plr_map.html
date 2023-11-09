@@ -324,6 +324,9 @@
                 <div class="checkbox">
                   <label><input type="checkbox" value="{mumbai_prabhag}" id="mumbai_prabhag" onclick="getBoundaryru(this)"><span> {% trans "Prabhag Boundary" %}</span></label>
                   </div>
+                <div class="checkbox">
+                  <label><input type="checkbox" value="{water_bodies}" id="water_bodies" onclick="getBoundaryru(this)"><span> {% trans "Water Bodies" %}</span></label>
+                  </div>
             </div><br>
             <!-- Powai Lake neighbour over -->
             
@@ -342,6 +345,9 @@
 
                 <div class="checkbox">
                   <label><input type="checkbox" value="{landmarks}" id="landmarks" onchange="getBoundaryru(this)"><span> {% trans "Landmarks" %}</span></label>
+                </div>
+                <div class="checkbox">
+                  <label><input type="checkbox" value="{gardens}" id="gardens" onchange="getBoundaryru(this)"><span> {% trans "Gardens" %}</span></label>
                 </div>
                 
                 <div class="checkbox">
@@ -492,8 +498,64 @@ value="Report"></input>
                 putWMSru("powai_lake"); 
              if (boundary == "{landmarks}")
                 putWMSru("Landmarks"); 
+             if(boundary == "{water_bodies}")
+                putfrmgeoserver("water_bodies_v1")
+             if(boundary == "{gardens}")
+                putfrmgeoserver("gardens_nr_powai_lake") 
         }   
-        
+      function putfrmgeoserver(layer){
+        layer1 =layer;
+          let newLayerList = [];
+          var wms_legend;
+          var sld = '';
+          var cql = 'INCLUDE';
+          var legend = L.control({position: 'bottomright'});
+          
+
+
+          console.log("Putwmsru- layer is "+layer);
+          if (layer == "gardens_nr_powai_lake"){
+            console.log("in gardens ")
+            var currentPos = [19.122, 72.9];
+            var maximumzoom = 20;
+            var opac = 1.6;
+            var zoom = 15;
+            // var cql =`ward_name_='S' OR  ward_name_='L'`;
+            // sld = "lake_boundary";
+          }
+          if (layer == "water_bodies_v1"){
+            console.log("in water bodies ")
+            var currentPos = [19.122, 72.9];
+            var maximumzoom = 20;
+            var opac = 1.6;
+            var zoom = 15;
+            // var cql =`ward_name_='S' OR  ward_name_='L'`;
+            // sld = "lake_boundary";
+          }
+
+          var wms_layer1 = L.tileLayer.wms('https://geoserver2.communitygis.net/geoserver/wms', {
+            layers: layer,
+            format: 'image/png',
+            opacity: opac,
+            transparent: true,
+            maxZoom: maximumzoom,
+            cql_filter:cql,
+            styles: sld,
+
+          });
+          wms_layer1.addTo(mymap);
+          mymap.setView(currentPos, zoom);
+          newLayerList.push(wms_layer1);
+          popup_layer =  "https://geoserver2.communitygis.net/geoserver/"+layer.split(":")[0]+"/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetFeatureInfo&LAYERS=" + wms_layer1.options.layers + "&QUERY_LAYERS=" + wms_layer1.options.layers;
+         
+
+          if (wms_legend) {
+            mymap.removeControl(wms_legend);
+          }
+
+          addWMSLegend(layer,sld);
+        }
+       
       function putWMSru(layer) {
           layer1 =layer;
           let newLayerList = [];
@@ -525,7 +587,7 @@ value="Report"></input>
           }
           if (layer == "buildings_mumbai_30mar23"){
             console.log("in buildings ")
-            var currentPos = [19.1467, 72.8283];
+            var currentPos = [19.1262, 72.9048];
             var maximumzoom = 20;
             var opac = 1.6;
             var zoom = 14;
