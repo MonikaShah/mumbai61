@@ -2347,7 +2347,7 @@ $("#prabhaglistwms").change(function() {
             var zoom = 12;
           }
           else if (layer == "Buildings_mumbai:Buildings_mumbai"){
-            alert("whole buildings")
+            // alert("whole buildings")
             layer = "Buildings_mumbai:Buildings_mumbai";
             currentPos = [19.1467, 72.8283];
             var maximumzoom = 20;
@@ -2402,7 +2402,7 @@ $("#prabhaglistwms").change(function() {
               };
           }
           else{
-            alert("In else stle")
+            // alert("In else stle")
               return {
               fillColor: getColor(feature.properties.is_bwg),
               weight: 3,
@@ -2918,7 +2918,7 @@ function Identify(e) {
                     mymap.openPopup(popup);
                     }
                   if (feature.descriptio) {
-                    alert("in iitb buildings");
+                    // alert("in iitb buildings");
                     content = "<table class = 'popupclass' ><tr><td><b>IIT-B buildings Info</b></td><td></td></tr>" +
                         "<tr><td><b>Name: </b></td><td>" + feature.name + "</td></tr>";
                         "<tr><td><b>Descriptiom: </b></td><td>" + feature.descriptio + "</td></tr>"+"</table>";
@@ -2980,7 +2980,7 @@ function Identify(e) {
                 }
                 if (feature.properties.region_nm && layer1.value == '{122regions}') {
                 
-                  alert("in region");
+                  // alert("in region");
                   content = "<table class = 'popupclass' ><tr><td><b>Region Info</b></td><td></td></tr>" +
                     "<tr style ='border: 1px solid white'><td><b>Ward: </b></td><td>" + feature.properties.ward_nm + "</td></tr>"+
                     "<tr style ='border: 1px solid white'><td><b>Prabhag: </b></td><td>" + feature.properties.prabhag_no + "</td></tr>"+
@@ -3028,7 +3028,7 @@ function new_ajax(e){
                     // return content;
                   }
                   if (data.descriptio) {
-                    alert("in iitb buildings");
+                    // alert("in iitb buildings");
                     content = "<table class = 'popupclass' ><tr><td><b>IIT-B buildings Info</b></td><td></td></tr>" +
                         "<tr><td><b>Name: </b></td><td>" + data.name + "</td></tr>";
                         "<tr><td><b>Descriptipm: </b></td><td>" + data.descriptio + "</td></tr>"+"</table>";
