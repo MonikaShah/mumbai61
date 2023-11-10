@@ -1105,12 +1105,12 @@ var shck4 = false;
     function putDP(){
       if(!showDP){
 
-        fetch('https://geonode.communitygis.in/geoserver/geonode/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=geonode%3ADP_merged_1june22&outputFormat=application%2Fjson')
+        fetch('https://geonode.communitygis.in/geoserver/geonode/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=geonode%3ADP_merged_29june220&outputFormat=application%2Fjson')
         .then(result=>result.json())
         .then((output)=>{
           DPLayer = L.geoJSON(output,{
             onEachFeature: function(feature, layer){
-              layer.bindPopup(`<div style="width:auto;">Name: ${feature.properties.NAME}<br>Ward Name: ${feature.properties.ward_name}<br>Ward: ${feature.properties.Ward}<br>S_No: ${feature.properties.sno}</div>`)
+              layer.bindPopup(`<div style="width:auto;">Development Plan Info<hr><br>DP Code: ${feature.properties.NAME}<br>DP Designation: ${feature.properties.designatio}<br>Ward Name: ${feature.properties.ward_name}<br>Ward: ${feature.properties.Ward}<br>S_No: ${feature.properties.sno}</div>`)
             },
             
           })
@@ -1513,8 +1513,9 @@ $("#prabhaglistwms").change(function() {
                 putWMSru("Buildings_mumbai:Corporate_Ward_Boundaries_8jan");
               else if (boundary == "{mumbai_buildings}")
                 putWMSru("Buildings_mumbai:Buildings_mumbai");
-              else if (boundary == "{DP}")
-                putfrmgeo(DP);
+              else if (boundary == "{DP}"){
+                console.log("DP called in putru")
+                putfrmgeo(DP);}
               // putWMSru("Buildings_mumbai:mumbai_city_3july2021");
 
           } else {
@@ -1551,7 +1552,7 @@ $("#prabhaglistwms").change(function() {
               removeWMS("Buildings_mumbai:Buildings_mumbai");
 
             else if (boundary == "{DP}")
-                removeWMS("Buildings_mumbai:mumbai_city_3july2021");
+                removeWMS("DP_merged_29june220");
             else if (boundary == "{mumbai_roads}")
                 removeWMS("mumbai_roads_prabhag_wise_29jan");
             
@@ -1687,11 +1688,12 @@ $("#prabhaglistwms").change(function() {
             // mymap.clearLayers();
         }
         function putfrmgeo(layers) {
+          // alert("in putfrmgeo");
           // alert(layers.value)
           // alert(layers);
           layer1 = layers;
           var obj = layers.value;
-          console.log(obj);
+          console.log("put frm goe layers "+obj);
           var sld = '';
           if (obj == "{kwestbeat}") {
            
@@ -1740,7 +1742,9 @@ $("#prabhaglistwms").change(function() {
           }
 
           else if (obj == '{DP}'){
-            layer = 'DP_merged_1june22';
+            // layer = 'DP_merged_1june22';
+            console.log("In DP ")
+            layer ='DP_merged_29june220';
             // var currentPos = [19.1022, 72.8752];
             // var maximumzoom = 19;
             // var opac = 1.0;
@@ -2342,15 +2346,15 @@ $("#prabhaglistwms").change(function() {
             var opac = 0.3;
             var zoom = 12;
           }
-          // else if (layer == "Buildings_mumbai:Buildings_mumbai"){
-          //   alert("s buildings")
-          //   layer = "Buildings_mumbai:Buildings_mumbai";
-          //   currentPos = [19.1467, 72.8283];
-          //   var maximumzoom = 20;
-          //   var opac = 1;
-          //   var zoom = 12;
-          //   var cql=`ward_name_='S'`;
-          // }
+          else if (layer == "Buildings_mumbai:Buildings_mumbai"){
+            alert("whole buildings")
+            layer = "Buildings_mumbai:Buildings_mumbai";
+            currentPos = [19.1467, 72.8283];
+            var maximumzoom = 20;
+            var opac = 1;
+            var zoom = 12;
+            // var cql=`ward_name_='S'`;
+          }
         else{
           // alert("in putwmsru else part")
             currentPos = [19.1467, 72.8283];
@@ -2816,7 +2820,7 @@ function Identify(e) {
         type: "GET",
         success: function(data) {
           // alert("success",data.features.length)
-          // alert(layer1.value);
+          
           if (data.features.length !== 0) { // at least one feature returned in response
                 var feature = data.features[0]; // first feature from response
                 // Set up popup for clicked feature and open it
@@ -2824,7 +2828,7 @@ function Identify(e) {
                 var popup = new L.Popup({
                     maxWidth: 300
                 });
-                
+                console.log("in identify function "+layer1);
                 if ((feature.properties.seg_done) && ((layer1.value == '{Rsegdone}')  || (layer1.value == '{Rsegquality}') || (layer1.value == '{Rsegcons}') || (layer1.value == '{Rsegfreq}')||(layer1.value != '{segdone}')  || (layer1.value != '{segquality}') || (layer1.value != '{segcons}') || (layer1.value != '{segfreq}') || (layer1.value != '{description}'))){
                     // alert("in R seg popup"+layer1.value);
                     content = "<table class = 'popupclass'style ='border: 1px solid white' ><tr style ='border: 1px solid white'><td colspan=6><b> Segregation Information</b></td><td></td></tr>" +
@@ -2985,7 +2989,7 @@ function Identify(e) {
                     popup.setLatLng(e.latlng);
                     mymap.openPopup(popup);
                 }
-                if((feature.properties.building_t) && ((layer1.value=='{s122buildings}') ||(layer1.value=='{sbuildings}')||(layer1.value=='{nbuildings}') || (layer1.value=='{l156buildings}' || layer1.value=='{l157buildings}')|| layer1.value=='{s121iitbbuildings}') || (layer1.value =='{s122buildings}') ){
+                if((feature.properties.building_t) && ((layer1=='Buildings_mumbai:Buildings_mumbai')||(layer1.value=='{s122buildings}') ||(layer1.value=='{sbuildings}')||(layer1.value=='{nbuildings}') || (layer1.value=='{l156buildings}' || layer1.value=='{l157buildings}')|| layer1.value=='{s121iitbbuildings}') || (layer1.value =='{s122buildings}') ){
                   // alert("in building info"+layer1.value)
                   $name= {         
                   'name': feature.properties.sac_number}
@@ -2993,8 +2997,6 @@ function Identify(e) {
                         
             // Set up popup for clicked feature and open it
                 }
-                
-            
                 
           }
         }
@@ -3062,7 +3064,7 @@ function new_ajax(e){
                         "<tr><td><b>Number of Flats: </b></td><td>" + data.num_flat + "</td></tr>"+
                         "<tr><td><b>Number of shops: </b></td><td>" + data.num_shops + "</td></tr>"+
                         "<tr><td><b>Wing Name</td><td>" + data.wing_name + "</td></tr>"+
-                            "<tr><td><b>Village: </b></td><td>" + data.village + "</td></tr>"+
+                        "<tr><td><b>Village: </b></td><td>" + data.village + "</td></tr>"+
                         "<tr><td><b>Property Address: </b></td><td>" + data.address + "</td></tr>"+
                         "<tr><td><b>Population: </b></td><td>" +  data.population + "</td></tr>"+
                         "<tr><td><b>Remarks: </b></td><td>" + data.remarks + "</td></tr>"+
