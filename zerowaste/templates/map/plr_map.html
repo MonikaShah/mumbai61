@@ -351,13 +351,13 @@
                 </div>
                 
                 <div class="checkbox">
-                  <label><input type="checkbox" value="{DP}" id="DP" onclick="putDP()"><span> {% trans "Development Plan" %}</span></label>
+                  <label><input type="checkbox" value="{DP}" id="DP" onclick="putDP()" disabled><span> {% trans "Development Plan" %}</span></label>
                 </div>
                 <div class="checkbox">
-                  <label><input type="checkbox"  value="{mumbai_buildings}" id="mumbai_buildings" onclick="getBoundaryru(this)"><span> {% trans "Schools and Colleges" %}</span></label>
+                  <label><input type="checkbox"  value="{sc_coll}" id="sc_coll" onclick="getBoundaryru(this)" disabled><span> {% trans "Schools and Colleges" %}</span></label>
                 </div>
                 <div class="checkbox">
-                  <label><input type="checkbox" value="{mumbai_prabhag}" id="mumbai_prabhag" onchange="getBoundaryru(this)"><span> {% trans "Public Toilets" %}</span></label>
+                  <label><input type="checkbox" value="{mumbai_prabhag}" id="mumbai_prabhag" onchange="getBoundaryru(this)" disabled><span> {% trans "Public Toilets" %}</span></label>
                 </div>
                 <div class="checkbox">
                   <label><input type="checkbox" value="{mumbai_prabhag}" id="mumbai_prabhag" onchange="getBoundaryru(this)" disabled><span> {% trans "Debris Truck unload points" %}</span></label>
@@ -454,6 +454,29 @@ value="Report"></input>
   <script>
       let expanded = false;
       showLegend = true;  // default value showing the legend
+      let newLayerList = [];
+      let newLegendList = [];
+      var legend = L.control({position: 'bottomright'});
+
+      // legend.onAdd = function (mymap) {
+      //       var div = L.DomUtil.create('div', 'info legend');
+      //       div.innerHTML = '<img src="" alt="Legend" id="legend-image" />';
+      //       return div;
+      //     };
+      // legend.addTo(mymap);
+      
+      // function updateLegend(layerName) {
+      //       var legendImage = document.getElementById('legend-image');
+      //       legendImage.src = wmsUrl +
+      //         '?REQUEST=GetLegendGraphic' +
+      //         '&VERSION=1.0.0' +
+      //         '&FORMAT=image/png' +
+      //         '&LAYER=' + layerName;
+
+      //       legend.update();
+      // }
+
+
       function showCheckboxes3(th) {
           
             let checkboxes;
@@ -485,11 +508,15 @@ value="Report"></input>
           let boundary = obj.value;
           console.log("boundary is :"+boundary);
           if ($(obj).is(":checked")) {
-             if (boundary == "{mumbai_ward}")
+             if (boundary == "{mumbai_ward}"){
                 putWMSru("mumbai_ward_boundary_2Jan2022");
-          }
-             if (boundary == "{mumbai_prabhag}")
+                
+
+             }
+             if (boundary == "{mumbai_prabhag}"){
                 putWMSru("Mumbai_Prabhag_Boundaries_3Jan2022V2");
+                // updateLegend('Mumbai_Prabhag_Boundaries_3Jan2022V2');
+             }
              if (boundary == "{mumbai_buildings}")
                 putWMSru("buildings_mumbai_30mar23");
              if (boundary == "{mumbai_roads}")
@@ -502,7 +529,42 @@ value="Report"></input>
                 putfrmgeoserver("water_bodies_v1")
              if(boundary == "{gardens}")
                 putfrmgeoserver("gardens_nr_powai_lake") 
-        }   
+          } 
+          else {
+            if(boundary == "{mumbai_ward}")
+              removeWMS('mumbai_ward_boundary_2Jan2022')
+            if (boundary == "{mumbai_prabhag}")
+              removeWMS("Mumbai_Prabhag_Boundaries_3Jan2022V2");
+                // updateLegend('Mumbai_Prabhag_Boundaries_3Jan2022V2');
+            if (boundary == "{mumbai_buildings}")
+              removeWMS("buildings_mumbai_30mar23");
+            if (boundary == "{mumbai_roads}")
+              removeWMS("mumbai_roads_prabhag_wise_29jan");
+            if (boundary == "{powai_lake}")
+              removeWMS("powai_lake"); 
+            if (boundary == "{landmarks}")
+              removeWMS("Landmarks"); 
+            if(boundary == "{water_bodies}")
+              removeWMS("water_bodies_v1")
+            if(boundary == "{gardens}")
+                removeWMS("gardens_nr_powai_lake") 
+          } 
+      }
+      
+      function removeWMS(unchecked_layer) {
+          // alert("in removeWMS unchecked layer is  "+unchecked_layer);
+          newLayerList.forEach((layer, index) => {
+            if (layer.options.layers === unchecked_layer) {
+             
+              mymap.removeLayer(layer);
+              newLayerList.splice(index, 1);
+              // removeWMS(unchecked_layer)
+              
+            }
+          });
+          
+        }
+
       function putfrmgeoserver(layer){
         layer1 =layer;
           let newLayerList = [];
@@ -554,18 +616,17 @@ value="Report"></input>
           }
 
           addWMSLegend(layer,sld);
+          newLegendList.push(wms_legend)
         }
        
       function putWMSru(layer) {
           layer1 =layer;
-          let newLayerList = [];
+          
           var wms_legend;
           var sld = '';
           var cql = 'INCLUDE';
           var legend = L.control({position: 'bottomright'});
           
-
-
           console.log("Putwmsru- layer is "+layer);
           if (layer == "mumbai_ward_boundary_2Jan2022"){
             console.log("in ward ")
@@ -644,6 +705,7 @@ value="Report"></input>
           }
 
           addWMSLegend(layer,sld);
+          
         }
 
         function addWMSLegend(layer,style) {     
@@ -656,8 +718,8 @@ value="Report"></input>
           else //layer boundary with feature count
             lagendGraphic = "https://geonode.communitygis.in/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=" + layer + "&STYLE="+style+"&LEGEND_OPTIONS=forceLabels:on;countMatched:true;fontAntiAliasing:true;border:true;";
          
-            wms_legend = L.wmsLegend(lagendGraphic);        
-          // lagendGraphic.addTo(mymap) ;
+          wms_legend = L.wmsLegend(lagendGraphic);        
+          
         }  
         function Identify(e) {
  
