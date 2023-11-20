@@ -364,14 +364,15 @@
                 </div>
             </div>
                 <!-- Infrastructure over  -->
-
-                <div class="selectBox" onclick="showCheckboxes3('sewage')"><br>
-              <button type="button" class="btn btn-outline-dark" style="width: 90%;font-size:12px; "> {% trans "Sewage Details" %}</button>
+          
+          <div class="selectBox" onclick="showCheckboxes3('sewage')"><br>
+              <button type="button" class="btn btn-outline-dark" style="width: 90%;font-size:12px; "> {% trans "Sewage & Drainage Details" %}</button>
               <div class="overSelect"></div>
             </div><!--sewage div closes-->
+            
             <div id="sewage"><br>
               <div class="checkbox">
-                <label><input type="checkbox"  value="{mumbai_buildings}" id="mumbai_buildings" onclick="getBoundaryru(this)" disabled><span> {% trans "urrent Inlets" %}</span></label>
+                <label><input type="checkbox"  value="{mumbai_buildings}" id="mumbai_buildings" onclick="getBoundaryru(this)" disabled><span> {% trans "Current Inlets" %}</span></label>
               </div>
               <div class="checkbox">
                 <label><input type="checkbox"  value="{mumbai_buildings}" id="mumbai_buildings" onclick="getBoundaryru(this)" disabled><span> {% trans "Old and closed Inlets" %}</span></label>
@@ -382,6 +383,18 @@
               </div>
               <div class="checkbox">
                 <label><input type="checkbox"  value="{mumbai_buildings}" id="mumbai_buildings" onclick="getBoundaryru(this)" disabled><span> {% trans "Sewage Treatment Plants in Societies" %}</span></label>
+              </div>
+              <div class="checkbox">
+                <label><input type="checkbox"  value="{storm_water}" id="storm_water" onclick="getBoundaryru(this)" ><span> {% trans "Storm Water Drainage (IIT-B) v1" %}</span></label>
+              </div>
+              <div class="checkbox">
+                <label><input type="checkbox"  value="{storm_water_bed}" id="storm_water_bed" onclick="getBoundaryru(this)" ><span> {% trans "Storm Water Drain Bed (IIT-B) v1" %}</span></label>
+              </div>
+              <div class="checkbox">
+                <label><input type="checkbox"  value="{sewarage_line}" id="sewarage_line" onclick="getBoundaryru(this)" ><span> {% trans "Sewarage Line (IIT-B) v1" %}</span></label>
+              </div>
+              <div class="checkbox">
+                <label><input type="checkbox"  value="{sewarage_assets}" id="sewarage_assets" onclick="getBoundaryru(this)" ><span> {% trans "Sewarage Assets (IIT-B) v1" %}</span></label>
               </div>
             </div><!--sewage div id closes-->
             <div class="selectBox" onclick="showCheckboxes3('borewell')"><br>
@@ -524,7 +537,15 @@ value="Report"></input>
              if (boundary == "{powai_lake}")
                 putWMSru("powai_lake"); 
              if (boundary == "{landmarks}")
-                putWMSru("Landmarks"); 
+                putWMSru("Landmarks");
+             if (boundary == "{storm_water}")
+                putWMSru("storm_water_drain_1"); 
+             if (boundary == "{storm_water_bed}")
+                putWMSru("storm_water_drain_bed_1"); 
+             if (boundary == "{sewarage_line}")
+                putWMSru("sewarage_line_1"); 
+             if (boundary == "{sewarage_assets}")
+                putWMSru("sewarage_assets_1");  
              if(boundary == "{water_bodies}")
                 putfrmgeoserver("water_bodies_v1")
              if(boundary == "{gardens}")
@@ -547,7 +568,15 @@ value="Report"></input>
             if(boundary == "{water_bodies}")
               removeWMS("water_bodies_v1")
             if(boundary == "{gardens}")
-                removeWMS("gardens_nr_powai_lake") 
+              removeWMS("gardens_nr_powai_lake") 
+            if (boundary == "{storm_water}")
+              removeWMS("storm_water_drain_1");
+            if (boundary == "{storm_water_bed}")
+              removeWMS("storm_water_drain_bed_1"); 
+            if (boundary == "{sewarage_line}")
+              removeWMS("sewarage_line_1"); 
+            if (boundary == "{sewarage_assets}")
+              removeWMS("sewarage_assets_1"); 
           } 
       }
       
@@ -681,6 +710,42 @@ value="Report"></input>
             var zoom = 14;
             // cql =`prabhag_no='121' OR prabhag_no ='122' OR prabhag_no='156' OR prabhag_no ='157'`;
             sld = "landmarks_powai";
+          }
+          if (layer == "storm_water_drain_1"){
+            console.log("in storm water ")
+            var currentPos = [19.1318, 72.9119];
+            var maximumzoom = 20;
+            var opac = 1.6;
+            var zoom = 15;
+            // cql =`prabhag_no='121' OR prabhag_no ='122' OR prabhag_no='156' OR prabhag_no ='157'`;
+            // sld = "landmarks_powai";
+          }
+          if (layer == "storm_water_drain_bed_1"){
+            console.log("in storm water bed ")
+            var currentPos = [19.1318, 72.9119];
+            var maximumzoom = 20;
+            var opac = 1.6;
+            var zoom = 16;
+            // cql =`prabhag_no='121' OR prabhag_no ='122' OR prabhag_no='156' OR prabhag_no ='157'`;
+            // sld = "landmarks_powai";
+          }
+          if (layer == "sewarage_assets_1"){
+            console.log("in sewarage assets ")
+            var currentPos = [19.1318, 72.9119];
+            var maximumzoom = 20;
+            var opac = 1.6;
+            var zoom = 16;
+            // cql =`prabhag_no='121' OR prabhag_no ='122' OR prabhag_no='156' OR prabhag_no ='157'`;
+            // sld = "landmarks_powai";
+          }
+          if (layer == "sewarage_line_1"){
+            console.log("in sewarage line ")
+            var currentPos = [19.1318, 72.9119];
+            var maximumzoom = 20;
+            var opac = 1.6;
+            var zoom = 15;
+            // cql =`prabhag_no='121' OR prabhag_no ='122' OR prabhag_no='156' OR prabhag_no ='157'`;
+            // sld = "landmarks_powai";
           }
       
       
