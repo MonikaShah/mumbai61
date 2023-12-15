@@ -425,6 +425,13 @@
                     onchange="getBoundaryru(this)"><span> {% trans "N-ward Buildings" %}</span></label>
               </div>
             </div>
+            <div id="checkboxes4">
+              <div class="checkbox">
+                <label><input type="checkbox" value="{n132composting}"  id="n132composting"
+                    onchange="getBoundaryru(this)"><span> {% trans "Prabhag 132 : Buildings doing composting" %}</span></label>
+              </div>
+            </div>
+
           </div>
         </div> 
          <br> 
@@ -1348,6 +1355,9 @@ $("#prabhaglistwms").change(function() {
             else if (boundary == '{nbuildings}') {
               putfrmgeo(nbuildings);
             }
+            else if (boundary == '{n132composting}') {
+              putfrmgeo(n132composting);
+            }
             else if (boundary == "{iitb121bound}") {  
              
              putfrmgeo(iitbbound121);
@@ -1484,9 +1494,18 @@ $("#prabhaglistwms").change(function() {
               putWMSru("ward61:regions_6dec21");
 
             else if (boundary == "{buildings}"){
-              // displaypolygon(boundary);
-              console.log("prabhag is ",`${prabhag}`)
-              putfrmgeo(`${prabhag}`)
+              // if( request.user|has_group =="wardEditor" ){
+                {% if request.user|has_group:"wardEditor"  %}
+                    displaypolygon(boundary);
+                    
+                //  alert("Ward editor to use display function")
+              // }
+
+                
+              // console.log("prabhag is ",`${prabhag}`)
+              {% elif request.user|has_group:"prabhagEditor"  %}
+                  putfrmgeo(`${prabhag}`)
+                  {% endif %}
             }
             else if (boundary == "{buildings_up}")
               displaypolygon(boundary);
@@ -1651,6 +1670,9 @@ $("#prabhaglistwms").change(function() {
             else if (boundary == '{nroads}') {
               removeWMS("N_wardRoads");
             }
+            else if(boundary == "{n132composting}"){
+              removeWMS("compost_facility_P132_6feb23")
+            }
             else if (boundary == '{nbuildings}') {
               removeWMS("Buildings_mumbai");
             }
@@ -1716,6 +1738,19 @@ $("#prabhaglistwms").change(function() {
             var zoom = 15;
             var cql = `prabhag_no=`+layers;
             style=""
+
+            // console.log("cql is",cql)
+         }
+         if(obj == "{n132composting}") {
+            console.log("buildings composting in 132",layers)
+            // layer1 =layers
+            layer = 'compost_facility_P132_6feb23';
+            currentPos = [19.0765, 72.8987];
+            var maximumzoom = 20;
+            var opac = 0.3;
+            var zoom = 15;
+            var cql = `INCLUDE`;
+            style="compost_facility_24feb23"
 
             // console.log("cql is",cql)
          }
@@ -2600,6 +2635,7 @@ function displaypolygon(poly_layer){
   let building_data;
   let building_data_up;
   let deficit_buildings;
+  console.log("poly layer in display polygon is ",poly_layer)
   
   if(poly_layer.value == '{s122buildingslege}' ){
   building_data = buildings.features;
