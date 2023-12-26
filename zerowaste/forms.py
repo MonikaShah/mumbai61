@@ -1,8 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-# from django.contrib.auth.models import User
-
-from .models import Report,Grievance,WasteSegregationDetails,EmployeeDetails,User,MumbaiBuildingsWardPrabhagwise17Jan,WasteSegregationDetailsRevised2March22,MumbaiWardBoundary2Jan2022,HumanResourceData,MumbaiPrabhagBoundaries3Jan2022V2,compost_data,data_form,document_up,ReportData
+from django.forms import ModelForm
+from django.core.exceptions import ValidationError
+from .models import Report,Grievance,WasteSegregationDetails,EmployeeDetails,User,MumbaiBuildingsWardPrabhagwise17Jan,WasteSegregationDetailsRevised2March22,MumbaiWardBoundary2Jan2022,HumanResourceData,MumbaiPrabhagBoundaries3Jan2022V2,compost_data,data_form,document_up,ReportData,AggregatorData,AggregatorRequestorLogin,BuildingDaily
 #,OsmBuildings29Oct21
 from map.models import Ward61BuildingsOsm2Nov2021
 # from crispy_forms.helper import FormHelper
@@ -263,8 +263,8 @@ class EmployeeDetailsForm(forms.ModelForm):
         if r!=None:
             print('valid Mobile')
         else:
-            raise form.ValidationError({'comment':['Enter something']})
-        return mobile
+            raise forms.ValidationError({'comment':['Enter something']})
+        return mob
         # if self.cleaned_data['mobile'] is None:
         #     raise form.ValidationError({'comment':['Enter something']})
     class Meta:
@@ -311,8 +311,40 @@ class HumanResourceDataForm(forms.ModelForm):
             # self.fields['city'].queryset = self.instance.country.city_set.order_by('name')
         # self.fields['prabhag'].queryset = MumbaiWardBoundary2Jan2022.objects.filter(ward_name_field=ward_name)
         
+
+class WasteSegregationDetailsRevised2march22FormNew(forms.ModelForm): 
+    coll_date  = forms.DateField(label = _(u'Date'),widget=forms.TextInput(attrs={'type': 'date'}),initial=datetime.date.today)
+    sac_no = forms.CharField(label='Sac Number',widget=forms.TextInput(attrs={'class': 'grey-textbox'}))
+    def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+
+            for field in self.Meta.required:
+                self.fields[field].required = True
+                
+        
+    class Meta:
+        model = WasteSegregationDetailsRevised2March22
+        fields = '__all__'
+        required = (
+            'ward',
+            'prabhag',
+            'road_name',
+            'building_name',
+            # 'building_type',
+            # 'building_cluster',
+            # 'wet_waste',
+            # 'dry_waste',
+            'coll_date',
+            # 'username',
+        )
+        exclude = ("building_type","building_cluster",'num_wings','num_households_premises','num_shops_premises','approx_population','username','date_time')
+
 class WasteSegregationDetailsRevised2march22Form(forms.ModelForm): 
     coll_date  = forms.DateField(label = _(u'Date'),widget=forms.TextInput(attrs={'type': 'date'}),initial=datetime.date.today)
+    sac_no = forms.CharField(label='Sac Number',widget=forms.TextInput(attrs={'class': 'grey-textbox'}))
+    dom_waste = forms.CharField(label='Domestic Hazardous Waste')
+    # seg_done = forms.CharField(label='Is segregation Done')
+
     # date_time  = forms.DateField(label = _(u'Time'))
     # # region = forms.ModelChoiceField(queryset = WasteSegregationDetails.objects.filter(region__isnull=False).values_list('region', flat=True).distinct('region'),empty_label="(Nothing)")
     # # region = forms.ModelChoiceField(label = _(u'Region Name'),queryset = WasteSegregationDetails.objects.all(),empty_label="(Choose Region)", to_field_name="region")
@@ -345,6 +377,7 @@ class WasteSegregationDetailsRevised2march22Form(forms.ModelForm):
 
             for field in self.Meta.required:
                 self.fields[field].required = True
+                self.fields['sac_no'].widget.attrs['readonly'] = True
     # def __init__(self, *args, **kwargs):
     #     super().__init__(*args, **kwargs)
     #     self.fields['region'].queryset=WasteSegregationDetails.objects.filter(region__isnull=False).values_list('region', flat=True).distinct('region')
@@ -445,5 +478,44 @@ class reportForm(forms.ModelForm):
 
             # for field in self.Meta.required:
             #     self.fields[field].required = True
-        
 
+class AggregatorForm(ModelForm): 
+   
+     class Meta:
+        model = AggregatorData
+        fields = '__all__'
+        
+        exclude = ('id','username')
+     
+class aggregatorRequestorLoginForm(forms.ModelForm):
+    email = forms.EmailField(required=True)
+    password=forms.CharField(widget=forms.PasswordInput()) 
+    confirm_password=forms.CharField(widget=forms.PasswordInput())
+    class Meta:
+        model = AggregatorRequestorLogin
+        fields = ("name", "email",'role', "phone","password")
+    def clean(self):
+        # super(CommentForm, self).clean()
+        cleaned_data = super(aggregatorRequestorLoginForm, self).clean()
+        password = cleaned_data.get("password")
+        print(password)
+        confirm_password = cleaned_data.get("confirm_password")
+        print(confirm_password)
+        if password != confirm_password:
+            print("not matched")
+            # raise forms.ValidationError({"password": "password and confirm_password does not match"})
+            # raise ValidationError({"password": "password and confirm_password does not match"})
+            raise ValidationError("Passwords do not match. Please enter matching passwords.")
+        
+        self._errors['password'] = self.error_class([
+                'password and confirm_password does not match'
+            ])
+        return self.cleaned_data
+    
+class BuildingDailyForm(forms.ModelForm): 
+   
+     class Meta:
+        model = BuildingDaily
+        fields = '__all__'
+        
+        
