@@ -87,13 +87,13 @@ Label{
     <!-- <button type="submit" id="update" class="btn btn-success">{% trans "Update" %}</button> -->
 </form>
 <script>
-    let data = {{ data | safe }}
+    let data = {{ data | safe }};
     // function CreateTableFromJSON() {
         let sac;
 let valid;
         // EXTRACT VALUE FOR HTML HEADER. 
         // ('Book ID', 'Book Name', 'Category' and 'Price')
-        var col = ['SAC Number','Property Address','Building Type','Building Name','Village','Number of flats','Region','Number of Shops','Wing Name','Prabhag Number','Ward Name','Billing Address','Validity'];
+        var col = ['SAC Number','Property Address','Village','Building Type','Wing Name','Building Name','Region','Road','Number of flats','Number of Shops','Population','Prabhag Number','Ward Name','Validity'];
         var cols= []
         for (var i = 0; i < data.length; i++) {
             for (var key in data[i]) {
@@ -106,7 +106,7 @@ let valid;
         // CREATE DYNAMIC TABLE.
         var table = document.createElement("table");
         table.className = 'zui-table';
-table.width =  window.screen.width/1.5;
+        table.width =  window.screen.width/1.5;
         // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
 
         var tr = table.insertRow(-1);                   // TABLE ROW.

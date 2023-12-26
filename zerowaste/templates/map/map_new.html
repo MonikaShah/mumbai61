@@ -890,151 +890,152 @@
       </form>
       {% endblock map_content%}
       {% block extra_map_javascript%}
-<script src="{% static 'tilelayer-leaflet.js' %}"></script>
+      <script src="{% static 'tilelayer-leaflet.js' %}"></script>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
       <script src="https://d3js.org/d3.v4.js"></script>
 
 <!-- Create a div where the graph will take place -->
-
-      <script>
-        let area = null;
-        let building_list;
-        var legend;
-        let windowWidth = window.screen.width;
-        let windowHeight = window.screen.height;
-        let expanded = false;
-        console.log(expanded)
-        let wms_legend,popup_layer,layer1;
-        let newLayerList = [];
-        var polylayer;
-        var polylayer2 =[];
-        var kwestlayer = [];
-        var areaLayerList=[];
-        var markerClusters = L.markerClusterGroup({"chunkedLoading": true});
-        let buildings_up = [];
-        //let buildings = {{ geojson|safe }};
-        let ward= '{{ward}}';
-        let prabhag = '{{prabhag}}';
-        // console.log(prabhag)
-        legend = L.control({position: 'bottomright'});
-        $('#prabhag').html('Prabhag '+prabhag +' landmarks')
-        $('#ward').html('Ward '+ward +' landmarks')
+{% autoescape off %}
+<script>
+      
+  let area = null;
+  let building_list;
+  var legend;
+  let windowWidth = window.screen.width;
+  let windowHeight = window.screen.height;
+  let expanded = false;
+  console.log(expanded)
+  let wms_legend,popup_layer,layer1;
+  let newLayerList = [];
+  var polylayer;
+  var polylayer2 =[];
+  var kwestlayer = [];
+  var areaLayerList=[];
+  var markerClusters = L.markerClusterGroup({"chunkedLoading": true});
+  let buildings_up = [];
+  //let buildings = '{{ geojson|safe }}';
+  let ward= '{{ward}}';
+  let prabhag = '{{prabhag}}';
+  console.log("prabhag in script is",prabhag)
+  legend = L.control({position: 'bottomright'});
+  $('#prabhag').html('Prabhag '+prabhag +' landmarks')
+  $('#ward').html('Ward '+ward +' landmarks')
         
-        // define wms_layer1
-        
-                
-        function showCheckboxes3(th) {
-          let checkboxes;
-          if (th == 'geo') {
-            checkboxes = document.getElementById("checkboxes3");
+    // define wms_layer1
+              
+  function showCheckboxes3(th) {
+    let checkboxes;
+    if (th == 'geo') {
+      checkboxes = document.getElementById("checkboxes3");
 
-          }
-          if (th == 'geoCS') {
-            // alert(th)
-            checkboxes = document.getElementById("checkboxes12");
-            
-            
-          }
-          if (th == 'geoL') {
-            // alert(th)
-            checkboxes = document.getElementById("checkboxes13");
-            
-            
-          }
-          if (th == 'geoN') {
-            checkboxes = document.getElementById("checkboxes10");
-            
+    }
+    if (th == 'geoCS') {
+      // alert(th)
+      checkboxes = document.getElementById("checkboxes12");
+      
+      
+    }
+    if (th == 'geoL') {
+      // alert(th)
+      checkboxes = document.getElementById("checkboxes13");
+      
+      
+    }
+    if (th == 'geoN') {
+      checkboxes = document.getElementById("checkboxes10");
+      
 
-          }
-          if (th == 'geoS') {
-            // alert(th)
-            checkboxes = document.getElementById("checkboxes11");
-            // alert(checkboxes.style.display);
+    }
+    if (th == 'geoS') {
+      // alert(th)
+      checkboxes = document.getElementById("checkboxes11");
+      // alert(checkboxes.style.display);
 
-          }
-          else if (th == 'prabhag') {
-            checkboxes = document.getElementById("checkboxes7");
+    }
+    else if (th == 'prabhag') {
+      checkboxes = document.getElementById("checkboxes7");
 
-          }
-          else if (th == 'bwg') {
-            checkboxes = document.getElementById("checkboxes8");
+    }
+    else if (th == 'bwg') {
+      checkboxes = document.getElementById("checkboxes8");
 
-          }
-          else if (th == 'mumbai') {
-            checkboxes = document.getElementById("mumbai_whole");
+    }
+    else if (th == 'mumbai') {
+      checkboxes = document.getElementById("mumbai_whole");
 
-          }
-          else if (th == 'ward') {
-            checkboxes = document.getElementById("ward_check");
+    }
+    else if (th == 'ward') {
+      checkboxes = document.getElementById("ward_check");
 
-          }
-          if (!expanded) {
-            
-            checkboxes.style.display = "block";
-            expanded = true;
-          } else {
-            checkboxes.style.display = "none";
-            expanded = false;
-          }
+    }
+    if (!expanded) {
+      
+      checkboxes.style.display = "block";
+      expanded = true;
+    } else {
+      checkboxes.style.display = "none";
+      expanded = false;
+    }
+  }
+  // var prabhag_sel from select prabhag;
+  $("#prabhaglist").change(function() {
+    mymap.removeControl(legend);
+
+    var $endpoint = window.location.href // or localhost/interface
+    prabhag = $(this).val();
+    // alert("prabhag is"+prabhag)
+  
+
+    if(polylayer != undefined){
+      console.log(polylayer,"poly")
+      removeWMS('Buildings_mumbai:mumbai_roads_prabhag_wise_29jan');
+      removepolylayer(polylayer);
+      document.getElementById("{buildings}").checked = false;
+      // console.log(document.getElementById("{roads}").checked)
+      document.getElementById("roads").checked = false;
+      }
+    
+    $name1= {'name1': prabhag}
+    console.log("name1 is ",$name1)
+    $.ajax({
+    method: "GET",
+    url: $endpoint,
+    data: $name1,
+    success:function(data) {
+      
+      building_list = data.building_list;
+      // alert("building_list is ",building_list)
+      if(data.length > 2){
+        buildings = JSON.parse(data.geojson);
+        buildings_up = JSON.parse(data.geojson1)
         }
-        // var prabhag_sel;
-        $("#prabhaglist").change(function() {
-          mymap.removeControl(legend);
+      else{
+        buildings = JSON.parse(data.geojson);
+        buildings_up = [];
+        }
+        // prabhag= data.prabhag;
+        // var checkboxes = document.getElementById("ward_checklist");
 
-          var $endpoint = window.location.href // or localhost/interface
-          prabhag = $(this).val();
-          // alert("prabhag is"+prabhag)
+      ward_checklist.style.display = "block";
+      expanded = true;
+        displaypolygon('{buildings}');
+        }
+      });
+    var sac_no = document.getElementById('search_building');
+    console.log("building name is ",sac_no)
+    sac_no.setAttribute("list", "browsers2");
+
+    var data_sac_list = document.createElement("DATALIST");
+    data_sac_list.setAttribute("id", "browsers2");
+    document.getElementById("search_building").appendChild(data_sac_list);
+    $.each(building_list, function(key, value) {   
+      console.log(key,value)
+      var opt_sac = document.createElement("OPTION");
+      opt_sac.setAttribute("value", value.building_name);
+      document.getElementById("browsers2").appendChild(opt_sac);
         
-
-          if(polylayer != undefined){
-            console.log(polylayer,"poly")
-            removeWMS('Buildings_mumbai:mumbai_roads_prabhag_wise_29jan');
-            removepolylayer(polylayer);
-            document.getElementById("{buildings}").checked = false;
-            // console.log(document.getElementById("{roads}").checked)
-            document.getElementById("roads").checked = false;
-          }
-          
-          $name1= {'name1': prabhag}
-
-          $.ajax({
-          method: "GET",
-          url: $endpoint,
-          data: $name1,
-          success:function(data) {
-            
-            building_list = data.building_list;
-            // alert("building_list is ",building_list)
-            if(data.length > 2){
-              buildings = JSON.parse(data.geojson);
-              buildings_up = JSON.parse(data.geojson1)
-            }
-            else{
-              buildings = JSON.parse(data.geojson);
-              buildings_up = [];
-            }
-              // prabhag= data.prabhag;
-    //           var checkboxes = document.getElementById("ward_checklist");
-
-            ward_checklist.style.display = "block";
-            expanded = true;
-            // displaypolygon('{buildings}');
-          }
-        });
-                var sac_no = document.getElementById('search_building');
-                sac_no.setAttribute("list", "browsers2");
-
-                var data_sac_list = document.createElement("DATALIST");
-                data_sac_list.setAttribute("id", "browsers2");
-                document.getElementById("search_building").appendChild(data_sac_list);
-                $.each(building_list, function(key, value) {   
-                  console.log(key,value)
-                  var opt_sac = document.createElement("OPTION");
-                  opt_sac.setAttribute("value", value.building_name);
-                  document.getElementById("browsers2").appendChild(opt_sac);
-                    
-                });
-        })
+      });
+  })
 
 	      
 // slums
@@ -1050,1560 +1051,1530 @@ var shck4 = false;
       }
     }
 
-    var showSlum = false;
-    var slumLayer;
-    function getSlumBoundary(){
-      if(!showSlum){
-        mymap.setView([19.12560565499321,72.84072875976564], 15.5)
-        slumLayer = L.tileLayer.wms('https://geonode.communitygis.in/geoserver/geonode/wms',{
-          layers:'geonode:mumbai_slums_9mar23',
-          format: 'image/png',
-          transparent: 'true',
+var showSlum = false;
+var slumLayer;
+  function getSlumBoundary(){
+    if(!showSlum){
+      mymap.setView([19.12560565499321,72.84072875976564], 15.5)
+      slumLayer = L.tileLayer.wms('https://geonode.communitygis.in/geoserver/geonode/wms',{
+        layers:'geonode:mumbai_slums_9mar23',
+        format: 'image/png',
+        transparent: 'true',
         })
 
-        slumLayer.addTo(mymap)
-        
+        slumLayer.addTo(mymap)        
         showSlum = true
-      }else{
-        mymap.setView([19.359, 72.8304], 12);
-        mymap.removeLayer(slumLayer)
-        showSlum = false
       }
-     
+    else{
+      mymap.setView([19.359, 72.8304], 12);
+      mymap.removeLayer(slumLayer)
+      showSlum = false
+      }
     }
 
-    var showSlumHH = false;
-    var slumHHLayer;
-    function getSlumHouseHolds(){
-      if(!showSlumHH){
-        mymap.setView([19.1495,72.8346], 17)
-        slumHHLayer = L.tileLayer.wms('https://geonode.communitygis.in/geoserver/geonode/wms',{
-          layers:'geonode:merged_slum_HH_9june_poonam',
-          format: 'image/png',
-          transparent: 'true',
+var showSlumHH = false;
+var slumHHLayer;
+  function getSlumHouseHolds(){
+    if(!showSlumHH){
+      mymap.setView([19.1495,72.8346], 17)
+      slumHHLayer = L.tileLayer.wms('https://geonode.communitygis.in/geoserver/geonode/wms',{
+        layers:'geonode:merged_slum_HH_9june_poonam',
+        format: 'image/png',
+        transparent: 'true',
+      })
+
+      slumHHLayer.addTo(mymap)
+      showSlumHH = true
+    }else{
+      // mymap.setView([19.1233, 72.7784], 12);
+      mymap.removeLayer(slumHHLayer)
+      showSlumHH = false
+    }
+  }
+
+var showSlumLanes = false;
+var slumLanesLayer;
+  function getSlumLanes(){
+    if(!showSlumLanes){
+      mymap.setView([19.1493,72.8343], 17)
+      slumLanesLayer = L.tileLayer.wms('https://geonode.communitygis.in/geoserver/geonode/wms',{
+        layers:'geonode:merged_slum_details_9june_poonam',
+        format: 'image/png',
+        transparent: 'true',
+      })
+
+      slumLanesLayer.addTo(mymap)
+      showSlumLanes = true
+    }else{
+      // mymap.setView([19.1233, 72.7784], 12);
+      mymap.removeLayer(slumLanesLayer)
+      showSlumLanes = false
+    }
+  }
+
+//DP
+var showDP = false;
+var DPLayer;
+  function putDP(){
+    if(!showDP){
+
+      fetch('https://geonode.communitygis.in/geoserver/geonode/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=geonode%3ADP_merged_29june220&outputFormat=application%2Fjson')
+      .then(result=>result.json())
+      .then((output)=>{
+        DPLayer = L.geoJSON(output,{
+          onEachFeature: function(feature, layer){
+            layer.bindPopup(`<div style="width:auto;">Development Plan Info<hr><br>DP Code: ${feature.properties.NAME}<br>DP Designation: ${feature.properties.designatio}<br>Ward Name: ${feature.properties.ward_name}<br>Ward: ${feature.properties.Ward}<br>S_No: ${feature.properties.sno}</div>`)
+          },
+          
         })
+        DPLayer.addTo(mymap)
 
-        slumHHLayer.addTo(mymap)
-        showSlumHH = true
-      }else{
-        // mymap.setView([19.1233, 72.7784], 12);
-        mymap.removeLayer(slumHHLayer)
-        showSlumHH = false
-      }
+      })
+
+
+      showDP = true;
+    }else{
+      showDP = false;
+      mymap.removeLayer(DPLayer);
+
     }
+  }
 
-    var showSlumLanes = false;
-    var slumLanesLayer;
-    function getSlumLanes(){
-      if(!showSlumLanes){
-        mymap.setView([19.1493,72.8343], 17)
-        slumLanesLayer = L.tileLayer.wms('https://geonode.communitygis.in/geoserver/geonode/wms',{
-          layers:'geonode:merged_slum_details_9june_poonam',
-          format: 'image/png',
-          transparent: 'true',
-        })
-
-        slumLanesLayer.addTo(mymap)
-        showSlumLanes = true
-      }else{
-        // mymap.setView([19.1233, 72.7784], 12);
-        mymap.removeLayer(slumLanesLayer)
-        showSlumLanes = false
-      }
+//Pipeline
+var showPipe = false
+var Pipelayer;
+  function putPipe(){
+    if(!showPipe){
+      mymap.setView([19.13534920516574,72.81797826290132], 17.5)
+      Pipelayer = L.tileLayer.wms('https://geonode.communitygis.in/geoserver/geonode/wms',{
+        layers:'	geonode:pipeline',
+        format:'image/png',
+        transparent:'true'
+      })
+      Pipelayer.addTo(mymap)
+      showPipe = true;
+    }else{
+      mymap.setView([19.1233, 72.7784], 12);
+      mymap.removeLayer(Pipelayer)
+      showPipe = false
     }
+  }
+      
+      
+  function setView1(layerName,val, selectedBoundary) {
+      if (area) {
+          mymap.removeLayer(area);
+        }
+      let rootUrl = 'https://geoserver2.communitygis.net/geoserver/'+layerName.split(":")[0]+'/ows';
 
-    //DP
-    var showDP = false;
-    var DPLayer;
-    function putDP(){
-      if(!showDP){
-
-        fetch('https://geonode.communitygis.in/geoserver/geonode/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=geonode%3ADP_merged_29june220&outputFormat=application%2Fjson')
-        .then(result=>result.json())
-        .then((output)=>{
-          DPLayer = L.geoJSON(output,{
-            onEachFeature: function(feature, layer){
-              layer.bindPopup(`<div style="width:auto;">Development Plan Info<hr><br>DP Code: ${feature.properties.NAME}<br>DP Designation: ${feature.properties.designatio}<br>Ward Name: ${feature.properties.ward_name}<br>Ward: ${feature.properties.Ward}<br>S_No: ${feature.properties.sno}</div>`)
-            },
-            
-          })
-          DPLayer.addTo(mymap)
-
-        })
-
-
-        showDP = true;
-      }else{
-        showDP = false;
-        mymap.removeLayer(DPLayer);
-
-      }
-    }
-
-    //Pipeline
-    var showPipe = false
-    var Pipelayer;
-    function putPipe(){
-      if(!showPipe){
-        mymap.setView([19.13534920516574,72.81797826290132], 17.5)
-        Pipelayer = L.tileLayer.wms('https://geonode.communitygis.in/geoserver/geonode/wms',{
-          layers:'	geonode:pipeline',
-          format:'image/png',
-          transparent:'true'
-        })
-        Pipelayer.addTo(mymap)
-        showPipe = true;
-      }else{
-        mymap.setView([19.1233, 72.7784], 12);
-        mymap.removeLayer(Pipelayer)
-        showPipe = false
-      }
-    }
-	      
-	      
-function setView1(layerName,val, selectedBoundary) {
-    if (area) {
-        mymap.removeLayer(area);
-    }
-    let rootUrl = 'https://geoserver2.communitygis.net/geoserver/'+layerName.split(":")[0]+'/ows';
-
-    let options = {
-        service: 'WFS',
-        version: '1.0.0',
-        request: 'GetFeature',
-        outputFormat: 'application/json',
-        typeName: layerName,
-        cql_filter: `${val}='${selectedBoundary}'`,
-        propertyName: 'the_geom'
-    };
-    let parameters = L.Util.extend(options);
-    layer_url = rootUrl + L.Util.getParamString(parameters)
-    fetch(layer_url).then(
-        function(response) {
+      let options = {
+          service: 'WFS',
+          version: '1.0.0',
+          request: 'GetFeature',
+          outputFormat: 'application/json',
+          typeName: layerName,
+          cql_filter: `${val}='${selectedBoundary}'`,
+          propertyName: 'the_geom'
+        };
+      let parameters = L.Util.extend(options);
+      layer_url = rootUrl + L.Util.getParamString(parameters)
+      fetch(layer_url).then(
+          function(response) {
             if (response.status !== 200) {
                 console.log('Looks like there was a problem. Status Code: ' +
                     response.status);
                 return;
-            }
+              }
             response.json().then(function(geojsonData) {
-                area = L.geoJson(geojsonData.features)
-                console.log(area)
-                lat = area.getBounds()._northEast.lat
-                lng = area.getBounds()._northEast.lng
-                mymap.setView([lat, lng], 14)
-            });
-        }).catch(function(err) {
-        console.log('Fetch Error :-S', err);
-    });
-}
+              area = L.geoJson(geojsonData.features)
+              console.log(area)
+              lat = area.getBounds()._northEast.lat
+              lng = area.getBounds()._northEast.lng
+              mymap.setView([lat, lng], 14)
+              });
+            }).catch(function(err) {
+            console.log('Fetch Error :-S', err);
+          });
+    }
+
+
 let wardwms;
 let prabhagwms_list;
-$("#wardlistwms").change(function() {
-  $("#prabhaglistwms option").each(function() {
-    $(this).remove();
-});
+  $("#wardlistwms").change(function() {
+    $("#prabhaglistwms option").each(function() {
+      $(this).remove();
+      });
 	//  var $endpoint = window.location.href // or localhost/interface
-  layer = 'Buildings_mumbai:Buildings_mumbai';
-  wardwms = $(this).val();
-   var wms_layer = L.tileLayer.wms('https://geoserver2.communitygis.net/geoserver/wms', {
-                layers: 'Buildings_mumbai:Buildings_mumbai',
-                format: 'image/png',
-                transparent: 'true',
-                cql_filter: `ward_id_2='${wardwms}'`,
-              });
-              wms_layer.addTo(mymap);
-              popup_layer = "https://geoserver2.communitygis.net/geoserver/"+layer.split(":")[0]+"/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetFeatureInfo&LAYERS=" + wms_layer.options.layers + "&QUERY_LAYERS=" + wms_layer.options.layers;
-              removeWMS('Buildings_mumbai:Buildings_mumbai');
-
-              newLayerList.push(wms_layer);
-              setView1('Buildings_mumbai:Buildings_mumbai','ward_id_2', wardwms);
-              let $name2= {            
-            'name2':wardwms}
-            var $endpoint = window.location.href // or localhost/interface
-  var popup = new L.Popup({
-                    maxWidth: 300
+    layer = 'Buildings_mumbai:Buildings_mumbai';
+    wardwms = $(this).val();
+    var wms_layer = L.tileLayer.wms('https://geoserver2.communitygis.net/geoserver/wms', {
+                  layers: 'Buildings_mumbai:Buildings_mumbai',
+                  format: 'image/png',
+                  transparent: 'true',
+                  cql_filter: `ward_id_2='${wardwms}'`,
                 });
-  $.ajax({
-                method: "GET",
-                url: $endpoint,
-                data: $name2,
-                success: function(data) {
-                  for (i = 0; i < data.length; i++) {
-  var opt = document.createElement("option");
-  document.getElementById("prabhaglistwms").innerHTML += '<option id="' + data[i].prabhag_no + '">' + data[i].prabhag_no+ '</option>';
-}
-                }
-              })
-              // mymap.setView([19.1186, 72.8064], 13);
-})
-$("#prabhaglistwms").change(function() {
+    wms_layer.addTo(mymap);
+    popup_layer = "https://geoserver2.communitygis.net/geoserver/"+layer.split(":")[0]+"/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetFeatureInfo&LAYERS=" + wms_layer.options.layers + "&QUERY_LAYERS=" + wms_layer.options.layers;
+    removeWMS('Buildings_mumbai:Buildings_mumbai');
+
+    newLayerList.push(wms_layer);
+    setView1('Buildings_mumbai:Buildings_mumbai','ward_id_2', wardwms);
+    let $name2= {'name2':wardwms}
+    var $endpoint = window.location.href // or localhost/interface
+    var popup = new L.Popup({ 
+                    maxWidth: 300
+                     });
+    $.ajax({
+        method: "GET",
+        url: $endpoint,
+        data: $name2,
+        success: function(data) {
+          for (i = 0; i < data.length; i++) {
+            var opt = document.createElement("option");
+            document.getElementById("prabhaglistwms").innerHTML += '<option id="' + data[i].prabhag_no + '">' + data[i].prabhag_no+ '</option>';
+              }
+            }
+      })
+                // mymap.setView([19.1186, 72.8064], 13);
+    })
+
+
+  $("#prabhaglistwms").change(function() {
 	//  var $endpoint = window.location.href // or localhost/interface
-	 var selectedValue = $(this).val();
-   var wms_layer = L.tileLayer.wms('https://geoserver2.communitygis.net/geoserver/wms', {
+    var selectedValue = $(this).val();
+    var wms_layer = L.tileLayer.wms('https://geoserver2.communitygis.net/geoserver/wms', {
                 layers: 'Buildings_mumbai:Buildings_mumbai',
                 format: 'image/png',
                 transparent: 'true',
                 cql_filter: `prabhag_no='${selectedValue}'`,
 
               });
-              wms_layer.addTo(mymap);
-              removeWMS('Buildings_mumbai:Buildings_mumbai');
-              newLayerList.push(wms_layer);
+    wms_layer.addTo(mymap);
+    removeWMS('Buildings_mumbai:Buildings_mumbai');
+    newLayerList.push(wms_layer);
 
-              setView1('Buildings_mumbai:Buildings_mumbai','prabhag_no', selectedValue);
-})
-        function getBoundaryru(obj) {
-          
-          let boundary = obj.value;
-          console.log("boundary is :"+boundary);
-          if ($(obj).is(":checked")) {
+    setView1('Buildings_mumbai:Buildings_mumbai','prabhag_no', selectedValue);
+  })
+        
+  function getBoundaryru(obj) {
+    let boundary = obj.value;
+    console.log("boundary is :"+boundary);
+    if ($(obj).is(":checked")) {
 
-            if (boundary == "Mumbai Suburban") {
-              var wms_layer = L.tileLayer.wms('https://geoserver2.communitygis.net/geoserver/wms', {
-                layers: 'geonode:maha_taluka_13march2021',
-                format: 'image/png',
-                transparent: 'true',
-                cql_filter: `distname='${boundary}'`,
+      if (boundary == "Mumbai Suburban") {
+        var wms_layer = L.tileLayer.wms('https://geoserver2.communitygis.net/geoserver/wms', {
+          layers: 'geonode:maha_taluka_13march2021',
+          format: 'image/png',
+          transparent: 'true',
+          cql_filter: `distname='${boundary}'`,
 
-              });
-              wms_layer.addTo(mymap);
-              newLayerList.push(wms_layer);
-
-              mymap.setView([19.1186, 72.8064], 11);
-            }
-            else if (boundary == '{kwestbeat}'){
-              putfrmgeo(kwestbeat);
-              
-            }
-            else if (boundary == '{bwg_city}'){
-              putfrmgeo(bwg_city);
-            
-             }
-            else if (boundary == '{bwg_ws}'){
-              
-              putfrmgeo(bwg_ws);
-              
-            }
-            else if (boundary == '{bwg_es}'){
-              
-              putfrmgeo(bwg_es);
-            }
-            else if (boundary == '{mumbai_roads}') {
-              putfrmgeo(mumbai_roads);
-            }
-            else if (boundary == "{wardKWest}") {
-              
-              putWMSru("ward61:k_west_mumbai");
-              var checkboxes = document.getElementById("kwestbuilding");
-
-              kwestbuilding.style.display = "block";
-              expanded = true;
-
-            }
-            else if (boundary == "{wardS}") {
-              
-              
-              putfrmgeo(wardS);
-              // var checkboxes = document.getElementById("kwestbuilding");
-
-              // kwestbuilding.style.display = "block";
-              // expanded = true;
-
-            }
-            else if (boundary == '{wardL}'){
-              putfrmgeo(wardL);
-            
-             }
-            else if (boundary == '{wardN}'){
-              putfrmgeo(wardN);
-            
-             }
-             else if (boundary == '{Nwardprabhags}'){
-              putfrmgeo(Nwardprabhags);
-            
-             }
-             else if (boundary == '{Lwardprabhags}'){
-              putfrmgeo(Lwardprabhags);
-            
-             }
-             else if (boundary == '{Nroads}') {
-              putfrmgeo(Nroads);
-            }
-            else if (boundary == '{Lroads}') {
-              putfrmgeo(Lroads);
-            }
-            else if (boundary == '{lbuildings}') {
-              putfrmgeo(lbuildings);
-            }
-            else if (boundary == "{156bound}") {  
-             
-             putfrmgeo(bound156);
-           }
-           else if (boundary == '{l156buildings}') {
-             putfrmgeo(l156buildings);
-           }
-           else if (boundary == "{157bound}") {  
-             
-             putfrmgeo(bound157);
-           }
-           else if (boundary == '{l157buildings}') {
-             putfrmgeo(l157buildings);
-           }
-            else if (boundary == '{Nmor_routes}') {
-              putfrmgeo(Nmor_routes);
-            }
-            else if (boundary == '{nbuildings}') {
-              putfrmgeo(nbuildings);
-            }
-            else if (boundary == '{n132composting}') {
-              putfrmgeo(n132composting);
-            }
-            else if (boundary == "{iitb121bound}") {  
-             
-             putfrmgeo(iitbbound121);
-           }
-           else if (boundary == '{s121iitbbuildings}') {
-              putfrmgeo(s121iitbbuildings);
-            }
-            else if (boundary == "{121bound}") {  
-             
-             putfrmgeo(bound121);
-           }
-            else if (boundary == "{122bound}") {  
-             
-              putfrmgeo(bound122);
-            }
-            else if (boundary == '{s121buildings}') {
-              putfrmgeo(s121buildings);
-            }
-            else if (boundary == "{s121roads}") {  
-            //  alert(boundary);
-             putfrmgeo(s121roads);
-            }
-
-            else if (boundary == "{122regions}") {  
-            //  alert(boundary);
-             putfrmgeo(regions122);
-           }
-            else if (boundary == '{sroads}') {
-              putfrmgeo(sroads);
-            }
-            else if (boundary == '{sbuildings}') {
-              putfrmgeo(sbuildings);
-            }
-            else if (boundary == '{s122buildings}') {
-              putfrmgeo(s122buildings);
-            }
-            else if (boundary == '{s122routes}') {
-              putfrmgeo(s122routes);
-            }
-            else if (boundary == '{s122buildingslege}') {
-              displaypolygon(s122buildingslege);
-              // putfrmgeo(s122buildings-lege);
-            }
-            else if (boundary == "{s122roads}") {  
-            //  alert(boundary);
-             putfrmgeo(s122roads);
-           }
-           else if (boundary == "{s122gardens}") {  
-            //  alert(boundary);
-             putfrmgeo(s122gardens);
-           }
-           else if (boundary == "{s122slums}") {  
-            //  alert(boundary);
-             putfrmgeo(s122slums);
-           }
-           else if (boundary == "{shbt}") {  
-            //  alert(boundary);
-             putfrmgeo(shbt);
-           }
-            else if (boundary == '{scompost}') {
-              putfrmgeo(scompost);
-            }
-            else if (boundary == '{s122plastic}'){
-              // alert("reached plastic")
-              putfrmgeo(s122plastic)
-            }
-            else if (boundary == '{s122dumping}'){
-              // alert("reached plastic")
-              putfrmgeo(s122dumping)
-            }
-            else if ((boundary == '{segdone}')){
-              // alert("reached plastic")
-              putfrmgeo(segdone)
-              
-            }
-            else if (boundary == '{segquality}') {
-              // alert("reached plastic")
-              putfrmgeo(segquality)
-            }
-            else if (boundary == '{segfreq}'){
-              // alert("reached plastic")
-              putfrmgeo(segfreq)
-            }
-            else if (boundary == '{segcons}'){
-              // alert("reached plastic")
-              putfrmgeo(segcons)
-            }
-            else if (boundary == '{description}'){
-              // alert("reached plastic")
-              putfrmgeo(description)
-            }
-            else if ((boundary == '{Rsegdone}')){
-              // alert("reached plastic")
-              putfrmgeo(Rsegdone)
-              
-            }
-            else if (boundary == '{Rsegquality}') {
-              // alert("reached plastic")
-              putfrmgeo(Rsegquality)
-            }
-            else if (boundary == '{Rsegfreq}'){
-              // alert("reached region frequ")
-              putfrmgeo(Rsegfreq)
-            }
-            else if (boundary == '{Rsegcons}'){
-              // alert("reached plastic")
-              putfrmgeo(Rsegcons)
-            }
-            
-            else if (boundary == "{wardN}") {
-              
-              
-              putfrmgeo(wardN);
-              // var checkboxes = document.getElementById("kwestbuilding");
-
-              // kwestbuilding.style.display = "block";
-              // expanded = true;
-
-            }
-            else if (boundary == "{132bound}") {  
-             
-              putfrmgeo(bound132);
-            }
-            else if (boundary == '{nroads}') {
-              putfrmgeo(nroads);
-            }
-            else if (boundary == '{nbuildings}') {
-              putfrmgeo(nbuildings);
-            }
-
-            else if (boundary == "{61bound}" )
-              putWMSru("ward61:ward61_boundary_1nov21");
-            else if (boundary == "{regions}")
-              putWMSru("ward61:regions_6dec21");
-
-            else if (boundary == "{buildings}"){
-              // if( request.user|has_group =="wardEditor" ){
-                {% if request.user|has_group:"wardEditor"  %}
-                    displaypolygon(boundary);
-                    
-                //  alert("Ward editor to use display function")
-              // }
-
-                
-              // console.log("prabhag is ",`${prabhag}`)
-              {% elif request.user|has_group:"prabhagEditor"  %}
-                  putfrmgeo(`${prabhag}`)
-                  {% endif %}
-            }
-            else if (boundary == "{buildings_up}")
-              displaypolygon(boundary);
-            else if (boundary == "{buildings_only}")
-              putWMSru("ward61:osm_buildings_29oct21");
-            else if (boundary == '{roads}'){
-             
-            var wms_layer = L.tileLayer.wms('https://geonode.communitygis.in/geoserver/geonode/wms', {
-                layers: 'mumbai_roads_prabhag_wise_29jan',
-                format: 'image/png',
-                transparent: 'true',
-                cql_filter: `prabhag_no='${prabhag}'`,
-                styles:'mumbai_roads_prabhagwise20oct23',
-                
-
-              });
-              wms_layer.addTo(mymap);
-              newLayerList.push(wms_layer);
-              addWMSLegendfromgeo('mumbai_roads_prabhag_wise_29jan','mumbai_roads_prabhagwise20oct23');
-              setView1('Buildings_mumbai:Buildings_mumbai','prabhag_no', prabhag);
-            }
-            else if(boundary == '{cop}')
-              putWMSru("kwest_corporator_ward_31st_dec");
-            else if (boundary == "{buildings_noname}")
-              displaypolygon(boundary);
-            else if (boundary == "{regions_noname}")
-              displaypolygon(boundary);
-            else if (boundary == "{kwest-buildings}")
-              {  putWMSru("ward61:k-west_building");}
-              else if (boundary == "{mumbai_ward}")
-                putWMSru("Buildings_mumbai:mumbai_ward_boundary_2Jan2022");
-              else if (boundary == "{mumbai_prabhag}")
-                putWMSru("Buildings_mumbai:Corporate_Ward_Boundaries_8jan");
-              else if (boundary == "{mumbai_buildings}")
-                putWMSru("Buildings_mumbai:Buildings_mumbai");
-              else if (boundary == "{DP}"){
-                console.log("DP called in putru")
-                putfrmgeo(DP);}
-              // putWMSru("Buildings_mumbai:mumbai_city_3july2021");
-
-          } else {
-            if (boundary == "{wardKWest}") {
-              removeWMS("ward61:k_west_mumbai")
-              removeWMS("ward61:k-west_building")
-              removeWMS("kwest_corporator_ward_31st_dec");
-              kwestbuilding.style.display = "none";
-              expanded = false;
-            }
-            else if(boundary =="{kwestbeat}")
-                removeWMS("geonode:k_west_beat_22jan")
-            else if (boundary == "{bwg_city}")
-              removeWMS("geonode:BWG_City_29Jan");
-            else if (boundary == "{bwg_ws}")
-              removeWMS("geonode:BWG_WS_27Jan2022");
-            else if (boundary == "{bwg_es}")
-              removeWMS("BWG_ES_29Jan");
-            else if (boundary == "Mumbai Suburban")
-              removeWMS("geonode:maha_taluka_13march2021");
-            else if (boundary == "{kwest-buildings}")
-              removeWMS("ward61:k-west_building");
-            else if (boundary == "{regions}")
-              removeWMS("ward61:regions_6dec21");
-            else if (boundary == "{61bound}")
-              removeWMS("ward61:ward61_boundary_1nov21");
-            else if (boundary == "{cop}")
-              removeWMS("kwest_corporator_ward_31st_dec");
-            else if (boundary == "{mumbai_ward}")
-              removeWMS("Buildings_mumbai:mumbai_ward_boundary_2Jan2022");
-            else if (boundary == "{mumbai_prabhag}")
-              removeWMS("Buildings_mumbai:Corporate_Ward_Boundaries_8jan");
-            else if (boundary == "{mumbai_buildings}")
-              removeWMS("Buildings_mumbai:Buildings_mumbai");
-
-            else if (boundary == "{DP}")
-                removeWMS("DP_merged_29june220");
-            else if (boundary == "{mumbai_roads}")
-                removeWMS("mumbai_roads_prabhag_wise_29jan");
-            
-            else if (boundary == "{wardN}")
-                removeWMS("mumbai_ward_boundary_2Jan2022");
-            else if (boundary == "{wardL}")
-                removeWMS("mumbai_ward_boundary_2Jan2022");
-            else if (boundary == "{Lwardprabhags}")
-                removeWMS("Mumbai_Prabhag_Boundaries_3Jan2022V2");
-            else if (boundary == '{Lroads}') {
-              removeWMS("mumbai_roads_prabhag_wise_29jan");
-            }
-            else if (boundary == "{156bound}")
-                removeWMS("Mumbai_Prabhag_Boundaries_3Jan2022V2");
-            else if (boundary == "{157bound}")
-                removeWMS("Mumbai_Prabhag_Boundaries_3Jan2022V2");
-            else if (boundary == "{l156buildings}")
-                removeWMS("Buildings_mumbai");
-            else if (boundary == "{l157buildings}")
-                removeWMS("Buildings_mumbai");
-            else if (boundary == "{122bound}")
-                removeWMS("S_ward");
-            else if (boundary == "{Nwardprabhags}")
-                removeWMS("Mumbai_Prabhag_Boundaries_3Jan2022V2");
-            else if (boundary == '{Nroads}') {
-              removeWMS("Nward_roads_11feb23");
-            }
-
-            else if (boundary == '{Nmor_routes}') {
-              removeWMS("Nward_morningRoutes_8feb23");
-            }
-            else if (boundary == '{s121roads}') {
-              removeWMS("mumbai_roads_prabhag_wise_29jan");
-            }
-            else if (boundary == "{iitb121bound}")
-                removeWMS("IITB_BOUNDARY");
-            else if (boundary == "{s121iitbbuildings}")
-                removeWMS("geonode:buildings_2oct21");
-            else if (boundary == "{121bound}")
-                removeWMS("S_ward");
-            else if (boundary == "{122bound}")
-                removeWMS("S_ward");
-            else if(boundary =="{122regions}")
-                removeWMS("regions_prabhag122")
-            else if (boundary == "{wardS}")
-                removeWMS("S_ward");
-            else if (boundary == '{sroads}') {
-              removeWMS("S_wardRoads");
-            }
-            else if (boundary == '{segdone}' || boundary =='{segquality}' ||boundary =='{segfreq}' ||boundary =='{segcons}' ||boundary =='{description}') {
-              removeWMS("P122_builiings_updatedSegreagation_columns_22");
-            }
-            else if (boundary == '{Rsegdone}' || boundary =='{Rsegquality}' ||boundary =='{Rsegfreq}' ||boundary =='{Rsegcons}') {
-              removeWMS("updated_regions_p122_28oct23");
-            }
-            else if (boundary == '{sbuildings}' || boundary =='{nbuildings}' ||boundary =='{s122buildings}' ||boundary =='{s121buildings}') {
-              removeWMS("Buildings_mumbai");
-            }
-            else if (boundary == '{scompost}') {
-              removeWMS("compost_facility_24feb23");
-            }
-            else if (boundary == '{s122plastic}') {
-              removeWMS("ward_122_building_collecting_plastic_13oct21");
-            }
-            else if (boundary == '{s122dumping}') {
-              removeWMS("p122_dumpingpoint");
-            }
-            else if (boundary == '{s122routes}') {
-              removeWMS("p122_garbages_routes_20april23");
-            }
-            else if (boundary == '{s122roads}') {
-              removeWMS("mumbai_roads_prabhag_wise_29jan");
-            }
-            else if (boundary == '{s122gardens}') {
-              removeWMS("P122_Gardens_19april2023");
-            }
-            else if (boundary == '{s122slums}') {
-              removeWMS("Asha_yearners_14apr23_merged");
-            }
-            else if (boundary == '{shbt}') {
-              removeWMS("suraj");
-            }
-            else if (boundary == "{132bound}")
-                removeWMS("N_ward");
-            else if (boundary == "{wardN}")
-                removeWMS("N_ward");
-            else if (boundary == '{nroads}') {
-              removeWMS("N_wardRoads");
-            }
-            else if(boundary == "{n132composting}"){
-              removeWMS("compost_facility_P132_6feb23")
-            }
-            else if (boundary == '{nbuildings}') {
-              removeWMS("Buildings_mumbai");
-            }
-            else if (boundary == "{buildings}") {
-              mymap.removeControl(legend);
-
-              removepolylayer(polylayer);
-
-            }
-            else if (boundary == "{buildings_up}") {
-              mymap.removeControl(legend);
-
-              removepolylayer(polylayer);
-
-            }
-            else if (boundary == "{roads}")
-              removeWMS('mumbai_roads_prabhag_wise_29jan');
-            else if (boundary == "{buildings_noname}")
-              removepolylayer(polylayer);
-            else if (boundary == "{regions_noname}")
-              removepolylayer(polylayer);
-          };
-
-
-        }
-        function removeWMS(unchecked_layer) {
-          newLayerList.forEach((layer, index) => {
-            if (layer.options.layers === unchecked_layer) {
-             
-              mymap.removeLayer(layer);
-              newLayerList.splice(index, 1);
-              if (wms_legend) {
-                mymap.removeControl(wms_legend);
-              }
-              addWMSLegend(layer);
-
-            }
           });
-          
-        }
-        function removepolylayer(layer){
-            mymap.removeLayer(layer);
-            // mymap.removeControl(wms_legend);
-            // mymap.clearLayers();
-        }
-        function putfrmgeo(layers) {
-          // alert("in putfrmgeo");
-          // alert(layers.value)
-          // alert(layers);
-          layer1 = layers;
-          var obj = layers.value;
-          console.log("put frm geo layers value "+obj);
-          console.log("put frm geo layers "+layer1);
-          var sld = '';
-          // if (layer1 == "132") {
-          if(obj == null && layers != null) {
-            console.log("buildings is displayed for prabhag you have rights",layers)
-            layer1 =layers
-            layer = 'Buildings_mumbai';
-            currentPos = [19.0765, 72.8987];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 15;
-            var cql = `prabhag_no=`+layers;
-            style=""
+        wms_layer.addTo(mymap);
+        newLayerList.push(wms_layer);
 
-            // console.log("cql is",cql)
+        mymap.setView([19.1186, 72.8064], 11);
+        }
+      
+      else if (boundary == '{kwestbeat}'){
+        putfrmgeo(kwestbeat);
+        }
+      else if (boundary == '{bwg_city}'){
+        putfrmgeo(bwg_city);
+        }
+      else if (boundary == '{bwg_ws}'){
+        putfrmgeo(bwg_ws);
+       }
+      else if (boundary == '{bwg_es}'){
+        putfrmgeo(bwg_es);
+        }
+      else if (boundary == '{mumbai_roads}') {
+        putfrmgeo(mumbai_roads);
+        }
+      else if (boundary == "{wardKWest}") {
+        putWMSru("ward61:k_west_mumbai");
+        var checkboxes = document.getElementById("kwestbuilding");
+        kwestbuilding.style.display = "block";
+        expanded = true;
+      }
+      else if (boundary == "{wardS}") {
+        putfrmgeo(wardS);
+        // var checkboxes = document.getElementById("kwestbuilding");
+
+        // kwestbuilding.style.display = "block";
+        // expanded = true;
+
+      }
+      else if (boundary == '{wardL}'){
+        putfrmgeo(wardL);
+       }
+      else if (boundary == '{wardN}'){
+        putfrmgeo(wardN);
+       }
+      else if (boundary == '{Nwardprabhags}'){
+        putfrmgeo(Nwardprabhags);
+       }
+      else if (boundary == '{Lwardprabhags}'){
+        putfrmgeo(Lwardprabhags);
+       }
+      else if (boundary == '{Nroads}') {
+        putfrmgeo(Nroads);
+      }
+      else if (boundary == '{Lroads}') {
+        putfrmgeo(Lroads);
+      }
+      else if (boundary == '{lbuildings}') {
+        putfrmgeo(lbuildings);
+      }
+      else if (boundary == "{156bound}") {  
+        
+        putfrmgeo(bound156);
+      }
+      else if (boundary == '{l156buildings}') {
+        putfrmgeo(l156buildings);
+      }
+      else if (boundary == "{157bound}") {  
+        
+        putfrmgeo(bound157);
+      }
+      else if (boundary == '{l157buildings}') {
+        putfrmgeo(l157buildings);
+      }
+      else if (boundary == '{Nmor_routes}') {
+        putfrmgeo(Nmor_routes);
+      }
+      else if (boundary == '{nbuildings}') {
+        putfrmgeo(nbuildings);
+      }
+      else if (boundary == '{n132composting}') {
+        putfrmgeo(n132composting);
+      }
+      else if (boundary == "{iitb121bound}") {  
+        
+        putfrmgeo(iitbbound121);
+      }
+      else if (boundary == '{s121iitbbuildings}') {
+        putfrmgeo(s121iitbbuildings);
+      }
+      else if (boundary == "{121bound}") {  
+        
+        putfrmgeo(bound121);
+      }
+      else if (boundary == "{122bound}") {  
+        
+        putfrmgeo(bound122);
+      }
+      else if (boundary == '{s121buildings}') {
+        putfrmgeo(s121buildings);
+      }
+      else if (boundary == "{s121roads}") {  
+      //  alert(boundary);
+        putfrmgeo(s121roads);
+      }
+
+      else if (boundary == "{122regions}") {  
+      //  alert(boundary);
+        putfrmgeo(regions122);
+      }
+      else if (boundary == '{sroads}') {
+        putfrmgeo(sroads);
+      }
+      else if (boundary == '{sbuildings}') {
+        putfrmgeo(sbuildings);
+      }
+      else if (boundary == '{s122buildings}') {
+        putfrmgeo(s122buildings);
+      }
+      else if (boundary == '{s122routes}') {
+        putfrmgeo(s122routes);
+      }
+      else if (boundary == '{s122buildingslege}') {
+        displaypolygon(s122buildingslege);
+        // putfrmgeo(s122buildings-lege);
+      }
+      else if (boundary == "{s122roads}") {  
+      //  alert(boundary);
+        putfrmgeo(s122roads);
+      }
+      else if (boundary == "{s122gardens}") {  
+      //  alert(boundary);
+        putfrmgeo(s122gardens);
+      }
+      else if (boundary == "{s122slums}") {  
+      //  alert(boundary);
+        putfrmgeo(s122slums);
+      }
+      else if (boundary == "{shbt}") {  
+      //  alert(boundary);
+        putfrmgeo(shbt);
+      }
+      else if (boundary == '{scompost}') {
+        putfrmgeo(scompost);
+      }
+      else if (boundary == '{s122plastic}'){
+        // alert("reached plastic")
+        putfrmgeo(s122plastic)
+      }
+      else if (boundary == '{s122dumping}'){
+        // alert("reached plastic")
+        putfrmgeo(s122dumping)
+      }
+      else if ((boundary == '{segdone}')){
+        // alert("reached plastic")
+        putfrmgeo(segdone)
+        
+      }
+      else if (boundary == '{segquality}') {
+        // alert("reached plastic")
+        putfrmgeo(segquality)
+      }
+      else if (boundary == '{segfreq}'){
+        // alert("reached plastic")
+        putfrmgeo(segfreq)
+      }
+      else if (boundary == '{segcons}'){
+        // alert("reached plastic")
+        putfrmgeo(segcons)
+      }
+      else if (boundary == '{description}'){
+        // alert("reached plastic")
+        putfrmgeo(description)
+      }
+      else if ((boundary == '{Rsegdone}')){
+        // alert("reached plastic")
+        putfrmgeo(Rsegdone)
+        
+      }
+      else if (boundary == '{Rsegquality}') {
+        // alert("reached plastic")
+        putfrmgeo(Rsegquality)
+      }
+      else if (boundary == '{Rsegfreq}'){
+        // alert("reached region frequ")
+        putfrmgeo(Rsegfreq)
+      }
+      else if (boundary == '{Rsegcons}'){
+        // alert("reached plastic")
+        putfrmgeo(Rsegcons)
+      }
+      
+      else if (boundary == "{wardN}") {
+        
+        
+        putfrmgeo(wardN);
+        // var checkboxes = document.getElementById("kwestbuilding");
+
+        // kwestbuilding.style.display = "block";
+        // expanded = true;
+
+      }
+      else if (boundary == "{132bound}") {  
+        
+        putfrmgeo(bound132);
+      }
+      else if (boundary == '{nroads}') {
+        putfrmgeo(nroads);
+      }
+      else if (boundary == '{nbuildings}') {
+        putfrmgeo(nbuildings);
+      }
+
+      else if (boundary == "{61bound}" )
+        putWMSru("ward61:ward61_boundary_1nov21");
+      else if (boundary == "{regions}")
+        putWMSru("ward61:regions_6dec21");
+
+      else if (boundary == "{buildings}"){
+        
+        // buildings = JSON.parse(data.geojson);
+        // conole.log("data is in getboundaryru",buildings)
+        // if( request.user|has_group =="wardEditor" ){
+          {% if request.user|has_group:"wardEditor"  %}
+              displaypolygon(boundary);
+              
+          //  alert("Ward editor to use display function")
+        
+
+          
+        // console.log("prabhag is ",`${prabhag}`)
+        {% elif request.user|has_group:"prabhagEditor"  %}
+        //     // putfrmgeo(`${prabhag}`)
+            displaypolygon(`${prabhag}`);
+            {% endif %}
+      }
+      else if (boundary == "{buildings_up}")
+        displaypolygon(boundary);
+      else if (boundary == "{buildings_only}")
+        putWMSru("ward61:osm_buildings_29oct21");
+      else if (boundary == '{roads}'){
+        var wms_layer = L.tileLayer.wms('https://geonode.communitygis.in/geoserver/geonode/wms', {
+          layers: 'mumbai_roads_prabhag_wise_29jan',
+          format: 'image/png',
+          transparent: 'true',
+          cql_filter: `prabhag_no='${prabhag}'`,
+          styles:'mumbai_roads_prabhagwise20oct23',
+          });
+        wms_layer.addTo(mymap);
+        newLayerList.push(wms_layer);
+        addWMSLegendfromgeo('mumbai_roads_prabhag_wise_29jan','mumbai_roads_prabhagwise20oct23');
+        setView1('Buildings_mumbai:Buildings_mumbai','prabhag_no', prabhag);
          }
-         if(obj == "{n132composting}") {
-            console.log("buildings composting in 132",layers)
-            // layer1 =layers
-            layer = 'compost_facility_P132_6feb23';
-            currentPos = [19.0765, 72.8987];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 15;
-            var cql = `INCLUDE`;
-            style="compost_facility_24feb23"
+      else if(boundary == '{cop}')
+        putWMSru("kwest_corporator_ward_31st_dec");
+      else if (boundary == "{buildings_noname}")
+        displaypolygon(boundary);
+      else if (boundary == "{regions_noname}")
+        displaypolygon(boundary);
+      else if (boundary == "{kwest-buildings}")
+        {  putWMSru("ward61:k-west_building");}
+        else if (boundary == "{mumbai_ward}")
+          putWMSru("Buildings_mumbai:mumbai_ward_boundary_2Jan2022");
+        else if (boundary == "{mumbai_prabhag}")
+          putWMSru("Buildings_mumbai:Corporate_Ward_Boundaries_8jan");
+        else if (boundary == "{mumbai_buildings}")
+          putWMSru("Buildings_mumbai:Buildings_mumbai");
+        else if (boundary == "{DP}"){
+          console.log("DP called in putru")
+          putfrmgeo(DP);}
+        // putWMSru("Buildings_mumbai:mumbai_city_3july2021");
 
-            // console.log("cql is",cql)
-         }
-          if (obj == "{kwestbeat}") {
-            
-            layer = 'geonode:k_west_beat_22jan';
-            var currentPos = [19.1211, 72.8155];
-            var maximumzoom = 19;
-            // var opac = 0.6;
-            var zoom = 13;
-            var cql =`INCLUDE`
+      } 
+      else {
+        if (boundary == "{wardKWest}") {
+          removeWMS("ward61:k_west_mumbai")
+          removeWMS("ward61:k-west_building")
+          removeWMS("kwest_corporator_ward_31st_dec");
+          kwestbuilding.style.display = "none";
+          expanded = false;
           }
-        //   if (obj == "{roads}") {
-           
-        //    layer = 'mumbai_roads_prabhag_wise_29jan';
-        //    var currentPos = [19.1211, 72.8155];
-        //    var maximumzoom = 19;
-        //    // var opac = 0.6;
-        //    var zoom = 13;
-        //    var cql =`prabhag_no='${prabhag}'`,
-        //    sld ='mumbai_roads_prabhagwise20oct23',
-        //  }
-          else if (obj == '{bwg_city}'){
-            layer = 'geonode:BWG_City_29Jan';
-            var currentPos = [18.9944, 72.8043];
-            var maximumzoom = 19;
-            // tranparent = true;
-            // var opac = 0.7;
-            var zoom = 12;
-            var cql =`INCLUDE`
-      
-          }
-          else if (obj == '{bwg_ws}'){
-            layer = 'geonode:BWG_WS_27Jan2022';
-            var currentPos = [19.1337, 72.7954];
-            var maximumzoom = 19;
-            // var opac = 0.3;
-            var zoom = 13;
-            var cql =`INCLUDE`
-          }
-          else if (obj == '{bwg_es}'){
-            layer = 'BWG_ES_29Jan';
-            var currentPos = [19.1022, 72.8752];
-            var maximumzoom = 19;
-            // var opac = 1.0;
-            var zoom = 13;
-            var cql =`INCLUDE`
-          }
+        else if(boundary =="{kwestbeat}")
+            removeWMS("geonode:k_west_beat_22jan")
+        else if (boundary == "{bwg_city}")
+          removeWMS("geonode:BWG_City_29Jan");
+        else if (boundary == "{bwg_ws}")
+          removeWMS("geonode:BWG_WS_27Jan2022");
+        else if (boundary == "{bwg_es}")
+          removeWMS("BWG_ES_29Jan");
+        else if (boundary == "Mumbai Suburban")
+          removeWMS("geonode:maha_taluka_13march2021");
+        else if (boundary == "{kwest-buildings}")
+          removeWMS("ward61:k-west_building");
+        else if (boundary == "{regions}")
+          removeWMS("ward61:regions_6dec21");
+        else if (boundary == "{61bound}")
+          removeWMS("ward61:ward61_boundary_1nov21");
+        else if (boundary == "{cop}")
+          removeWMS("kwest_corporator_ward_31st_dec");
+        else if (boundary == "{mumbai_ward}")
+          removeWMS("Buildings_mumbai:mumbai_ward_boundary_2Jan2022");
+        else if (boundary == "{mumbai_prabhag}")
+          removeWMS("Buildings_mumbai:Corporate_Ward_Boundaries_8jan");
+        else if (boundary == "{mumbai_buildings}")
+          removeWMS("Buildings_mumbai:Buildings_mumbai");
 
-          else if (obj == '{DP}'){
-            // layer = 'DP_merged_1june22';
-            console.log("In DP ")
-            layer ='DP_merged_29june220';
-            // var currentPos = [19.1022, 72.8752];
-            // var maximumzoom = 19;
-            // var opac = 1.0;
-            // var zoom = 13;
-            currentPos = [19.1467, 72.8283];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 12;
-            var cql =`INCLUDE`
+        else if (boundary == "{DP}")
+            removeWMS("DP_merged_29june220");
+        else if (boundary == "{mumbai_roads}")
+            removeWMS("mumbai_roads_prabhag_wise_29jan");
+        
+        else if (boundary == "{wardN}")
+            removeWMS("mumbai_ward_boundary_2Jan2022");
+        else if (boundary == "{wardL}")
+            removeWMS("mumbai_ward_boundary_2Jan2022");
+        else if (boundary == "{Lwardprabhags}")
+            removeWMS("Mumbai_Prabhag_Boundaries_3Jan2022V2");
+        else if (boundary == '{Lroads}') {
+          removeWMS("mumbai_roads_prabhag_wise_29jan");
           }
-          else if (obj == '{wardS}'){
-            
-            layer = 'S_ward';
-            // var currentPos = [19.1022, 72.8752];
-            // var maximumzoom = 19;
-            // var opac = 1.0;
-            // var zoom = 13;
-            currentPos = [19.134, 72.923];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 13;
-            var cql =`INCLUDE`
-      
-          }
-          else if (obj == '{shbt}'){
-            // alert("hbt")
-            layer = 'suraj';
-            // var currentPos = [19.1022, 72.8752];
-            // var maximumzoom = 19;
-            // var opac = 1.0;
-            // var zoom = 13;
-            currentPos = [19.134, 72.923];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 13;
-            var cql =`INCLUDE`
-      
-          }
-          else if (obj == '{wardL}'){
-            // alert("I am in L ward")
-            layer = 'mumbai_ward_boundary_2Jan2022';
-            // var currentPos = [19., 72.8752];
-            // var maximumzoom = 19;
-            // var opac = 1.0;
-            // var zoom = 13;
-            currentPos = [19.098, 72.886];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 13;
-            var cql =`ward_name_='L'`
-      
-          }
-          else if (obj == '{Lwardprabhags}'){
-            // alert("I am in N ward")
-            layer = 'Mumbai_Prabhag_Boundaries_3Jan2022V2';
-            // var currentPos = [19.1022, 72.8752];
-            // var maximumzoom = 19;
-            // var opac = 1.0;
-            // var zoom = 13;
-            currentPos = [19.098, 72.886];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 13;
-            var cql =`Ward_Name='L'`  
-            
-          }
-          else if (obj == '{Lroads}'){
-            // alert("I am in N ward")
-            layer = 'mumbai_roads_prabhag_wise_29jan';
-            // var currentPos = [19.1022, 72.8752];
-            // var maximumzoom = 19;
-            // var opac = 1.0;
-            // var zoom = 13;
-            currentPos = [19.084, 72.927];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 13;
-            var cql =`ward_id='L'`  
-            
-          }
-          else if (obj == '{156bound}'){       
-            layer = 'Mumbai_Prabhag_Boundaries_3Jan2022V2';
-            currentPos = [19.1236, 72.891];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 15;   
-            var cql = `prabhag_no='156'`  
-      
-          }
-          else if (obj == '{157bound}'){       
-            layer = 'Mumbai_Prabhag_Boundaries_3Jan2022V2';
-            currentPos = [19.1236, 72.891];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 15;   
-            var cql = `prabhag_no='157'`  
-      
-          }
-          else if (obj == '{l156buildings}'){
-            // alert("in S roads")
-            layer = 'Buildings_mumbai';
-            currentPos = [19.1236, 72.891];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 15;
-            var cql = `prabhag_no='156'`
-      
-          }
-          else if (obj == '{l157buildings}'){
-            // alert("in S roads")
-            layer = 'Buildings_mumbai';
-            currentPos = [19.1236, 72.891];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 15;
-            var cql = `prabhag_no='157'`
-      
-          }
-          else if (obj == '{wardN}'){
-            // alert("I am in N ward")
-            layer = 'mumbai_ward_boundary_2Jan2022';
-            // var currentPos = [19.1022, 72.8752];
-            // var maximumzoom = 19;
-            // var opac = 1.0;
-            // var zoom = 13;
-            currentPos = [19.084, 72.927];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 13;
-            var cql =`ward_name_='N'`
-      
-          }
-          
-          else if (obj == '{Nwardprabhags}'){
-            // alert("I am in N ward")
-            layer = 'Mumbai_Prabhag_Boundaries_3Jan2022V2';
-            // var currentPos = [19.1022, 72.8752];
-            // var maximumzoom = 19;
-            // var opac = 1.0;
-            // var zoom = 13;
-            currentPos = [19.084, 72.927];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 13;
-            var cql =`Ward_Name='N'`  
-            
-          }
-          
-          else if (obj == '{Nroads}'){
-            // alert("I am in N ward")
-            layer = 'Nward_roads_11feb23';
-            // var currentPos = [19.1022, 72.8752];
-            // var maximumzoom = 19;
-            // var opac = 1.0;
-            // var zoom = 13;
-            currentPos = [19.084, 72.927];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 13;
-            var cql =`INCLUDE`  
-            
-          }
-          
-          else if (obj == '{Nmor_routes}'){
-            // alert("I am in N ward routes")
-            layer = 'Nward_morningRoutes_8feb23';
-            // var currentPos = [19.1022, 72.8752];
-            // var maximumzoom = 19;
-            // var opac = 1.0;
-            // var zoom = 13;
-            currentPos = [19.081, 72.909];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 15;
-            // var cql =`ward_id='N'` 
-            var cql= `INCLUDE`; 
-            // alert(layer)
-          }
-          else if (obj == '{nbuildings}'){
-            // alert("in S roads")
-            layer = 'Buildings_mumbai';
-            currentPos = [19.084, 72.897];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 14;
-            var cql = `ward_name_='N'`
-      
-          }
-          else if (obj == '{iitb121bound}'){       
-            layer = 'IITB_BOUNDARY';
-            currentPos = [19.134, 72.9025];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 15;   
-            var cql = `include`  
-      
-          }
-          else if (obj == '{121bound}'){       
-            layer = 'S_ward';
-            currentPos = [19.134, 72.923];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 15;   
-            var cql = `prabhag_no='121'`  
-      
-          }
-          else if (obj == '{122bound}'){       
-            layer = 'S_ward';
-            currentPos = [19.134, 72.923];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 13;   
-            var cql = `prabhag_no='122'`  
-      
-          }
-          else if (obj == '{122regions}'){       
-            layer = 'regions_prabhag122';
-            // alert(layer)
-            currentPos = [19.1196, 72.9043];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 15;   
-            var cql = `INCLUDE`  
-      
-          }
-          else if (obj == '{segdone}'){       
-            layer = 'P122_builiings_updatedSegreagation_columns_22';
-            // alert(layer)
-            currentPos = [19.1196, 72.9043];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 15;   
-            var cql = `INCLUDE`;
-            sld = "seg_done";
-      
-          }
-          else if (obj == '{segquality}'){       
-            layer = 'P122_builiings_updatedSegreagation_columns_22';
-            // alert(layer)
-            currentPos = [19.1196, 72.9043];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 15;   
-            var cql = `INCLUDE`;
-            sld = "seg_quality_v1";
-      
-          }
-          else if (obj == '{segcons}'){       
-            layer = 'P122_builiings_updatedSegreagation_columns_22';
-            // alert(layer)
-            currentPos = [19.1196, 72.9043];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 15;   
-            var cql = `INCLUDE`;
-            sld = "consistancy_v1";
-      
-          }
-          else if (obj == '{segfreq}'){       
-            layer = 'P122_builiings_updatedSegreagation_columns_22';
-            // alert(layer)
-            currentPos = [19.1196, 72.9043];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 15;   
-            var cql = `INCLUDE`;
-            sld = "frequency_v1";
-      
-          }
-          else if (obj == '{description}'){       
-            layer = 'P122_builiings_updatedSegreagation_columns_22';
-            // alert(layer)
-            currentPos = [19.1196, 72.9043];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 15;   
-            var cql = `INCLUDE`;
-            sld = "description";
-      
-          }
-          else if (obj =='{Rsegdone}'){
-            layer = 'updated_regions_p122_28oct23';
-            // alert(layer)
-            currentPos = [19.1196, 72.9043];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 15;   
-            var cql = `INCLUDE`;
-            sld = "region_segdone"
-            }
-          else if (obj =='{Rsegquality}'){
-            layer = 'updated_regions_p122_28oct23';
-            // alert(layer)
-            currentPos = [19.1196, 72.9043];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 15;   
-            var cql = `INCLUDE`;
-            sld = "region_segquality"
-          }
-          else if (obj =='{Rsegcons}'){
-            layer = 'updated_regions_p122_28oct23';
-            // alert(layer)
-            currentPos = [19.1196, 72.9043];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 15;   
-            var cql = `INCLUDE`;
-            sld = "region_consistency"
-            }
-          else if(obj =='{Rsegfreq}'){
-            layer = 'updated_regions_p122_28oct23';
-            // alert(layer)
-            currentPos = [19.1196, 72.9043];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 15;   
-            var cql = `INCLUDE`;
-            sld = "region_frequency"
-          }
-          
-          else if (obj == '{mumbai_roads}'){
-            // alert("in S roads")
-            layer = 'mumbai_roads_prabhag_wise_29jan';
-            currentPos = [19.1467, 72.8283];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 12;
-            var cql = `INCLUDE`
-      
+        else if (boundary == "{156bound}")
+            removeWMS("Mumbai_Prabhag_Boundaries_3Jan2022V2");
+        else if (boundary == "{157bound}")
+            removeWMS("Mumbai_Prabhag_Boundaries_3Jan2022V2");
+        else if (boundary == "{l156buildings}")
+            removeWMS("Buildings_mumbai");
+        else if (boundary == "{l157buildings}")
+            removeWMS("Buildings_mumbai");
+        else if (boundary == "{122bound}")
+            removeWMS("S_ward");
+        else if (boundary == "{Nwardprabhags}")
+            removeWMS("Mumbai_Prabhag_Boundaries_3Jan2022V2");
+        else if (boundary == '{Nroads}') {
+          removeWMS("Nward_roads_11feb23");
           }
 
-          else if (obj == '{sroads}'){
-            // alert("in S roads")
-            layer = 'S_wardRoads';
-            currentPos = [19.1371, 72.9298];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 13;
-            var cql= `INCLUDE`;
-            // var cql = `ward_id='S'`
-
-      
+        else if (boundary == '{Nmor_routes}') {
+          removeWMS("Nward_morningRoutes_8feb23");
           }
-          else if (obj == '{sbuildings}'){
-            // alert("in S roads")
-            layer = 'Buildings_mumbai';
-            currentPos = [19.1283, 72.9041];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 14;
-            var cql = `ward_name_='S'`;
-            style: "bldgStyle";
-      
+        else if (boundary == '{s121roads}') {
+          removeWMS("mumbai_roads_prabhag_wise_29jan");
           }
-          else if (obj == '{s121buildings}'){
-            // alert("in S 121 buildings");
-            layer = 'Buildings_mumbai';
-            currentPos = [19.1296, 72.9001];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 15;
-            var cql = `prabhag_no='121'`
-      
-          }
-          else if (obj == '{s121iitbbuildings}'){
-            // alert("in S 121 IITb buildings");
-            layer = 'geonode:buildings_2oct21';
-            currentPos = [19.1296, 72.9001];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 15;
-            var cql = `include`
-      
-          }
-          else if (obj == '{s121roads}'){
-            // alert("in 122 roads")
-            layer = 'mumbai_roads_prabhag_wise_29jan';
-            currentPos =  [19.1296, 72.9001];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 15;
-            var cql = `prabhag_no='121'`
-      
-          }
-          else if (obj == '{s122buildings}'){
-            // alert("in S roads")
-            layer = 'Buildings_mumbai';
-            currentPos = [19.1283, 72.9041];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 15;
-            var cql = `prabhag_no='122'`
-      
-          }
-          else if (obj == '{s122routes}'){
-            // alert("in S routes")
-            layer = 'p122_garbages_routes_20april23';
-            currentPos = [19.12, 72.9081];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 16;
-            var cql = `prabhag_no='122'`
-      
-          }
-          else if (obj == '{s122buildings-lege}'){
-            // alert("in S roads")
-            layer = 'Buildings_mumbai';
-            currentPos = [19.1283, 72.9041];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 14;
-            var cql = `prabhag_no='122'`
-            style=""
-      
-          }
-          else if (obj == '{scompost}'){
-            // alert("in S compost")
-            layer = 'compost_facility_24feb23';
-            currentPos = [19.1283, 72.9041];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 15;
-            var cql = `include`
-      
-          }
-          
-          else if (obj == '{s122plastic}'){
-            // alert("in S plastic ")
-            layer = 'ward_122_building_collecting_plastic_13oct21';
-            currentPos = [19.1283, 72.9041];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 15;
-            var cql = `include`
-      
-          }
-          else if (obj == '{s122dumping}'){
-            // alert("in S plastic ")
-            layer = 'p122_dumpingpoint';
-            currentPos = [19.1283, 72.9041];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 15;
-            var cql = `include`
-      
-          }
-          else if (obj == '{s122roads}'){
-            // alert("in 122 roads")
-            layer = 'mumbai_roads_prabhag_wise_29jan';
-            currentPos =  [19.1283, 72.9041];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 15;
-            var cql = `prabhag_no='122'`
-      
-          }
-          else if (obj == '{s122gardens}'){
-            // alert("in 122 roads")
-            layer = 'P122_Gardens_19april2023';
-            currentPos =  [19.1172, 72.9051];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 16;
-            var cql = `include`
-      
-          }
-          else if (obj == '{s122slums}'){
-            // alert("in 122 roads")
-            layer = 'Asha_yearners_14apr23_merged';
-            currentPos =  [19.1242, 72.9177];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 16;
-            var cql = `INCLUDE`
-      
-          }
-
-          else if (obj == '{wardN}'){
-            
-            layer = 'N_ward';
-            // var currentPos = [19.1022, 72.8752];
-            // var maximumzoom = 19;
-            // var opac = 1.0;
-            // var zoom = 13;
-            currentPos = [19.089, 72.921];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 13;
-            var cql =`INCLUDE`
-      
-          }
-          else if (obj == '{132bound}'){       
-            layer = 'N_ward';
-            currentPos = [19.089, 72.921];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 13;   
-            var cql = `prabhag_no='132'`  
-      
-          }
-
-          else if (obj == '{nroads}'){
-            // alert("in S roads")
-            layer = 'N_wardRoads';
-            currentPos = [19.089, 72.921];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 13;
-            var cql= `INCLUDE`;
-            // var cql = `ward_id='S'`
-
-      
-          }
-
-          else if (obj == '{nbuildings}'){
-            // alert("in S roads")
-            layer = 'Buildings_mumbai';
-            currentPos = [19.089, 72.921];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 14;
-            var cql = `ward_name_='N'`
-      
-          }
-                   
-            wms_layer1 = L.tileLayer.wms('https://geonode.communitygis.in/geoserver/wms', {
-            layers: layer,
-            format: 'image/png',
-            
-            // opacity: opac,
-            transparent: true,
-            currentPos:[19.1233, 72.7784],
-            maxZoom: maximumzoom,
-            cql_filter:cql,
-            // style: subteStyle(feature),
-            styles: sld,
-           });
-          
-
-          wms_layer1.addTo(mymap);
-          mymap.setView(currentPos, zoom,cql);
-          newLayerList.push(wms_layer1);
-          popup_layer = "https://geonode.communitygis.in/geoserver/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetFeatureInfo&LAYERS=" + wms_layer1.options.layers + "&QUERY_LAYERS=" + wms_layer1.options.layers;
-          if (wms_legend) {
-            mymap.removeControl(wms_legend);
-          }
-          console.log("layer and sld for legend",layer,"-",sld)
-          addWMSLegendfromgeo(layer,sld);
-                          
+        else if (boundary == "{iitb121bound}")
+          removeWMS("IITB_BOUNDARY");
+        else if (boundary == "{s121iitbbuildings}")
+            removeWMS("geonode:buildings_2oct21");
+        else if (boundary == "{121bound}")
+            removeWMS("S_ward");
+        else if (boundary == "{122bound}")
+            removeWMS("S_ward");
+        else if(boundary =="{122regions}")
+            removeWMS("regions_prabhag122")
+        else if (boundary == "{wardS}")
+            removeWMS("S_ward");
+        else if (boundary == '{sroads}') {
+          removeWMS("S_wardRoads");
         }
+        else if (boundary == '{segdone}' || boundary =='{segquality}' ||boundary =='{segfreq}' ||boundary =='{segcons}' ||boundary =='{description}') {
+          removeWMS("P122_builiings_updatedSegreagation_columns_22");
+        }
+        else if (boundary == '{Rsegdone}' || boundary =='{Rsegquality}' ||boundary =='{Rsegfreq}' ||boundary =='{Rsegcons}') {
+          removeWMS("updated_regions_p122_28oct23");
+        }
+        else if (boundary == '{sbuildings}' || boundary =='{nbuildings}' ||boundary =='{s122buildings}' ||boundary =='{s121buildings}') {
+          removeWMS("Buildings_mumbai");
+        }
+        else if (boundary == '{scompost}') {
+          removeWMS("compost_facility_24feb23");
+        }
+        else if (boundary == '{s122plastic}') {
+          removeWMS("ward_122_building_collecting_plastic_13oct21");
+        }
+        else if (boundary == '{s122dumping}') {
+          removeWMS("p122_dumpingpoint");
+        }
+        else if (boundary == '{s122routes}') {
+          removeWMS("p122_garbages_routes_20april23");
+        }
+        else if (boundary == '{s122roads}') {
+          removeWMS("mumbai_roads_prabhag_wise_29jan");
+        }
+        else if (boundary == '{s122gardens}') {
+          removeWMS("P122_Gardens_19april2023");
+        }
+        else if (boundary == '{s122slums}') {
+          removeWMS("Asha_yearners_14apr23_merged");
+        }
+        else if (boundary == '{shbt}') {
+          removeWMS("suraj");
+        }
+        else if (boundary == "{132bound}")
+            removeWMS("N_ward");
+        else if (boundary == "{wardN}")
+            removeWMS("N_ward");
+        else if (boundary == '{nroads}') {
+          removeWMS("N_wardRoads");
+        }
+        else if(boundary == "{n132composting}"){
+          removeWMS("compost_facility_P132_6feb23")
+        }
+        else if (boundary == '{nbuildings}') {
+          removeWMS("Buildings_mumbai");
+        }
+        else if (boundary == "{buildings}") {
+          mymap.removeControl(legend);
+
+          removepolylayer(polylayer);
+
+        }
+        else if (boundary == "{buildings_up}") {
+          mymap.removeControl(legend);
+          removepolylayer(polylayer);
+          }
+        else if (boundary == "{roads}")
+          removeWMS('mumbai_roads_prabhag_wise_29jan');
+        else if (boundary == "{buildings_noname}")
+          removepolylayer(polylayer);
+        else if (boundary == "{regions_noname}")
+          removepolylayer(polylayer);
+        };
+  }
+  function removeWMS(unchecked_layer) {
+    newLayerList.forEach((layer, index) => {
+      if (layer.options.layers === unchecked_layer) {
+       mymap.removeLayer(layer);
+        newLayerList.splice(index, 1);
+        if (wms_legend) {
+          mymap.removeControl(wms_legend);
+          }
+        addWMSLegend(layer);
+        }
+      });
+    
+    }
+
+  function removepolylayer(layer){
+      mymap.removeLayer(layer);
+      // mymap.removeControl(wms_legend);
+      // mymap.clearLayers();
+    }
+  function putfrmgeo(layers) {
+    // alert("in putfrmgeo");
+    // alert(layers.value)
+    // alert(layers);
+    layer1 = layers;
+    var obj = layers.value;
+    console.log("put frm geo layers value "+obj);
+    console.log("put frm geo layers "+layer1);
+    var sld = '';
+    // if (layer1 == "132") {
+    if(obj == null && layers != null) {
+      console.log("buildings is displayed for prabhag you have rights",layers)
+      layer1 =layers
+      layer = 'Buildings_mumbai';
+      currentPos = [19.0765, 72.8987];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 15;
+      var cql = `prabhag_no=`+layers;
+      style=""
+
+      // console.log("cql is",cql)
+    }
+    if(obj == "{n132composting}") {
+      console.log("buildings composting in 132",layers)
+      // layer1 =layers
+      layer = 'compost_facility_P132_6feb23';
+      currentPos = [19.0765, 72.8987];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 15;
+      var cql = `INCLUDE`;
+      style="compost_facility_24feb23"
+
+      // console.log("cql is",cql)
+    }
+    if (obj == "{kwestbeat}") {
+      
+      layer = 'geonode:k_west_beat_22jan';
+      var currentPos = [19.1211, 72.8155];
+      var maximumzoom = 19;
+      // var opac = 0.6;
+      var zoom = 13;
+      var cql =`INCLUDE`
+    }
+  //   if (obj == "{roads}") {
+      
+  //    layer = 'mumbai_roads_prabhag_wise_29jan';
+  //    var currentPos = [19.1211, 72.8155];
+  //    var maximumzoom = 19;
+  //    // var opac = 0.6;
+  //    var zoom = 13;
+  //    var cql =`prabhag_no='${prabhag}'`,
+  //    sld ='mumbai_roads_prabhagwise20oct23',
+  //  }
+    else if (obj == '{bwg_city}'){
+      layer = 'geonode:BWG_City_29Jan';
+      var currentPos = [18.9944, 72.8043];
+      var maximumzoom = 19;
+      // tranparent = true;
+      // var opac = 0.7;
+      var zoom = 12;
+      var cql =`INCLUDE`
+
+    }
+    else if (obj == '{bwg_ws}'){
+      layer = 'geonode:BWG_WS_27Jan2022';
+      var currentPos = [19.1337, 72.7954];
+      var maximumzoom = 19;
+      // var opac = 0.3;
+      var zoom = 13;
+      var cql =`INCLUDE`
+    }
+    else if (obj == '{bwg_es}'){
+      layer = 'BWG_ES_29Jan';
+      var currentPos = [19.1022, 72.8752];
+      var maximumzoom = 19;
+      // var opac = 1.0;
+      var zoom = 13;
+      var cql =`INCLUDE`
+    }
+
+    else if (obj == '{DP}'){
+      // layer = 'DP_merged_1june22';
+      console.log("In DP ")
+      layer ='DP_merged_29june220';
+      // var currentPos = [19.1022, 72.8752];
+      // var maximumzoom = 19;
+      // var opac = 1.0;
+      // var zoom = 13;
+      currentPos = [19.1467, 72.8283];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 12;
+      var cql =`INCLUDE`
+    }
+    else if (obj == '{wardS}'){
+      
+      layer = 'S_ward';
+      // var currentPos = [19.1022, 72.8752];
+      // var maximumzoom = 19;
+      // var opac = 1.0;
+      // var zoom = 13;
+      currentPos = [19.134, 72.923];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 13;
+      var cql =`INCLUDE`
+
+    }
+    else if (obj == '{shbt}'){
+      // alert("hbt")
+      layer = 'suraj';
+      // var currentPos = [19.1022, 72.8752];
+      // var maximumzoom = 19;
+      // var opac = 1.0;
+      // var zoom = 13;
+      currentPos = [19.134, 72.923];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 13;
+      var cql =`INCLUDE`
+
+    }
+    else if (obj == '{wardL}'){
+      // alert("I am in L ward")
+      layer = 'mumbai_ward_boundary_2Jan2022';
+      // var currentPos = [19., 72.8752];
+      // var maximumzoom = 19;
+      // var opac = 1.0;
+      // var zoom = 13;
+      currentPos = [19.098, 72.886];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 13;
+      var cql =`ward_name_='L'`
+
+    }
+    else if (obj == '{Lwardprabhags}'){
+      // alert("I am in N ward")
+      layer = 'Mumbai_Prabhag_Boundaries_3Jan2022V2';
+      // var currentPos = [19.1022, 72.8752];
+      // var maximumzoom = 19;
+      // var opac = 1.0;
+      // var zoom = 13;
+      currentPos = [19.098, 72.886];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 13;
+      var cql =`Ward_Name='L'`  
+      
+    }
+    else if (obj == '{Lroads}'){
+      // alert("I am in N ward")
+      layer = 'mumbai_roads_prabhag_wise_29jan';
+      // var currentPos = [19.1022, 72.8752];
+      // var maximumzoom = 19;
+      // var opac = 1.0;
+      // var zoom = 13;
+      currentPos = [19.084, 72.927];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 13;
+      var cql =`ward_id='L'`  
+      
+    }
+    else if (obj == '{156bound}'){       
+      layer = 'Mumbai_Prabhag_Boundaries_3Jan2022V2';
+      currentPos = [19.1236, 72.891];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 15;   
+      var cql = `prabhag_no='156'`  
+
+    }
+    else if (obj == '{157bound}'){       
+      layer = 'Mumbai_Prabhag_Boundaries_3Jan2022V2';
+      currentPos = [19.1236, 72.891];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 15;   
+      var cql = `prabhag_no='157'`  
+
+    }
+    else if (obj == '{l156buildings}'){
+      // alert("in S roads")
+      layer = 'Buildings_mumbai';
+      currentPos = [19.1236, 72.891];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 15;
+      var cql = `prabhag_no='156'`
+
+    }
+    else if (obj == '{l157buildings}'){
+      // alert("in S roads")
+      layer = 'Buildings_mumbai';
+      currentPos = [19.1236, 72.891];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 15;
+      var cql = `prabhag_no='157'`
+
+    }
+    else if (obj == '{wardN}'){
+      // alert("I am in N ward")
+      layer = 'mumbai_ward_boundary_2Jan2022';
+      // var currentPos = [19.1022, 72.8752];
+      // var maximumzoom = 19;
+      // var opac = 1.0;
+      // var zoom = 13;
+      currentPos = [19.084, 72.927];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 13;
+      var cql =`ward_name_='N'`
+
+    }
+    
+    else if (obj == '{Nwardprabhags}'){
+      // alert("I am in N ward")
+      layer = 'Mumbai_Prabhag_Boundaries_3Jan2022V2';
+      // var currentPos = [19.1022, 72.8752];
+      // var maximumzoom = 19;
+      // var opac = 1.0;
+      // var zoom = 13;
+      currentPos = [19.084, 72.927];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 13;
+      var cql =`Ward_Name='N'`  
+      
+    }
+    
+    else if (obj == '{Nroads}'){
+      // alert("I am in N ward")
+      layer = 'Nward_roads_11feb23';
+      // var currentPos = [19.1022, 72.8752];
+      // var maximumzoom = 19;
+      // var opac = 1.0;
+      // var zoom = 13;
+      currentPos = [19.084, 72.927];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 13;
+      var cql =`INCLUDE`  
+      
+    }
+    
+    else if (obj == '{Nmor_routes}'){
+      // alert("I am in N ward routes")
+      layer = 'Nward_morningRoutes_8feb23';
+      // var currentPos = [19.1022, 72.8752];
+      // var maximumzoom = 19;
+      // var opac = 1.0;
+      // var zoom = 13;
+      currentPos = [19.081, 72.909];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 15;
+      // var cql =`ward_id='N'` 
+      var cql= `INCLUDE`; 
+      // alert(layer)
+    }
+    else if (obj == '{nbuildings}'){
+      // alert("in S roads")
+      layer = 'Buildings_mumbai';
+      currentPos = [19.084, 72.897];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 14;
+      var cql = `ward_name_='N'`
+
+    }
+    else if (obj == '{iitb121bound}'){       
+      layer = 'IITB_BOUNDARY';
+      currentPos = [19.134, 72.9025];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 15;   
+      var cql = `include`  
+
+    }
+    else if (obj == '{121bound}'){       
+      layer = 'S_ward';
+      currentPos = [19.134, 72.923];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 15;   
+      var cql = `prabhag_no='121'`  
+
+    }
+    else if (obj == '{122bound}'){       
+      layer = 'S_ward';
+      currentPos = [19.134, 72.923];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 13;   
+      var cql = `prabhag_no='122'`  
+
+    }
+    else if (obj == '{122regions}'){       
+      layer = 'regions_prabhag122';
+      // alert(layer)
+      currentPos = [19.1196, 72.9043];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 15;   
+      var cql = `INCLUDE`  
+
+    }
+    else if (obj == '{segdone}'){       
+      layer = 'P122_builiings_updatedSegreagation_columns_22';
+      // alert(layer)
+      currentPos = [19.1196, 72.9043];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 15;   
+      var cql = `INCLUDE`;
+      sld = "seg_done";
+
+    }
+    else if (obj == '{segquality}'){       
+      layer = 'P122_builiings_updatedSegreagation_columns_22';
+      // alert(layer)
+      currentPos = [19.1196, 72.9043];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 15;   
+      var cql = `INCLUDE`;
+      sld = "seg_quality_v1";
+
+    }
+    else if (obj == '{segcons}'){       
+      layer = 'P122_builiings_updatedSegreagation_columns_22';
+      // alert(layer)
+      currentPos = [19.1196, 72.9043];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 15;   
+      var cql = `INCLUDE`;
+      sld = "consistancy_v1";
+
+    }
+    else if (obj == '{segfreq}'){       
+      layer = 'P122_builiings_updatedSegreagation_columns_22';
+      // alert(layer)
+      currentPos = [19.1196, 72.9043];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 15;   
+      var cql = `INCLUDE`;
+      sld = "frequency_v1";
+
+    }
+    else if (obj == '{description}'){       
+      layer = 'P122_builiings_updatedSegreagation_columns_22';
+      // alert(layer)
+      currentPos = [19.1196, 72.9043];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 15;   
+      var cql = `INCLUDE`;
+      sld = "description";
+
+    }
+    else if (obj =='{Rsegdone}'){
+      layer = 'updated_regions_p122_28oct23';
+      // alert(layer)
+      currentPos = [19.1196, 72.9043];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 15;   
+      var cql = `INCLUDE`;
+      sld = "region_segdone"
+      }
+    else if (obj =='{Rsegquality}'){
+      layer = 'updated_regions_p122_28oct23';
+      // alert(layer)
+      currentPos = [19.1196, 72.9043];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 15;   
+      var cql = `INCLUDE`;
+      sld = "region_segquality"
+    }
+    else if (obj =='{Rsegcons}'){
+      layer = 'updated_regions_p122_28oct23';
+      // alert(layer)
+      currentPos = [19.1196, 72.9043];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 15;   
+      var cql = `INCLUDE`;
+      sld = "region_consistency"
+      }
+    else if(obj =='{Rsegfreq}'){
+      layer = 'updated_regions_p122_28oct23';
+      // alert(layer)
+      currentPos = [19.1196, 72.9043];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 15;   
+      var cql = `INCLUDE`;
+      sld = "region_frequency"
+    }
+    
+    else if (obj == '{mumbai_roads}'){
+      // alert("in S roads")
+      layer = 'mumbai_roads_prabhag_wise_29jan';
+      currentPos = [19.1467, 72.8283];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 12;
+      var cql = `INCLUDE`
+
+    }
+
+    else if (obj == '{sroads}'){
+      // alert("in S roads")
+      layer = 'S_wardRoads';
+      currentPos = [19.1371, 72.9298];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 13;
+      var cql= `INCLUDE`;
+      // var cql = `ward_id='S'`
+
+
+    }
+    else if (obj == '{sbuildings}'){
+      // alert("in S roads")
+      layer = 'Buildings_mumbai';
+      currentPos = [19.1283, 72.9041];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 14;
+      var cql = `ward_name_='S'`;
+      style: "bldgStyle";
+
+    }
+    else if (obj == '{s121buildings}'){
+      // alert("in S 121 buildings");
+      layer = 'Buildings_mumbai';
+      currentPos = [19.1296, 72.9001];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 15;
+      var cql = `prabhag_no='121'`
+
+    }
+    else if (obj == '{s121iitbbuildings}'){
+      // alert("in S 121 IITb buildings");
+      layer = 'geonode:buildings_2oct21';
+      currentPos = [19.1296, 72.9001];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 15;
+      var cql = `include`
+
+    }
+    else if (obj == '{s121roads}'){
+      // alert("in 122 roads")
+      layer = 'mumbai_roads_prabhag_wise_29jan';
+      currentPos =  [19.1296, 72.9001];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 15;
+      var cql = `prabhag_no='121'`
+
+    }
+    else if (obj == '{s122buildings}'){
+      // alert("in S roads")
+      layer = 'Buildings_mumbai';
+      currentPos = [19.1283, 72.9041];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 15;
+      var cql = `prabhag_no='122'`
+
+    }
+    else if (obj == '{s122routes}'){
+      // alert("in S routes")
+      layer = 'p122_garbages_routes_20april23';
+      currentPos = [19.12, 72.9081];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 16;
+      var cql = `prabhag_no='122'`
+
+    }
+    else if (obj == '{s122buildings-lege}'){
+      // alert("in S roads")
+      layer = 'Buildings_mumbai';
+      currentPos = [19.1283, 72.9041];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 14;
+      var cql = `prabhag_no='122'`
+      style=""
+
+    }
+    else if (obj == '{scompost}'){
+      // alert("in S compost")
+      layer = 'compost_facility_24feb23';
+      currentPos = [19.1283, 72.9041];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 15;
+      var cql = `include`
+
+    }
+    
+    else if (obj == '{s122plastic}'){
+      // alert("in S plastic ")
+      layer = 'ward_122_building_collecting_plastic_13oct21';
+      currentPos = [19.1283, 72.9041];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 15;
+      var cql = `include`
+
+    }
+    else if (obj == '{s122dumping}'){
+      // alert("in S plastic ")
+      layer = 'p122_dumpingpoint';
+      currentPos = [19.1283, 72.9041];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 15;
+      var cql = `include`
+
+    }
+    else if (obj == '{s122roads}'){
+      // alert("in 122 roads")
+      layer = 'mumbai_roads_prabhag_wise_29jan';
+      currentPos =  [19.1283, 72.9041];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 15;
+      var cql = `prabhag_no='122'`
+
+    }
+    else if (obj == '{s122gardens}'){
+      // alert("in 122 roads")
+      layer = 'P122_Gardens_19april2023';
+      currentPos =  [19.1172, 72.9051];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 16;
+      var cql = `include`
+
+    }
+    else if (obj == '{s122slums}'){
+      // alert("in 122 roads")
+      layer = 'Asha_yearners_14apr23_merged';
+      currentPos =  [19.1242, 72.9177];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 16;
+      var cql = `INCLUDE`
+
+    }
+
+    else if (obj == '{wardN}'){
+      
+      layer = 'N_ward';
+      // var currentPos = [19.1022, 72.8752];
+      // var maximumzoom = 19;
+      // var opac = 1.0;
+      // var zoom = 13;
+      currentPos = [19.089, 72.921];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 13;
+      var cql =`INCLUDE`
+
+    }
+    else if (obj == '{132bound}'){       
+      layer = 'N_ward';
+      currentPos = [19.089, 72.921];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 13;   
+      var cql = `prabhag_no='132'`  
+
+    }
+
+    else if (obj == '{nroads}'){
+      // alert("in S roads")
+      layer = 'N_wardRoads';
+      currentPos = [19.089, 72.921];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 13;
+      var cql= `INCLUDE`;
+      // var cql = `ward_id='S'`
+
+
+    }
+
+    else if (obj == '{nbuildings}'){
+      // alert("in S roads")
+      layer = 'Buildings_mumbai';
+      currentPos = [19.089, 72.921];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 14;
+      var cql = `ward_name_='N'`
+
+    }
+              
+    wms_layer1 = L.tileLayer.wms('https://geonode.communitygis.in/geoserver/wms', {
+      layers: layer,
+      format: 'image/png',
+      
+      // opacity: opac,
+      transparent: true,
+      currentPos:[19.1233, 72.7784],
+      maxZoom: maximumzoom,
+      cql_filter:cql,
+      // style: subteStyle(feature),
+      styles: sld,
+      });
+    wms_layer1.addTo(mymap);
+    mymap.setView(currentPos, zoom,cql);
+    newLayerList.push(wms_layer1);
+    popup_layer = "https://geonode.communitygis.in/geoserver/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetFeatureInfo&LAYERS=" + wms_layer1.options.layers + "&QUERY_LAYERS=" + wms_layer1.options.layers;
+    if (wms_legend) {
+      mymap.removeControl(wms_legend);
+      }
+    console.log("layer and sld for legend",layer,"-",sld)
+    addWMSLegendfromgeo(layer,sld);
+                    
+  }
 
        
-        function putWMSru(layer) {
-          layer1 = layer;
-          console.log("Putwmsru- layer is "+layer);
-          if (layer == "ward61:k_west_mumbai") {
-            layer = 'ward61:k_west_mumbai';
-            currentPos = [19.1233, 72.7784];
-            var maximumzoom = 19;
-            var opac = 0.6;
-            var zoom = 13;
+  function putWMSru(layer) {
+    layer1 = layer;
+    console.log("Putwmsru- layer is "+layer);
+    if (layer == "ward61:k_west_mumbai") {
+      layer = 'ward61:k_west_mumbai';
+      currentPos = [19.1233, 72.7784];
+      var maximumzoom = 19;
+      var opac = 0.6;
+      var zoom = 13;
+      }
+    else if (layer == "ward61:regions_6dec21") {
+      currentPos = [19.1467, 72.8283];
+      var maximumzoom = 20;
+      var opac = 0.5;
+      var zoom = 16;
+    }
+    else if (layer == "ward61:ward61_boundary_1nov21") {
+      currentPos = [19.1423, 72.8137];
+      var maximumzoom = 20;
+      var opac = 0.5;
+      var zoom = 13;
+    }
+    else if (layer == "ward61:osm_buildings_29oct21") {
+      currentPos = [19.1467, 72.8283];
+      layer = "";
+      var maximumzoom = 20;
+      var opac = 0.1;
+      var zoom = 16;
 
-          }
-          else if (layer == "ward61:regions_6dec21") {
-            currentPos = [19.1467, 72.8283];
-            var maximumzoom = 20;
-            var opac = 0.5;
-            var zoom = 16;
-          }
-          else if (layer == "ward61:ward61_boundary_1nov21") {
-            currentPos = [19.1423, 72.8137];
-            var maximumzoom = 20;
-            var opac = 0.5;
-            var zoom = 13;
-          }
-          else if (layer == "ward61:osm_buildings_29oct21") {
-            currentPos = [19.1467, 72.8283];
-            layer = "";
-            var maximumzoom = 20;
-            var opac = 0.1;
-            var zoom = 16;
+    }
+    else if (layer == "ward61:ward61osmroad25OCT") {
+      currentPos = [19.1467, 72.8283];
+      var maximumzoom = 20;
+      var opac = 0.5;
+      var zoom = 16;
+    }
+    else if (layer == "Buildings_mumbai:Corporate_Ward_Boundaries_8jan"){
+      currentPos = [19.1467, 72.8283];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 12;
+    }
+    else if (layer == "Buildings_mumbai:mumbai_ward_boundary_2Jan2022"){
+      currentPos = [19.1467, 72.8283];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 12;
+    }
+    else if (layer == "Buildings_mumbai:Buildings_mumbai"){
+      // alert("whole buildings")
+      layer = "Buildings_mumbai:Buildings_mumbai";
+      currentPos = [19.1467, 72.8283];
+      var maximumzoom = 20;
+      var opac = 1;
+      var zoom = 12;
+      // var cql=`ward_name_='S'`;
+    }
+    else{
+    // alert("in putwmsru else part")
+      currentPos = [19.1467, 72.8283];
+      var maximumzoom = 20;
+      var opac = 1;
+      var zoom = 12;
+      // var cql=`INCLUDE`;
+    }
+    var wms_layer = L.tileLayer.wms('https://geoserver2.communitygis.net/geoserver/wms', {
+      layers: layer,
+      format: 'image/png',
+      opacity: opac,
+      transparent: true,
+      maxZoom: maximumzoom,
+      // cql_filter:cql,
 
-          }
-          else if (layer == "ward61:ward61osmroad25OCT") {
-            currentPos = [19.1467, 72.8283];
-            var maximumzoom = 20;
-            var opac = 0.5;
-            var zoom = 16;
-          }
-          else if (layer == "Buildings_mumbai:Corporate_Ward_Boundaries_8jan"){
-            currentPos = [19.1467, 72.8283];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 12;
-          }
-          else if (layer == "Buildings_mumbai:mumbai_ward_boundary_2Jan2022"){
-            currentPos = [19.1467, 72.8283];
-            var maximumzoom = 20;
-            var opac = 0.3;
-            var zoom = 12;
-          }
-          else if (layer == "Buildings_mumbai:Buildings_mumbai"){
-            // alert("whole buildings")
-            layer = "Buildings_mumbai:Buildings_mumbai";
-            currentPos = [19.1467, 72.8283];
-            var maximumzoom = 20;
-            var opac = 1;
-            var zoom = 12;
-            // var cql=`ward_name_='S'`;
-          }
-        else{
-          // alert("in putwmsru else part")
-            currentPos = [19.1467, 72.8283];
-            var maximumzoom = 20;
-            var opac = 1;
-            var zoom = 12;
-            // var cql=`INCLUDE`;
-        }
-          var wms_layer = L.tileLayer.wms('https://geoserver2.communitygis.net/geoserver/wms', {
-            layers: layer,
-            format: 'image/png',
-            opacity: opac,
-            transparent: true,
-            maxZoom: maximumzoom,
-            // cql_filter:cql,
-
-          });
-          wms_layer.addTo(mymap);
-          mymap.setView(currentPos, zoom);
-          newLayerList.push(wms_layer);
-          popup_layer = "https://geoserver2.communitygis.net/geoserver/"+layer.split(":")[0]+"/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetFeatureInfo&LAYERS=" + wms_layer.options.layers + "&QUERY_LAYERS=" + wms_layer.options.layers;
-         
-
-          // const legendContainer = document.createElement('div');
-          // legendContainer.id = 'legend-container';
-          // mymap.getContainer().appendChild(legendContainer);
-
-          if (wms_legend) {
-            mymap.removeControl(wms_legend);
-          }
-
-          addWMSLegend(layer);
-        }
-
-        function bldgStyle(feature){
-          alert("called")
-          if(feature.properties.is_bwg=='Yes'){
-              alert("In stle")
-              return {
-              fillColor: 'black',
-              weight: 3,
-              opacity: 1,
-              color: 'white',
-              fillOpacity: 0.9
-              };
-          }
-          else{
-            // alert("In else stle")
-              return {
-              fillColor: getColor(feature.properties.is_bwg),
-              weight: 3,
-              opacity: 1,
-              color: 'black',
-              fillOpacity: 0.9
-              };
-          }
+      });
+    wms_layer.addTo(mymap);
+    mymap.setView(currentPos, zoom);
+    newLayerList.push(wms_layer);
+    popup_layer = "https://geoserver2.communitygis.net/geoserver/"+layer.split(":")[0]+"/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetFeatureInfo&LAYERS=" + wms_layer.options.layers + "&QUERY_LAYERS=" + wms_layer.options.layers;
     
-        }
+
+    // const legendContainer = document.createElement('div');
+    // legendContainer.id = 'legend-container';
+    // mymap.getContainer().appendChild(legendContainer);
+
+    if (wms_legend) {
+      mymap.removeControl(wms_legend);
+    }
+
+    addWMSLegend(layer);
+  }
+
+function bldgStyle(feature){
+    // alert("called")
+    if(feature.properties.is_bwg=='Yes'){
+        alert("In stle")
+        return {
+        fillColor: 'black',
+        weight: 3,
+        opacity: 1,
+        color: 'white',
+        fillOpacity: 0.9
+        };
+    }
+    else{
+      // alert("In else stle")
+        return {
+        fillColor: getColor(feature.properties.is_bwg),
+        weight: 3,
+        opacity: 1,
+        color: 'black',
+        fillOpacity: 0.9
+        };
+    }
+
+  }
 
 
-        function onEachFeatureForPointBB(feature, layer) {
+  function onEachFeatureForPointBB(feature, layer) {
 
-         let variable = feature.properties.validity;
-         console.log(feature)
-          var today = new Date();
-          let time = today.toLocaleString();
+    let variable = feature.properties.validity;
+    console.log(feature)
+    var today = new Date();
+    let time = today.toLocaleString();
 
-         // alert(layer.properties.name+"="+feature);
+    // alert(layer.properties.name+"="+feature);
     // layer.on({click:onClick })
     // if(${feature.properties.name} !== null){
-    layer.bindPopup(`<div class = 'text-left'><label>Hello ! {{ request.user.username }}. </lable><form method="POST" class="post-form" action="/buildupdate/${feature.properties.sac_number}" style="margin-top: 20px; width:400px">
-        {% csrf_token %}
-        <table class="table-bordered table-striped">
-            <tr><td align ="left"><label class="required">{% trans "SAC Number" %}</label></td>
-              <td><input type="text" disabled name="sac" id="id_sac" disabled value="${feature.properties.sac_number}" /></td></tr>
-            <tr class="blank_row"></tr>
-            <tr><td align ="left"><label class="required">{% trans "Building Name:" %}</label></td><td><input type="text" name="building_name" id="id_building_name" value="${feature.properties.building_name}" /></td></tr>
-            <tr><td align ="left"><label class="required">{% trans "Road Name:" %}</label></td><td><input type="text" name="road" id="id_road" value="${feature.properties.road}" /></td></tr>
-            <tr><td align ="left"><label>{% trans "Region Name:" %}</label></td><td><input type="text" name="region" id="id_region" value="${feature.properties.region}" /></td></tr>
-            
-            <tr class="blank_row"></tr><tr><td align ="left"><label>{% trans "Is BWG:" %}</label></td><td><input type="text" name="is_bwg" id="id_is_bwg" value="${feature.properties.is_bwg}" /></td></tr>
-            <tr class="blank_row"></tr><tr><td align ="left"><label>{% trans "BWG type:" %}</label></td><td><input type="text" name="bwg_type" id="id_bwg_type" value="${feature.properties.bwg_type}" /></td></tr>
-            <tr class="blank_row"></tr><tr><td align ="left"><label>{% trans "Is Composting:" %}</label></td><td><input type="text" name="is_compost" id="id_is_compost" value="${feature.properties.is_compost}" /></td></tr>
-            <tr class="blank_row"></tr><tr><td align ="left"><label>{% trans "Composting Type:" %}</label></td><td><input type="text" name="compost_type" id="id_compost_type" value="${feature.properties.compost_type}" /></td></tr>
-
-            <tr><td align ="left">{% trans "Building Type:" %}</td><td><input type="text" name="building_type" id="id_building_type" value="${feature.properties.building_type}" /></td></tr>
-            <tr class="blank_row"></tr>
-            <tr><td align ="left">{% trans "Wing Name:" %}</td><td><input type="text" name="wing_name" id="id_wing_name" value="${feature.properties.wing_name}" /></td></tr>
-            <tr class="blank_row"></tr>
-            <tr class="blank_row"></tr>
-            <tr><td align ="left">{% trans "Number of Floors:" %}</td><td><input type="number" name="num_floors" id="id_num_floors"  value="${feature.properties.num_floors}" /></td></tr>
-            <tr><td align ="left"><label>{% trans "Number of Flats:" %}</label></td><td><input type="number" name="num_flat" id="id_num_flat"  value="${feature.properties.num_flat}" /></td></tr>
-            <tr class="blank_row"></tr>
-            <tr><td align ="left">{% trans "Number of Shops:" %}</td><td><input type="number" name="num_shops" id="id_num_shops"  value="${feature.properties.num_shops}" /></td></tr>
-            <tr><td align ="left"><label class="required">{% trans "Population:" %}</td><td> <input type="text" name="population" required   id="id_population" value="${feature.properties.population}" /></td></tr>
-            <tr class="blank_row"></tr>
-            <tr class="blank_row"></tr>    
-            
-            <tr><td align ="left">{% trans "Village:" %}</td><td><input type="text" name="village" id="id_village" value="${feature.properties.village}" /></td></tr>
-            <tr class="blank_row"></tr>
-            <tr><td align ="left">{% trans "Remarks:" %}</td><td><input type="text" name="remark" id="id_remark" value="${feature.properties.remark}" /></td></tr>
-            <tr class="blank_row"></tr>
-
-            
-            <tr><td align ="left">{% trans "Property Address:" %}</td><td><input type="text" name="address" id="id_address" value="${feature.properties.address}" /></td></tr>
-            <tr class="blank_row"></tr>    
-            {% if request.user.role != "MO" and request.user|has_group:"wardEditor" or request.user|has_group:"prabhagEditor" %}
-            <tr><td align ="left">{% trans "Validity:" %}</td><td><input type="text" disabled name="validity" id="id_validity" value="${feature.properties.validity}" /></td></tr>
-            <tr class="blank_row"></tr>    
-            {% elif request.user.role == "MO" and request.user|has_group:"wardEditor" or request.user|has_group:"prabhagEditor" %}
-            <tr><td align ="left">{% trans "Validity:" %}</td><td><input type="text"  name="validity" id="id_validity" value="True" /></td></tr>
-            <tr class="blank_row"></tr>  
-            {% endif %}
-            <tr disaled><td align ="left">{% trans "Updated By(username):" %}</td><td> <input type="text" name="updated_by" required   id="id_updated_by" value="{{ request.user.username }}" /></td></tr>
-            <tr class="blank_row"></tr>
-            <tr disabled><td align ="left">{% trans "Update Time:" %}</td><td><input type="text" name="update_time" required   id="id_update_time" value="${time}" /></td></tr>
-            <tr class="blank_row"></tr>
-            <tr><td align ="left">{% trans "Device IP:" %}</td><td><input type="text" name="device_ip" disabled id="id_device_ip" value="" /></td></tr>
-            <tr class="blank_row"></tr>
-        </table>
-       
-        <div class="form-group row">
-            <label class="col-sm-1 col-form-label"></label>
-            <div class="col-sm-4">
-                <button type="submit" class="btn btn-success">{% trans "Update" %}</button>
-
-            </div>
-        </div>
-        
-    </form>
-    {% if request.user|has_group:"wardEditor" or request.user|has_group:"prabhagEditor" and request.user.role == "MO" %}
-        <div class="form-group row">
-            <label class="col-sm-1 col-form-label"></label>
-            <div class="col-sm-4">
-           
-                <button type="submit"
-                {% if '{{ ${variable}|yesno:"yeah" }}' %} 
-                class="btn btn-success"
-                {% elif '${variable}' is not false %}
-                class="btn btn-danger"
-              
-                {% endif%}
-                 id="validate" onclick="validate('${feature.properties.sac_number}')">{% trans "Authenticate" %}</button>
-
-            </div>
-        </div>
-        {% endif %}
-        
-        
-     
-
-    <tr ><td colspan =2 ><a href='/garbage_seg_rev/${feature.properties.sac_number}' class="btn btn-success">Add Waste Segregation Details</a></td></tr></div>`
-//       <table border =2><tr class="bg-primary"><td colspan=2>Building Information</td></tr>
-//       <tr><td><b>SAC No.: </b></td><td> ${feature.properties.sac_number} </td></tr>
-//                         <tr><td><b>Building Name: </b></td><td>${feature.properties.building_name} </td></tr>
-//                         <tr><td><b>Description: </b></td><td>${feature.properties.building_type} </td></tr>
-//                         <tr><td><b>Region: </b></td><td> ${feature.properties.region} </td></tr>
-
-//                         <tr><td><b>Number of Flats: </b></td><td> ${feature.properties.num_flat} </td></tr>
-//                         <tr><td><b>Number of shops: </b></td><td> ${feature.properties.num_shops} </td></tr>
-//                         <tr><td><b>Number of Wings></td><td> ${feature.properties.wing_name} </td></tr>
-//                           <tr><td><b>Prabhag: </b></td><td> ${feature.properties.prabhag_no} </td></tr>
-//                         <tr><td><b>Ward: </b></td><td>${feature.properties.ward_name_field} </td></tr>
+    layer.bindPopup(`<div class = 'text-left'><label>Hello ! {{ request.user.username }}. </lable>
+    <form method="POST" class="post-form" action="/buildupdate/${feature.properties.sac_number}" style="margin-top: 20px; width:400px">
+    {% csrf_token %}
+    <table class="table-bordered table-striped">
+      <tr><td align ="left"><label class="required">{% trans "SAC Number" %}</label></td>
+        <td><input type="text" disabled name="sac" id="id_sac" disabled value="${feature.properties.sac_number}" /></td></tr>
+      <tr class="blank_row"></tr>
+      <tr><td align ="left"><label class="required">{% trans "Building Name:" %}</label></td><td><input type="text" name="building_name" id="id_building_name" value="${feature.properties.building_name}" /></td></tr>
+      <tr><td align ="left"><label class="required">{% trans "Road Name:" %}</label></td><td><input type="text" name="road" id="id_road" value="${feature.properties.road}" /></td></tr>
+      <tr><td align ="left"><label>{% trans "Region Name:" %}</label></td><td><input type="text" name="region" id="id_region" value="${feature.properties.region}" /></td></tr>
       
-//                         <tr><td><b>Village: </b></td><td> ${feature.properties.village} </td></tr>
-//                         <tr><td><b>Billing Address: </b></td><td>${feature.properties.address} </td></tr>
-//                         <tr><td><b>Property Address: </b></td><td>${feature.properties.prop_add} </td></tr>
+      <tr class="blank_row"></tr><tr><td align ="left"><label>{% trans "Is BWG:" %}</label></td><td><input type="text" name="is_bwg" id="id_is_bwg" value="${feature.properties.is_bwg}" /></td></tr>
+      <tr class="blank_row"></tr><tr><td align ="left"><label>{% trans "BWG type:" %}</label></td><td><input type="text" name="bwg_type" id="id_bwg_type" value="${feature.properties.bwg_type}" /></td></tr>
+      <tr class="blank_row"></tr><tr><td align ="left"><label>{% trans "Is Composting:" %}</label></td><td><input type="text" name="is_compost" id="id_is_compost" value="${feature.properties.is_compost}" /></td></tr>
+      <tr class="blank_row"></tr><tr><td align ="left"><label>{% trans "Composting Type:" %}</label></td><td><input type="text" name="compost_type" id="id_compost_type" value="${feature.properties.compost_type}" /></td></tr>
+
+      <tr><td align ="left">{% trans "Building Type:" %}</td><td><input type="text" name="building_type" id="id_building_type" value="${feature.properties.building_type}" /></td></tr>
+      <tr class="blank_row"></tr>
+      <tr><td align ="left">{% trans "Wing Name:" %}</td><td><input type="text" name="wing_name" id="id_wing_name" value="${feature.properties.wing_name}" /></td></tr>
+      <tr class="blank_row"></tr>
+      <tr class="blank_row"></tr>
+      <tr><td align ="left">{% trans "Number of Floors:" %}</td><td><input type="number" name="num_floors" id="id_num_floors"  value="${feature.properties.num_floors}" /></td></tr>
+      <tr><td align ="left"><label>{% trans "Number of Flats:" %}</label></td><td><input type="number" name="num_flat" id="id_num_flat"  value="${feature.properties.num_flat}" /></td></tr>
+      <tr class="blank_row"></tr>
+      <tr><td align ="left">{% trans "Number of Shops:" %}</td><td><input type="number" name="num_shops" id="id_num_shops"  value="${feature.properties.num_shops}" /></td></tr>
+      <tr><td align ="left"><label class="required">{% trans "Population:" %}</td><td> <input type="text" name="population" required   id="id_population" value="${feature.properties.population}" /></td></tr>
+      <tr class="blank_row"></tr>
+      <tr class="blank_row"></tr>    
       
-// `
-// +
-// `
+      <tr><td align ="left">{% trans "Village:" %}</td><td><input type="text" name="village" id="id_village" value="${feature.properties.village}" /></td></tr>
+      <tr class="blank_row"></tr>
+      <tr><td align ="left">{% trans "Remarks:" %}</td><td><input type="text" name="remark" id="id_remark" value="${feature.properties.remark}" /></td></tr>
+      <tr class="blank_row"></tr>
 
-//      <tr ><td colspan =2><b><center><a href = '/buildedit/${feature.properties.sac_number}' class="btn btn-info">Update Building Details</a></center></td></tr>
-//      <tr ><td colspan =2 ><a href='/garbage_seg/' class="btn btn-success">Add Waste Segregation Details</a></td></tr></table>
+      
+      <tr><td align ="left">{% trans "Property Address:" %}</td><td><input type="text" name="address" id="id_address" value="${feature.properties.address}" /></td></tr>
+      <tr class="blank_row"></tr>    
+      {% if request.user.role != "MO" and request.user|has_group:"wardEditor" or request.user|has_group:"prabhagEditor" %}
+      <tr><td align ="left">{% trans "Validity:" %}</td><td><input type="text" disabled name="validity" id="id_validity" value="${feature.properties.validity}" /></td></tr>
+      <tr class="blank_row"></tr>    
+      {% elif request.user.role == "MO" and request.user|has_group:"wardEditor" or request.user|has_group:"prabhagEditor" %}
+      <tr><td align ="left">{% trans "Validity:" %}</td><td><input type="text"  name="validity" id="id_validity" value="True" /></td></tr>
+      <tr class="blank_row"></tr>  
+      {% endif %}
+      <tr disaled><td align ="left">{% trans "Updated By(username):" %}</td><td> <input type="text" name="updated_by" required   id="id_updated_by" value="{{ request.user.username }}" /></td></tr>
+      <tr class="blank_row"></tr>
+      <tr disabled><td align ="left">{% trans "Update Time:" %}</td><td><input type="text" name="update_time" required   id="id_update_time" value="${time}" /></td></tr>
+      <tr class="blank_row"></tr>
+      <tr><td align ="left">{% trans "Device IP:" %}</td><td><input type="text" name="device_ip" disabled id="id_device_ip" value="" /></td></tr>
+      <tr class="blank_row"></tr>
+    </table>
+  
+    <div class="form-group row">
+      <label class="col-sm-1 col-form-label"></label>
+      <div class="col-sm-4">
+          <button type="submit" class="btn btn-success">{% trans "Update" %}</button>
 
-// `+`</table>
+      </div>
+    </div>
+  </form>
+  {% if request.user|has_group:"wardEditor" or request.user|has_group:"prabhagEditor" and request.user.role == "MO" %}
+    <div class="form-group row">
+      <label class="col-sm-1 col-form-label"></label>
+      <div class="col-sm-4">
+      
+          <button type="submit"
+          {% if '{{ ${variable}|yesno:"yeah" }}' %} 
+          class="btn btn-success"
+          {% elif '${variable}' is not false %}
+          class="btn btn-danger"
+        
+          {% endif%}
+          id="validate" onclick="validate('${feature.properties.sac_number}')">{% trans "Authenticate" %}</button>
 
-)
+      </div>
+    </div>
+  {% endif %}
+  <tr ><td colspan =2 ><a href='/garbage_seg_rev/${feature.properties.sac_number}' class="btn btn-success">Add Waste Segregation Details</a></td></tr></div>`
+    //       <table border =2><tr class="bg-primary"><td colspan=2>Building Information</td></tr>
+    //       <tr><td><b>SAC No.: </b></td><td> ${feature.properties.sac_number} </td></tr>
+    //                         <tr><td><b>Building Name: </b></td><td>${feature.properties.building_name} </td></tr>
+    //                         <tr><td><b>Description: </b></td><td>${feature.properties.building_type} </td></tr>
+    //                         <tr><td><b>Region: </b></td><td> ${feature.properties.region} </td></tr>
 
+    //                         <tr><td><b>Number of Flats: </b></td><td> ${feature.properties.num_flat} </td></tr>
+    //                         <tr><td><b>Number of shops: </b></td><td> ${feature.properties.num_shops} </td></tr>
+    //                         <tr><td><b>Number of Wings></td><td> ${feature.properties.wing_name} </td></tr>
+    //                           <tr><td><b>Prabhag: </b></td><td> ${feature.properties.prabhag_no} </td></tr>
+    //                         <tr><td><b>Ward: </b></td><td>${feature.properties.ward_name_field} </td></tr>
 
-// document.getElementById("validate").classList.remove('btn-danger');
-//           }
-//           else{
-//             document.getElementById("validate").classList.add('btn-danger');
+    //                         <tr><td><b>Village: </b></td><td> ${feature.properties.village} </td></tr>
+    //                         <tr><td><b>Billing Address: </b></td><td>${feature.properties.address} </td></tr>
+    //                         <tr><td><b>Property Address: </b></td><td>${feature.properties.prop_add} </td></tr>
 
-// document.getElementById("validate").classList.remove('btn-success');
-//           }
+    // `
+    // +
+    // `
 
-}
+    //      <tr ><td colspan =2><b><center><a href = '/buildedit/${feature.properties.sac_number}' class="btn btn-info">Update Building Details</a></center></td></tr>
+    //      <tr ><td colspan =2 ><a href='/garbage_seg/' class="btn btn-success">Add Waste Segregation Details</a></td></tr></table>
+
+    // `+`</table>
+
+    )//layer.bindup popup closed
+  }
+
 function validate(id){
   let url_val = "/buildupdate/"+id+"-Auth";
   console.log(id,url_val)
@@ -2619,38 +2590,56 @@ function validate(id){
       })
 
 
-}
-var geojsonMarkerOptions = {
+  }
+
+  var geojsonMarkerOptions = {
     radius: 6,
     fillColor: "#ff7800",
     color: "#000",
     weight: 1,
     opacity: 1,
     fillOpacity: 0.8
-};
-function displaypolygon(poly_layer){
-  
-  console.log("Display ploygon function",poly_layer,"-",poly_layer.value)
-  legend = L.control({position: 'bottomright'});
-  let building_data;
-  let building_data_up;
-  let deficit_buildings;
-  console.log("poly layer in display polygon is ",poly_layer)
-  
-  if(poly_layer.value == '{s122buildingslege}' ){
-  building_data = buildings.features;
-  // alert(building_data)
+  };
+  var geojson_data = {{ geojson|safe }};
+  function displaypolygon(poly_layer){
+    
+    // var geojson_data = {{ geojson|safe }};
+    // console.log('GeoJSON Data:', geojson_data);
+    // geojson_data.features.forEach(function(feature, index) {
+    //   console.log('Feature ' + (index + 1) + ':', feature.properties.building_name);
+    //   });
+    // console.log("Display ploygon function",poly_layer,"-",poly_layer.value)
+    legend = L.control({position: 'bottomright'});
+    let building_data;
+    let building_data_up;
+    let deficit_buildings;
+    console.log("poly layer in display polygon is ",poly_layer)
+    
+    // Prabhag Editor has logged in 
 
-  }
-  if(poly_layer == '{buildings}' ){
-  building_data = buildings.features;
-  console.log("Display Polygon building data",buildings.features)
+    if(poly_layer.toString().length ==3) {
+      alert("in if part"+poly_layer);
+      // console.log("buildings is displayed for prabhag you have rights",poly_layer);
+      building_data = geojson_data.features;
+        
+    }
+    else {
+    // Prabhag editor code ends 
+      //  alert("in else part")
+    if(poly_layer.value == '{s122buildingslege}' ){
+     building_data = buildings.features;
+    // alert(building_data)
 
-  }
-  else if(poly_layer=='{buildings_up}'){
-    building_data_up= buildings_up.features;
-  }
+    }
+    if(poly_layer == '{buildings}' ){
+    building_data = buildings.features;
+    console.log("Display Polygon building data",buildings.features)
 
+    }
+    else if(poly_layer=='{buildings_up}'){
+      building_data_up= buildings_up.features;
+    }
+  }
   if(building_data !=undefined){
     
     var redcounter = 0;
@@ -2695,79 +2684,51 @@ function displaypolygon(poly_layer){
                 totalcount++
                 return {color:"#000",fillColor:"orange"};
               }
-              // else{
-              //   bluecounter++
-              //   totalcount++
-              //   return {color:"#000",fillColor:"blue"};
-              // }
-              
+              }
+          //     else if ((feature.properties.validity == false)||(feature.properties.validity == true)){
+          //       if(proporties.features.region ==null){
+          //         bluecounter++
+          //         return {color:"#000",fillColor:"blue"};
 
-            }
-        //     else if ((feature.properties.validity == false)||(feature.properties.validity == true)){
-        //       if(proporties.features.region ==null){
-        //         bluecounter++
-        //         return {color:"#000",fillColor:"blue"};
+          //       }   
+          // }          
 
-        //       }   
-        // }          
-            
           },    
-        
-    
+         
         onEachFeature: onEachFeatureForPointBB,
-    });
-    // poly_layer.setRadius(1000)
-    // legend.style.display = "block";
+      }); //polylayer L.geoJson closed
 
-// var svg = d3.select("#my_dataviz")
-// // Handmade legend
-// svg.append("circle").attr("cx",windowWidth/1.1).attr("cy",windowHeight/2).attr("r", 6).style("fill", "#69b3a2")
-// svg.append("circle").attr("cx",200).attr("cy",160).attr("r", 6).style("fill", "#404080")
-// svg.append("text").attr("x", 220).attr("y", 130).text("variable A").style("font-size", "15px").attr("alignment-baseline","middle")
-// svg.append("text").attr("x", 220).attr("y", 160).text("variable B").style("font-size", "15px").attr("alignment-baseline","middle")
     legend = L.control({position: 'bottomright'});
-      legend.onAdd = function(mymap) {
-        var div = L.DomUtil.create("div", "legend");
-        div.innerHTML += "<h4>Color codes for ("+totalcount+")</h4>";
-        div.innerHTML += '<i style="background: green"></i><span>Complete and authorized data.</span>('+greencounter+')<br>';
-        div.innerHTML += '<i style="background: yellow"></i><span>Incomplete and authorized data.</span>('+yellowcounter+')<br><hr><br>';
-        div.innerHTML += '<i style="background: orange"></i><span>Only Building Name and unauthorized data.</span>('+orangecounter+')<br>';
-        div.innerHTML += '<i style="background: grey"></i><span>Building Name present and BWG /compost data unavailable and unauthorized data.</span>('+greycounter+')<br>';
-        div.innerHTML += '<i style="background: red"></i><span>Building name is null and unauthorized data.</span>('+redcounter+')<br>';
-        // div.innerHTML += '<i style="background: blue"></i><span>Region name is null</span>('+bluecounter+')<br>';
-        
-        let btn = document.createElement("button");
-        btn.innerHTML = "View as table";
-        btn.id = "formBtn";
+    legend.onAdd = function(mymap) {
+      var div = L.DomUtil.create("div", "legend");
+      div.innerHTML += "<h4>Color codes for ("+totalcount+") building points</h4>";
+      div.innerHTML += '<i style="background: green"></i><span>Complete and authorized data.</span>('+greencounter+')<br>';
+      div.innerHTML += '<i style="background: yellow"></i><span>Incomplete and authorized data.</span>('+yellowcounter+')<br><hr><br>';
+      div.innerHTML += '<i style="background: orange"></i><span>Only Building Name and unauthorized data.</span>('+orangecounter+')<br>';
+      div.innerHTML += '<i style="background: grey"></i><span>Building Name present and BWG /compost data unavailable and unauthorized data.</span>('+greycounter+')<br>';
+      div.innerHTML += '<i style="background: red"></i><span>Building name is null and unauthorized data.</span>('+redcounter+')<br>';
+      // div.innerHTML += '<i style="background: blue"></i><span>Region name is null</span>('+bluecounter+')<br>';
+      
+      let btn = document.createElement("button");
+      btn.innerHTML = "View as table";
+      btn.id = "formBtn";
 
-        btn.onclick = function () {
-          let url_val = "/table/"+poly_layer+prabhag;
-
-          window.location.href = url_val;
-
+      btn.onclick = function () {
+        let url_val = "/table/"+poly_layer+prabhag;
+        window.location.href = url_val;
         };
-        if('{{ request.user.role }}'=='MO'){
-
-          div.appendChild(btn);
-        }
-          // div.innerHTML += '<i style="background: #FFFFFF"></i><span>Ice</span><br>';
-          // div.innerHTML += '<i class="icon" style="background-image: url(https://d30y9cdsu7xlg0.cloudfront.net/png/194515-200.png);background-repeat: no-repeat;"></i><span>Grænse</span><br>';
-          
-          
-
-        return div;
-      };
+      if(('{{ request.user.role }}'=='MO') || ('{{ request.user.username }}'=='riteshhhyadav248')){
+       div.appendChild(btn);
+       }
+    return div;
+    };
     console.log(legend,"legend");
     legend.addTo(mymap);
     setView1('Buildings_mumbai:Buildings_mumbai','prabhag_no', prabhag);
     polylayer.addTo(mymap);
-
-        // layer ="ward61:osm_buildings_29oct21";
-        // addWMSLegend(layer);
-      
-
-  }
+    }
   else if(building_data == undefined){
+    // alert("building data undefined")
     polylayer = {};
     legend = L.control({position: 'bottomright'});
     legend.onAdd = function(mymap) {
@@ -2775,10 +2736,7 @@ function displaypolygon(poly_layer){
       div.innerHTML += "<h4>No Data updated yesterday.</h4>";
       // div += '<button style="background: #FFFFFF"></i><span>Ice</span><br>';
       // div.innerHTML += '<i class="icon" style="background-image: url(https://d30y9cdsu7xlg0.cloudfront.net/png/194515-200.png);background-repeat: no-repeat;"></i><span>Grænse</span><br>';
-      
-      
-
-    return div;
+     return div;
     };
 
     legend.addTo(mymap);
@@ -2829,6 +2787,7 @@ function displaypolygon(poly_layer){
     // }).addTo(mymap);
     });
   }
+
 }
 function addWMSLegend(layer) {
   
@@ -3161,6 +3120,7 @@ function new_ajax(e){
             console.log(errorThrown)
         }
 mymap.addEventListener('click', Identify);
-
-      </script>
+    
+</script>
+      {% endautoescape %}
       {% endblock extra_map_javascript %}

@@ -1,7 +1,7 @@
 # Create your views here.
 from django.shortcuts import render,redirect,HttpResponse,HttpResponseRedirect
-from .forms import GarbageSegForm,GrievanceForm,Ward61BuildingsOsm2Nov2021Form,WasteSegregationDetailsForm,NewUserForm,EmployeeDetailsForm,HumanResourceDataForm,MumbaiBuildingsWardPrabhagwise17JanForm,WasteSegregationDetailsRevised2march22Form,compostForm,dataForm,DocumentForm,reportForm
-from .models import Report,Rating,WasteSegregationDetails,BuildingsWard9April22,BuildingUnder30Mtr,KWestBeat22Jan,WasteSegregationDetailsRevised2March22,HumanResourceData,P122Buildings8Nov22, data_form,links,document_up #CensusTable #,OsmBuildings29Oct21#BuildingsWardWise4March
+from .forms import GarbageSegForm,GrievanceForm,aggregatorRequestorLoginForm,Ward61BuildingsOsm2Nov2021Form,WasteSegregationDetailsForm,NewUserForm,EmployeeDetailsForm,HumanResourceDataForm,MumbaiBuildingsWardPrabhagwise17JanForm,WasteSegregationDetailsRevised2march22Form,compostForm,dataForm,DocumentForm,reportForm,AggregatorForm,WasteSegregationDetailsRevised2march22FormNew,BuildingDailyForm
+from .models import Report,Rating,WasteSegregationDetails,BuildingsWard9April22,BuildingUnder30Mtr,KWestBeat22Jan,WasteSegregationDetailsRevised2March22,HumanResourceData,P122Buildings8Nov22, data_form,links,document_up,AggregatorData,AggregatorRequestorLogin,BuildingDaily #CensusTable #,OsmBuildings29Oct21#BuildingsWardWise4March
 from map.models import Ward61BuildingsOsm2Nov2021,MumbaiBuildingsWardPrabhagwise17Jan,MumbaiPrabhagBoundaries3Jan2022V2,DistinctGeomSacNoMumbai#,Ward61OsmBuildings,
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.core.files.storage import FileSystemStorage
@@ -41,6 +41,7 @@ from email.mime.image import MIMEImage
 from django.core.mail import EmailMultiAlternatives
 from django.core.files.storage import default_storage
 from django.core.files import File
+import simplejson as json
 # import geojson
 ###From Akshita's Dashboard##############
 # import pandas as pd
@@ -429,7 +430,7 @@ def table(request,id):
         data = list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(prabhag_no=prabhag , update_time__contains =yesterday).values('sac_number','prop_add','building_type','building_name','village','num_flat','region','num_shops','wing_name','prabhag_no','ward_name_field','address','validity'))
 
     else:
-        data= list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(prabhag_no=prabhag).values('sac_number','prop_add','building_type','building_name','village','num_flat','region','num_shops','wing_name','prabhag_no','ward_name_field','address','validity'))
+        data= list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(prabhag_no=prabhag).values('sac_number','prop_add','building_type','building_name','village','num_flat','region','num_shops','wing_name','population','road','prabhag_no','ward_name_field','address','validity'))
     # df = pd.DataFrame(data) 
     df =json.dumps(data) 
 # saving the dataframe 
@@ -949,8 +950,10 @@ def road_bufferView(request):
         print(prabhag_list)
         return render(request,'road_buf.html',{'prabhag_list':prabhag_list})
 
-def WasteSegregationDetailsRevisedView(request):
-        form = WasteSegregationDetailsRevised2march22Form()
+def WasteSegregationDetailsRevisedView_new(request):
+        # print("sac no is",id)
+        # sac_no=id
+        form = WasteSegregationDetailsRevised2march22FormNew()
         # building = request.POST.get('building_name')
         # form.fields[''].choices = [building.building]
         print(request.method)
@@ -992,7 +995,7 @@ def WasteSegregationDetailsRevisedView(request):
                 prabhag_list = list(BuildingsWard9April22.objects.filter(road_name=selected_field1).values('building_name').order_by('building_name'))
                 return JsonResponse(prabhag_list, safe=False)
         if request.method == 'POST':
-            form = WasteSegregationDetailsRevised2march22Form(request.POST)
+            form = WasteSegregationDetailsRevised2march22FormNew(request.POST)
             ## region = form.cleaned_data['region']
             # print(region)
             # regionName = form.cleaned_data['region']
@@ -1029,10 +1032,129 @@ def WasteSegregationDetailsRevisedView(request):
             
                 # messages.warning(request,form.errors.as_json)
         else:
-                form = WasteSegregationDetailsRevised2march22Form()
+                
+                form = WasteSegregationDetailsRevised2march22FormNew()
                 print(form)
                 form.errors.as_json()
+                # print("sac is",sac_no)
         return render(request, 'GarbageSegRevised.html', {'form': form})
+
+def WasteSegregationDetailsRevisedView(request,id):
+        print("sac no is",id)
+        sac_no=id
+
+        form = WasteSegregationDetailsRevised2march22Form()
+        form1 = BuildingDailyForm()
+        print(form1)
+        my_list_1 = ''
+        # building = request.POST.get('building_name')
+        # form.fields[''].choices = [building.building]
+        print(request.method)
+        userName = request.user
+        print("username is ",userName)
+        if is_ajax(request=request):
+            requestvar = request.get_full_path()
+            print(requestvar)
+               
+            if "prabhag" in requestvar:
+                selected_field1 = request.GET['prabhag']
+                print("Prabhag select "+selected_field1)
+                # prabhag_list = list(BuildingsWardWise4March.objects.filter(prabhag_no=selected_field1).values('road_name').order_by('road_name').distinct())
+                if(selected_field1=='122'):
+                    print("In s ward")
+                    prabhag_list = list(P122Buildings8Nov22.objects.filter(prabhag_no=selected_field1).values('building_n').order_by('building_n').distinct())
+                    sac_list = list(P122Buildings8Nov22.objects.filter(prabhag_no=selected_field1).values('sac_number').order_by('sac_number'))
+                else:
+                    print("In other ward")
+                    prabhag_list = list(BuildingsWard9April22.objects.filter(prabhag_no=selected_field1).values('road_name').order_by('road_name').distinct())
+                    sac_list = list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(prabhag_no=selected_field1).values('sac_number').order_by('sac_number'))
+                data = {'prabhag_list':prabhag_list,'sac_list':sac_list}
+                return JsonResponse(data, safe=False)
+            elif "ward" in requestvar:
+                selected_field1 = request.GET['ward']
+                print(selected_field1)
+                prabhag_list = list(MumbaiPrabhagBoundaries3Jan2022V2.objects.filter(ward_id=selected_field1).values('prabhag_no').order_by('prabhag_no'))
+      
+                return JsonResponse(prabhag_list, safe=False)
+            elif "road" in requestvar:
+                selected_field1 = request.GET['road']
+                print(selected_field1)
+                # prabhag_list = list(BuildingsWardWise4March.objects.filter(road_name=selected_field1).values('building_name').order_by('building_name'))
+                prabhag_list = list(BuildingsWard9April22.objects.filter(road_name=selected_field1).values('building_name').order_by('building_name'))
+                return JsonResponse(prabhag_list, safe=False)
+
+            elif "building_name" in requestvar:
+                selected_field1 =request.GET['building_name']
+                print(selected_field1)
+                prabhag_list = list(BuildingsWard9April22.objects.filter(road_name=selected_field1).values('building_name').order_by('building_name'))
+                return JsonResponse(prabhag_list, safe=False)
+        if request.method == 'POST':
+            form = WasteSegregationDetailsRevised2march22Form(request.POST)
+            form1 = BuildingDailyForm()
+            
+            if form.is_valid():
+                print("forms are valid")
+                
+                specific_values = {
+                    'wet_waste':form.cleaned_data['wet_waste'],
+                    'dry_waste':form.cleaned_data['dry_waste'],
+                    'primary_id':form.cleaned_data['sac_no'],
+                    'parent_id':"6",
+                    'date':form.cleaned_data['coll_date']
+                
+                }
+                # sacNo = form.cleaned_data['sac_no']
+                # print(regionName)
+                collDate = form.cleaned_data['coll_date']
+               
+                a = form.save(commit=False)
+                a.username = request.user
+                print(a.username.username)
+                a.save()
+            # if form1.is_valid():
+                
+                b= form1.save(commit=False)
+                # b=BuildingDaily(**specific_values)
+                b.parent_id=specific_values['parent_id']
+                b.dry_waste=specific_values['dry_waste']
+                b.wet_waste=specific_values['wet_waste']
+                b.primary_id=specific_values['primary_id']
+                b.total_waste=b.dry_waste + b.wet_waste
+                
+                b.population=100
+                b.weight=b.total_waste/b.population
+                b.date=collDate
+                b.save()
+                print(form1)
+                print("form1 is also valid",form1.errors)
+                
+                messages.success(request, _(u'Your data is saved for date {}').format(collDate))
+                print(form)
+                return HttpResponseRedirect(request.path_info)
+            else:
+                print("invalid forms")
+                form1.errors.as_json()
+                print(form1.errors)
+                messages.warning(request,form1.errors.as_json)
+            
+                # messages.warning(request,form.errors.as_json)
+        else:
+                             
+                my_list= MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(sac_number=id).values('building_name','ward_name_field','prabhag_no','road').order_by('building_name')
+                my_list_1 = my_list[0]
+                bldg_name = my_list_1.get('building_name')
+                ward_name = my_list_1.get('ward_name_field')
+                prabhag_name = my_list_1.get('prabhag_no')
+                road_name = my_list_1.get('road')
+                print("my list is",my_list_1.get('building_name'))
+                # print("building name in list is ".item['desired_value'])
+                initial_data = {'sac_no': sac_no,'building_name':bldg_name,'ward_name':ward_name,'prabhag_name':prabhag_name,'road_name':road_name}
+                form = WasteSegregationDetailsRevised2march22Form(initial=initial_data)
+                
+                # print(form)
+                form.errors.as_json()
+                print("sac is",sac_no)
+        return render(request, 'GarbageSegRevised.html', {'form': form,'form1':form1,'sac_no':sac_no,'my_list_1':my_list_1})
 
 def compost_form(request):
         form = compostForm()
@@ -1181,4 +1303,90 @@ def plr_report(request):
             print(form)
             form.errors.as_json()
         return render(request, 'report_nuisance.html', {'form': form})
+    
+def aggregatorForm(request):
+    form = AggregatorForm()
+    userName = request.user
+    print(userName)
+    if request.method == 'POST':
+            form = AggregatorForm(request.POST)
+    if form.is_valid():
+        address = form.cleaned_data['address']
+        shop_name= form.cleaned_data['shop_name']
+        owner_name = form.cleaned_data['owner_name']
+        mobile= form.cleaned_data['mobile']
+        pincode=form.cleaned_data['pincode']
+        # username=userName
+        if address =="none":
+            messages.warning(request, _(u'Please add Address'))
+        if shop_name =="none":
+            messages.warning(request, _(u'Please fill shop/stall name'))
+        if owner_name =="none":
+            messages.warning(request, _(u'Please fill your name'))
+        if pincode =="none":
+            messages.warning(request, _(u'Please fill pincode'))
+        if mobile =="none":
+            messages.warning(request, _(u'Please fill contact number'))
+
+        # if  AggregatorData.objects.filter(username=username).exists():
+            # messages.warning(request, _(u'You are already registered.'))
+        else:  
+            instance = form.save(commit=False)
+            instance.username =userName
+            instance.save()
+            messages.success(request, _(u'Congrats ! {} is added as aggregator.').format(userName))
+        
+        return HttpResponseRedirect(request.path_info)
+
+    else:
+        form = AggregatorForm()
+        print("In aggregator form")
+
+    context ={}
+    context['form']= AggregatorForm()
+    return render(request, 'aggregator.html',context)
+
+def aggregatorRequestorLogin(request):
+    form = aggregatorRequestorLoginForm()
+    formDict = {'form': form}
+    
+    if request.method == 'POST':
+        form = aggregatorRequestorLoginForm(request.POST)
+    if form.is_valid():
+        name = form.cleaned_data['name']
+        phone= form.cleaned_data['phone']
+        email = form.cleaned_data['email']
+        password= form.cleaned_data['password']
+        role=form.cleaned_data['role']
+        
+        if password =="none":
+            messages.warning(request, _(u'Please add password'))
+        if email =="none":
+            messages.warning(request, _(u'Please fill your email address'))
+        if name =="none":
+            messages.warning(request, _(u'Please fill your name'))
+        if phone =="none":
+            messages.warning(request, _(u'Please fill contact number'))
+        if role =="none":
+            messages.warning(request, _(u'Please select your role.'))
+        
+        else:  
+            instance = form.save(commit=False)
+            instance.email =email
+            instance.save()
+            messages.success(request, _(u'Congrats ! {} are registered.').format(email))
+        
+        # return HttpResponseRedirect(request.path_info)
+
+    else:
+        form = aggregatorRequestorLoginForm()
+        print(form.errors)
+        print("In aggregator requestor login form")
+        print(form.errors)
+        print(form.non_field_errors())
+
+    # context ={}
+    # context['form']= aggregatorRequestorLoginForm()
+    return render(request, 'aggr_Requ_login.html',context=formDict)
+
     
