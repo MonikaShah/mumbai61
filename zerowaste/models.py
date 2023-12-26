@@ -690,3 +690,49 @@ class ReportData(models.Model):
     class Meta:
         managed = False
         db_table = 'report_data'
+
+aggreCateChoice = (('Kabadi','Newspaper, Metal, Cardboxes, plastic, tins, wires etc.'),('bioHazardous','BioHazardous'),('cloth','Cloth/Chindi'),('furniture','Furniture'))
+class AggregatorData(models.Model):
+    shop_name=models.CharField(max_length=50, blank=True, null=True)
+    owner_name = models.CharField(max_length=50, blank=True, null=True)
+    address = models.CharField(max_length=100, blank=True, null=True)
+    mobile = models.IntegerField(blank=True, null=True)
+    pincode = models.IntegerField(blank=True, null=True)
+    aggr_category =models.TextField(choices=aggreCateChoice,default='Kabadi',null=True)
+    username =  models.CharField(max_length=50,null=True)
+    class Meta:
+        managed = True
+        db_table = 'aggregator'
+
+    def __str__(self):
+        return self.shop_name + " - "+ self.aggr_category
+    
+aggrerequesRole =(('aggregator','Aggregator/Collector'),('requestor','Requestor'))
+class AggregatorRequestorLogin(models.Model):
+    name=models.CharField(max_length=50, blank=True, null=True)
+    email = models.CharField(max_length=50, blank=True, null=True)
+    phone = models.CharField(max_length=100, blank=True, null=True)
+    password = models.IntegerField(blank=True, null=True)
+    role =models.TextField(choices=aggrerequesRole,default='aggregator',null=True)
+    
+    class Meta:
+        managed = True
+        db_table = 'aggregator_requestor_login'
+
+    def __str__(self):
+        return self.name + "-" +self.role
+    
+class BuildingDaily(models.Model):
+    primary_id = models.CharField(max_length=100)
+    parent_id = models.IntegerField()
+    dry_waste = models.DecimalField(max_digits=20, decimal_places=5)
+    wet_waste = models.DecimalField(max_digits=20, decimal_places=5)
+    total_waste = models.DecimalField(max_digits=20, decimal_places=5)
+    population = models.IntegerField()
+    weight = models.DecimalField(max_digits=20, decimal_places=5)
+    date = models.DateField()
+    
+
+    class Meta:
+        managed = False
+        db_table = 'building_daily'
