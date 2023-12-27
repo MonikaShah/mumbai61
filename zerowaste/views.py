@@ -426,11 +426,14 @@ def table(request,id):
     print(requestvar)
     data = []
     prabhag = id[-3:]
+    data_ward_list = list(MumbaiPrabhagBoundaries3Jan2022V2.objects.filter(prabhag_no=prabhag).values('ward_name'))
+    data_ward = data_ward_list[0]['ward_name'] if data_ward_list else None
+    print("ward name is",data_ward)
     if '_up' in id:
         data = list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(prabhag_no=prabhag , update_time__contains =yesterday).values('sac_number','prop_add','building_type','building_name','village','num_flat','region','num_shops','wing_name','prabhag_no','ward_name_field','address','validity'))
 
     else:
-        data= list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(prabhag_no=prabhag).values('sac_number','prop_add','building_type','building_name','village','num_flat','region','num_shops','wing_name','population','road','prabhag_no','ward_name_field','address','validity'))
+        data= list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(prabhag_no=prabhag,ward_name_field=data_ward).values('sac_number','address','village','building_type','building_name','region','road','num_flat','num_shops','population','prabhag_no','ward_name_field','validity'))
     # df = pd.DataFrame(data) 
     df =json.dumps(data) 
 # saving the dataframe 
