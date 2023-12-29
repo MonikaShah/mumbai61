@@ -1029,7 +1029,7 @@
     data_sac_list.setAttribute("id", "browsers2");
     document.getElementById("search_building").appendChild(data_sac_list);
     $.each(building_list, function(key, value) {   
-      console.log(key,value)
+      // console.log(key,value)
       var opt_sac = document.createElement("OPTION");
       opt_sac.setAttribute("value", value.building_name);
       document.getElementById("browsers2").appendChild(opt_sac);
@@ -1062,14 +1062,20 @@ var slumLayer;
         transparent: 'true',
         })
 
+        
         slumLayer.addTo(mymap)        
         showSlum = true
+        // alert("slum boundaries")
+        layer1="mumbai_slums_9mar23"
+        popup_layer = "https://geonode.communitygis.in/geoserver/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetFeatureInfo&LAYERS=" + slumLayer.options.layers + "&QUERY_LAYERS=" + slumLayer.options.layers;
+        // console.log("slum popup layer"+popup_layer)
       }
     else{
       mymap.setView([19.359, 72.8304], 12);
       mymap.removeLayer(slumLayer)
       showSlum = false
       }
+     
     }
 
 var showSlumHH = false;
@@ -1729,7 +1735,7 @@ let prabhagwms_list;
       // console.log("cql is",cql)
     }
     if(obj == "{n132composting}") {
-      console.log("buildings composting in 132",layers)
+      // console.log("buildings composting in 132",layers)
       // layer1 =layers
       layer = 'compost_facility_P132_6feb23';
       currentPos = [19.0765, 72.8987];
@@ -2457,14 +2463,15 @@ function bldgStyle(feature){
     }
 
   }
-
+//   
 
   function onEachFeatureForPointBB(feature, layer) {
 
     let variable = feature.properties.validity;
-    console.log(feature)
+    // console.log(feature)
     var today = new Date();
     let time = today.toLocaleString();
+    let isBwgValue = feature.properties.is_bwg;
 
     // alert(layer.properties.name+"="+feature);
     // layer.on({click:onClick })
@@ -2472,6 +2479,7 @@ function bldgStyle(feature){
     layer.bindPopup(`<div class = 'text-left'><label>Hello ! {{ request.user.username }}. </lable>
     <form method="POST" class="post-form" action="/buildupdate/${feature.properties.sac_number}" style="margin-top: 20px; width:400px">
     {% csrf_token %}
+    
     <table class="table-bordered table-striped">
       <tr><td align ="left"><label class="required">{% trans "SAC Number" %}</label></td>
         <td><input type="text" disabled name="sac" id="id_sac" disabled value="${feature.properties.sac_number}" /></td></tr>
@@ -2480,7 +2488,14 @@ function bldgStyle(feature){
       <tr><td align ="left"><label class="required">{% trans "Road Name:" %}</label></td><td><input type="text" name="road" id="id_road" value="${feature.properties.road}" /></td></tr>
       <tr><td align ="left"><label>{% trans "Region Name:" %}</label></td><td><input type="text" name="region" id="id_region" value="${feature.properties.region}" /></td></tr>
       
-      <tr class="blank_row"></tr><tr><td align ="left"><label>{% trans "Is BWG:" %}</label></td><td><input type="text" name="is_bwg" id="id_is_bwg" value="${feature.properties.is_bwg}" /></td></tr>
+      <tr class="blank_row"></tr><tr><td align ="left"><label>{% trans "Is BWG:" %}</label></td>
+      <td style="background-color: white;color:black;">
+        <select style = "width: 100%;" name="is_bwg" id="id_is_bwg" value ="${feature.properties.is_bwg}" onchange="updateOptions()"> 
+          <option style="width:400px;" value="${feature.properties.is_bwg}" disabled selected>${feature.properties.is_bwg}</option>
+          <option style="width:400px;"value="yes"> Yes </option>
+          <option style="width:400px;"value="no"> No </option>
+          <option style="width:400px;"value="no data"> No data </option>         
+        </select></td></tr>
       <tr class="blank_row"></tr><tr><td align ="left"><label>{% trans "BWG type:" %}</label></td><td><input type="text" name="bwg_type" id="id_bwg_type" value="${feature.properties.bwg_type}" /></td></tr>
       <tr class="blank_row"></tr><tr><td align ="left"><label>{% trans "Is Composting:" %}</label></td><td><input type="text" name="is_compost" id="id_is_compost" value="${feature.properties.is_compost}" /></td></tr>
       <tr class="blank_row"></tr><tr><td align ="left"><label>{% trans "Composting Type:" %}</label></td><td><input type="text" name="compost_type" id="id_compost_type" value="${feature.properties.compost_type}" /></td></tr>
@@ -2633,7 +2648,7 @@ function validate(id){
     }
     if(poly_layer == '{buildings}' ){
     building_data = buildings.features;
-    console.log("Display Polygon building data",buildings.features)
+    // console.log("Display Polygon building data",buildings.features)
 
     }
     else if(poly_layer=='{buildings_up}'){
@@ -2717,12 +2732,12 @@ function validate(id){
         let url_val = "/table/"+poly_layer+prabhag;
         window.location.href = url_val;
         };
-      if(('{{ request.user.role }}'=='MO') || ('{{ request.user.username }}'=='riteshhhyadav248@gmail.com')){
+      if(('{{ request.user.role }}'=='MO') || ('{{ request.user.username }}'=='riteshhhyadav248')){
        div.appendChild(btn);
        }
     return div;
     };
-    console.log(legend,"legend");
+    // console.log(legend,"legend");
     legend.addTo(mymap);
     setView1('Buildings_mumbai:Buildings_mumbai','prabhag_no', prabhag);
     polylayer.addTo(mymap);
@@ -2836,22 +2851,22 @@ function Identify(e) {
     
     var URL = popup_layer + '&BBOX=' + BBOX + '&FEATURE_COUNT=1&HEIGHT=' + HEIGHT + '&WIDTH=' + WIDTH + '&INFO_FORMAT=application%2Fjson&TILED=false&CRS=EPSG%3A3857&I=' + X + '&J=' + Y;
     //send GetFeatureInfo as asynchronous HTTP request using jQuery $.ajax
-  console.log("click",popup_layer,layer1)
+  // console.log("click",popup_layer,layer1)
     $.ajax({
         url: URL,
         dataType: "json",
         type: "GET",
         success: function(data) {
-          // alert("success",data.features.length)
+          // alert("success-"+data.features.length)
           
           if (data.features.length !== 0) { // at least one feature returned in response
                 var feature = data.features[0]; // first feature from response
                 // Set up popup for clicked feature and open it
-                // alert(feature)
+                alert(feature.properties.slum_area)
                 var popup = new L.Popup({
                     maxWidth: 300
                 });
-                console.log("in identify function "+layer1);
+                // console.log("in identify function "+layer1);
                 if ((feature.properties.seg_done) && ((layer1.value == '{Rsegdone}')  || (layer1.value == '{Rsegquality}') || (layer1.value == '{Rsegcons}') || (layer1.value == '{Rsegfreq}')||(layer1.value != '{segdone}')  || (layer1.value != '{segquality}') || (layer1.value != '{segcons}') || (layer1.value != '{segfreq}') || (layer1.value != '{description}'))){
                     // alert("in R seg popup"+layer1.value);
                     content = "<table class = 'popupclass'style ='border: 1px solid white' ><tr style ='border: 1px solid white'><td colspan=6><b> Segregation Information</b></td><td></td></tr>" +
@@ -2900,6 +2915,17 @@ function Identify(e) {
                     content = "<table class = 'popupclass'style ='border: 1px solid white' ><tr style ='border: 1px solid white'><td colspan=6><b> Garden Information</b></td><td></td></tr>" +
                         "<tr style ='border: 1px solid white'><td><b>Garden Name: </b></td><td style ='text-align:left;'>" + feature.properties.name + "</td></tr>"+
                         "<tr style ='border: 1px solid white'><td><b>Area of Garden : </b></td><td>" + feature.properties.Area + "(sq. meters)</td></tr>"+
+                        "</table>";
+                    popup.setContent(content);
+                    popup.setLatLng(e.latlng);
+                    mymap.openPopup(popup);
+                    }
+                    if (Object.is(feature.properties.slum_area, null)) {
+                    alert("in slum boundary popup");
+                    content = "<table class = 'popupclass'style ='border: 1px solid white' ><tr style ='border: 1px solid white'><td colspan=6><b> Slum area Info</b></td><td></td></tr>" +
+                        "<tr style ='border: 1px solid white'><td><b>Ward Name : </b></td><td style ='text-align:left;'>" + feature.properties.ward_name + "</td></tr>"+
+                        "<tr style ='border: 1px solid white'><td><b>Slum Area: </b></td><td>" + feature.properties.slum_area + "(kgs)</td></tr>"+
+                        "<tr style ='border: 1px solid white'><td><b>Cluster Id: </b></td><td>" + feature.properties.cluster_id + "(kgs)</td></tr>"+
                         "</table>";
                     popup.setContent(content);
                     popup.setLatLng(e.latlng);
@@ -2987,7 +3013,7 @@ function Identify(e) {
                     mymap.openPopup(popup);
                     }
                 if(layer1=="ward61:k-west_building"){
-                  console.log(feature)
+                  // console.log(feature)
                   content= `<table border =2><tr class="bg-primary"><td colspan=2>Building Information</td></tr>
                     <tr class="table-danger"><td>SAC Number:</td><td> ${feature.properties.sac_no}</td></tr>
                     <tr><td>Building Name:</td><td> ${feature.properties.building_n}</td></tr>
