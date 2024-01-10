@@ -556,7 +556,7 @@ def showwastesegregationdetails(request):
 
 def showdailystatus_interns(request):
     # datas= WasteSegregationDetails.objects.all().order_by('-coll_date')
-    datas= MumbaiBuildingsWardPrabhagwise17Jan.objects.values('updated_by').filter(updated_by__in=('siddiqui', 'Sakina Syed','AshishG','riteshhhyadav248@gmail.com','Monika_N_132','Kwest')).annotate(updated_by_count=Count('updated_by'))
+    datas= MumbaiBuildingsWardPrabhagwise17Jan.objects.values('updated_by').filter(updated_by__in=('Vinayak','siddiqui', 'Sakina Syed','AshishG','riteshhhyadav248@gmail.com','Monika_N_132','Kwest')).annotate(updated_by_count=Count('updated_by'))
     # daily_count = MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(ward_name_field='N').values('updated_by',updated_time_date=datetime.strptime('update_time', '%Y-%m-%d')).annotate(updated_by_count=Count('updated_by')).order_by('updated_by','update_time')
     datas1= """select count(*), updated_by from mumbai_buildings_ward_prabhagwise_17jan where prabhag_no = '132' group by updated_by order by updated_by;"""
     context = {
