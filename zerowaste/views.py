@@ -42,6 +42,10 @@ from django.core.mail import EmailMultiAlternatives
 from django.core.files.storage import default_storage
 from django.core.files import File
 import simplejson as json
+from django.db.models import Count
+from datetime import datetime
+from django.db.models.functions import Cast
+from django.db.models import F
 # import geojson
 ###From Akshita's Dashboard##############
 # import pandas as pd
@@ -549,6 +553,17 @@ def showwastesegregationdetails(request):
         # 'Visitor_count': recd_response
     }
     return render(request,'show_wsd.html',context)
+
+def showdailystatus_interns(request):
+    # datas= WasteSegregationDetails.objects.all().order_by('-coll_date')
+    datas= MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(updated_by__in=('Kwest', 'siddiqui', 'Sakina Syed','AshishG','riteshhhyadav248@gmail.com','Monika_N_132'))
+    daily_count = MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(ward_name_field='N').values('updated_by',updated_time_date=datetime.strptime('update_time', '%Y-%m-%d')).annotate(updated_by_count=Count('updated_by')).order_by('updated_by','update_time')
+    context = {
+        'datas':datas,
+        'daily_count':daily_count,
+        # 'Visitor_count': recd_response
+    }
+    return render(request,'show_dailystat.html',context)
 
 def WasteSegregationDetailsView(request):
         form = WasteSegregationDetailsForm()

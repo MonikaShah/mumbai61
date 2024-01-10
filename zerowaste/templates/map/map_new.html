@@ -1503,23 +1503,14 @@ let prabhagwms_list;
         putWMSru("ward61:regions_6dec21");
 
       else if (boundary == "{buildings}"){
-        
-        // buildings = JSON.parse(data.geojson);
-        // conole.log("data is in getboundaryru",buildings)
-        // if( request.user|has_group =="wardEditor" ){
-          </script>
-          {% if request.user|has_group:"wardEditor"  %}<script>
+          {% if request.user|has_group:"wardEditor"  %}
               displaypolygon(boundary);
-              
-          //  alert("Ward editor to use display function")
-        
-
-          
         // console.log("prabhag is ",`${prabhag}`)
-        {% elif request.user|has_group:"prabhagEditor"  %}
-        //     // putfrmgeo(`${prabhag}`)
-            displaypolygon(`${prabhag}`);
-            {% endif %}
+        
+          {% elif request.user|has_group:"prabhagEditor"  %}
+          //     // putfrmgeo(`${prabhag}`)
+              displaypolygon(`${prabhag}`);
+              {% endif %}
       }
       else if (boundary == "{buildings_up}")
         displaypolygon(boundary);
@@ -2630,10 +2621,11 @@ function validate(id){
     opacity: 1,
     fillOpacity: 0.8
   };
-  var geojson_data = {{ geojson|safe }};
+</script>
+  var geojson_data = {{ geojson|safe }};<script>
   function displaypolygon(poly_layer){
     
-    // var geojson_data = {{ geojson|safe }};
+    var geojson_data = {{ geojson|safe }};
     // console.log('GeoJSON Data:', geojson_data);
     // geojson_data.features.forEach(function(feature, index) {
     //   console.log('Feature ' + (index + 1) + ':', feature.properties.building_name);
