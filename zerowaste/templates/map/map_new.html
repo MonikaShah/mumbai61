@@ -431,6 +431,12 @@
                     onchange="getBoundaryru(this)"><span> {% trans "Prabhag 132 : Buildings doing composting" %}</span></label>
               </div>
             </div>
+            <div id="checkboxes4">
+              <div class="checkbox">
+                <label><input type="checkbox" value="{n132staticcount}"  id="132"
+                    onchange="getBoundaryru(this)"><span> {% trans "Prabhag 132 : Buildings Info (static data)" %}</span></label>
+              </div>
+            </div>
 
           </div>
         </div> 
@@ -916,12 +922,14 @@
   //let buildings = '{{ geojson|safe }}';
   let ward= '{{ward}}';
   let prabhag = '{{prabhag}}';
+  var buildinglayerGroup = L.layerGroup();   
   console.log("prabhag in script is",prabhag)
   legend = L.control({position: 'bottomright'});
   $('#prabhag').html('Prabhag '+prabhag +' landmarks')
   $('#ward').html('Ward '+ward +' landmarks')
         
-    // define wms_layer1
+
+     // define wms_layer1
               
   function showCheckboxes3(th) {
     let checkboxes;
@@ -1354,6 +1362,11 @@ let prabhagwms_list;
       else if (boundary == '{n132composting}') {
         putfrmgeo(n132composting);
       }
+      else if (boundary == '{n132staticcount}') {
+        // putfrmgeo(n132staticcount);
+        console.log("In static 132")
+        displaypolygon('132')
+      }
       else if (boundary == "{iitb121bound}") {  
         
         putfrmgeo(iitbbound121);
@@ -1494,7 +1507,8 @@ let prabhagwms_list;
         // buildings = JSON.parse(data.geojson);
         // conole.log("data is in getboundaryru",buildings)
         // if( request.user|has_group =="wardEditor" ){
-          {% if request.user|has_group:"wardEditor"  %}
+          </script>
+          {% if request.user|has_group:"wardEditor"  %}<script>
               displaypolygon(boundary);
               
           //  alert("Ward editor to use display function")
@@ -1671,10 +1685,11 @@ let prabhagwms_list;
         else if(boundary == "{n132composting}"){
           removeWMS("compost_facility_P132_6feb23")
         }
+        
         else if (boundary == '{nbuildings}') {
           removeWMS("Buildings_mumbai");
         }
-        else if (boundary == "{buildings}") {
+        else if ((boundary == "{buildings}") || (boundary == "{n132staticcount}")) {
           mymap.removeControl(legend);
 
           removepolylayer(polylayer);
@@ -2623,7 +2638,7 @@ function validate(id){
     // geojson_data.features.forEach(function(feature, index) {
     //   console.log('Feature ' + (index + 1) + ':', feature.properties.building_name);
     //   });
-    // console.log("Display ploygon function",poly_layer,"-",poly_layer.value)
+    console.log("Display ploygon function",poly_layer,"-",poly_layer.value)
     legend = L.control({position: 'bottomright'});
     let building_data;
     let building_data_up;
@@ -2633,9 +2648,10 @@ function validate(id){
     // Prabhag Editor has logged in 
 
     if(poly_layer.toString().length ==3) {
-      alert("in if part"+poly_layer);
-      // console.log("buildings is displayed for prabhag you have rights",poly_layer);
+      // alert("in if part"+poly_layer);
+      console.log("buildings is displayed for prabhag you have rights",poly_layer);
       building_data = geojson_data.features;
+      
         
     }
     else {
@@ -2716,12 +2732,14 @@ function validate(id){
     legend = L.control({position: 'bottomright'});
     legend.onAdd = function(mymap) {
       var div = L.DomUtil.create("div", "legend");
-      div.innerHTML += "<h4>Color codes for ("+totalcount+") building points</h4>";
+      div.innerHTML += "<h3>Legend on basis of static details of ("+totalcount+") building points</h3><hr><br>";
+      div.innerHTML += '<b>On basis of Authotization from Municipality Officer</b></span></li></ul><hr>';
       div.innerHTML += '<i style="background: green"></i><span>Complete and authorized data.</span>('+greencounter+')<br>';
-      div.innerHTML += '<i style="background: yellow"></i><span>Incomplete and authorized data.</span>('+yellowcounter+')<br><hr><br>';
-      div.innerHTML += '<i style="background: orange"></i><span>Only Building Name and unauthorized data.</span>('+orangecounter+')<br>';
-      div.innerHTML += '<i style="background: grey"></i><span>Building Name present and BWG /compost data unavailable and unauthorized data.</span>('+greycounter+')<br>';
-      div.innerHTML += '<i style="background: red"></i><span>Building name is null and unauthorized data.</span>('+redcounter+')<br>';
+      div.innerHTML += '<i style="background: yellow"></i><span>Incomplete and authorized data.</span>('+yellowcounter+')<br><br>';
+      div.innerHTML += '<b>On basis of Survey conducted (unauthorised data)</b></span><hr>';
+      div.innerHTML += '<i style="background: orange"></i><span>Basic static data available.</span>('+orangecounter+')<br>';
+      div.innerHTML += '<i style="background: grey"></i><span>Building Name present and BWG /compost data unavailable.</span>('+greycounter+')<br>';
+      div.innerHTML += '<i style="background: red"></i><span>Building name missing.</span>('+redcounter+')<br>';
       // div.innerHTML += '<i style="background: blue"></i><span>Region name is null</span>('+bluecounter+')<br>';
       
       let btn = document.createElement("button");
