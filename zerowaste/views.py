@@ -1,7 +1,7 @@
 # Create your views here.
 from django.shortcuts import render,redirect,HttpResponse,HttpResponseRedirect
 from .forms import GarbageSegForm,GrievanceForm,aggregatorRequestorLoginForm,Ward61BuildingsOsm2Nov2021Form,WasteSegregationDetailsForm,NewUserForm,EmployeeDetailsForm,HumanResourceDataForm,MumbaiBuildingsWardPrabhagwise17JanForm,WasteSegregationDetailsRevised2march22Form,compostForm,dataForm,DocumentForm,reportForm,AggregatorForm,WasteSegregationDetailsRevised2march22FormNew,BuildingDailyForm
-from .models import Report,Rating,WasteSegregationDetails,BuildingsWard9April22,BuildingUnder30Mtr,KWestBeat22Jan,WasteSegregationDetailsRevised2March22,HumanResourceData,P122Buildings8Nov22, data_form,links,document_up,AggregatorData,AggregatorRequestorLogin,BuildingDaily #CensusTable #,OsmBuildings29Oct21#BuildingsWardWise4March
+from .models import Report,Rating,WasteSegregationDetails,BuildingsWard9April22,BuildingUnder30Mtr,KWestBeat22Jan,WasteSegregationDetailsRevised2March22,HumanResourceData,P122Buildings8Nov22, data_form,links,document_up,AggregatorData,AggregatorRequestorLogin,BuildingDaily,AuthUser #CensusTable #,OsmBuildings29Oct21#BuildingsWardWise4March
 from map.models import Ward61BuildingsOsm2Nov2021,MumbaiBuildingsWardPrabhagwise17Jan,MumbaiPrabhagBoundaries3Jan2022V2,DistinctGeomSacNoMumbai#,Ward61OsmBuildings,
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.core.files.storage import FileSystemStorage
@@ -561,12 +561,19 @@ def showdailystatus_interns(request):
     # output_format = "%Y-%m-%d %H:%M:%S"
     # parsed_date = datetime.strptime('update_time', "%Y-%m-%d %H:%M:%S").date()
     # formatted_date = parsed_date.strftime(output_format)
-    datas= MumbaiBuildingsWardPrabhagwise17Jan.objects.values('updated_by','update_time').filter(updated_by__in=('Vinayak','siddiqui', 'Sakina Syed','AshishG','riteshhhyadav248@gmail.com','Monika_N_132','Kwest')).annotate(updated_time_interns=Count('update_time'),updated_by_count=Count('updated_by'))
+    updated_by_list1 = AuthUser.objects.filter(is_active=True).values_list('username', flat=True)
+    updated_by_list = ['Vinayak', 'siddiqui', 'Sakina Syed', 'AshishG', 'riteshhhyadav248@gmail.com', 'Monika_N_132', 'Kwest']
+    datas= MumbaiBuildingsWardPrabhagwise17Jan.objects.values('updated_by','prabhag_no').filter(updated_by__in=updated_by_list).annotate(updated_time_interns=Count('update_time'),updated_by_count=Count('updated_by')).order_by('-prabhag_no')
     # daily_count = MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(ward_name_field='N').values('updated_by',updated_time_date=datetime.strptime('update_time', '%Y-%m-%d')).annotate(updated_by_count=Count('updated_by')).order_by('updated_by','update_time')
-    datas1= """select count(*), updated_by from mumbai_buildings_ward_prabhagwise_17jan where prabhag_no = '132' group by updated_by order by updated_by;"""
+    total_count = datas.aggregate(Sum('updated_by_count'))['updated_by_count__sum']
+    total_count1= MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(prabhag_no=('132'))
+    row_count= total_count1.count()
     context = {
         'datas':datas,
-        'datas1':datas1,
+        'total_count':total_count,
+        'row_count':row_count,
+        'updated_by_list1':updated_by_list1,
+        # 'datas1':datas1,
         # 'daily_count':daily_count,
         # 'Visitor_count': recd_response
     }
