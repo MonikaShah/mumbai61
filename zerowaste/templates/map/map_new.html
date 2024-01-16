@@ -455,6 +455,12 @@
             </div>
             <div id="checkboxes4">
               <div class="checkbox">
+                <label><input type="checkbox" value="{n132gardens}"  id="n132gardens"
+                    onchange="getBoundaryru(this)" ><span> {% trans "Prabhag 132 : Gardens" %}</span></label>
+              </div>
+            </div>
+            <div id="checkboxes4">
+              <div class="checkbox">
                 <label><input type="checkbox" value="{n132seg}"  id="n132seg"
                     onchange="getBoundaryru(this)"><span> {% trans "Prabhag 132 : Segregation Activity" %}</span><label>
               </div>
@@ -1408,6 +1414,9 @@ let prabhagwms_list;
       else if (boundary == '{n132seg}'){
         putfrmgeo(n132seg);
       }
+      else if (boundary == '{n132gardens}'){
+        putfrmgeo(n132gardens);
+      }
       else if(boundary == '{n132segqual}')  {
         putfrmgeo(n132segqual);
       }
@@ -1674,10 +1683,10 @@ let prabhagwms_list;
           removeWMS("route");
           }
         else if (boundary == '{Ndebris_routes}') {
-          removeWMS("debris_routeplan11jan24");
+          removeWMS("Debris_route16jan24");
           }
         else if (boundary == '{Nhotel_routes}') {
-          removeWMS("Routes_hotel");
+          removeWMS("Updated_hotel_route");
           }
         else if (boundary == '{s121roads}') {
           removeWMS("mumbai_roads_prabhag_wise_29jan");
@@ -1743,7 +1752,9 @@ let prabhagwms_list;
         else if((boundary == '{n132seg}')||(boundary == '{n132segqual}') ||(boundary == '{n132segfreq}' )) {
           removeWMS("Merged_11jan24")
         }
-        
+        else if(boundary == "{n132gardens}"){
+          removeWMS("P132_updated_gardens_16jan24")
+        }
         else if (boundary == '{nbuildings}') {
           removeWMS("Buildings_mumbai");
         }
@@ -1861,6 +1872,18 @@ let prabhagwms_list;
       var zoom = 15;
       var cql = `INCLUDE`;
       sld="seg_quality_v1";
+    }
+    if(obj == "{n132gardens}")  {
+      // alert("seg quali ",obj)
+      console.log("gardens  132",layers,obj)
+      // layer1 =layers
+      layer = 'P132_updated_gardens_16jan24';
+      currentPos = [19.0765, 72.8987];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 15;
+      var cql = `INCLUDE`;
+      sld="";
     }
     if(obj == "{n132segfreq}")  {
       // alert("seg quali ",obj)
@@ -2827,7 +2850,7 @@ function validate(id){
     }
   }
   if(building_data !=undefined){
-    
+    console.log("building data counter is not undefined");
     var redcounter = 0;
     var greencounter = 0;
     var yellowcounter = 0;
@@ -2870,14 +2893,8 @@ function validate(id){
                 totalcount++
                 return {color:"#000",fillColor:"orange"};
               }
-              }
-          //     else if ((feature.properties.validity == false)||(feature.properties.validity == true)){
-          //       if(proporties.features.region ==null){
-          //         bluecounter++
-          //         return {color:"#000",fillColor:"blue"};
-
-          //       }   
-          // }          
+            }
+                  
 
           },    
          
@@ -2917,6 +2934,7 @@ function validate(id){
     }
   else if(building_data == undefined){
     // alert("building data undefined")
+    console.log("building data counter is ACTUALLY undefined")
     polylayer = {};
     legend = L.control({position: 'bottomright'});
     legend.onAdd = function(mymap) {
