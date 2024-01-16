@@ -386,27 +386,16 @@
             <button type="button" class="btn btn-outline-dark addMore" title = "More interactions are enable here  as a Pilot area"style="width: 90%;font-size:12px; " title="More interactions have been enable here  as a Pilot area"> {% trans "Focus: N Ward" %}</button>
             <div class="overSelect"></div>
           </div>
+          
            <div id="checkboxes10">
-            <!-- <div class="checkbox" id="boundary">
-              <label><input type="checkbox" value="Mumbai Suburban" onchange="getBoundaryru(this)"><span> {% trans  "Mumbai Suburban Boundary" %}</span></label>
-            </div> -->
-            
-            <div class="checkbox" id="boundary">
+            <label style="color:green;font-weight: bold;">{% trans "Geography" %}</label>
+              <div class="checkbox" id="boundary">
               <label><input type="checkbox" value="{wardN}" id ="wardN" onchange="getBoundaryru(this)"><span> {% trans "N Ward Boundary" %}</span></label>
-              <!-- <div>
-                <div id="kwestbuilding">
-                  <div class="checkbox" style = "margin: 0 0 0 17px;">
-                    <label><input type="checkbox" value="{copS}" id="copS" onchange="getBoundaryru(this)"><span> {% trans "Prabhag Boundaries" %}</span></label>
-                  </div>
-                  <div class="checkbox" style = "margin: 0 0 0 17px;">
-                    <label><input type="checkbox" value="{s-buildings}" id="s-buildings" onclick="getBoundaryru(this)"><span> {% trans "Building Points" %}</span></label>
-                  </div>
-                </div>
-            </div> -->
+              
             <div class="checkbox">
               <label><input type="checkbox"  value="{Nwardprabhags}" id = "Nwardprabhags" onchange="getBoundaryru(this)"><span> {% trans "Prabhags" %}</span></label>
             </div>
-           
+            <label style="color:green;font-weight: bold;">{% trans "Roads and routes" %}</label>
             <div id="checkboxes4">
               <div class="checkbox">
                 <label><input type="checkbox" value="{Nroads}"  id="Nroads"
@@ -421,10 +410,37 @@
             </div>
             <div id="checkboxes4">
               <div class="checkbox">
+                <label><input type="checkbox" value="{Nveg_routes}"  id="Nveg_routes"
+                    onchange="getBoundaryru(this)"><span> {% trans "N-ward Vegetable Market Routes" %}</span></label>
+              </div>
+            </div>
+            <div id="checkboxes4">
+              <div class="checkbox">
+                <label><input type="checkbox" value="{Ndebris_routes}"  id="Ndebris_routes"
+                    onchange="getBoundaryru(this)"><span> {% trans "N-ward Debris Routes" %}</span></label>
+              </div>
+            </div>
+            <div id="checkboxes4">
+              <div class="checkbox">
+                <label><input type="checkbox" value="{Nhotel_routes}"  id="Nhotel_routes"
+                    onchange="getBoundaryru(this)"><span> {% trans "N-ward Hotel Routes" %}</span></label>
+              </div>
+            </div>
+            <label style="color:green;font-weight: bold;">{% trans "Building Data" %}</label>
+            <div id="checkboxes4">
+              <div class="checkbox">
                 <label><input type="checkbox" value="{nbuildings}"  id="nbuildings"
                     onchange="getBoundaryru(this)"><span> {% trans "N-ward Buildings" %}</span></label>
               </div>
             </div>
+            
+            <div id="checkboxes4">
+              <div class="checkbox">
+                <label><input type="checkbox" value="{n132staticcount}"  id="132"
+                    onchange="getBoundaryru(this)"><span> {% trans "Prabhag 132 : Buildings Info (static data)" %}</span></label>
+              </div>
+            </div>
+            <label style="color:green;font-weight: bold;">{% trans "Students case Studies" %}</label>
             <div id="checkboxes4">
               <div class="checkbox">
                 <label><input type="checkbox" value="{n132composting}"  id="n132composting"
@@ -433,8 +449,26 @@
             </div>
             <div id="checkboxes4">
               <div class="checkbox">
-                <label><input type="checkbox" value="{n132staticcount}"  id="132"
-                    onchange="getBoundaryru(this)"><span> {% trans "Prabhag 132 : Buildings Info (static data)" %}</span></label>
+                <label><input type="checkbox" value="{nbuildings}"  id="nbuildings"
+                    onchange="getBoundaryru(this)" disabled><span> {% trans "Prabhag 132 : Bulk Waste Generator" %}</span></label>
+              </div>
+            </div>
+            <div id="checkboxes4">
+              <div class="checkbox">
+                <label><input type="checkbox" value="{n132seg}"  id="n132seg"
+                    onchange="getBoundaryru(this)"><span> {% trans "Prabhag 132 : Segregation Activity" %}</span><label>
+              </div>
+            </div>
+            <div id="checkboxes4">
+              <div class="checkbox">
+                <label><input type="checkbox" value="{n132segqual}"  id="n132segqual"
+                    onchange="getBoundaryru(this)"><span> {% trans "Prabhag 132 : Segregation Quality" %}</span><label>
+              </div>
+            </div>
+            <div id="checkboxes4">
+              <div class="checkbox">
+                <label><input type="checkbox" value="{n132segfreq}"  id="n132segfreq"
+                    onchange="getBoundaryru(this)"><span> {% trans "Prabhag 132 : Segregation Frequency" %}</span><label>
               </div>
             </div>
 
@@ -1356,11 +1390,29 @@ let prabhagwms_list;
       else if (boundary == '{Nmor_routes}') {
         putfrmgeo(Nmor_routes);
       }
+      else if (boundary == '{Nveg_routes}') {
+        putfrmgeo(Nveg_routes);
+      }
+      else if (boundary == '{Ndebris_routes}') {
+        putfrmgeo(Ndebris_routes);
+      }
+      else if (boundary == '{Nhotel_routes}') {
+        putfrmgeo(Nhotel_routes);
+      }
       else if (boundary == '{nbuildings}') {
         putfrmgeo(nbuildings);
       }
       else if (boundary == '{n132composting}') {
         putfrmgeo(n132composting);
+      }
+      else if (boundary == '{n132seg}'){
+        putfrmgeo(n132seg);
+      }
+      else if(boundary == '{n132segqual}')  {
+        putfrmgeo(n132segqual);
+      }
+      else if(boundary == '{n132segfreq}')  {
+        putfrmgeo(n132segfreq);
       }
       else if (boundary == '{n132staticcount}') {
         // putfrmgeo(n132staticcount);
@@ -1442,6 +1494,7 @@ let prabhagwms_list;
         putfrmgeo(segdone)
         
       }
+      
       else if (boundary == '{segquality}') {
         // alert("reached plastic")
         putfrmgeo(segquality)
@@ -1593,6 +1646,7 @@ let prabhagwms_list;
             removeWMS("mumbai_ward_boundary_2Jan2022");
         else if (boundary == "{Lwardprabhags}")
             removeWMS("Mumbai_Prabhag_Boundaries_3Jan2022V2");
+          
         else if (boundary == '{Lroads}') {
           removeWMS("mumbai_roads_prabhag_wise_29jan");
           }
@@ -1607,13 +1661,23 @@ let prabhagwms_list;
         else if (boundary == "{122bound}")
             removeWMS("S_ward");
         else if (boundary == "{Nwardprabhags}")
-            removeWMS("Mumbai_Prabhag_Boundaries_3Jan2022V2");
+            // removeWMS("Mumbai_Prabhag_Boundaries_3Jan2022V2");
+          removeWMS('prabhags_2023_v3');
         else if (boundary == '{Nroads}') {
           removeWMS("Nward_roads_11feb23");
           }
-
-        else if (boundary == '{Nmor_routes}') {
+          else if (boundary == '{Nmor_routes}') {
           removeWMS("Nward_morningRoutes_8feb23");
+          }
+        else if (boundary == '{Nveg_routes}') {
+          console.log("remove veg route")
+          removeWMS("route");
+          }
+        else if (boundary == '{Ndebris_routes}') {
+          removeWMS("debris_routeplan11jan24");
+          }
+        else if (boundary == '{Nhotel_routes}') {
+          removeWMS("Routes_hotel");
           }
         else if (boundary == '{s121roads}') {
           removeWMS("mumbai_roads_prabhag_wise_29jan");
@@ -1675,6 +1739,9 @@ let prabhagwms_list;
         }
         else if(boundary == "{n132composting}"){
           removeWMS("compost_facility_P132_6feb23")
+        }
+        else if((boundary == '{n132seg}')||(boundary == '{n132segqual}') ||(boundary == '{n132segfreq}' )) {
+          removeWMS("Merged_11jan24")
         }
         
         else if (boundary == '{nbuildings}') {
@@ -1752,6 +1819,60 @@ let prabhagwms_list;
       style="compost_facility_24feb23"
 
       // console.log("cql is",cql)
+    }
+    if(obj == "{n132seg}")  {
+      console.log("buildings doing seg in 132",layers,obj)
+      // layer1 =layers
+      layer = 'Merged_11jan24';
+      currentPos = [19.0765, 72.8987];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 15;
+      var cql = `INCLUDE`;
+      sld="seg_done";
+        // if(obj == "{n132seg}"){
+          
+          
+        //   //  alert("style os :",sld)
+        //   console.log("in seg dne")
+        // }
+        // if(obj == "{n132segqual}"){
+        //   console.log("in seg qual")
+        //   sld="seg_quality_v1";
+
+        // }
+        // if(obj == "{n132segfreq}"){
+        //   console.log("in seg feq")
+
+        //   sld="frequency_v1";
+        // }
+
+
+      // console.log("cql is",cql)
+    }
+    if(obj == "{n132segqual}")  {
+      // alert("seg quali ",obj)
+      console.log("buildings doing seg in 132",layers,obj)
+      // layer1 =layers
+      layer = 'Merged_11jan24';
+      currentPos = [19.0765, 72.8987];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 15;
+      var cql = `INCLUDE`;
+      sld="seg_quality_v1";
+    }
+    if(obj == "{n132segfreq}")  {
+      // alert("seg quali ",obj)
+      console.log("buildings doing seg in 132",layers,obj)
+      // layer1 =layers
+      layer = 'Merged_11jan24';
+      currentPos = [19.0765, 72.8987];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 15;
+      var cql = `INCLUDE`;
+      sld="";
     }
     if (obj == "{kwestbeat}") {
       
@@ -1938,7 +2059,8 @@ let prabhagwms_list;
     
     else if (obj == '{Nwardprabhags}'){
       // alert("I am in N ward")
-      layer = 'Mumbai_Prabhag_Boundaries_3Jan2022V2';
+      // layer = 'Mumbai_Prabhag_Boundaries_3Jan2022V2';
+      layer = 'prabhags_2023_v3';
       // var currentPos = [19.1022, 72.8752];
       // var maximumzoom = 19;
       // var opac = 1.0;
@@ -1947,7 +2069,9 @@ let prabhagwms_list;
       var maximumzoom = 20;
       var opac = 0.3;
       var zoom = 13;
-      var cql =`Ward_Name='N'`  
+      // var cql =`Ward_Name='N'`  
+      var cql =`ward='N'`  
+      sld = 'prabhagSLD';
       
     }
     
@@ -1973,6 +2097,43 @@ let prabhagwms_list;
       // var maximumzoom = 19;
       // var opac = 1.0;
       // var zoom = 13;
+      currentPos = [19.081, 72.909];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 15;
+      // var cql =`ward_id='N'` 
+      var cql= `INCLUDE`; 
+      // alert(layer)
+    }
+    else if (obj == '{Nveg_routes}'){
+      // alert("I am in N ward routes")
+      layer = 'route';
+      // var currentPos = [19.1022, 72.8752];
+      // var maximumzoom = 19;
+      // var opac = 1.0;
+      // var zoom = 13;
+      currentPos = [19.081, 72.909];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 15;
+      // var cql =`ward_id='N'` 
+      var cql= `INCLUDE`; 
+      // alert(layer)
+    }
+    else if (obj == '{Ndebris_routes}'){
+      // alert("I am in N ward routes")
+      layer = 'Debris_route16jan24';
+      currentPos = [19.081, 72.909];
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 15;
+      // var cql =`ward_id='N'` 
+      var cql= `INCLUDE`; 
+      // alert(layer)
+    }
+    else if (obj == '{Nhotel_routes}'){
+      // alert("I am in N ward routes")
+      layer = 'Updated_hotel_route';
       currentPos = [19.081, 72.909];
       var maximumzoom = 20;
       var opac = 0.3;
@@ -2155,7 +2316,7 @@ let prabhagwms_list;
       var opac = 0.3;
       var zoom = 14;
       var cql = `ward_name_='S'`;
-      style: "bldgStyle";
+      sld= "bldgStyle";
 
     }
     else if (obj == '{s121buildings}'){
@@ -2344,6 +2505,8 @@ let prabhagwms_list;
     wms_layer1.addTo(mymap);
     mymap.setView(currentPos, zoom,cql);
     newLayerList.push(wms_layer1);
+    
+   
     popup_layer = "https://geonode.communitygis.in/geoserver/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetFeatureInfo&LAYERS=" + wms_layer1.options.layers + "&QUERY_LAYERS=" + wms_layer1.options.layers;
     if (wms_legend) {
       mymap.removeControl(wms_legend);
@@ -2872,7 +3035,7 @@ function Identify(e) {
           if (data.features.length !== 0) { // at least one feature returned in response
                 var feature = data.features[0]; // first feature from response
                 // Set up popup for clicked feature and open it
-                alert(feature.properties.slum_area)
+                // alert(feature.properties.slum_area)
                 var popup = new L.Popup({
                     maxWidth: 300
                 });
@@ -2931,7 +3094,7 @@ function Identify(e) {
                     mymap.openPopup(popup);
                     }
                     if (Object.is(feature.properties.slum_area, null)) {
-                    alert("in slum boundary popup");
+                    // alert("in slum boundary popup");
                     content = "<table class = 'popupclass'style ='border: 1px solid white' ><tr style ='border: 1px solid white'><td colspan=6><b> Slum area Info</b></td><td></td></tr>" +
                         "<tr style ='border: 1px solid white'><td><b>Ward Name : </b></td><td style ='text-align:left;'>" + feature.properties.ward_name + "</td></tr>"+
                         "<tr style ='border: 1px solid white'><td><b>Slum Area: </b></td><td>" + feature.properties.slum_area + "(kgs)</td></tr>"+
