@@ -185,6 +185,7 @@ input {
                       <li><a class="dropdown-item" href="{% url 'emp_detail' %}"class="nav-link text-white">{% trans "Enter Employee Details" %}</a></li>
                       <li><a class="dropdown-item" href="{% url 'hrd_detail' %}"class="nav-link text-white">{% trans "Human Resource Data form" %}</a></li>
                       <li><a class="dropdown-item" href="{% url 'student_registration' %}"class="nav-link text-white">{% trans "Student Registration form" %}</a></li>
+                      <li><a class="dropdown-item" href="{% url 'aggregatorForm' %}"class="nav-link text-white">{% trans "Aggregator's Form" %}</a></li>
                         {% endif %}
                     </ul>
                 </li>
@@ -246,7 +247,7 @@ input {
                   
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                       <li><a class="dropdown-item" href="http://assessment.communitygis.net/" class="nav-link text-white">{% trans "Tasks and assessments" %}</a></li>
-                      
+                      <li><a class="dropdown-item" href="{%url 'show_dailystat' %}" class="nav-link text-white">{% trans "Static Data report - Jhunjhunwala College" %}</a></li>
                     </ul>
                 </li>  
                 
