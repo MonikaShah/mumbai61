@@ -26,9 +26,10 @@ def is_ajax(request):
    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 def Map(request):
    print("in map")
+   data_buildings_132 = list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(prabhag_no='132'))
    if is_ajax(request=request):
       requestvar = request.get_full_path()
-      print(requestvar)
+      print("requestvar is ",requestvar)
         
       if "name1" in requestvar:
          today = date.today()
@@ -105,14 +106,19 @@ def Map(request):
          prabhag_list = list(MumbaiPrabhagBoundaries3Jan2022V2.objects.filter(ward_id=sel_ward))
          if  request.user.groups.filter(name="prabhagEditor").exists():
             data= list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(prabhag_no=prabhag))
-            
+            print("data is",data[0])
          elif  request.user.groups.filter(name="wardEditor").exists():
             data= list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(ward_id_2=sel_ward))
          geojson=serialize('geojson',data)
          return render(request,"map/map_new.html",{ 'ward':ward,'prabhag_list':prabhag_list,'prabhag_mumbai':prabhag_mumbai,'ward_list':ward_list,'prabhag':prabhag,'geojson':geojson})
+      else:
+            # print("no user logged in")
+            data= list(MumbaiBuildingsWardPrabhagwise17Jan.objects.all())
+            geojson=serialize('geojson',data)
       # obj=Ward61BuildingsOsm2Nov2021.objects.all()
       # kwest  =  KwestBuildingUpdated.objects.all()
       # kwestgeojson =  serialize('geojson',kwest)
 #  print(geojson)
 #  context = 
+      geojson = serialize('geojson',data_buildings_132)
    return render(request,"map/map_new.html",{ 'ward':ward,'prabhag_list':prabhag_list,'ward_list':ward_list,'prabhag':prabhag,'geojson':geojson,'prabhag_mumbai':prabhag_mumbai})
