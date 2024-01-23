@@ -583,13 +583,18 @@ def showdailystatus_interns(request):
             'row_count': row_count_for_prabhag,
         })
         updated_by_data = []
-    for updated_by_value in updated_by_list:
-        count_for_updated_by = MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(updated_by=updated_by_value).order_by('-updated_by').count()
-        total_counts[updated_by_value] = count_for_updated_by
-        updated_by_data.append({
-            'updated_by_value': updated_by_value,
-            'total_count': total_counts[updated_by_value],
-        })
+        try:
+            for updated_by_value in updated_by_list:
+                count_for_updated_by = MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(updated_by=updated_by_value).order_by('-updated_by').count()
+                total_counts[updated_by_value] = count_for_updated_by
+                updated_by_data.append({
+                    'updated_by_value': updated_by_value,
+                    'total_count': total_counts[updated_by_value],
+                })
+        except Exception as e:
+                # Handle exceptions if any
+                print(f"Error retrieving updated_by data: {e}")
+
     context = {
         'datas':datas,
         # 'total_count':total_count,
