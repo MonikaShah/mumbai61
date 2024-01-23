@@ -557,25 +557,50 @@ def showwastesegregationdetails(request):
     return render(request,'show_wsd.html',context)
 
 def showdailystatus_interns(request):
-    # datas= WasteSegregationDetails.objects.all().order_by('-coll_date')
-    # output_format = "%Y-%m-%d %H:%M:%S"
-    # parsed_date = datetime.strptime('update_time', "%Y-%m-%d %H:%M:%S").date()
-    # formatted_date = parsed_date.strftime(output_format)
+    selected_report_type = request.GET.get('report_type', 'prabhag')
     updated_by_list1 = AuthUser.objects.filter(is_active=True).values_list('username', flat=True)
     updated_by_list = ['Vinayak', 'siddiqui', 'Sakina Syed', 'AshishG', 'riteshhhyadav248@gmail.com', 'Monika_N_132']
-    datas= MumbaiBuildingsWardPrabhagwise17Jan.objects.values('updated_by','prabhag_no').filter(updated_by__in=updated_by_list,prabhag_no=('132')).annotate(updated_time_interns=Count('update_time'),updated_by_count=Count('updated_by')).order_by('-prabhag_no')
+    # updated_by_list = MumbaiBuildingsWardPrabhagwise17Jan.objects.values_list('updated_by', flat=True).distinct()
+    # datas= MumbaiBuildingsWardPrabhagwise17Jan.objects.values('updated_by','prabhag_no').filter(updated_by__in=updated_by_list,prabhag_no=('132')).annotate(updated_time_interns=Count('update_time'),updated_by_count=Count('updated_by')).order_by('-prabhag_no')
     # daily_count = MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(ward_name_field='N').values('updated_by',updated_time_date=datetime.strptime('update_time', '%Y-%m-%d')).annotate(updated_by_count=Count('updated_by')).order_by('updated_by','update_time')
-    total_count = datas.aggregate(Sum('updated_by_count'))['updated_by_count__sum']
-    total_count1= MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(prabhag_no=('132'))
-    row_count= total_count1.count()
+    datas= MumbaiBuildingsWardPrabhagwise17Jan.objects.values('updated_by','prabhag_no').filter(updated_by__in=updated_by_list).annotate(updated_time_interns=Count('update_time'),updated_by_count=Count('updated_by')).order_by('-prabhag_no')
+    distinct_prabhag_nos = datas.values('prabhag_no').distinct()
+    print(distinct_prabhag_nos)
+    # total_count = datas.aggregate(Sum('updated_by_count'))['updated_by_count__sum']
+    # total_count1= MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(prabhag_no__in=distinct_prabhag_nos)
+    # row_count= total_count1.count()
+    total_counts = {}
+    prabhag_data = []
+    for prabhag in distinct_prabhag_nos:
+        prabhag_no = prabhag['prabhag_no']
+        count_for_prabhag = MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(prabhag_no=prabhag_no).count()
+        total_counts[prabhag_no] = count_for_prabhag
+        print(total_counts[prabhag_no])
+        row_count_for_prabhag = MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(prabhag_no=prabhag_no, updated_by__in=updated_by_list).count() 
+        prabhag_data.append({
+            'prabhag_no': prabhag_no,
+            'total_count': total_counts[prabhag_no],
+            'row_count': row_count_for_prabhag,
+        })
+        updated_by_data = []
+    for updated_by_value in updated_by_list:
+        count_for_updated_by = MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(updated_by=updated_by_value).order_by('-updated_by').count()
+        total_counts[updated_by_value] = count_for_updated_by
+        updated_by_data.append({
+            'updated_by_value': updated_by_value,
+            'total_count': total_counts[updated_by_value],
+        })
     context = {
         'datas':datas,
-        'total_count':total_count,
-        'row_count':row_count,
+        # 'total_count':total_count,
+        # 'row_count':row_count,
         'updated_by_list1':updated_by_list1,
-        # 'datas1':datas1,
-        # 'daily_count':daily_count,
-        # 'Visitor_count': recd_response
+        'distinct_prabhag_nos':distinct_prabhag_nos,
+        'total_counts': total_counts,
+        'prabhag_data':prabhag_data,
+        'updated_by_data':updated_by_data,
+        'selected_report_type':selected_report_type,
+       
     }
     return render(request,'show_dailystat.html',context)
 

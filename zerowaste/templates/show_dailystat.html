@@ -36,109 +36,98 @@
 <!-- <form action="coordinator" method="POST">
     {% csrf_token %} -->
 <div id="wrapper">
-    <h2>Interns Static Data Report</h2></centre> 
+    <h2>Interns Static Data Report</h2>
+    <form method="GET" action="{% url 'show_dailystat' %}">
+      <label for="report_type"><h3>Select Report Type:</label>
+      <select name="report_type" id="report_type">
+          <option value="prabhag">Prabhag Wise</option>
+          <option value="updated_by">Student Wise</option>
+      </select>
+      <button type="submit" class="btn btn-primary">
+        <i class="fas fa-file-alt"></i> Generate Report</button></h3>
+  </form>
+  </centre> 
     <!-- <a href="/xyz/">Update Duty Chart</a> -->
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <p></p>
-        <hr> {% for row in excel_data %} {% for cell in row %} {{ cell }}&nbsp;&nbsp; {% endfor %}
-        <br> {% endfor %}
-      
-        
-        <div id ="selected_zone_text"></div>
-        <div id ="error_msg"></div>
-        
-        <div class="input col-md-6">
-     
-            
-            <!-- <input type="radio" id="ALL" name="ALL" value="ALL">
-            <label for="ALL">ALL</label><br>
-            <input type="radio" id="HW" name="Hira Seth Chawl to Waras Lane" value="Hira Seth Chawl to Waras Lane"> -->
-            <!-- <label for="HW">Hira Seth Chawl to Waras Lane</label><br> -->
-            <!-- <a href="" onclick = "this.href='/download_data_zone/' +document.getElementById('date').value +'&'+document.getElementById('zone').value" class="btn btn-primary">Get Data</a> -->
-            <!-- <a href="" onclick = "this.href='/download_data_zone/' +document.getElementById('date').value +'to'+document.getElementById('date1').value+'&'+document.getElementById('zone').value" class="btn btn-primary">Get Data</a> -->
-            <!-- <a href="" onclick = "this.href='/download_data_zone/' +document.getElementById('date').value +'to'+document.getElementById('date1').value+'&'+document.getElementById('selected_zone').innerHTML" class="btn btn-primary">Get Data</a> -->
-            <!-- <a href="" id="get-data"class="btn btn-primary">Get Data</a> -->
  
-        </div>
-        
-        
-
-        <br>
-        <br>     
-
+      
+   <br><br> 
+    {% if selected_report_type == "prabhag" %}
+        {% for prabhag_info in prabhag_data %}
+        <h2>Prabhag {{ prabhag_info.prabhag_no }}</h2>
         <div class="table-responsive">
             <table class="table table-striped table-bordered table-sm" id="myTable">
                 <thead class="thead-dark">
                     <tr>
                         <th>{% trans "Username" %} </th>
                         <th>{% trans "Static Data updated till date" %} </th>
-                        <!-- <th>{% trans "Todays date" %} </th> 
-                        <th>{% trans "Ward Name" %}</th>-->
                         <th>{% trans "Prabhag Name" %}</th>
-                        
-                        <!--  <th>{% trans "Hazardous Waste(kg)" %}</th>
-                        <th>{% trans "Recyclable Waste" %}</th>
-                        <th>{% trans "Compostable Waste" %}</th>
-                        <th>{% trans "Rejected Waste(Dumping Yard)" %}</th> 
-                        <th>{% trans "Date of notice Issued" %}</th> -->
-                        <!-- <th>{% trans "Zone ID" %}</th> -->
-                        <!-- <th>Update</th> -->
-                       
                     </tr>
-                    
-                    
                 </thead>
                 
                 <tbody>
-                  
-                    {% for i in datas %}
-                    
-
+                  {% for i in datas %}
+                   {% if i.prabhag_no == prabhag_info.prabhag_no %}
                     <tr id="somerow">
                         <td>{{i.updated_by}}</td>
-                        <!-- <td>{{i.update_time}}</td> -->
-                        <!-- <td>{{i.updated_time_interns}}</td> -->
-                        
+                       
                         <td>{{i.updated_by_count}}</td>
                         <td>{{i.prabhag_no}}</td>
-                        <!-- <td>{{i.road_name}}</td>
-                        <td>{{i.building_name}}</td>
-                        <td>{{i.mixed_waste}}</td>
-                        <td>{{i.wet_waste}}</td>
-                        <td>{{i.dry_waste}}</td>
-                        <td>{{i.hazardous_waste}}</td>
-                        <td>{{i.recyclable_waste}}</td>
-                        <td>{{i.compostable_waste}}</td>
-                        <td>{{i.rejected_waste}}</td>
-                        <td>{{i.date_notice_issued}}</td>
-                        <td>{{i.zone_id}}</td> -->
-                    
-                   </tr>
-                    
-                    
-                    {% endfor %}
+                    </tr>
+                    {% endif %}
+                  {% endfor %}
                     <tr colspan="2"><th>Static Data completion </th>
-                   <td colspan="2"> <b>{{total_count }}/{{row_count}}</td></tr>
-              </tbody>
-            </table>
+                   
+                    <td colspan="2"> <b>{{prabhag_info.row_count}}/{{prabhag_info.total_count}}</td></tr>
+                </tbody>
+              </table>
+              {%endfor %}
+    {% endif %}          
             <!-- {{updated_by_list1}} -->
-            
+    {% if selected_report_type == "updated_by" %}
+      {% for updated_by_info in updated_by_data %}
+      <h2>Table for {{ updated_by_info.updated_by_value }}</h2>
+      <div class="table-responsive">
+          <table class="table table-striped table-bordered table-sm" id="myTable">
+              <thead class="thead-dark">
+                  <tr>
+                      <th>{% trans "Username" %}</th>
+                      <th>{% trans "Static Data updated till date" %}</th>
+                      <th>{% trans "Prabhag Name" %}</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% for i in datas %}
+                      {% if i.updated_by == updated_by_info.updated_by_value %}
+                          <tr>
+                              <td>{{ i.updated_by }}</td>
+                              <td>{{ i.updated_by_count }}</td>
+                              <td>{{ i.prabhag_no }}</td>
+                          </tr>
+                      {% endif %}
+                  {% endfor %}
+                  <tr colspan="3">
+                      <th>Total Count for {{ updated_by_info.updated_by_value }} </th>
+                      <td colspan="2"><b>{{ updated_by_info.total_count }}</td>
+                  </tr>
+                        </tbody>
+                    </table>
+
+
+
+                    
+                </div>
+            {% endfor %}
+    {% endif %}
             <nav>
                 <ul class="pagination"></ul>
             </nav>
         </div>
+      
         <br>
         <br><br>
         <br>
-   
-
-
-        <script>
-
-               
-            
-            
+   <script>
+    
             $(document).ready(function() {
 
               document.getElementById("get-data").addEventListener("click", function(event){
@@ -167,18 +156,7 @@
                 // getPagination1('#myTable');
             });
 
-            
-          //getPagination('.table-class');
-          //getPagination('table');
-
-      /*          PAGINATION 
-      - on change max rows select options fade out all rows gt option value mx = 5
-      - append pagination list as per numbers of rows / max rows option (20row/5= 4pages )
-      - each pagination li on click -> fade out all tr gt max rows * li num and (5*pagenum 2 = 10 rows)
-      - fade out all tr lt max rows * li num - max rows ((5*pagenum 2 = 10) - 5)
-      - fade in all tr between (maxRows*PageNum) and (maxRows*pageNum)- MaxRows 
-      */
-     
+      
 
 function getPagination1(table) {
     // alert("Success")
