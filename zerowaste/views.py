@@ -558,8 +558,16 @@ def showwastesegregationdetails(request):
 
 def showdailystatus_interns(request):
     selected_report_type = request.GET.get('report_type', 'prabhag')
+
+    selected_college = request.GET.get('sc_col', 'jhunjhunwala')
+    print("selected college is" ,selected_college)
+    if(selected_college=='jhunjhunwala'):
+        updated_by_list = ['Vinayak', 'siddiqui', 'Sakina Syed', 'AshishG', 'riteshhhyadav248@gmail.com', 'Monika_N_132']
+    if(selected_college=='cpgis'):
+        # updated_by_list = ['Ranvirrgrover07','Aasman','shubh7906','kuhoo P','Danesh','Mahek M','RachnaM','mariapaul','Vivaan','Urmila']
+        updated_by_list = ['Kwest']
+    print(updated_by_list)
     updated_by_list1 = AuthUser.objects.filter(is_active=True).values_list('username', flat=True)
-    updated_by_list = ['Vinayak', 'siddiqui', 'Sakina Syed', 'AshishG', 'riteshhhyadav248@gmail.com', 'Monika_N_132']
     # updated_by_list = MumbaiBuildingsWardPrabhagwise17Jan.objects.values_list('updated_by', flat=True).distinct()
     # datas= MumbaiBuildingsWardPrabhagwise17Jan.objects.values('updated_by','prabhag_no').filter(updated_by__in=updated_by_list,prabhag_no=('132')).annotate(updated_time_interns=Count('update_time'),updated_by_count=Count('updated_by')).order_by('-prabhag_no')
     # daily_count = MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(ward_name_field='N').values('updated_by',updated_time_date=datetime.strptime('update_time', '%Y-%m-%d')).annotate(updated_by_count=Count('updated_by')).order_by('updated_by','update_time')

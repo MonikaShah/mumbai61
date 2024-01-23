@@ -35,25 +35,31 @@
 {% endblock %}
 <!-- <form action="coordinator" method="POST">
     {% csrf_token %} -->
-<div id="wrapper">
+<div id="wrapper" class ="container ">
     <h2>Interns Static Data Report</h2>
     <form method="GET" action="{% url 'show_dailystat' %}">
-      <label for="report_type"><h3>Select Report Type:</label>
-      <select name="report_type" id="report_type">
-          <option value="prabhag">Prabhag Wise</option>
-          <option value="updated_by">Student Wise</option>
-      </select>
+      
+      <label for="sc_col"><h3>Select School/College:</label>
+        <select name="sc_col" id="sc_col">
+            <option value="cpgis">CPGIS</option>
+            <option value="jhunjhunwala">JhunJhunwala </option>
+        </select>
+        <label for="report_type"><h3>Select Report Type:</label>
+          <select name="report_type" id="report_type">
+              <option value="prabhag">Prabhag Wise</option>
+              <option value="updated_by">Student Wise</option>
+          </select><br>
       <button type="submit" class="btn btn-primary">
         <i class="fas fa-file-alt"></i> Generate Report</button></h3>
   </form>
   </centre> 
     <!-- <a href="/xyz/">Update Duty Chart</a> -->
  
-      
+    
    <br><br> 
     {% if selected_report_type == "prabhag" %}
         {% for prabhag_info in prabhag_data %}
-        <h2>Prabhag {{ prabhag_info.prabhag_no }}</h2>
+        <br><h2>Prabhag {{ prabhag_info.prabhag_no }}</h2>
         <div class="table-responsive">
             <table class="table table-striped table-bordered table-sm" id="myTable">
                 <thead class="thead-dark">
