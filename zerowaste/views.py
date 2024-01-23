@@ -571,6 +571,7 @@ def showdailystatus_interns(request):
     # row_count= total_count1.count()
     total_counts = {}
     prabhag_data = []
+    updated_by_data = []
     for prabhag in distinct_prabhag_nos:
         prabhag_no = prabhag['prabhag_no']
         count_for_prabhag = MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(prabhag_no=prabhag_no).count()
@@ -582,7 +583,7 @@ def showdailystatus_interns(request):
             'total_count': total_counts[prabhag_no],
             'row_count': row_count_for_prabhag,
         })
-        updated_by_data = []
+        
         try:
             for updated_by_value in updated_by_list:
                 count_for_updated_by = MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(updated_by=updated_by_value).order_by('-updated_by').count()
