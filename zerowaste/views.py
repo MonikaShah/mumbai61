@@ -564,7 +564,7 @@ def showdailystatus_interns(request):
     if(selected_college=='jhunjhunwala'):
         updated_by_list = ['Vinayak', 'siddiqui', 'Sakina Syed', 'AshishG', 'riteshhhyadav248@gmail.com', 'Monika_N_132']
     if(selected_college=='cpgis'):
-        updated_by_list = ['Ranvirrgrover07','Aasman','shubh7906','kuhoo P','Danesh','Mahek M','RachnaM','mariapaul','Vivaan','Urmila']
+        updated_by_list = ['ranvirrgrover007','Aasman','Shubh7906','KuhooP','Danesh','mahekm','Rach_M','mariapaul','Vivaan','urmila']
         
     print(updated_by_list)
     updated_by_list1 = AuthUser.objects.filter(is_active=True).values_list('username', flat=True)
