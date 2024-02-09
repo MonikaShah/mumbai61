@@ -344,8 +344,8 @@ class WasteSegregationDetailsRevised2march22Form(forms.ModelForm):
     sac_no = forms.CharField(label='Sac Number',widget=forms.TextInput(attrs={'class': 'grey-textbox'}))
     # dom_waste = forms.CharField(label='Domestic Hazardous Waste')
     population = forms.IntegerField(label=_(u'Building Population'),widget=forms.TextInput(attrs={'class': 'grey-textbox'}))
-    ward = forms.CharField(label=_(u'Ward Name'))
-    prabhag = forms.CharField(label=_(u'Prabhag Number'))
+    # ward = forms.CharField(label=_(u'Ward Name'))
+    # prabhag = forms.CharField(label=_(u'Prabhag Number'))
     road_name = forms.CharField(label=_(u'Road Name'))
     # parent_id_value = forms.IntegerField(label='Region Id')
     def __init__(self, *args, **kwargs):

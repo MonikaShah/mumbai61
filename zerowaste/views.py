@@ -1249,7 +1249,7 @@ def WasteSegregationDetailsRevisedView(request,id):
                 
                 print("my list is",my_list_1.get('building_name'),my_list_1.get('population'))
                 # print("building name in list is ".item['desired_value'])
-                initial_data = {'sac_no': sac_no,'building_name':bldg_name,'ward':ward_name,'prabhag':prabhag_name,'road_name':road_name,'population':population,'parent_id_value':parent_id_value}
+                initial_data = {'sac_no': sac_no,'building_name':bldg_name,'ward_name':ward_name,'prabhag_name':prabhag_name,'road_name':road_name,'population':population,'parent_id_value':parent_id_value}
                 form = WasteSegregationDetailsRevised2march22Form(initial=initial_data)
                 
                 # print(form)
