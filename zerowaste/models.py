@@ -380,12 +380,12 @@ class WasteSegregationDetailsRevised2March22(models.Model):
     num_shops_premises = models.CharField(max_length=255, blank=True, null=True)
     approx_population = models.CharField(max_length=255, blank=True, null=True)
     seg_done = models.CharField(choices=cluster,default='No',max_length=255, blank=True, null=True)
-    mixed_waste= models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
-    wet_waste = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
-    dry_waste = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
-    dom_waste =models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
-    e_waste =models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
-    bulk_waste =models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    mixed_waste= models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    wet_waste = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    dry_waste = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    dom_waste =models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    e_waste =models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    bulk_waste =models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     coll_date = models.DateField(blank=True, null=True)
     # username = models.ForeignKey(User, on_delete=models.SET_NULL,null=True)
     username =  models.CharField(max_length=50,null=True)
@@ -402,7 +402,15 @@ class WasteSegregationDetailsRevised2March22(models.Model):
         return "Prabhag -"+str(self.prabhag) + " "+"Building Name -"+ self.building_name+self.coll_date.strftime("%b %d %Y %H %M %S")
 
 
+class PrimaryParentId(models.Model):
+    geom = models.MultiPointField(blank=True, null=True)
+    sac_number = models.CharField(max_length=254, blank=True, null=True)
+    parent_id = models.CharField(max_length=10, blank=True, null=True)
 
+    class Meta:
+        managed = False
+        db_table = 'primary_parent_id'
+        
 class compost_data(models.Model):
     ward = models.ForeignKey(MumbaiWardBoundary2Jan2022,to_field='ward_id', on_delete=models.SET_NULL, null=True,default=0,blank=True)
     prabhag_no = models.CharField(max_length=254, blank=True, null=True)

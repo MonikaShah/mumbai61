@@ -342,42 +342,20 @@ class WasteSegregationDetailsRevised2march22FormNew(forms.ModelForm):
 class WasteSegregationDetailsRevised2march22Form(forms.ModelForm): 
     coll_date  = forms.DateField(label = _(u'Date'),widget=forms.TextInput(attrs={'type': 'date'}),initial=datetime.date.today)
     sac_no = forms.CharField(label='Sac Number',widget=forms.TextInput(attrs={'class': 'grey-textbox'}))
-    dom_waste = forms.CharField(label='Domestic Hazardous Waste')
-    # seg_done = forms.CharField(label='Is segregation Done')
-
-    # date_time  = forms.DateField(label = _(u'Time'))
-    # # region = forms.ModelChoiceField(queryset = WasteSegregationDetails.objects.filter(region__isnull=False).values_list('region', flat=True).distinct('region'),empty_label="(Nothing)")
-    # # region = forms.ModelChoiceField(label = _(u'Region Name'),queryset = WasteSegregationDetails.objects.all(),empty_label="(Choose Region)", to_field_name="region")
-    
-    # # building_cluster = forms.CharField(label = _(u'Building Name'),building_choices,widget=forms.Select())
-    # building_name = forms.ModelChoiceField(label = _(u'Building Name'),queryset = WasteSegregationDetails.objects.all(),widget=forms.Select(attrs={'class': 'form-control'}))
-
-    # # category = forms.ModelChoiceField(label = _(u'Building Category'),max_length=100)
-    # num_wings = forms.IntegerField(label=_(u'Number of Wings'))
-    # wing_name = forms.CharField(max_length=100)
-    # building_type = forms.ModelChoiceField(label = _(u'Building Type'),queryset = WasteSegregationDetails.objects.all(),to_field_name='building_type',required=False)
-    # # building_type = forms.CharField(label = _(u'Building Type'))
-    # population = forms.IntegerField(label=_(u'Building Population'))
-    # num_households_premises = forms.IntegerField(label=_(u'Number of households'))
-    # num_shops_premises = forms.IntegerField(label=_(u'Number of Shops'))
-    # type_waste_generator = forms.CharField(label = _(u'Type of waste generator'),max_length=100)
-    # waste_segregation = forms.CharField(label = _(u'Is segregation done'),max_length=100)
-    # wet_waste_before_segregation = forms.IntegerField(label=_(u'Wet Waste before Segregation (in Kgs)'))
-    # dry_waste_before_segregation = forms.IntegerField(label=_(u'Dry Waste before Segregation (in Kgs)'))
-    # hazardous_waste = forms.IntegerField(label=_(u'Hazardous Waste before Segregation (in Kgs)'))
-    # compostable_waste = forms.IntegerField(label=_(u'Compostable Waste before Segregation (in Kgs)'))
-    # recyclable_waste = forms.IntegerField(label=_(u'Recyclable Waste before Segregation (in Kgs)'))
-    # rejected_waste = forms.IntegerField(label=_(u'Rejected Waste before Segregation (in Kgs)'))
-    # composting_type = forms.CharField(label = _(u'Composting Type'),max_length=100)
-    # compost_bin_by_mcgm = forms.CharField(label = _(u'Bin provided by MCGM'),max_length=100)
-    # date_notice_issued = forms.DateField(label=_(u'Date of Notice Issued'),widget=forms.TextInput(attrs={'type': 'date'}),initial=datetime.date.today)
-    # name_number = forms.CharField(label=_(u'Name and Mobile number of Building Secretaty/Incharge'),max_length=100)
+    # dom_waste = forms.CharField(label='Domestic Hazardous Waste')
+    population = forms.IntegerField(label=_(u'Building Population'),widget=forms.TextInput(attrs={'class': 'grey-textbox'}))
+    ward = forms.CharField(label=_(u'Ward Name'))
+    prabhag = forms.CharField(label=_(u'Prabhag Number'))
+    road_name = forms.CharField(label=_(u'Road Name'))
+    # parent_id_value = forms.IntegerField(label='Region Id')
     def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
 
             for field in self.Meta.required:
                 self.fields[field].required = True
                 self.fields['sac_no'].widget.attrs['readonly'] = True
+                self.fields['population'].widget.attrs['readonly'] = True
+                # self.fields['parent_id_value'].widget.attrs['readonly'] = True
     # def __init__(self, *args, **kwargs):
     #     super().__init__(*args, **kwargs)
     #     self.fields['region'].queryset=WasteSegregationDetails.objects.filter(region__isnull=False).values_list('region', flat=True).distinct('region')

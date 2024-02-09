@@ -1,7 +1,7 @@
 # Create your views here.
 from django.shortcuts import render,redirect,HttpResponse,HttpResponseRedirect
 from .forms import GarbageSegForm,GrievanceForm,aggregatorRequestorLoginForm,Ward61BuildingsOsm2Nov2021Form,WasteSegregationDetailsForm,NewUserForm,EmployeeDetailsForm,HumanResourceDataForm,MumbaiBuildingsWardPrabhagwise17JanForm,WasteSegregationDetailsRevised2march22Form,compostForm,dataForm,DocumentForm,reportForm,AggregatorForm,WasteSegregationDetailsRevised2march22FormNew,BuildingDailyForm
-from .models import Report,Rating,WasteSegregationDetails,BuildingsWard9April22,BuildingUnder30Mtr,KWestBeat22Jan,WasteSegregationDetailsRevised2March22,HumanResourceData,P122Buildings8Nov22, data_form,links,document_up,AggregatorData,AggregatorRequestorLogin,BuildingDaily,AuthUser #CensusTable #,OsmBuildings29Oct21#BuildingsWardWise4March
+from .models import Report,Rating,WasteSegregationDetails,BuildingsWard9April22,BuildingUnder30Mtr,KWestBeat22Jan,WasteSegregationDetailsRevised2March22,HumanResourceData,P122Buildings8Nov22, data_form,links,document_up,AggregatorData,AggregatorRequestorLogin,BuildingDaily,AuthUser,PrimaryParentId #CensusTable #,OsmBuildings29Oct21#BuildingsWardWise4March
 from map.models import Ward61BuildingsOsm2Nov2021,MumbaiBuildingsWardPrabhagwise17Jan,MumbaiPrabhagBoundaries3Jan2022V2,DistinctGeomSacNoMumbai#,Ward61OsmBuildings,
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.core.files.storage import FileSystemStorage
@@ -47,7 +47,7 @@ from datetime import datetime
 from django.db.models.functions import Cast
 from django.db.models import F
 
-
+import math
 # import geojson
 ###From Akshita's Dashboard##############
 # import pandas as pd
@@ -1113,10 +1113,14 @@ def WasteSegregationDetailsRevisedView_new(request):
 def WasteSegregationDetailsRevisedView(request,id):
         print("sac no is",id)
         sac_no=id
-
+        # population = 100
+        # ward_name = None
+        # prabhag_name = None
+        my_list2= PrimaryParentId.objects.filter(sac_number=id).values('parent_id').first()
+        parent_id_value = my_list2['parent_id']
         form = WasteSegregationDetailsRevised2march22Form()
         form1 = BuildingDailyForm()
-        print(form1)
+        # print(form1)
         my_list_1 = ''
         # building = request.POST.get('building_name')
         # form.fields[''].choices = [building.building]
@@ -1170,7 +1174,9 @@ def WasteSegregationDetailsRevisedView(request,id):
                     'wet_waste':form.cleaned_data['wet_waste'],
                     'dry_waste':form.cleaned_data['dry_waste'],
                     'primary_id':form.cleaned_data['sac_no'],
-                    'parent_id':"6",
+                    # 'parent_id':"6",
+                    'parent_id':parent_id_value,
+                    'population':form.cleaned_data['population'],
                     'date':form.cleaned_data['coll_date']
                 
                 }
@@ -1187,44 +1193,69 @@ def WasteSegregationDetailsRevisedView(request,id):
                 b= form1.save(commit=False)
                 # b=BuildingDaily(**specific_values)
                 b.parent_id=specific_values['parent_id']
-                b.dry_waste=specific_values['dry_waste']
-                b.wet_waste=specific_values['wet_waste']
+                               
+                if specific_values['dry_waste'] is None:
+                    b.dry_waste=0
+                else :
+                    b.dry_waste=specific_values['dry_waste']
+
+                if specific_values['wet_waste'] is None:
+                    b.wet_waste=0
+                else :
+                    b.wet_waste=specific_values['wet_waste']
+                    
                 b.primary_id=specific_values['primary_id']
                 b.total_waste=b.dry_waste + b.wet_waste
-                
-                b.population=100
+                # b.population = 100
+                if specific_values['population'] is None:
+                    messages.warning(request,'Unable to retrieve population of this building. It might be under construction.')
+
+                else:
+                    b.population=specific_values['population']
+                population=b.population
+                # b.weight=math.ceil(b.total_waste/b.population)
                 b.weight=b.total_waste/b.population
                 b.date=collDate
                 b.save()
-                print(form1)
+                # print(form1)\
+                print("population in post method ",population)
                 print("form1 is also valid",form1.errors)
                 
                 messages.success(request, _(u'Your data is saved for date {}').format(collDate))
-                print(form)
+                # print(form)
                 return HttpResponseRedirect(request.path_info)
             else:
                 print("invalid forms")
                 form1.errors.as_json()
                 print(form1.errors)
+                print(form.errors)
                 messages.warning(request,form1.errors.as_json)
             
                 # messages.warning(request,form.errors.as_json)
         else:
                              
-                my_list= MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(sac_number=id).values('building_name','ward_name_field','prabhag_no','road').order_by('building_name')
+                my_list= MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(sac_number=id).values('building_name','ward_name_field','prabhag_no','road','population').order_by('building_name')
                 my_list_1 = my_list[0]
+
+                my_list2= PrimaryParentId.objects.filter(sac_number=id).values('parent_id').first()
+                parent_id_value = my_list2['parent_id']
+                print("parent id for sac no is :",id,parent_id_value)
                 bldg_name = my_list_1.get('building_name')
                 ward_name = my_list_1.get('ward_name_field')
+              
                 prabhag_name = my_list_1.get('prabhag_no')
                 road_name = my_list_1.get('road')
-                print("my list is",my_list_1.get('building_name'))
+                population = my_list_1.get('population')
+                
+                print("my list is",my_list_1.get('building_name'),my_list_1.get('population'))
                 # print("building name in list is ".item['desired_value'])
-                initial_data = {'sac_no': sac_no,'building_name':bldg_name,'ward_name':ward_name,'prabhag_name':prabhag_name,'road_name':road_name}
+                initial_data = {'sac_no': sac_no,'building_name':bldg_name,'ward':ward_name,'prabhag':prabhag_name,'road_name':road_name,'population':population,'parent_id_value':parent_id_value}
                 form = WasteSegregationDetailsRevised2march22Form(initial=initial_data)
                 
                 # print(form)
                 form.errors.as_json()
-                print("sac is",sac_no)
+                print("sac and prabhag are ",sac_no, prabhag_name, ward_name, population)
+        # return render(request, 'GarbageSegRevised.html', {'form': form,'form1':form1,'sac_no':sac_no,'my_list_1':my_list_1,'population':population, 'ward_name':ward_name,'prabhag_name':prabhag_name })
         return render(request, 'GarbageSegRevised.html', {'form': form,'form1':form1,'sac_no':sac_no,'my_list_1':my_list_1})
 
 def compost_form(request):
