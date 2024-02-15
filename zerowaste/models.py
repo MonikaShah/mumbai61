@@ -371,6 +371,7 @@ class WasteSegregationDetailsRevised2March22(models.Model):
     road_name = models.CharField(max_length=254, blank=True, null=True)
     building_name = models.CharField(max_length=255, blank=True, null=True)
     sac_no = models.CharField(max_length=254, blank=True, null=True)
+    
     building_type = models.CharField(max_length=255, blank=True, null=True)
     building_cluster = models.CharField(choices=cluster,default='No',max_length=255, blank=True, null=True)
     # cluster_name = models.CharField(max_length=255, blank=True, null=True)
@@ -392,6 +393,7 @@ class WasteSegregationDetailsRevised2March22(models.Model):
     date_time =  models.DateTimeField(auto_now_add=True)
     # composting_status = models.CharField(choices=cluster,default='No',max_length=255, blank=True, null=True)
     # compostin
+    
 
     class Meta:
         managed = True

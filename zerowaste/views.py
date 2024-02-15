@@ -45,9 +45,13 @@ import simplejson as json
 from django.db.models import Count
 from datetime import datetime
 from django.db.models.functions import Cast
-from django.db.models import F
+from django.db.models import F,Value
 
 import math
+# from django.contrib.gis.geos import GEOSGeometry
+from django.contrib.gis.geos import MultiPoint
+from django.db.models.functions import Coalesce
+
 # import geojson
 ###From Akshita's Dashboard##############
 # import pandas as pd
@@ -1491,4 +1495,145 @@ def aggregatorRequestorLogin(request):
     # context['form']= aggregatorRequestorLoginForm()
     return render(request, 'aggr_Requ_login.html',context=formDict)
 
-    
+# def showdailydyna_interns(request):
+#    print("in dyna map")
+#    datas= WasteSegregationDetailsRevised2March22.objects.all().order_by('-coll_date')
+#    dates = WasteSegregationDetailsRevised2March22.objects.values_list('coll_date', flat=True).distinct()
+#    distinct_sac_nos = WasteSegregationDetailsRevised2March22.objects.values_list('sac_no', flat=True).distinct()
+#    buildings= WasteSegregationDetailsRevised2March22.objects.filter(
+#     wet_waste__isnull=False,
+#     sac_no__isnull=False,
+#     approx_population__isnull=False).values('coll_date','sac_no','wet_waste','dry_waste','approx_population').distinct()
+# #    print(datas[0])
+# #    print(datas[1])
+#    formatted_dates = [date.strftime("%d %B %y") for date in dates]
+#    datetime_objects = [datetime.strptime(date, "%d %B %y") for date in formatted_dates]
+#    unique_dates = set(datetime_objects)
+#    sorted_unique_dates = sorted(unique_dates, reverse=True)
+#    unique_formatted_dates = [date.strftime("%d %B %y") for date in sorted_unique_dates]
+# #    print(unique_formatted_dates)
+# #    print(buildings)
+#    mumbai_buildings_with_geom = MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(sac_number__in=distinct_sac_nos).values('sac_number', 'geom')
+#    print(mumbai_buildings_with_geom)     
+
+
+#    points = []
+#    for item in mumbai_buildings_with_geom:
+#     sac_no = item['sac_number']
+#     geom = GEOSGeometry(item['geom'])
+#     if geom.geom_type == 'MultiPoint':
+#             for point in geom:
+#                 latitude = point.y
+#                 longitude = point.x
+#                 points.append({'sac_no': sac_no, 'latitude': latitude, 'longitude': longitude})
+#     else:
+#             latitude = geom.y
+#             longitude = geom.x
+#             points.append({'sac_no': sac_no, 'latitude': latitude, 'longitude': longitude})
+
+#    context ={
+#        'datas':datas,
+#        'dates':unique_formatted_dates,
+#        'points': points,
+#     #    unique_formatted_dates:unique_formatted_dates,
+#    }  
+#    return render(request,"map/map_dyna.html",context)
+
+def showdailydyna_interns(request):
+    # Fetch distinct dates from WasteSegregationDetailsRevised
+    distinct_dates = WasteSegregationDetailsRevised2March22.objects.values_list('coll_date', flat=True).distinct()
+    formatted_dates = [date.strftime("%d %B %y") for date in distinct_dates]
+    print(formatted_dates)
+    datetime_objects = [datetime.strptime(date, "%d %B %y") for date in formatted_dates]
+    unique_dates = set(datetime_objects)
+    print(unique_dates)
+    sorted_unique_dates = sorted(unique_dates, reverse=True)
+    unique_formatted_dates = [date.strftime('%Y-%m-%d') for date in sorted_unique_dates]
+    print(unique_formatted_dates)
+
+    context = {'unique_formatted_dates': unique_formatted_dates}
+    return render(request, 'map/map_dyna.html', context)
+
+
+
+def get_marker_data(request):
+    if request.method == 'POST':
+        selected_date = request.POST.get('selected_date')
+        if not selected_date:
+            return JsonResponse({'error': 'Selected date is missing'})
+
+        # Fetch data based on the selected date
+        data = WasteSegregationDetailsRevised2March22.objects.filter(coll_date=selected_date)
+
+        markers = []
+        for item in data:
+            # Fetching geometry for sac_no from MumbaiBuildings
+            sac_no = item.sac_no
+            
+            mumbai_buildings = MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(sac_number=sac_no)
+
+            # Check if mumbai_buildings is empty
+            if mumbai_buildings:
+                for mumbai_building in mumbai_buildings:
+                    # Handle MultiPoint objects
+                    building_name = mumbai_building.building_name
+                    wet_waste = item.wet_waste
+                    dry_waste = item.dry_waste if item.dry_waste is not None else 0  # Handle null dry_waste by setting it to 0                    approx_population = mumbai_building.population
+                    total_waste = wet_waste + dry_waste
+                    approx_population= mumbai_building.population
+                   
+                    if approx_population != 0 and approx_population is not None:
+                        waste_per_capita = total_waste / approx_population
+                    else:
+                        waste_per_capita = 0
+                    
+                    if waste_per_capita < 1:
+                        marker_color = 'darkgreen'
+                    elif waste_per_capita == 1:
+                        marker_color = 'lightgreen'
+                    elif 1 < waste_per_capita < 2:
+                        marker_color = 'yellow'
+                    else:
+                        marker_color = 'red'
+
+
+                    # print("Buildings are",building_name)
+                    if isinstance(mumbai_building.geom, MultiPoint):
+                        for point in mumbai_building.geom:
+                            latitude = point.y
+                            longitude = point.x
+                            markers.append({
+                                'latitude': latitude,
+                                'longitude': longitude,
+                                'sac_no': sac_no,
+                                'building_name': building_name,
+                                'wet_waste': wet_waste,
+                                'dry_waste': dry_waste,
+                                'approx_population': approx_population,
+                                'total_waste': total_waste,
+                                'waste_per_capita':waste_per_capita,
+                                'marker_color': marker_color
+                            })
+                    else:
+                        latitude = mumbai_building.geometry.y
+                        longitude = mumbai_building.geometry.x
+                        markers.append({
+                            'latitude': latitude,
+                            'longitude': longitude,
+                            'sac_no': sac_no,
+                            'building_name': building_name,
+                            'wet_waste': wet_waste,
+                            'dry_waste': dry_waste,
+                            'approx_population': approx_population,
+                            'total_waste': total_waste,
+                            'waste_per_capita':waste_per_capita,
+                            'marker_color': marker_color
+                        })
+                    # markers.append({'building_name':building_name})
+            else:
+                # Log a warning if no building data found for sac_no
+                print(f"No building data found for sac_no: {sac_no}")
+
+        return JsonResponse({'markers': markers})
+    else:
+        return JsonResponse({'error': 'Invalid request method'})

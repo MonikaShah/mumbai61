@@ -1,0 +1,151 @@
+{% extends 'map/map_base.html' %}
+
+{% block map_content %}
+<div id="side-bar" style="background-color: rgba(255, 255, 255);">
+
+    <h1>Select Date</h1>
+    <form id="dateForm" method="POST">
+        {% csrf_token %}
+        <label for="date_select">Date (in YYYY-mm-dd format):</label><b>
+        <select id="date_select" name="selected_date">
+            {% for date in unique_formatted_dates %}
+            <option value="{{ date }}">{{ date }}</option>
+            {% endfor %}
+        </select>
+    </b><br>
+        <input type="submit" value="Submit">
+    </form>
+
+</div>
+
+<!--  -->
+<script>
+    var mymap ;
+    var legend;
+    // $(document).ready(function() {        // Initialize map
+    $(document).ready(function () {
+        // Initialize map and load markers for the default selected date
+        
+        // Check if map container is already initialized
+    if (!document.getElementById('mapdiv')._leaflet_id) {
+        // Initialize map
+        mymap = L.map('mapdiv').setView([19.9254, 72.1519], 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(mymap);
+    }
+
+    legend = L.control({position: 'bottomright'});
+    var minGrade = 0.1; // Minimum value from data
+    var maxGrade = 3; // Maximum value from data
+    var interval = (maxGrade - minGrade) / 3; // Divide the range into intervals
+
+// Function to update legend content
+    legend.onAdd = function (map) {
+        var div = L.DomUtil.create('div', 'info legend'),
+            grades = [0, 1, 2],
+            labels = [];
+
+        // Add legend title
+        div.innerHTML += '<h1>Waste Per Capita</h1>';
+
+        // Loop through the intervals and generate a label with a colored square for each interval
+        for (var i = 0; i <  grades.length; i++) {
+            div.innerHTML +=
+                '<span class="legend-square" style="background:' + getColor(minGrade + i * interval + 1) + '"></span> ' +
+                (minGrade + i * interval === 0 ? '0' : '> ' + (minGrade + i * interval)) +
+                (minGrade + (i + 1) * interval ? '&ndash;' + (minGrade + (i + 1) * interval) + '<br>' : '+');
+        }
+
+        return div;
+    };
+    // Add legend to map
+    legend.addTo(mymap);
+
+    // Function to get color based on value
+    function getColor(d) {
+        return d > maxGrade ? '#ff0000' :
+            d > maxGrade - interval ? '#ffff00' :
+                                        '#00ff00';
+    }
+        // Function to update legend
+    function updateLegend() {
+        if (mymap.hasLayer(legend)) {
+            mymap.removeControl(legend);
+            legend.addTo(mymap);
+        }
+    }
+
+        // Function to load markers based on selected date
+        function loadMarkers(selectedDate) {
+            var csrftoken = $('[name=csrfmiddlewaretoken]').val();
+            $.ajax({
+                url: '{% url "get_marker_data" %}',
+                type: 'POST',
+                headers: {'X-CSRFToken': csrftoken}, 
+                data: {
+                    'selected_date': selectedDate
+                },
+                success: function (response) {
+                    // Clear existing markers
+                    
+                    mymap.eachLayer(function (layer) {
+                        if (layer instanceof L.Marker) {
+                            mymap.removeLayer(layer);
+                        }
+                    });
+
+                    // Add new markers
+                    response.markers.forEach(function (marker) {
+                        var iconColor = marker.marker_color;
+                        
+                        var newMarker = L.circleMarker([marker.latitude, marker.longitude], geojsonMarkerOptions(iconColor)).addTo(mymap);
+                        newMarker.bindPopup('sac_no: ' + marker.sac_no + "<br>" + 'Building Name: ' + marker.building_name+"<br>"+'Wet Waste :'+marker.wet_waste+"<br>"+'Dry Waste:'+marker.dry_waste+"<br>"+'Population:'+marker.approx_population+"<br>"+'Waste per capita:'+marker.waste_per_capita);
+                       });
+                       // Update legend after markers are loaded
+                    updateLegend();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error loading markers:', error);
+                }
+                
+            });           
+        }
+
+        
+        function geojsonMarkerOptions(color) {
+                return {
+                    radius: 8,
+                    fillColor: color,
+                    color: "#000",
+                    weight: 2,
+                    opacity: 1,
+                    fillOpacity: 0.8
+                };
+        }
+
+        // Event listener for form submission
+        $('#dateForm').submit(function (event) {
+            event.preventDefault();
+            var selectedDate = $('#date_select').val();
+            loadMarkers(selectedDate);
+        });
+
+        // Initial load of markers based on the default selected date
+        var defaultSelectedDate = $('#date_select').val();
+        loadMarkers(defaultSelectedDate);
+    });
+// });
+
+</script>
+<style>
+    .legend-square {
+    display: inline-block;
+    width: 15px; /* Adjust width as needed */
+    height: 15px; /* Adjust height as needed */
+    margin-right: 5px; /* Adjust margin as needed */
+    vertical-align: middle;
+}
+</style>
+{% endblock map_content %}
