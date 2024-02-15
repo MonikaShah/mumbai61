@@ -1577,8 +1577,9 @@ def get_marker_data(request):
                 for mumbai_building in mumbai_buildings:
                     # Handle MultiPoint objects
                     building_name = mumbai_building.building_name
-                    wet_waste = item.wet_waste
+                    # wet_waste = item.wet_waste
                     dry_waste = item.dry_waste if item.dry_waste is not None else 0  # Handle null dry_waste by setting it to 0                    approx_population = mumbai_building.population
+                    wet_waste = item.wet_waste if item.wet_waste is not None else 0  # Handle null dry_waste by setting it to 0                    approx_population = mumbai_building.population
                     total_waste = wet_waste + dry_waste
                     approx_population= mumbai_building.population
                    
