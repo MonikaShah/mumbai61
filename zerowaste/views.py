@@ -15,6 +15,7 @@ from django.contrib.auth.models import Group
 from django.db.models import Sum
 import json
 from django.core.serializers.json import DjangoJSONEncoder
+
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail,get_connection
@@ -845,22 +846,60 @@ def resources_orig(request):
     # video = video_sch.objects.all()
     return render(request,'Resources_orig26oct23.html')
 
-def base(request):
-    # ward_region = WasteSegregationDetails.objects.values('re').annotate(Sum('wet_waste_before_segregation') , Sum('dry_waste_before_segregation'), Sum('hazardous_waste')  )
+# def base(request):
+#     # ward_region = WasteSegregationDetails.objects.values('re').annotate(Sum('wet_waste_before_segregation') , Sum('dry_waste_before_segregation'), Sum('hazardous_waste')  )
 
-    map_ward = WasteSegregationDetails.objects.values('ward').annotate(Sum('wet_waste_before_segregation') , Sum('dry_waste_before_segregation'), Sum('hazardous_waste')  )
-    line_region = WasteSegregationDetails.objects.values('coll_date').annotate(Sum('wet_waste_before_segregation') , Sum('dry_waste_before_segregation'), Sum('hazardous_waste')  )
-    map_region = WasteSegregationDetails.objects.values('region').annotate(Sum('wet_waste_before_segregation') , Sum('dry_waste_before_segregation'), Sum('hazardous_waste')  )
-    line_date_region = WasteSegregationDetails.objects.values('coll_date','region').annotate(Sum('wet_waste_before_segregation') , Sum('dry_waste_before_segregation'), Sum('hazardous_waste')  )
+#     map_ward = WasteSegregationDetails.objects.values('ward').annotate(Sum('wet_waste_before_segregation') , Sum('dry_waste_before_segregation'), Sum('hazardous_waste')  )
+#     line_region = WasteSegregationDetails.objects.values('coll_date').annotate(Sum('wet_waste_before_segregation') , Sum('dry_waste_before_segregation'), Sum('hazardous_waste')  )
+#     map_region = WasteSegregationDetails.objects.values('region').annotate(Sum('wet_waste_before_segregation') , Sum('dry_waste_before_segregation'), Sum('hazardous_waste')  )
+#     line_date_region = WasteSegregationDetails.objects.values('coll_date','region').annotate(Sum('wet_waste_before_segregation') , Sum('dry_waste_before_segregation'), Sum('hazardous_waste')  )
     
-    # data = WasteSegregationDetails.objects.values('region','wet_waste_before_segregation','dry_waste_before_segregation','hazardous_waste')
-    # data=WasteSegregationDetails.objects.values('region','wet_waste_before_segregation','dry_waste_before_segregation','hazardous_waste').annotate(Count('region')).order_by()
-    new_data = json.dumps(list(map_ward), cls=DjangoJSONEncoder)
-    region_data = json.dumps(list(map_region), cls=DjangoJSONEncoder)
-    date_region = json.dumps(list(line_date_region), cls=DjangoJSONEncoder)
-    date_new_data = json.dumps(list(line_region), cls=DjangoJSONEncoder)
+#     # data = WasteSegregationDetails.objects.values('region','wet_waste_before_segregation','dry_waste_before_segregation','hazardous_waste')
+#     # data=WasteSegregationDetails.objects.values('region','wet_waste_before_segregation','dry_waste_before_segregation','hazardous_waste').annotate(Count('region')).order_by()
+#     new_data = json.dumps(list(map_ward), cls=DjangoJSONEncoder)
+#     region_data = json.dumps(list(map_region), cls=DjangoJSONEncoder)
+#     date_region = json.dumps(list(line_date_region), cls=DjangoJSONEncoder)
+#     date_new_data = json.dumps(list(line_region), cls=DjangoJSONEncoder)
 
-    return render(request,"home.html",{'ward':new_data,'date_data':date_new_data,"region": region_data,"date_region_line":date_region})
+#     return render(request,"home.html",{'ward':new_data,'date_data':date_new_data,"region": region_data,"date_region_line":date_region})
+
+# from django.shortcuts import render
+# from django.db.models import Sum
+# from .models import WasteSegregationDetails
+import json
+
+def base(request):
+    ward_data = WasteSegregationDetails.objects.values('ward').annotate(
+        Sum('wet_waste_before_segregation'),
+        Sum('dry_waste_before_segregation'),
+        Sum('hazardous_waste')
+    )
+
+    region_data = WasteSegregationDetails.objects.values('region').annotate(
+        Sum('wet_waste_before_segregation'),
+        Sum('dry_waste_before_segregation'),
+        Sum('hazardous_waste')
+    )
+
+    date_region_data = WasteSegregationDetails.objects.values('coll_date', 'region').annotate(
+        Sum('wet_waste_before_segregation'),
+        Sum('dry_waste_before_segregation'),
+        Sum('hazardous_waste')
+    )
+
+    date_data = WasteSegregationDetails.objects.values('coll_date').annotate(
+        Sum('wet_waste_before_segregation'),
+        Sum('dry_waste_before_segregation'),
+        Sum('hazardous_waste')
+    )
+
+    # Convert queryset to list
+    ward_json = json.dumps(list(ward_data), cls=DjangoJSONEncoder)
+    region_json = json.dumps(list(region_data), cls=DjangoJSONEncoder)
+    date_region_json = json.dumps(list(date_region_data), cls=DjangoJSONEncoder)
+    date_json = json.dumps(list(date_data), cls=DjangoJSONEncoder)
+
+    return render(request, "home.html", {'ward': ward_json, 'date_data': date_json, "region": region_json, "date_region_line": date_region_json})
 
 def w61wcd(request):
     df = pd.read_excel('/home/ubuntu/Documents/Diet-Diversity/Nutri-infotainment survey (Part 1) (Responses).xlsx',0)
