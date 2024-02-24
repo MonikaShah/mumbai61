@@ -443,12 +443,6 @@
                     onchange="getBoundaryru(this)"><span> {% trans "Prabhag 132 : Buildings Info (static data)" %}</span></label>
               </div>
             </div>
-            <!-- <div id="checkboxes4">
-              <div class="checkbox">
-                <label><input type="checkbox" value="{n122staticcount}"  id="122"
-                    onchange="getBoundaryru(this)"><span> {% trans "Prabhag 122 : Buildings Info (static data)" %}</span></label>
-              </div>
-            </div> -->
             <label style="color:green;font-weight: bold;">{% trans "Students case Studies" %}</label>
             <div id="checkboxes4">
               <div class="checkbox">
@@ -1137,8 +1131,8 @@ var slumLayer;
         })
 
         
-        slumLayer.addTo(mymap)        
-        addWMSLegendfromgeo(slumLayer,sld)
+        slumLayer.addTo(mymap)
+        addWMSLegendfromgeo(slumLayer,sld)        
         showSlum = true
         // alert("slum boundaries")
         layer1="mumbai_slums_9mar23"
@@ -1266,10 +1260,9 @@ var Pipelayer;
                     response.status);
                 return;
               }
-             
             response.json().then(function(geojsonData) {
               area = L.geoJson(geojsonData.features)
-              console.log("area is",area)
+              console.log(area)
               lat = area.getBounds()._northEast.lat
               lng = area.getBounds()._northEast.lng
               mymap.setView([lat, lng], 14)
@@ -1360,9 +1353,6 @@ let prabhagwms_list;
       else if (boundary == '{kwestbeat}'){
         putfrmgeo(kwestbeat);
         }
-        else if (boundary == '{mumbai_waterbodies}'){
-        putfrmgeo(mumbai_waterbodies);
-       }
       else if (boundary == '{bwg_city}'){
         putfrmgeo(bwg_city);
         }
@@ -1601,13 +1591,13 @@ let prabhagwms_list;
         putWMSru("ward61:regions_6dec21");
 
       else if (boundary == "{buildings}"){
-         
-         {% if request.user|has_group:"wardEditor"  %}
+          {% if request.user|has_group:"wardEditor"  %}
               displaypolygon(boundary);
         // console.log("prabhag is ",`${prabhag}`)
         
           {% elif request.user|has_group:"prabhagEditor"  %}
-              // alert("in display polygon"+`${prabhag}`)
+            alert("in display polygon"+`${prabhag}`)
+
           //     // putfrmgeo(`${prabhag}`)
               displaypolygon(`${prabhag}`);
               {% endif %}
@@ -1663,7 +1653,6 @@ let prabhagwms_list;
             removeWMS("mumbai_waterbodies_6mar23")
         else if (boundary == "{bwg_city}")
           removeWMS("geonode:BWG_City_29Jan");
-
         else if (boundary == "{bwg_ws}")
           removeWMS("geonode:BWG_WS_27Jan2022");
         else if (boundary == "{bwg_es}")
@@ -1799,7 +1788,9 @@ let prabhagwms_list;
         else if (boundary == '{nbuildings}') {
           removeWMS("Buildings_mumbai");
         }
+        // else if ((boundary == "{buildings}") || (boundary == "{n132staticcount}")) {
         else if ((boundary == "{buildings}") || (boundary == "{n132staticcount}") || (boundary == "{n122staticcount}")) {
+
           mymap.removeControl(legend);
 
           removepolylayer(polylayer);
@@ -1828,7 +1819,7 @@ let prabhagwms_list;
         addWMSLegend(layer);
         }
       });
-
+    
     }
 
   function removepolylayer(layer){
@@ -1958,7 +1949,7 @@ let prabhagwms_list;
   //    var cql =`prabhag_no='${prabhag}'`,
   //    sld ='mumbai_roads_prabhagwise20oct23',
   //  }
-    else if (obj == '{mumbai_waterbodies}'){
+  else if (obj == '{mumbai_waterbodies}'){
       layer = 'geonode:mumbai_waterbodies_6mar23';
       var currentPos = [19.1051, 72.8769];
       var maximumzoom = 19;
@@ -2860,21 +2851,15 @@ function validate(id){
     fillOpacity: 0.8
   };
 </script>
-  
-  <script>
+  <!-- var geojson_data = {{ geojson|safe }};-->
+    <script>
   function displaypolygon(poly_layer){
     
     var geojson_data = {{ geojson|safe }};
-    var geojson_data2 ={{ geojson2|safe}};
-    var dyna_detail = {{ dynamic_detail|safe}};
     // console.log('GeoJSON Data:', geojson_data);
     // geojson_data.features.forEach(function(feature, index) {
     //   console.log('Feature ' + (index + 1) + ':', feature.properties.building_name);
     //   });
-    dyna_detail.features.forEach(function(feature, index) {
-      console.log('Feature ' + (index + 1) + ':', feature.properties.date_time);
-      });
-    
     console.log("Display ploygon function",poly_layer,"-",poly_layer.value)
     legend = L.control({position: 'bottomright'});
     let building_data;
@@ -2884,41 +2869,37 @@ function validate(id){
     
     // Prabhag Editor has logged in 
 
-    if((poly_layer.toString().length ==3)){
+    if(poly_layer.toString().length ==3) {
       // alert("in if part"+poly_layer);
       console.log("buildings is displayed for prabhag you have rights",poly_layer);
-      if(poly_layer == '122')
+      if(poly_layer === '122')
         building_data = geojson_data2.features;
-      if(poly_layer == '132')
-        building_data = geojson_data.features;   
-      
-            
+      if(poly_layer === '132')
+        building_data = geojson_data.features;
+        //geojson_data.features.forEach(function(feature, index) {
+          //console.log('Feature ' + (index + 1) + ':', feature.properties.sac_number);
+        //});
+        
     }
-   // else if((poly_layer.toString().length ==3) && (poly_layer.toString == '122')){
-      // alert("in if part"+poly_layer);
-     // console.log("buildings is displayed for prabhag you have rights",poly_layer);
-      //building_data = geojson_data2.features;
-            
-    //}
     else {
     // Prabhag editor code ends 
       //  alert("in else part")
-      if(poly_layer.value == '{s122buildingslege}' ){
-      building_data = buildings.features;
-      // alert(building_data)
+    if(poly_layer.value == '{s122buildingslege}' ){
+     building_data = buildings.features;
+    // alert(building_data)
 
-      }
-      if(poly_layer == '{buildings}' ){
-        console.log("I am in displaypolygon")
-      building_data = buildings.features;
-      // console.log("Display Polygon building data",buildings.features)
-
-      }
-      else if(poly_layer=='{buildings_up}'){
-      building_data_up= buildings_up.features;
-      }
     }
-   if(building_data !=undefined){
+    if(poly_layer == '{buildings}' ){
+      console.log("I am in displaypolygon")
+      building_data = buildings.features;
+    // console.log("Display Polygon building data",buildings.features)
+
+    }
+    else if(poly_layer=='{buildings_up}'){
+      building_data_up= buildings_up.features;
+    }
+  }
+  if(building_data !=undefined){
     console.log("building data counter is not undefined");
     var redcounter = 0;
     var greencounter = 0;
@@ -3172,13 +3153,13 @@ function Identify(e) {
                     }
                     if (feature.properties.Area) {
                     // alert("in route popup");
-                      if(feature.properties.name != null)
+                    if(feature.properties.name != null)
                           gardenName = feature.properties.name 
                       else
                           gardenName = feature.properties.garden_n
                         
                     content = "<table class = 'popupclass'style ='border: 1px solid white' ><tr style ='border: 1px solid white'><td colspan=6><b> Garden Information</b></td><td></td></tr>" +
-                        "<tr style ='border: 1px solid white'><td><b>Garden Name: </b></td><td style ='text-align:left;'>" + gardenName + "</td></tr>"+
+                        "<tr style ='border: 1px solid white'><td><b>Garden Name: </b></td><td style ='text-align:left;'>" + gardenName+ "</td></tr>"+
                         "<tr style ='border: 1px solid white'><td><b>Area of Garden : </b></td><td>" + feature.properties.Area + "(sq. meters)</td></tr>"+
                         "</table>";
                     popup.setContent(content);

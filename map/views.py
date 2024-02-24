@@ -2,7 +2,7 @@ from django.shortcuts import render
 # from zerowaste.models import OsmBuildings29Oct21
 from django.core.serializers import serialize
 from .models import Ward61BuildingsOsm2Nov2021,MumbaiPrabhagBoundaries3Jan2022V2,MumbaiWardBoundary2Jan2022,DistinctGeomSacNoMumbai,MumbaiBuildingsWardPrabhagwise17Jan #,Ward61OsmBuildings,
-from zerowaste.models import BuildingsWard9April22#,BuildingsWardWise4March
+from zerowaste.models import BuildingsWard9April22,WasteSegregationDetailsRevised2March22#,BuildingsWardWise4March
 from django.http import JsonResponse
 from datetime import date
 from datetime import timedelta
@@ -26,7 +26,17 @@ def is_ajax(request):
    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 def Map(request):
    print("in map")
+   
    data_buildings_132 = list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(prabhag_no='132'))
+   data_buildings_122 = list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(prabhag_no='122'))
+   # data_buildings_122_1=['SX1204540180000','SX1204950160000']
+   # print(data_buildings_132[0])
+   data_buildings_122_1 = list(MumbaiBuildingsWardPrabhagwise17Jan.objects.values('sac_number').filter(prabhag_no='122'))
+   # print("data_buildings_122_1:",data_buildings_122_1)
+   dynamic_detail = list(WasteSegregationDetailsRevised2March22.objects.filter(sac_no__in=data_buildings_122_1))
+
+   sac_numbers = [item['sac_numbers'] for item in dynamic_detail]
+   # print(sac_numbers)
    if is_ajax(request=request):
       requestvar = request.get_full_path()
       print("requestvar is ",requestvar)
@@ -65,28 +75,10 @@ def Map(request):
          docinfo1 = list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(sac_number=selected_field1).values('sac_number','prop_add','is_bwg','bwg_type','is_compost','compost_type','building_type','building_name','village','road','num_floors','num_flat','population','region','num_shops','wing_name','prabhag_no','ward_name_field','updated_by','update_time','device_ip','address','validity'))
          # docinfo1 = MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(sac_number=selected_field1).values('sac_number','prop_add','is_bwg','bwg_type','is_compost','compost_type','building_type','building_name','village','num_flat','region','num_shops','wing_name','prabhag_no','ward_name_field','updated_by','update_time','device_ip','address','validity')
          jsondata2 =docinfo1[0]
-         # jsondata2 =docinfo1.first()
-         # geojson=serialize('geojson',docinfo1)
-         # data = {'geojson':geojson}
-         # return JsonResponse(data,safe = False)
-         print(docinfo1[0]);
+        
+         # print(docinfo1[0]);
          return JsonResponse(docinfo1[0])
-         # return JsonResponse(jsondata2)
-      
-      # elif "name" in requestvar:
-      #    selected_field = request.GET['name']
-      #    print(selected_field)
-      #    docinfo = list(SwkAttendants.objects.filter(zone_name=selected_field).values()); 
-      #    print("doc info is " ,docinfo)
-      #    jsondata2 =docinfo[0]
-      #    # field=docinfo[0]["zone_id"]
-      #    # print(field)
-      #    # docinfo1 = list(SwkAttendants.objects.filter(zone_id=field).values()); 
-      #    # jsondata2=docinfo1[0]
-      #    # print("docinfo 0 is ",docinfo[0])
-      #    return JsonResponse(jsondata2)
-       
-   #  obj = Ward61OsmBuildings.objects.all()
+        
    if request.method == 'GET':
       # print(request.user.is_anonymous)
       geojson=[]
@@ -101,12 +93,13 @@ def Map(request):
       if (request.user is not None) and (request.user.is_anonymous is False):
          ward = request.user.Ward
          prabhag = request.user.prabhag
+         print("prabhag is",prabhag)
          ward_id = list(MumbaiWardBoundary2Jan2022.objects.filter(ward_name_field= ward))
          sel_ward = ward_id[0].ward_id
          prabhag_list = list(MumbaiPrabhagBoundaries3Jan2022V2.objects.filter(ward_id=sel_ward))
          if  request.user.groups.filter(name="prabhagEditor").exists():
             data= list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(prabhag_no=prabhag))
-            print("data is",data[0])
+            # print("data is",data[0])
          elif  request.user.groups.filter(name="wardEditor").exists():
             data= list(MumbaiBuildingsWardPrabhagwise17Jan.objects.filter(ward_id_2=sel_ward))
          geojson=serialize('geojson',data)
@@ -118,7 +111,10 @@ def Map(request):
       # obj=Ward61BuildingsOsm2Nov2021.objects.all()
       # kwest  =  KwestBuildingUpdated.objects.all()
       # kwestgeojson =  serialize('geojson',kwest)
-#  print(geojson)
+            # print(geojson)
 #  context = 
       geojson = serialize('geojson',data_buildings_132)
-   return render(request,"map/map_new.html",{ 'ward':ward,'prabhag_list':prabhag_list,'ward_list':ward_list,'prabhag':prabhag,'geojson':geojson,'prabhag_mumbai':prabhag_mumbai})
+      # print(geojson)
+      geojson2 = serialize('geojson',data_buildings_122)
+   return render(request,"map/map_new.html",{ 'ward':ward,'prabhag_list':prabhag_list,'ward_list':ward_list,'prabhag':prabhag,'geojson':geojson,'geojson2':geojson2,'prabhag_mumbai':prabhag_mumbai,'dynamic_detail':dynamic_detail})
+
