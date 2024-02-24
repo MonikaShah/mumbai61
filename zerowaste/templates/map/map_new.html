@@ -1638,8 +1638,9 @@ let prabhagwms_list;
           }
         else if(boundary =="{kwestbeat}")
             removeWMS("geonode:k_west_beat_22jan")
-        else if (boundary == "{mumbai_waterbodies}")
-            removeWMS("mumbai_waterbodies_6mar23")
+        else if (boundary == "{mumbai_waterbodies}"){
+          console.log("remove water bodies")
+            removeWMS("geonode:mumbai_waterbodies_6mar23")}
         else if (boundary == "{bwg_city}")
           removeWMS("geonode:BWG_City_29Jan");
         else if (boundary == "{bwg_ws}")
@@ -1689,8 +1690,8 @@ let prabhagwms_list;
         else if (boundary == "{122bound}")
             removeWMS("S_ward");
         else if (boundary == "{Nwardprabhags}")
-            // removeWMS("Mumbai_Prabhag_Boundaries_3Jan2022V2");
-          removeWMS('prabhags_2023_v3');
+            removeWMS("Mumbai_Prabhag_Boundaries_3Jan2022V2");
+          // removeWMS('prabhags_2023_v3');
         else if (boundary == '{Nroads}') {
           removeWMS("Nward_roads_11feb23");
           }
