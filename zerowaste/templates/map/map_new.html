@@ -918,7 +918,7 @@
             </div>
             <div id="checkboxes9" style="display: none;">
               <div class="checkbox">
-                <label for=""><input type="checkbox" style = "margin: 0 0 0 17px;"  onchange="getSlumBoundary()" value="slum_boundaries" name="" id="">{% trans "Slum Boundaries" %}</label>
+                <label for=""><input type="checkbox" style = "margin: 0 0 0 17px;"  onchange="getBoundaryru(this)" value="{slum_boundaries}" name="" id="slum_boundaries">{% trans "Slum Boundaries" %}</label>
               </div>
               <div class="checkbox">
                 <label for=""><input type="checkbox" style = "margin: 0 0 0 17px;" onchange="getSlumHouseHolds()" name="" id="">{% trans "Slum Households" %}</label>
@@ -971,6 +971,24 @@
   $('#prabhag').html('Prabhag '+prabhag +' landmarks')
   $('#ward').html('Ward '+ward +' landmarks')
         
+
+  
+        // Define the geodesicArea function
+        L.GeometryUtil = L.GeometryUtil || {};
+        L.GeometryUtil.geodesicArea = function (latLngs) {
+            var area = 0.0;
+            if (latLngs.length > 2) {
+                for (var i = 0; i < latLngs.length; i++) {
+                    var p1 = latLngs[i],
+                        p2 = latLngs[(i + 1) % latLngs.length];
+                    area += ((p2.lng - p1.lng) * Math.PI / 180) *
+                            (2 + Math.sin(p1.lat * Math.PI / 180) +
+                            Math.sin(p2.lat * Math.PI / 180));
+                }
+                area = area * 6378137.0 * 6378137.0 / 2.0;
+            }
+            return Math.abs(area);
+        };
 
      // define wms_layer1
               
@@ -1118,16 +1136,19 @@ var slumLayer;
         
         slumLayer.addTo(mymap)
         sld='mumbai_slums_9mar23'
-        // addWMSLegendfromgeo(slumLayer,sld)        
+        layer = slumLayer.options.layers;
+        addWMSLegendfromgeo(layer,sld)        
         showSlum = true
         // alert("slum boundaries")
         // layer1="mumbai_slums_9mar23"
-        // popup_layer = "https://geonode.communitygis.in/geoserver/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetFeatureInfo&LAYERS=" + slumLayer.options.layers + "&QUERY_LAYERS=" + slumLayer.options.layers;
-        // console.log("slum popup layer"+popup_layer)
+        popup_layer = "https://geonode.communitygis.in/geoserver/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetFeatureInfo&LAYERS=" + layer + "&QUERY_LAYERS=" + layer;
+        console.log("slum popup layer"+popup_layer)
       }
     else{
       mymap.setView([19.359, 72.8304], 12);
-      mymap.removeLayer(slumLayer)
+      layer = slumLayer.options.layers;
+      
+      mymap.removeLayer(layer)
       showSlum = false
       }
      
@@ -1179,12 +1200,12 @@ var DPLayer;
   function putDP(){
     if(!showDP){
 
-      fetch('https://geonode.communitygis.in/geoserver/geonode/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=geonode%3ADP_merged_29june220&outputFormat=application%2Fjson')
+      fetch('https://geonode.communitygis.in/geoserver/geonode/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=geonode%3ADP_merged_4mar24&outputFormat=application%2Fjson')
       .then(result=>result.json())
       .then((output)=>{
         DPLayer = L.geoJSON(output,{
           onEachFeature: function(feature, layer){
-            layer.bindPopup(`<div style="width:auto;">Development Plan Info<hr><br>DP Code: ${feature.properties.NAME}<br>DP Designation: ${feature.properties.designatio}<br>Ward Name: ${feature.properties.ward_name}<br>Ward: ${feature.properties.Ward}<br>S_No: ${feature.properties.sno}</div>`)
+            layer.bindPopup(`<div style="width:auto;">Development Plan Info<hr><br>DP Code: ${feature.properties.NAME}<br>DP Designation: ${feature.properties.subcategor}<br>Ward Name: ${feature.properties.ward_name}<br>Ward: ${feature.properties.Ward}<br>S_No: ${feature.properties.sno}</div>`)
           },
           
         })
@@ -1335,7 +1356,9 @@ let prabhagwms_list;
 
         mymap.setView([19.1186, 72.8064], 11);
         }
-      
+      else if (boundary == '{slum_boundaries}'){
+        putfrmgeo(slum_boundaries);
+        }
       else if (boundary == '{kwestbeat}'){
         putfrmgeo(kwestbeat);
         }
@@ -1665,7 +1688,7 @@ let prabhagwms_list;
           removeWMS("Buildings_mumbai:Buildings_mumbai");
 
         else if (boundary == "{DP}")
-            removeWMS("DP_merged_29june220");
+            removeWMS("DP_merged_4mar24");
         else if (boundary == "{mumbai_roads}")
             removeWMS("mumbai_roads_prabhag_wise_29jan");
         
@@ -1778,6 +1801,10 @@ let prabhagwms_list;
         else if (boundary == '{nbuildings}') {
           removeWMS("Buildings_mumbai");
         }
+        else if (boundary == '{slum_boundaries}'){
+        // alert('in remove layer')
+          removeWMS("mumbai_slums_9mar23");
+        }
         // else if ((boundary == "{buildings}") || (boundary == "{n132staticcount}")) {
         else if ((boundary == "{buildings}") || (boundary == "{n132staticcount}") || (boundary == "{n122staticcount}")) {
 
@@ -1796,6 +1823,7 @@ let prabhagwms_list;
           removepolylayer(polylayer);
         else if (boundary == "{regions_noname}")
           removepolylayer(polylayer);
+        
         };
   }
   function removeWMS(unchecked_layer) {
@@ -1978,9 +2006,10 @@ let prabhagwms_list;
     }
 
     else if (obj == '{DP}'){
-      // layer = 'DP_merged_1june22';
+     
       console.log("In DP ")
-      layer ='DP_merged_29june220';
+     
+      layer ='DP_merged_4mar24';
       // var currentPos = [19.1022, 72.8752];
       // var maximumzoom = 19;
       // var opac = 1.0;
@@ -2117,19 +2146,12 @@ let prabhagwms_list;
     else if (obj == '{Nwardprabhags}'){
       // alert("I am in N ward prabhags")
       layer = 'Mumbai_Prabhag_Boundaries_3Jan2022V2';
-      // layer = 'prabhags_2023_v3';
-      // layer = 'Mumbai Prabhags July 2023';
-      // var currentPos = [19.1022, 72.8752];
-      // var maximumzoom = 19;
-      // var opac = 1.0;
-      // var zoom = 13;
       currentPos = [19.084, 72.927];
       var maximumzoom = 20;
       var opac = 0.3;
       var zoom = 13;
-      var cql =`Ward_Name='N'`  
-      // var cql =`ward='N'`  
-      // sld = 'prabhagSLD';
+      var ward_name = "Ward_Name='N'";
+      var cql =ward_name;
       
     }
     
@@ -2547,7 +2569,20 @@ let prabhagwms_list;
       var cql = `ward_name_='N'`
 
     }
-              
+    else if (obj == '{slum_boundaries}'){
+      // alert("in slums")
+      layer = 'mumbai_slums_9mar23';
+      currentPos = [19.125, 72.840];
+      
+      var maximumzoom = 20;
+      var opac = 0.3;
+      var zoom = 14;
+      var cql = `INCLUDE`;
+      var sld = "mumbai_slums_9mar23"
+
+
+    }
+             
     wms_layer1 = L.tileLayer.wms('https://geonode.communitygis.in/geoserver/wms', {
       layers: layer,
       format: 'image/png',
@@ -2563,14 +2598,14 @@ let prabhagwms_list;
     wms_layer1.addTo(mymap);
     mymap.setView(currentPos, zoom,cql);
     newLayerList.push(wms_layer1);
-    
+    // alert("cql "+cql);
    
     popup_layer = "https://geonode.communitygis.in/geoserver/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetFeatureInfo&LAYERS=" + wms_layer1.options.layers + "&QUERY_LAYERS=" + wms_layer1.options.layers;
     if (wms_legend) {
       mymap.removeControl(wms_legend);
       }
-    console.log("layer and sld for legend",layer,"-",sld)
-    addWMSLegendfromgeo(layer,sld);
+    console.log("layer and sld for legend",layer,"-",sld,"-",cql)
+    addWMSLegendfromgeo(layer,sld,cql);
                     
   }
 
@@ -3044,12 +3079,43 @@ function addWMSLegend(layer) {
           
 }
 
-function addWMSLegendfromgeo(layer,style) {     
-  // alert(style)             
-  lagendGraphic = "https://geonode.communitygis.in/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=" + layer + "&STYLE="+style+"&LEGEND_OPTIONS=forceLabels:on&legend_options=countMatched:true&forceTitles:on";
-  wms_legend = L.wmsLegend(lagendGraphic);        
-  // lagendGraphic.addTo(mymap) ;
+function addWMSLegendfromgeo(layer, style, cql) {
+  console.log("cwl is "+cql)  
+  
+  var legendGraphicUrl = "https://geonode.communitygis.in/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=" + layer + "&STYLE=" + style;
+  console.log("legend url 1:" + legendGraphicUrl);
+  // If a CQL filter is provided, add it to the legend URL
+  if (cql) {
+    alert("cql is there")
+    // legendGraphicUrl += "&CQL_FILTER=" + encodeURIComponent(cql);
+    legendGraphicUrl += "&CQL_FILTER=" + cql;
+  }
+  
+  
+  console.log("legend url " + legendGraphicUrl);
+  
+  // Remove the existing legend if any
+  if (wms_legend) {
+    mymap.removeControl(wms_legend);
+  }
+
+  // Create a new legend control
+  var legend = L.control({ position: 'topright' });
+
+  // Define the onAdd method to populate the legend
+  legend.onAdd = function (map) {
+    var div = L.DomUtil.create('div', 'info legend');
+    div.innerHTML = '<img src="' + legendGraphicUrl + '" alt="legend">';
+    return div;
+  };
+
+  // Add the legend to the map
+  legend.addTo(mymap);
+  
+  // Store the reference to the legend control
+  wms_legend = legend;
 }
+
 function NonameBuildingFilter(feature) {
 // alert(layer.properties.name+"="+feature);
 // layer.on({click:onClick })
@@ -3084,7 +3150,7 @@ function Identify(e) {
     
     var URL = popup_layer + '&BBOX=' + BBOX + '&FEATURE_COUNT=1&HEIGHT=' + HEIGHT + '&WIDTH=' + WIDTH + '&INFO_FORMAT=application%2Fjson&TILED=false&CRS=EPSG%3A3857&I=' + X + '&J=' + Y;
     //send GetFeatureInfo as asynchronous HTTP request using jQuery $.ajax
-  // console.log("click",popup_layer,layer1)
+    console.log("click",popup_layer,layer1)
     $.ajax({
         url: URL,
         dataType: "json",
@@ -3099,7 +3165,7 @@ function Identify(e) {
                 var popup = new L.Popup({
                     maxWidth: 300
                 });
-                // console.log("in identify function "+layer1);
+                console.log("in identify function "+layer1.value);
                 if ((feature.properties.seg_done) && ((layer1.value == '{Rsegdone}')  || (layer1.value == '{Rsegquality}') || (layer1.value == '{Rsegcons}') || (layer1.value == '{Rsegfreq}')||(layer1.value != '{segdone}')  || (layer1.value != '{segquality}') || (layer1.value != '{segcons}') || (layer1.value != '{segfreq}') || (layer1.value != '{description}'))){
                     // alert("in R seg popup"+layer1.value);
                     content = "<table class = 'popupclass'style ='border: 1px solid white' ><tr style ='border: 1px solid white'><td colspan=6><b> Segregation Information</b></td><td></td></tr>" +
@@ -3116,6 +3182,19 @@ function Identify(e) {
                     popup.setLatLng(e.latlng);
                     mymap.openPopup(popup);
                     }
+                if(layer1.value == '{slum_boundaries}'){
+                        var content = "<table class='popupclass' style='border: 1px solid white'><tr style='border: 1px solid white'><td colspan=6><b> Slum Information</b></td><td></td></tr>" +
+                        "<tr style='border: 1px solid white'><td><b>Ward Name: </b></td><td style='text-align:left;'>" + feature.properties.ward_nm + "</td></tr>" +
+                        "<tr style='border: 1px solid white'><td><b>Slum Name: </b></td><td style='text-align:left;'>" + feature.properties.slum_area + "</td></tr>" +
+                        "<tr style='border: 1px solid white'><td><b>Cluster Id: </b></td><td style='text-align:left;'>" + feature.properties.cluster_id + "</td></tr>" +
+                        
+                        "</table>";
+                    popup.setContent(content); // Set the content of the popup
+                    popup.setLatLng(e.latlng); // Set the position of the popup
+                    mymap.openPopup(popup); // Open the popup on the map
+                    }
+                 
+                
                     if ((feature.properties.seg_done) && ((layer1.value == '{segdone}')  || (layer1.value == '{segquality}') || (layer1.value == '{segcons}') || (layer1.value == '{segfreq}') || (layer1.value == '{description}') )){
                     // alert("in seg popup"+layer1.value);
                     content = "<table class = 'popupclass'style ='border: 1px solid white' ><tr style ='border: 1px solid white'><td colspan=6><b> Segregation Information</b></td><td></td></tr>" +
@@ -3158,17 +3237,7 @@ function Identify(e) {
                     popup.setLatLng(e.latlng);
                     mymap.openPopup(popup);
                     }
-                    if (Object.is(feature.properties.slum_area, null)) {
-                    // alert("in slum boundary popup");
-                    content = "<table class = 'popupclass'style ='border: 1px solid white' ><tr style ='border: 1px solid white'><td colspan=6><b> Slum area Info</b></td><td></td></tr>" +
-                        "<tr style ='border: 1px solid white'><td><b>Ward Name : </b></td><td style ='text-align:left;'>" + feature.properties.ward_name + "</td></tr>"+
-                        "<tr style ='border: 1px solid white'><td><b>Slum Area: </b></td><td>" + feature.properties.slum_area + "(kgs)</td></tr>"+
-                        "<tr style ='border: 1px solid white'><td><b>Cluster Id: </b></td><td>" + feature.properties.cluster_id + "(kgs)</td></tr>"+
-                        "</table>";
-                    popup.setContent(content);
-                    popup.setLatLng(e.latlng);
-                    mymap.openPopup(popup);
-                    }
+                    
                     if (feature.properties.plastic_wa) {
                     // alert("in route popup");
                     content = "<table class = 'popupclass'style ='border: 1px solid white' ><tr style ='border: 1px solid white'><td colspan=6><b> Plastic Segregating Buildings Info</b></td><td></td></tr>" +
