@@ -336,6 +336,7 @@
             </div>
             
             <div id="infrastructure"><br>
+              
                 <div class="checkbox">
                   <label><input type="checkbox"  value="{mumbai_buildings}" id="mumbai_buildings" onchange="getBoundaryru(this)"><span> {% trans "Building Points" %}</span></label>
                 </div>
@@ -624,7 +625,7 @@ value="Report"></input>
             // sld = "lake_boundary";
           }
 
-          var wms_layer1 = L.tileLayer.wms('https://geoserver2.communitygis.net/geoserver/wms', {
+          var wms_layer1 = L.tileLayer.wms('https://geonode.communitygis.in/wms', {
             layers: layer,
             format: 'image/png',
             opacity: opac,
@@ -637,7 +638,7 @@ value="Report"></input>
           wms_layer1.addTo(mymap);
           mymap.setView(currentPos, zoom);
           newLayerList.push(wms_layer1);
-          popup_layer =  "https://geoserver2.communitygis.net/geoserver/"+layer.split(":")[0]+"/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetFeatureInfo&LAYERS=" + wms_layer1.options.layers + "&QUERY_LAYERS=" + wms_layer1.options.layers;
+          popup_layer =  "https://geonode.communitygis.in/"+layer.split(":")[0]+"/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetFeatureInfo&LAYERS=" + wms_layer1.options.layers + "&QUERY_LAYERS=" + wms_layer1.options.layers;
          
 
           if (wms_legend) {
