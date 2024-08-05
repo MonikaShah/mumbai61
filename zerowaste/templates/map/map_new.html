@@ -1287,10 +1287,10 @@ let prabhagwms_list;
       $(this).remove();
       });
 	//  var $endpoint = window.location.href // or localhost/interface
-    layer = 'Buildings_mumbai:Buildings_mumbai';
+    layer = 'geonode:Buildings_mumbai';
     wardwms = $(this).val();
     var wms_layer = L.tileLayer.wms('https://geonode.communitygis.in/geoserver/wms', {
-                  layers: 'Buildings_mumbai:Buildings_mumbai',
+                  layers: 'geonode:Buildings_mumbai',
                   format: 'image/png',
                   transparent: 'true',
                   cql_filter: `ward_id_2='${wardwms}'`,
@@ -1300,7 +1300,7 @@ let prabhagwms_list;
     removeWMS('geonode:Buildings_mumbai');
 
     newLayerList.push(wms_layer);
-    setView1('Buildings_mumbai:Buildings_mumbai','ward_id_2', wardwms);
+    setView1('geonode:Buildings_mumbai','ward_id_2', wardwms);
     let $name2= {'name2':wardwms}
     var $endpoint = window.location.href // or localhost/interface
     var popup = new L.Popup({ 
@@ -1325,7 +1325,7 @@ let prabhagwms_list;
 	//  var $endpoint = window.location.href // or localhost/interface
     var selectedValue = $(this).val();
     var wms_layer = L.tileLayer.wms('https://geonode.communitygis.in/geoserver/wms', {
-                layers: 'Buildings_mumbai:Buildings_mumbai',
+                layers: 'geonode:Buildings_mumbai',
                 format: 'image/png',
                 transparent: 'true',
                 cql_filter: `prabhag_no='${selectedValue}'`,
@@ -1626,7 +1626,7 @@ let prabhagwms_list;
         wms_layer.addTo(mymap);
         newLayerList.push(wms_layer);
         addWMSLegendfromgeo('mumbai_roads_prabhag_wise_29jan','mumbai_roads_prabhagwise20oct23');
-        setView1('Buildings_mumbai:Buildings_mumbai','prabhag_no', prabhag);
+        setView1('geonode:Buildings_mumbai','prabhag_no', prabhag);
          }
       else if(boundary == '{cop}')
         putWMSru("kwest_corporator_ward_31st_dec");
@@ -2689,7 +2689,7 @@ let prabhagwms_list;
     newLayerList.push(wms_layer);
     popup_layer = "https://geonode.communitygis.in/geoserver/"+layer.split(":")[0]+"/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetFeatureInfo&LAYERS=" + wms_layer.options.layers + "&QUERY_LAYERS=" + wms_layer.options.layers;
     
-
+    console.log("popu up layer is ",layer)
     // const legendContainer = document.createElement('div');
     // legendContainer.id = 'legend-container';
     // mymap.getContainer().appendChild(legendContainer);
@@ -3006,7 +3006,7 @@ function validate(id){
     };
     // console.log(legend,"legend");
     legend.addTo(mymap);
-    setView1('Buildings_mumbai:Buildings_mumbai','prabhag_no', prabhag);
+    setView1('geonode:Buildings_mumbai','prabhag_no', prabhag);
     polylayer.addTo(mymap);
     }
   else if(building_data == undefined){
@@ -3023,7 +3023,7 @@ function validate(id){
     };
 
     legend.addTo(mymap);
-    setView1('Buildings_mumbai:Buildings_mumbai','prabhag_no', prabhag);
+    setView1('geonode:Buildings_mumbai','prabhag_no', prabhag);
     polylayer.addTo(mymap);
   }
   else if(poly_layer == '{buildings_noname}'){
@@ -3319,7 +3319,7 @@ function Identify(e) {
                     popup.setLatLng(e.latlng);
                     mymap.openPopup(popup);
                     }
-                if(layer1=="ward61:k-west_building"){
+                if(layer1=="geonode:k-west_building"){
                   // console.log(feature)
                   content= `<table border =2><tr class="bg-primary"><td colspan=2>Building Information</td></tr>
                     <tr class="table-danger"><td>SAC Number:</td><td> ${feature.properties.sac_no}</td></tr>
@@ -3345,7 +3345,7 @@ function Identify(e) {
                     popup.setLatLng(e.latlng);
                     mymap.openPopup(popup);
                 }
-                if((feature.properties.building_t) && ((layer1=='Buildings_mumbai:Buildings_mumbai')||(layer1.value=='{s122buildings}') ||(layer1.value=='{sbuildings}')||(layer1.value=='{nbuildings}') || (layer1.value=='{l156buildings}' || layer1.value=='{l157buildings}')|| layer1.value=='{s121iitbbuildings}') || (layer1.value =='{s122buildings}') ||(layer1.value ==null && layer1!= null)){
+                if((feature.properties.building_t) && ((layer1=='geonode:Buildings_mumbai')||(layer1.value=='{s122buildings}') ||(layer1.value=='{sbuildings}')||(layer1.value=='{nbuildings}') || (layer1.value=='{l156buildings}' || layer1.value=='{l157buildings}')|| layer1.value=='{s121iitbbuildings}') || (layer1.value =='{s122buildings}') ||(layer1.value ==null && layer1!= null)){
                   // alert("in building info"+layer1.value)
                   $name= {         
                   'name': feature.properties.sac_number}
